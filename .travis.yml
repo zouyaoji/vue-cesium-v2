@@ -24,4 +24,4 @@ after_script:
   - git config user.email "370681295@qq.com"
   - git add .
   - git commit -m "Travis build docs"
-  - git push  --force --quiet "https://${GITHUB_TOKEN}@github.com/zouyaoji/vue-cesium.git" master:gh-pages
+  - git push  --force --quiet "https://${GITHUB_TOKEN}@github.com/zouyaoji/vue-cesium-v2.git" master:gh-pages
