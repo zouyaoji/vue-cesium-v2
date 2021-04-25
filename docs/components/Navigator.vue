@@ -10,6 +10,8 @@ md-list
               router-link(:to="`${route.path}/${subRoute.path}`", v-text="subRoute.name")
   md-list-item
     <a href="https://zouyaoji.top/vue-cesium-v1">{{this.lang === 'en'? 'v1 document' : 'v1 文档'}}</a>
+  md-list-item
+    <a href="https://zouyaoji.top/vue-cesium">for vue 3.x</a>
 </template>
 
 <script>
