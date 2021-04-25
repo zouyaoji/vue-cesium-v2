@@ -84,10 +84,15 @@
 import mixinDraw from '../../../mixins/tool/mixinDraw'
 import { makeMaterial } from '../../../utils/cesiumHelpers'
 import { clone } from '../../../utils/util'
+import './drawIcon'
+import VcIconSvg from '../../control/navigation/icon/VcIconSvg.vue'
 
 export default {
   name: 'vc-handler-draw-polygon',
   mixins: [mixinDraw],
+  components: {
+    VcIconSvg
+  },
   data () {
     return {
       drawType: 'polygonDrawing'

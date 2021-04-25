@@ -40,9 +40,14 @@
 <script>
 import mixinDraw from '../../../mixins/tool/mixinDraw'
 import { makeMaterial } from '../../../utils/cesiumHelpers'
+import './drawIcon'
+import VcIconSvg from '../../control/navigation/icon/VcIconSvg.vue'
 export default {
   name: 'vc-handler-draw-polyline',
   mixins: [mixinDraw],
+  components: {
+    VcIconSvg
+  },
   data () {
     return {
       drawType: 'polylineDrawing'

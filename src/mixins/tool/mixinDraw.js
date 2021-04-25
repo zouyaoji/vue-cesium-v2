@@ -1,8 +1,4 @@
 import cmp from '../virtualCmp'
-import './icon-move'
-import './icon-add'
-import './icon-delete'
-import VcIconSvg from '../../components/control/navigation/icon/VcIconSvg.vue'
 
 const props = {
   mode: {
@@ -317,9 +313,6 @@ export default {
       tooltip: '',
       nowaiting: true
     }
-  },
-  components: {
-    VcIconSvg
   },
   props,
   watch,

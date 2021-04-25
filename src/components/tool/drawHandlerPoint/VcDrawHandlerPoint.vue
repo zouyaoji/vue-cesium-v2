@@ -21,9 +21,14 @@
 
 <script>
 import mixinDraw from '../../../mixins/tool/mixinDraw'
+import './drawIcon'
+import VcIconSvg from '../../control/navigation/icon/VcIconSvg.vue'
 export default {
   name: 'vc-handler-draw-point',
   mixins: [mixinDraw],
+  components: {
+    VcIconSvg
+  },
   data () {
     return {
       drawType: 'pointDrawing'
