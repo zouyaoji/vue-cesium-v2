@@ -12,7 +12,7 @@ The students who have donated, if you want to show your information, please cont
 
 We accept donations through these channels:
 
-- <a href="https://www.paypal.me/zouyaoji" target="_blank"><img src="https://zouyaoji.top/vue-cesium/statics/assets/images/paypal.png" style="height:25px;" /></a>
+- <a href="https://www.paypal.me/zouyaoji" target="_blank"><img src="https://zouyaoji.top/vue-cesium/images/paypal.png" style="height:25px;" /></a>
 
 - WeChat / AliPay
 
