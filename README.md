@@ -96,7 +96,7 @@ Copyright (c) 2018-present, zouyaoji <370681295@qq.com>
 
 - WeChat | AliPay
 
-  ![WeChat](https://zouyaoji.top/vue-cesium/statics/assets/images/wechat.png) ![AliPay](https://zouyaoji.top/vue-cesium/statics/assets/images/alipay.png)
+  ![WeChat](https://zouyaoji.top/vue-cesium/images/wechat.png) ![AliPay](https://zouyaoji.top/vue-cesium/images/alipay.png)
 
 ## QQGroup
 

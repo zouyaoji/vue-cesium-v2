@@ -90,7 +90,10 @@
   <div class="viewer">
     <vc-viewer @ready="ready">
       <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="20">
-        <vc-provider-imagery-urltemplate :url="urlText" :projectionTransforms="projectionTransforms"></vc-provider-imagery-urltemplate>
+        <vc-provider-imagery-urltemplate
+          :url="urlText"
+          :projectionTransforms="projectionTransforms"
+        ></vc-provider-imagery-urltemplate>
       </vc-layer-imagery>
       <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="10">
         <vc-provider-imagery-urltemplate
@@ -170,13 +173,13 @@
 | --------------------- | ------- | ------ | ------ |
 | url | String\|Object | | `required`指定服务地址。 |
 | pickFeaturesUrl | String\|Object | | `optional`指定拾取对象属性的 url，如果无效，会返回 undefined。 |
-| urlSchemeZeroPadding | Object | | `optional`Gets the URL scheme zero padding for each tile coordinate. |
-| subdomains | String | `'abc'` | `optional`he subdomains to use for the {s} placeholder in the URL template. If this parameter is a single string, each character in the string is a subdomain. If it is an array, each element in the array is a subdomain. |
+| urlSchemeZeroPadding | Object | | `optional` 指定每个瓦片中心的偏移值。|
+| subdomains | String | `'abc'` | `optional` 指定服务的轮询子域名。 |
 | credit | String | `''` | `optional`指定服务的描述信息 |
 | minimumLevel | Number | `0` | `optional`最小层级。 |
 | maximumLevel | Number | | `optional`最大层级。 |
 | rectangle | Object | | `optional`图层的矩形范围,此矩形限制了影像可见范围。 **结构：{ west: number, south: number, east: number, north: number }** |
-| tilingScheme | Object | | `optional`The tiling scheme specifying how the ellipsoidal surface is broken into tiles. If this parameter is not provided, a WebMercatorTilingScheme is used. |
+| tilingScheme | Object | | `optional` 指定服务的投影参数。 |
 | ellipsoid | Object | | `optional`参考椭球体。 |
 | tileWidth | Number | `256` | `optional`像元宽度。 |
 | tileHeight | Number | `256` | `optional`像元高度。 |

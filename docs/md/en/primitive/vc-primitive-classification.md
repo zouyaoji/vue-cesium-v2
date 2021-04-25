@@ -28,7 +28,7 @@ The `vc-primitive-classification` component is used to load a classification pri
         return {
           appearance: null,
           geometry: {},
-          image: 'https://zouyaoji.top/vue-cesium/statics/SampleData/radarImage/1.png',
+          image: './statics/SampleData/radarImage/1.png',
           rectangle: { west: 102.4, south: 29.5, east: 106.5, north: 33.5 },
           vertexFormat: null,
           attributes: null,
@@ -85,7 +85,7 @@ The `vc-primitive-classification` component is used to load a classification pri
       return {
         appearance: null,
         geometry: {},
-        image: 'https://zouyaoji.top/vue-cesium/statics/SampleData/radarImage/1.png',
+        image: './statics/SampleData/radarImage/1.png',
         rectangle: { west: 102.4, south: 29.5, east: 106.5, north: 33.5 },
         vertexFormat: null,
         attributes: null,

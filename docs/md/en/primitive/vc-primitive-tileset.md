@@ -40,14 +40,14 @@ The `vc-primitive-tileset` component is used to load a 3D Tiles tileset, used fo
     export default {
       data() {
         return {
-          url: 'https://zouyaoji.top/vue-cesium/statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
+          url: './statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
           options: [
             {
-              value: 'https://zouyaoji.top/vue-cesium/statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
+              value: './statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
               label: 'tileset one'
             },
             {
-              value: 'https://zouyaoji.top/vue-cesium/statics/SampleData/Cesium3DTiles/Hierarchy/BatchTableHierarchy/tileset.json',
+              value: './statics/SampleData/Cesium3DTiles/Hierarchy/BatchTableHierarchy/tileset.json',
               label: 'tileset two'
             }
           ]
@@ -126,14 +126,14 @@ The `vc-primitive-tileset` component is used to load a 3D Tiles tileset, used fo
   export default {
     data() {
       return {
-        url: 'https://zouyaoji.top/vue-cesium/statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
+        url: './statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
         options: [
           {
-            value: 'https://zouyaoji.top/vue-cesium/statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
+            value: './statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
             label: 'tileset one'
           },
           {
-            value: 'https://zouyaoji.top/vue-cesium/statics/SampleData/Cesium3DTiles/Hierarchy/BatchTableHierarchy/tileset.json',
+            value: './statics/SampleData/Cesium3DTiles/Hierarchy/BatchTableHierarchy/tileset.json',
             label: 'tileset two'
           }
         ]

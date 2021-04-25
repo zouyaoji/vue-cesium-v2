@@ -172,7 +172,7 @@
 | ------------ | -------------- | ------ | ------------------------------------------------------ |
 | positions    | Object\|Array  |        | `optional` 指定 polygon 的 positions 属性。            |
 | vertexFormat | Object         |        | `optional` 指定 polygon 要缓存的顶点属性。             |
-| stRotation   | Number\|Object | `0.0`  | `optional` 指定 polygon 纹理按正北方向逆时针旋转角度。 |
+| stRotation   | Number | `0.0`  | `optional` 指定 polygon 纹理按正北方向逆时针旋转角度。 |
 | ellipsoid    | Object         |        | `optional` 指定 polygon 参考椭球体。                   |
 
 ---

@@ -43,7 +43,6 @@
     export default {
       data() {
         return {
-          cesiumInstance: {},
           description: 'Hello Vue Cesium',
           model1: {},
           path1: {},

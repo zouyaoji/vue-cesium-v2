@@ -58,7 +58,7 @@ The `vc-handler-draw-polygon` component is used to draw polygon.
     export default {
       data() {
         return {
-          modelUrl: 'https://zouyaoji.top/vue-cesium/statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
+          modelUrl: './statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
           pointDrawing: false,
           polylineDrawing: false,
           polygonDrawing: false,
@@ -150,7 +150,7 @@ The `vc-handler-draw-polygon` component is used to draw polygon.
   export default {
     data() {
       return {
-        modelUrl: 'https://zouyaoji.top/vue-cesium/statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
+        modelUrl: './statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
         pointDrawing: false,
         polylineDrawing: false,
         polygonDrawing: false,

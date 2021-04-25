@@ -50,7 +50,7 @@ The `vc-navigation` component is used to load the navigation compass widget. **N
             enableLocationBar: true,
             // enableLocationBar: {
             //   // Get more accurate elevation
-            //   gridFileUrl: 'https://zouyaoji.top/vue-cesium/statics/SampleData/WW15MGH.DAC'
+            //   gridFileUrl: './statics/SampleData/WW15MGH.DAC'
             // },
             enableCompassOuterRing: true,
             enablePrintView: true,
@@ -118,7 +118,7 @@ The `vc-navigation` component is used to load the navigation compass widget. **N
           enableLocationBar: true,
           // enableLocationBar: {
           //   // Get more accurate elevation
-          //   gridFileUrl: 'https://zouyaoji.top/vue-cesium/statics/SampleData/WW15MGH.DAC'
+          //   gridFileUrl: './statics/SampleData/WW15MGH.DAC'
           // },
           enableCompassOuterRing: true,
           enablePrintView: true,

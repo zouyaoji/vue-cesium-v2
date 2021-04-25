@@ -14,7 +14,7 @@
       <vc-viewer @ready="ready">
         <vc-layer-imagery ref="layer" :alpha="alpha" :brightness="brightness" :contrast="contrast">
           <vc-provider-imagery-style-mapbox
-            ：url="url"
+            :url="url"
             :username="username"
             :styleId="styleId"
             :accessToken="accessToken"

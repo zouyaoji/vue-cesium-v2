@@ -152,7 +152,7 @@
 | width                    | Number  | 1.0                | `optional` 指定折线宽度。                   |
 | loop                     | Boolean | false              | `optional` 指定折线是否首尾相连。           |
 | material                 | Object  | Material.ColorType | `optional` 指定折线材质。                   |
-| positions                | Array   |                    | `optional` 指定线是否可显示。               |
+| positions                | Array   |                    | `optional` 指定线位置数组。                 |
 | id                       | Object  |                    | `optional` 指定折线被选中时的返回值。       |
 | distanceDisplayCondition | Object  |                    | `optional` 根据相机的距离确定折线是否可见。 |
 

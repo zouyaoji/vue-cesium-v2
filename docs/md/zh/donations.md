@@ -12,8 +12,8 @@
 
 江山父老能容我 不使人间造孽钱
 
-  ![WeChat](https://zouyaoji.top/vue-cesium/statics/assets/images/wechat.png)
-  ![AliPay](https://zouyaoji.top/vue-cesium/statics/assets/images/alipay.png)
+  ![WeChat](https://zouyaoji.top/vue-cesium/images/wechat.png)
+  ![AliPay](https://zouyaoji.top/vue-cesium/images/alipay.png)
 
 ## 赞助者名单
 

@@ -26,7 +26,6 @@
             :positions="positions2"
             :material="material2"
             :outline="true"
-            heightPositions
           ></vc-graphics-wall>
         </vc-entity>
         <vc-entity :description="description" :wall.sync="wall3">
@@ -123,7 +122,6 @@
           :positions="positions2"
           :material="material2"
           :outline="true"
-          heightPositions
         ></vc-graphics-wall>
       </vc-entity>
       <vc-entity :description="description" :wall.sync="wall3">

@@ -31,7 +31,7 @@ The `vc-provider-imagery-tile-single` component is used to load a single image a
     export default {
       data () {
         return {
-          url: 'https://zouyaoji.top/vue-cesium/statics/SampleData/worldimage.jpg',
+          url: './statics/SampleData/worldimage.jpg',
           alpha: 1,
           brightness: 1,
           contrast: 1
@@ -71,7 +71,7 @@ The `vc-provider-imagery-tile-single` component is used to load a single image a
   export default {
     data() {
       return {
-        url: 'https://zouyaoji.top/vue-cesium/statics/SampleData/worldimage.jpg',
+        url: './statics/SampleData/worldimage.jpg',
         alpha: 1,
         brightness: 1,
         contrast: 1

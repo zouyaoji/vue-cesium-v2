@@ -53,7 +53,7 @@
   <div class="viewer">
     <vc-viewer @ready="ready">
       <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
-        <vc-provider-imagery-bingmaps></vc-provider-imagery-bingmaps>
+        <vc-provider-imagery-grid></vc-provider-imagery-grid>
       </vc-layer-imagery>
     </vc-viewer>
     <div class="demo-tool">

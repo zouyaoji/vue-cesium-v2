@@ -28,7 +28,7 @@
         return {
           appearance: null,
           geometry: null,
-          image: 'https://zouyaoji.top/vue-cesium/statics/SampleData/radarImage/1.png',
+          image: './statics/SampleData/radarImage/1.png',
           rectangle: { west: 102.5, south: 29.5, east: 106.5, north: 33.5 },
           interleave: true,
           asynchronous: false
@@ -60,11 +60,11 @@
         },
         play() {
           let urls = [
-            'https://zouyaoji.top/vue-cesium/statics/SampleData/radarImage/1.png',
-            'https://zouyaoji.top/vue-cesium/statics/SampleData/radarImage/2.png',
-            'https://zouyaoji.top/vue-cesium/statics/SampleData/radarImage/3.png',
-            'https://zouyaoji.top/vue-cesium/statics/SampleData/radarImage/4.png',
-            'https://zouyaoji.top/vue-cesium/statics/SampleData/radarImage/5.png'
+            './statics/SampleData/radarImage/1.png',
+            './statics/SampleData/radarImage/2.png',
+            './statics/SampleData/radarImage/3.png',
+            './statics/SampleData/radarImage/4.png',
+            './statics/SampleData/radarImage/5.png'
           ]
           let i = 0
           let _this = this
@@ -101,7 +101,7 @@
       return {
         appearance: null,
         geometry: null,
-        image: 'https://zouyaoji.top/vue-cesium/statics/SampleData/radarImage/1.png',
+        image: './statics/SampleData/radarImage/1.png',
         rectangle: { west: 102.5, south: 29.5, east: 106.5, north: 33.5 },
         interleave: true,
         asynchronous: false
@@ -133,11 +133,11 @@
       },
       play() {
         let urls = [
-          'https://zouyaoji.top/vue-cesium/statics/SampleData/radarImage/1.png',
-          'https://zouyaoji.top/vue-cesium/statics/SampleData/radarImage/2.png',
-          'https://zouyaoji.top/vue-cesium/statics/SampleData/radarImage/3.png',
-          'https://zouyaoji.top/vue-cesium/statics/SampleData/radarImage/4.png',
-          'https://zouyaoji.top/vue-cesium/statics/SampleData/radarImage/5.png'
+          './statics/SampleData/radarImage/1.png',
+          './statics/SampleData/radarImage/2.png',
+          './statics/SampleData/radarImage/3.png',
+          './statics/SampleData/radarImage/4.png',
+          './statics/SampleData/radarImage/5.png'
         ]
         let i = 0
         let _this = this

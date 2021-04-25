@@ -59,7 +59,7 @@
             enableLocationBar: true,
             // enableLocationBar: {
             //   // 获取更精确的高程
-            //   gridFileUrl: 'https://zouyaoji.top/vue-cesium/statics/SampleData/WW15MGH.DAC'
+            //   gridFileUrl: './statics/SampleData/WW15MGH.DAC'
             // },
             enableCompassOuterRing: true,
             enablePrintView: true,

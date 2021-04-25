@@ -180,6 +180,7 @@
             context2D.closePath()
             context2D.fillStyle = 'rgb(255, 255, 255)'
             context2D.fill()
+            this.particleCanvas = particleCanvas
           }
           return particleCanvas
         }
