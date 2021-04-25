@@ -32,6 +32,7 @@ export default {
     mixinPrimitive
   ],
   props: {
+    depthFailAppearance: Object,
     cull: {
       type: Boolean,
       default: true

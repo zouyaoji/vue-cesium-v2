@@ -15,7 +15,8 @@ import {
   subdomains,
   clock,
   times,
-  token
+  token,
+  format
 } from '../../../mixins/mixinProps'
 import mixinImageryProvider from '../../../mixins/providers/mixinImageryProvider'
 export default {
@@ -37,6 +38,7 @@ export default {
     clock,
     times,
     token,
+    format,
     mixinImageryProvider
   ],
   props: {

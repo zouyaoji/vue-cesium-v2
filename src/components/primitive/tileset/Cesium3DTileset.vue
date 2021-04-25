@@ -109,7 +109,7 @@ export default {
     },
     skipLevelOfDetail: {
       type: Boolean,
-      default: true
+      default: false
     },
     baseScreenSpaceError: {
       type: Number,
@@ -132,6 +132,10 @@ export default {
       default: false
     },
     pointCloudShading: Object,
+    vectorClassificationOnly: {
+      type: Boolean,
+      default: false
+    },
     debugHeatmapTilePropertyName: String,
     debugFreezeFrame: {
       type: Boolean,

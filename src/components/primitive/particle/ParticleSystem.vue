@@ -8,7 +8,8 @@ import {
   endColor,
   imageSize,
   minimumImageSize,
-  maximumImageSize
+  maximumImageSize,
+  sizeInMeters
 } from '../../../mixins/mixinProps'
 import mixinPrimitive from '../../../mixins/primitives/mixinPrimitive'
 export default {
@@ -23,6 +24,7 @@ export default {
     imageSize,
     minimumImageSize,
     maximumImageSize,
+    sizeInMeters,
     mixinPrimitive
   ],
   props: {

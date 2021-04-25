@@ -424,7 +424,7 @@ function rotateEast (viewModel, compassElement, cursorVector) {
       case roateType.DOWN:
         camera.rotate(camera.right, angle)
     }
-    viewModel.rotateLastTimestamp = timestamp
+    viewModel.rotateEastLastTimestamp = timestamp
   }
   viewModel.rotateEastMouseUpFunction = () => {
     viewModel.isRotateEasting = false
@@ -455,7 +455,7 @@ function tilt (viewModel, compassElement, cursorVector) {
   const windowPosition = new Cartesian2()
   windowPosition.x = scene.canvas.clientWidth / 2
   windowPosition.y = scene.canvas.clientHeight / 2
-  let pickPosition = camera.pickEllipsoid(windowPosition, scene.ellipsoid)
+  let pickPosition = camera.pickEllipsoid(windowPosition, scene.globe.ellipsoid)
   if (!defined(pickPosition)) {
     for (; windowPosition.y < scene.canvas.clientHeight;) {
       windowPosition.y += 5

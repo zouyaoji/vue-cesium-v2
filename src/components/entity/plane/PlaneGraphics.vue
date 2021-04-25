@@ -2,7 +2,7 @@
 import {
   show,
   distanceDisplayCondition,
-  dimensions,
+  plane,
   fill,
   material,
   outline,
@@ -17,7 +17,7 @@ export default {
   mixins: [
     show,
     distanceDisplayCondition,
-    dimensions,
+    plane,
     fill,
     material,
     outline,
@@ -28,7 +28,7 @@ export default {
   ],
   props: {
     // 和 BoxGraphics.dimensions 区分
-    plane: {
+    dimensions: {
       type: [Object, Array, Function],
       watcherOptions: {
         cesiumObjectBuilder: makeCartesian2
