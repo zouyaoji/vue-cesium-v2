@@ -9,7 +9,7 @@
         md-button.md-icon-button
           router-link.link(:to="otherUrl")
           md-icon(md-iconset="iconfont icon-zhongyingwenqiehuan-xianshizhongyingwen")
-        md-button.md-icon-button(href="https://github.com/zouyaoji/vue-cesium")
+        md-button.md-icon-button(href="https://github.com/zouyaoji/vue-cesium-v2")
           md-icon(md-iconset="iconfont icon-github")
     md-sidenav.md-left.md-fixed.main-nav(ref="sidenav")
       md-toolbar(md-theme="white").logo

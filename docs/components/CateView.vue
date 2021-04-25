@@ -10,7 +10,7 @@
 export default {
   computed: {
     href: function () {
-      return 'https://github.com/zouyaoji/vue-cesium/blob/master/docs/md' + this.$route.path + '.md'
+      return 'https://github.com/zouyaoji/vue-cesium-v2/blob/master/docs/md' + this.$route.path + '.md'
     },
     caughtMistake: function () {
       return this.$route.path.indexOf('/zh/') !== -1 ? '发现错误？' : 'Caught a mistake?'

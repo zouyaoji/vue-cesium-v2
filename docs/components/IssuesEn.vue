@@ -175,7 +175,7 @@ export default {
           isValid = false
         }
       }
-      const url = 'https://github.com/zouyaoji/vue-cesium/issues/new?title=' + encodeURIComponent(data.title) + '&body=' + encodeURIComponent(content)
+      const url = 'https://github.com/zouyaoji/vue-cesium-v2/issues/new?title=' + encodeURIComponent(data.title) + '&body=' + encodeURIComponent(content)
       isValid ? global.open(url) : openDialog('dialog')
     }
   },
