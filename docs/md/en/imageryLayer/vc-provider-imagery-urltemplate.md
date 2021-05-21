@@ -149,7 +149,7 @@ The `vc-provider-imagery-urltemplate` component is used to load a single imagery
 |url|String\|Object||`required`The URL template to use to request tiles.|
 |pickFeaturesUrl|String\|Object||`optional`The URL template to use to pick features. |
 |urlSchemeZeroPadding|Object||`optional`Gets the URL scheme zero padding for each tile coordinate.|
-|subdomains|String\|Array|`'abc'`|`optional`he subdomains to use for the {s} placeholder in the URL template. If this parameter is a single string, each character in the string is a subdomain. If it is an array, each element in the array is a subdomain.|
+|subdomains|String\|Array|`'abc'`|`optional` The subdomains to use for the {s} placeholder in the URL template. If this parameter is a single string, each character in the string is a subdomain. If it is an array, each element in the array is a subdomain.|
 |credit|String\|Object|`''`|`optional`A credit for the data source, which is displayed on the canvas.|
 |minimumLevel|Number|`0`|`optional`The minimum level-of-detail supported by the imagery provider. Take care when specifying this that the number of tiles at the minimum level is small, such as four or less. A larger number is likely to result in rendering problems.|
 |maximumLevel|Number||`optional`The maximum level-of-detail supported by the imagery provider, or undefined if there is no limit.|

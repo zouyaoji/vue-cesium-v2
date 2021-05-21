@@ -263,7 +263,7 @@
 | outline | Boolean | `false` | `optional` 指定 volume 是否绘制轮廓线。 |
 | outlineColor | Object\|String\|Array | | `optional` 指定 volume 轮廓线颜色。 |
 | outlineWidth | Number | `1.0` | `optional` 指定 volume 轮廓线宽度。 |
-| shadows | Number | `0` | `optional` 指定 volume 是否投射或接受每个光源的阴影。 **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
+| shadows | Number | `0` | `optional` 指定 volume 是否投射或接受每个光源的阴影。 **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
 | distanceDisplayCondition | Object | | `optional` 指定 volume 随相机距离改变是否显示参数。**结构：{ near: number, far: number }** |
 
 ---

@@ -53,7 +53,9 @@
           this.values = values
         },
         subReady ({ Cesium, viewer, cesiumObject }) {
-          viewer.zoomTo(viewer.dataSources.get(0))
+          cesiumObject.createPromise.then(() => {
+            viewer.zoomTo(viewer.dataSources.get(0))
+          })
         }
       }
     }
@@ -111,8 +113,10 @@
           this.lats = lats
           this.values = values
         },
-        subReady({ Cesium, viewer, cesiumObject }) {
-          viewer.zoomTo(viewer.dataSources.get(0))
+        subReady ({ Cesium, viewer, cesiumObject }) {
+          cesiumObject.createPromise.then(() => {
+            viewer.zoomTo(viewer.dataSources.get(0))
+          })
         }
       }
     }

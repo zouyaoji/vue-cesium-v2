@@ -408,7 +408,7 @@
 | closeTop | Boolean | `true` | `optional` 指定 polygon 拉伸出来的顶部是否闭合。 |
 | closeBottom | Boolean | `true` | `optional` 指定 polygon 拉伸出来的底部是否闭合。 |
 | arcType | Number | `1` | `optional` 指定 polygon 线条类型。**NONE: 0, GEODESIC: 1, RHUMB: 2** |
-| shadows | Number | `0` | `optional` 指定 polygon 是否投射或接收阴影。 **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
+| shadows | Number | `0` | `optional` 指定 polygon 是否投射或接收阴影。 **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
 | distanceDisplayCondition | Object | | `optional` 指定 polygon 随相机距离改变是否显示参数。**结构：{ near: number, far: number }** |
 | classificationType | Number | `2` | `optional` 指定 polygon 贴对象模式。 **TERRAIN: 0, CESIUM_3D_TILE: 1, BOTH: 2, NUMBER_OF_CLASSIFICATION_TYPES: 3**|
 | zIndex | Number | `0` | `optional` 指定 polygon 顺序，没有高度和拉伸高度时有效。 |

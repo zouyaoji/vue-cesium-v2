@@ -30,10 +30,12 @@ The `vc-shine-point` component is used to load the flash point effect. Refer to 
         ready(cesiumInstance) {
           this.cesiumInstance = cesiumInstance
         },
-        subReady() {
+        subReady({cesiumObject}) {
           const { Cesium, viewer } = this.cesiumInstance
           viewer.scene.globe.depthTestAgainstTerrain = true
-          viewer.zoomTo(viewer.entities, new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-90), 1000))
+          cesiumObject.createPromise.then(() => {
+            viewer.zoomTo(viewer.entities, new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-90), 1000))
+          })
         }
       }
     }
@@ -64,10 +66,12 @@ The `vc-shine-point` component is used to load the flash point effect. Refer to 
       ready(cesiumInstance) {
         this.cesiumInstance = cesiumInstance
       },
-      subReady() {
+      subReady({cesiumObject}) {
         const { Cesium, viewer } = this.cesiumInstance
         viewer.scene.globe.depthTestAgainstTerrain = true
-        viewer.zoomTo(viewer.entities, new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-90), 1000))
+        cesiumObject.createPromise.then(() => {
+          viewer.zoomTo(viewer.entities, new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(-90), 1000))
+        })
       }
     }
   }

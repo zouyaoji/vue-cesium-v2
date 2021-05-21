@@ -12,7 +12,7 @@ The `vc-kriging-map` component is used to load VcKrigingMap, based on `kriging.j
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-kriging-map v-if="values.length !== 0" :breaks="breaks" :values="values" :lngs="lngs" :lats="lats" :colors="colors" @ready="subReady" clipCoords="./statics/SampleData/shp/china/guilin.json">
+        <vc-kriging-map ref="krigingmap" v-if="values.length !== 0" :breaks="breaks" :values="values" :lngs="lngs" :lats="lats" :colors="colors"            @ready="subReady" clipCoords="./statics/SampleData/shp/china/guilin.json">
         </vc-kriging-map>
         <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
       </vc-viewer>
@@ -31,6 +31,7 @@ The `vc-kriging-map` component is used to load VcKrigingMap, based on `kriging.j
       },
       methods: {
         async ready (cesiumInstance) {
+          window.vm = this
           this.cesiumInstance = cesiumInstance
           const {Cesium, viewer} = this.cesiumInstance
           let data = await Cesium.Resource.fetchJson({url: './statics/SampleData/weather/precipitation/guilin.json'})
@@ -47,7 +48,9 @@ The `vc-kriging-map` component is used to load VcKrigingMap, based on `kriging.j
           this.values = values
         },
         subReady ({ Cesium, viewer, cesiumObject }) {
-          viewer.zoomTo(viewer.dataSources.get(0))
+          cesiumObject.createPromise.then(() => {
+            viewer.zoomTo(viewer.dataSources.get(0))
+          })
         }
       }
     }
@@ -105,8 +108,10 @@ The `vc-kriging-map` component is used to load VcKrigingMap, based on `kriging.j
           this.lats = lats
           this.values = values
         },
-        subReady({ Cesium, viewer, cesiumObject }) {
-          viewer.zoomTo(viewer.dataSources.get(0))
+        subReady ({ Cesium, viewer, cesiumObject }) {
+          cesiumObject.createPromise.then(() => {
+            viewer.zoomTo(viewer.dataSources.get(0))
+          })
         }
       }
     }

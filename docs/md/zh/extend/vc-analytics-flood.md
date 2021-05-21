@@ -40,7 +40,7 @@
       data () {
         return {
           minHeight: 0,
-          maxHeight: 4000,
+          maxHeight: 7000,
           speed: 10,
           polygonHierarchy: [
             {lng: 102.1, lat: 29.5},
@@ -60,6 +60,7 @@
           window.vm = this
           const {Cesium, viewer} = this.cesiumInstance
           viewer.scene.globe.depthTestAgainstTerrain = true
+          viewer.scene.debugShowFramesPerSecond = true
           viewer.camera.setView({
             destination: new Cesium.Cartesian3(-1432246.8223880068, 5761224.588247942, 3297281.1889481535),
             orientation: {
@@ -73,10 +74,11 @@
           this.$refs.flood.flooding = !this.$refs.flood.flooding
         },
         activeEvt (_) {
+          console.log('ad')
           this.flooding = _.isActive
         },
         clear () {
-          this.$refs.flood.unload()
+          this.$refs.flood.clear()
         }
       }
     }

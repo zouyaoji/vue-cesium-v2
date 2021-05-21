@@ -13,14 +13,15 @@
     <div class="viewer">
       <vc-viewer @ready="ready">
         <vc-heatmap
-          ref="heatMap"
+          ref="heatmap"
           :bounds="bounds"
           :options="options"
           :min="min"
           :max="max"
           :data="data"
-          :type="1"
           @ready="subReady"
+          :type="1"
+          v-if="show"
         >
         </vc-heatmap>
       </vc-viewer>
@@ -30,6 +31,7 @@
     export default {
       data() {
         return {
+          show: true,
           bounds: { west: 80.0, south: 30.0, east: 109.0, north: 50.0 },
           options: {
             backgroundColor: 'rgba(0,0,0,0)',
@@ -56,6 +58,7 @@
       },
       methods: {
         ready(cesiumInstance) {
+          window.vm = this
           this.cesiumInstance = cesiumInstance
           const { Cesium, viewer } = this.cesiumInstance
           let _this = this
@@ -72,8 +75,19 @@
           })
         },
         subReady({ Cesium, viewer, cesiumObject }) {
-          console.log(cesiumObject)
-          viewer.zoomTo(cesiumObject)
+          this.$refs.heatmap.$refs.childRef.createPromise.then(({ Cesium, viewer, cesiumObject }) => {
+            console.log(cesiumObject)
+            if (cesiumObject instanceof Cesium.GroundPrimitive) {
+              setTimeout(() => {
+                const geometry = cesiumObject.geometryInstances.geometry.constructor.createGeometry(cesiumObject.geometryInstances.geometry)
+                viewer.scene.camera.flyToBoundingSphere(geometry.boundingSphere)
+              }, 500)
+            } else if (cesiumObject instanceof Cesium.Entity) {
+              viewer.flyTo(cesiumObject)
+            } else {
+              viewer.camera.flyTo({ destination: cesiumObject.imageryProvider.rectangle })
+            }
+          })
         },
         getData(data) {
           var result = []
@@ -164,8 +178,19 @@
         })
       },
       subReady({ Cesium, viewer, cesiumObject }) {
-        console.log(cesiumObject)
-        viewer.zoomTo(cesiumObject)
+        this.$refs.heatmap.$refs.childRef.createPromise.then(({ Cesium, viewer, cesiumObject }) => {
+          console.log(cesiumObject)
+          if (cesiumObject instanceof Cesium.GroundPrimitive) {
+            setTimeout(() => {
+              const geometry = cesiumObject.geometryInstances.geometry.constructor.createGeometry(cesiumObject.geometryInstances.geometry)
+              viewer.scene.camera.flyToBoundingSphere(geometry.boundingSphere)
+            }, 500)
+          } else if (cesiumObject instanceof Cesium.Entity) {
+            viewer.flyTo(cesiumObject)
+          } else {
+            viewer.camera.flyTo({ destination: cesiumObject.imageryProvider.rectangle })
+          }
+        })
       },
       getData(data) {
         var result = []

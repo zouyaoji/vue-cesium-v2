@@ -11,53 +11,50 @@
 <doc-preview>
   <template>
     <div class="viewer">
-      <vc-viewer @ready="ready">
-        <vc-datasource-custom ref="datasource" name="custom" :entities="entities" @click="clicked">
-          <vc-entity @click="clicked" ref="entity1" :position="position" :billboard="billboard" :description="description" :id="id"> </vc-entity>
-          <vc-entity ref="enttiy2" :position="position1" :description="description" :cylinder.sync="cylinder1">
+      <vc-viewer @ready="onViewerReady">
+        <vc-datasource-custom name="custom" :entities="entities" @click="onClicked" :show="show">
+          <vc-entity
+            ref="entity1"
+            @click="onClicked"
+            :position="[108, 35, 100]"
+            :billboard="{
+              image: 'https://zouyaoji.top/vue-cesium/favicon.png',
+              show: true,
+              pixelOffset: [0, -20],
+              eyeOffset: {x: 0, y: 0, z: 0},
+              horizontalOrigin: 0,
+              verticalOrigin: 1,
+              scale: 0.25,
+              color: 'lime'
+            }"
+            description="Hello Vue Cesium"
+            id="This is a billboard"
+          >
+          </vc-entity>
+          <vc-entity ref="entity2" :position="[105,40,200000]" description="Hello Vue Cesium">
             <vc-graphics-cylinder
               ref="cylinder1"
               :length="400000.0"
               :topRadius="200000.0"
               :bottomRadius="200000.0"
-              :material="material1"
+              :material="[0,255,0,125]"
               :outline="true"
-              :outlineColor="outlineColor1"
-            ></vc-graphics-cylinder>
-          </vc-entity>
-          <vc-entity :position="position2" :description="description" :cylinder.sync="cylinder2">
-            <vc-graphics-cylinder
-              ref="cylinder2"
-              :length="400000.0"
-              :topRadius="0.0"
-              :bottomRadius="200000.0"
-              :material="material2"
+              outlineColor="#006400"
             ></vc-graphics-cylinder>
           </vc-entity>
         </vc-datasource-custom>
-        <template v-for="(itemOut, indexOut) of datas">
-          <vc-datasource-custom
-            :key="indexOut"
-            :name="'datasource' + indexOut + '_' + itemOut.color"
-            :ref="'ds' + itemOut.name"
-            @ready="datasourceReady(itemOut)"
-            @clusterEvent="datasourceClusterEvent"
-            v-if="itemOut.type == 'point'"
-            @click="clicked"
-          >
-            <template v-for="(item, index) of itemOut.data">
-              <vc-entity :key="index" :position="getPosition(item)" @click="clicked" :ref="'entity' + index">
-                <vc-graphics-billboard
-                  :image="itemOut.iconUrl"
-                  :scale="0.5"
-                  :show="true"
-                  :width="itemOut.width"
-                  :height="itemOut.height"
-                ></vc-graphics-billboard>
-              </vc-entity>
-            </template>
-          </vc-datasource-custom>
-        </template>
+        <vc-datasource-custom
+          ref="datasourceRef"
+          @click="onClicked"
+          :key="index"
+          :show="show"
+          :name="datasource.name"
+          v-for="(datasource, index) of datasources"
+          :entities="datasource.entities"
+          @clusterEvent="onDatasourceClusterEvent"
+          @ready="onDatasourceReady"
+        >
+        </vc-datasource-custom>
       </vc-viewer>
     </div>
   </template>
@@ -67,22 +64,7 @@
       data() {
         return {
           show: true,
-          id: 'This is a billboard',
-          description: 'Hello Vue Cesium',
-          image: 'https://zouyaoji.top/vue-cesium/favicon.png',
-          position: { lng: 108, lat: 35, height: 100 },
-          billboard: {},
-          description: 'Hello Vue Cesium',
-          cylinder1: {},
-          position1: { lng: 105.0, lat: 40.0, height: 200000.0 },
-          outlineColor1: 'DARK_GREEN',
-          material1: {},
-
-          cylinder2: {},
-          position2: { lng: 110.0, lat: 40.0, height: 200000.0 },
-          material2: 'RED',
-
-          datas: [],
+          datasources: [],
           entities: [
             {
               position: {lng: 105, lat: 35, height: 200},
@@ -108,57 +90,31 @@
           ]
         }
       },
-      mounted() {
-        Promise.all([
-          this.$refs.entity1.createPromise,
-          this.$refs.cylinder1.createPromise,
-          this.$refs.cylinder2.createPromise
-        ]).then((instances) => {
-          // instances[0].viewer.zoomTo(this.$refs.datasource.cesiumObject)
-          instances[0].viewer.camera.setView({
-            destination: new Cesium.Cartesian3(-2310285.0191093646, 5365872.967043371, 3108924.304301176),
-            orientation: {
-              heading: 0.07310634629277768,
-              pitch: -1.5094668006074268,
-              roll: 0.0003451814958399524
-            }
-          })
-        })
-      },
       methods: {
-        ready(cesiumInstance) {
-          const { Cesium, viewer } = cesiumInstance
+        onViewerReady({viewer}) {
           window.vm = this
-          window.viewer = this
-          this.material1 = Cesium.Color.GREEN.withAlpha(0.5)
-          this.billboard = new Cesium.BillboardGraphics({
-            image: 'https://zouyaoji.top/vue-cesium/favicon.png', // default: undefined
-            show: true, // default
-            pixelOffset: new Cesium.Cartesian2(0, -50), // default: (0, 0)
-            eyeOffset: new Cesium.Cartesian3(0.0, 0.0, 0.0), // default
-            horizontalOrigin: Cesium.HorizontalOrigin.CENTER, // default
-            verticalOrigin: Cesium.VerticalOrigin.BOTTOM, // default: CENTER
-            scale: 0.5, // default: 1.0
-            color: Cesium.Color.LIME, // default: WHITE
-            // rotation: Cesium.Math.PI_OVER_FOUR, // default: 0.0
-            alignedAxis: Cesium.Cartesian3.ZERO // default
-          })
-          this.addPoints(true)
+          this.viewer = viewer
+          const options = {
+            id: '1001',
+            code: '1001',
+            name: 'test',
+            iconOn: './statics/SampleData/points/pic.png',
+            giscolor: '#fb7228',
+            datauri: './statics/SampleData/points/yj.json'
+          }
+          this.addPoints(options, true)
         },
-        clicked (e) {
+        onDatasourceReady({ Cesium, viewer, cesiumObject }) {
+          viewer.zoomTo(cesiumObject)
+          //开启聚合功能
+          cesiumObject.clustering.enabled = true
+          cesiumObject.clustering.pixelRange = 30
+          cesiumObject.clustering.minimumClusterSize = 3
+        },
+        onClicked (e) {
           console.log(e)
         },
-        datasourceReady(instance) {
-          let { Cesium, viewer, cesiumObject } = instance
-          const that = this
-          this.$refs['ds' + instance.name][0].createPromise.then(({ Cesium, viewer, cesiumObject }) => {
-            //开启聚合功能
-            cesiumObject.clustering.enabled = true
-            cesiumObject.clustering.pixelRange = 30
-            cesiumObject.clustering.minimumClusterSize = 3
-          })
-        },
-        datasourceClusterEvent(clusteredEntities, cluster) {
+        onDatasourceClusterEvent(clusteredEntities, cluster) {
           cluster.label.show = true
           cluster.label.scale = 0.5
           cluster.label.fillColor = Cesium.Color.fromCssColorString('#FFFFFF')
@@ -196,57 +152,35 @@
             cluster.point.pixelSize = 13
           }
         },
-        getPosition(item) {
-          return {
-            lng: Number(item.Longitude),
-            lat: Number(item.Latitude),
-            height: 1000
-          }
-        },
-        addPoints(flag) {
-          const item = {
-            id: '1001',
-            code: '1001',
-            name: 'test',
-            iconOn: './statics/SampleData/points/pic.png',
-            giscolor: '#fb7228',
-            datauri: './statics/SampleData/points/yj.json'
-          }
-          this.showPoints(item, flag)
-        },
-        showPoints(item, flag) {
-          const that = this
+        addPoints(options, flag) {
           if (flag) {
-            Cesium.Resource.fetchJson(item.datauri).then((res) => {
+            Cesium.Resource.fetchJson(options.datauri).then(res => {
               const img = new Image()
-              img.src = item.iconOn
+              img.src = options.iconOn
               img.onload = () => {
-                let datas = []
-                let data = {
-                  name: item.code,
-                  type: 'point',
+                let datasource = {
+                  name: options.code,
                   clustering: true,
-                  data: [],
-                  iconUrl: item.iconOn,
-                  color: item.giscolor,
-                  width: img.width,
-                  height: img.height
+                  entities: []
                 }
-                data.data = res.reduce((pre, cur) => {
+                datasource.entities = res.reduce((pre, cur) => {
                   return pre.concat({
-                    Longitude: cur.Longitude,
-                    Latitude: cur.Latitude,
+                    position: {lng: Number(cur.Longitude), lat: Number(cur.Latitude), height:1000},
                     id: cur.id,
-                    description: cur.name
+                    description: cur.name,
+                    billboard: {
+                      width: img.width,
+                      height: img.height,
+                      image: options.iconOn,
+                      scale: 0.5
+                    }
                   })
                 }, [])
-
-                datas.push(data)
-                that.datas = datas
+                this.datasources.push(datasource)
               }
             })
           } else {
-            this.datas = []
+            this.datasources = []
           }
         }
       }

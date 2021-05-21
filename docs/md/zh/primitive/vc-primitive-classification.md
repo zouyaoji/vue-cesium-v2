@@ -43,6 +43,7 @@
       },
       methods: {
         ready(cesiumInstance) {
+          window.vm = this
           this.cesiumInstance = cesiumInstance
           const { Cesium, viewer } = this.cesiumInstance
           viewer.scene.globe.depthTestAgainstTerrain = true

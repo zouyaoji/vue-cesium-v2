@@ -13,10 +13,11 @@
     <div class="viewer">
       <vc-viewer @ready="ready">
         <vc-scan-circle
+          ref="scan"
           @ready="subReady"
-          :radius="1500"
-          :interval="3000"
-          :color="[0,1.0,0,1]"
+          :radius="radius"
+          :interval="interval"
+          :color="color"
           :position="position"
         ></vc-scan-circle>
         <vc-layer-imagery>
@@ -30,12 +31,15 @@
       data() {
         return {
           position: { lng: 117.217124, lat: 31.809777, height: 3000 },
-          flag: true
+          interval: 3000,
+          radius: 2000,
+          color: 'red'
         }
       },
       methods: {
         ready(cesiumInstance) {
           this.cesiumInstance = cesiumInstance
+          window.vm = this
         },
         subReady() {
           const { Cesium, viewer } = this.cesiumInstance

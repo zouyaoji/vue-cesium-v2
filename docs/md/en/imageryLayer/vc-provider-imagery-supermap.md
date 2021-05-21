@@ -145,7 +145,6 @@ The `vc-provider-imagery-supermap` component is used to load the SuperMap iServe
 |name|String|SuperMap iServer name|`optional`The name of the layer.|
 |minimumLevel|Number|`0`|`optional`The minimum tile level to request, or undefined if there is no minimum. This parameter is ignored when accessing a tiled server.|
 |maximumLevel|Number|`20`|`optional`The maximum tile level to request, or undefined if there is no maximum. This parameter is ignored when accessing a tiled server.|
-|rectangle|Cesium.Rectangle||`optional`The rectangle of the layer. This rectangle can limit the visible portion of the imagery provider.|
 
 ---
 

@@ -116,7 +116,7 @@ The `vc-provider-imagery-style-mapbox` component is used to load the tiled image
 | ellipsoid | Object | | `optional` The ellipsoid. If not specified, the WGS84 ellipsoid is used. |
 | minimumLevel | Number | `0` | `optional` The minimum level-of-detail supported by the imagery provider. Take care when specifying this that the number of tiles at the minimum level is small, such as four or less. A larger number is likely to result in rendering problems. |
 | maximumLevel | Number | | `optional` 	The maximum level-of-detail supported by the imagery provider, or undefined if there is no limit. |
-| rectangle | Object | | `optional` The rectangle, in radians, covered by the image. **结构：{ west: number, south: number, east: number, north: number }** |
+| rectangle | Object | | `optional` The rectangle, in radians, covered by the image. **structure: { west: number, south: number, east: number, north: number }** |
 | credit | String | | `optional` A credit for the data source, which is displayed on the canvas. |
 
 ---

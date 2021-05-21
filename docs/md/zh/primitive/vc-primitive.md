@@ -142,7 +142,7 @@
 | cull | Boolean | `true` | `optional` 指定是否能被渲染器视锥体剔除。  |
 | asynchronous | Boolean | `true` | `optional` 指定图元时异步加载还是同步加载。 |
 | debugShowBoundingVolume | Boolean | `false` | `optional` 指定是否显示图元的边界球，用于调试使用。 |
-| shadows | Number | `0` | `optional` 指定图元是否投射或接收来自每个光源的阴影。  **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
+| shadows | Number | `0` | `optional` 指定图元是否投射或接收来自每个光源的阴影。  **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
 
 ---
 

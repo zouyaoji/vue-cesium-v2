@@ -169,7 +169,7 @@ The `vc-graphics-plane` component is used to load a plane. Need to be used as a 
 | outline | Boolean | `false` | `optional` A boolean Property specifying whether the plane is outlined. |
 | outlineColor | Object\|String\|Array | `'BLACK'` | `optional` A Property specifying the Color of the outline. |
 | outlineWidth | Number | `1.0` | `optional` A numeric Property specifying the width of the outline. |
-| shadows | Number | `0` | `optional` An enum Property specifying whether the plane casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
+| shadows | Number | `0` | `optional` An enum Property specifying whether the plane casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
 | distanceDisplayCondition | Object | | `optional` A Property specifying at what distance from the camera that this plane will be displayed. **structure: { near: number, far: number }** |
 
 ---

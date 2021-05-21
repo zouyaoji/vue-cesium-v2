@@ -134,7 +134,7 @@ The vc-graphics-cylinder`component is used to load cylinder, cone, or truncated 
 | outlineWidth | Number | `1.0` | `optional` A numeric Property specifying the width of the outline. |
 | numberOfVerticalLines | Number | `16` | `optional` A numeric Property specifying the number of vertical lines to draw along the perimeter for the outline. |
 | slices | Number | `128` | `optional` The number of edges around the perimeter of the cylinder. |
-| shadows | Number | `0` | `optional` An enum Property specifying whether the cylinder casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
+| shadows | Number | `0` | `optional` An enum Property specifying whether the cylinder casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
 | distanceDisplayCondition | Object | | `optional` A Property specifying at what distance from the camera that this cylinder will be displayed. **structure: { near: number, far: number }** |
 
 ---

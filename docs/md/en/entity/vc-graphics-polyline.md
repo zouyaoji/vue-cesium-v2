@@ -139,8 +139,8 @@ The `vc-graphics-polyline` component is used to load a polyline which the first 
 | depthFailMaterial | Object\|String\|Array | | `optional` A property specifying the material used to draw the polyline when it is below the terrain. |
 | arcType | Number | `1` | `optional` The type of line the polyline segments must follow. **NONE: 0, GEODESIC: 1, RHUMB: 2** |
 | clampToGround | Boolean | `false` | `optional` A boolean Property specifying whether the Polyline should be clamped to the ground. |
-| shadows | Number | | `optional` An enum Property specifying whether the polyline casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
-| classificationType | Number | `2` | `optional` An enum Property specifying whether this polyline will classify terrain, 3D Tiles, or both when on the ground. **TERRAIN: 0, CESIUM_3D_TILE: 1, BOTH: 2, NUMBER_OF_CLASSIFICATION_TYPES: 3** |
+| shadows | Number | | `optional` An enum Property specifying whether the polyline casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
+| classificationType | Number | `2` | `optional` An enum Property specifying whether this polyline will classify terrain, 3D Tiles, or both when on the ground. **TERRAIN: 0, CESIUM_3D_TILE: 1, BOTH: 2**|
 | distanceDisplayCondition | Object | | `optional` A Property specifying at what distance from the camera that this polyline will be displayed. **structure: { near: number, far: number }** |
 | zIndex | Number | `0` | `optional` A Property specifying the zIndex used for ordering ground geometry. Only has an effect if `clampToGround` is true and polylines on terrain is supported. |
 

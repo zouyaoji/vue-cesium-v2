@@ -21,6 +21,7 @@
           @measureEvt="measureEvt"
           @movingEvt="movingEvt"
           :removeLastPosition="removeLastPosition"
+          :editable="editable"
         ></vc-measure-distance>
         <vc-measure-area
           ref="measureArea"
@@ -29,6 +30,7 @@
           @movingEvt="movingEvt"
           :clampToGround="clampToGround"
           :removeLastPosition="removeLastPosition"
+          :editable="editable"
         ></vc-measure-area>
         <vc-measure-height
           ref="measureHeight"
@@ -36,6 +38,7 @@
           @measureEvt="measureEvt"
           @movingEvt="movingEvt"
           :removeLastPosition="removeLastPosition"
+          :editable="editable"
         ></vc-measure-height>
         <vc-primitive-tileset :url="modelUrl" @readyPromise="readyPromise"></vc-primitive-tileset>
       </vc-viewer>
@@ -46,10 +49,8 @@
         <md-button class="md-raised md-accent" @click="toggle('measureArea')">{{ areaMeasuring ? '停止' : '面积' }}</md-button>
         <md-button class="md-raised md-accent" @click="toggle('measureHeight')">{{ heightMeasuring ? '停止' : '高度' }}</md-button>
         <md-button class="md-raised md-accent" @click="clear">清除</md-button>
-        <span>贴地</span>
-        <md-switch v-model="clampToGround"></md-switch>
-        <span>移除最后一个点</span>
-        <md-switch v-model="removeLastPosition"></md-switch>
+        <md-checkbox v-model="clampToGround" class="md-primary">贴地</md-checkbox>
+        <md-checkbox v-model="removeLastPosition" class="md-primary">移除最后一个点</md-checkbox>
       </div>
     </div>
   </template>
@@ -63,7 +64,8 @@
           areaMeasuring: false,
           heightMeasuring: false,
           clampToGround: false,
-          removeLastPosition: true
+          removeLastPosition: true,
+          editable: false
         }
       },
       methods: {

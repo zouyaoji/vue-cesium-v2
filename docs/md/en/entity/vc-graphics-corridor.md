@@ -183,9 +183,9 @@ The `vc-graphics-corridor` component is used to load corridor objects, which is 
 | outline | Boolean | `false` | `optional` A boolean Property specifying whether the corridor is outlined. |
 | outlineColor | Object\|String\|Array | `'black'` | `optional` A Property specifying the Color of the outline. |
 | outlineWidth | Number | `1.0` | `optional` A numeric Property specifying the width of the outline. |
-| shadows | Number | `0` | `optional` An enum Property specifying whether the corridor casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
+| shadows | Number | `0` | `optional` An enum Property specifying whether the corridor casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
 | distanceDisplayCondition | Object | | `optional` A Property specifying at what distance from the camera that this corridor will be displayed. **structure:{ near: number, far: number }** |
-| classificationType | Number | `2` | `optional` An enum Property specifying whether this corridor will classify terrain, 3D Tiles, or both when on the ground. **TERRAIN: 0, CESIUM_3D_TILE: 1, BOTH: 2, NUMBER_OF_CLASSIFICATION_TYPES: 3** |
+| classificationType | Number | `2` | `optional` An enum Property specifying whether this corridor will classify terrain, 3D Tiles, or both when on the ground. **TERRAIN: 0, CESIUM_3D_TILE: 1, BOTH: 2**|
 | zIndex | Number | | `optional` A Property specifying the zIndex of the corridor, used for ordering. Only has an effect if height and extrudedHeight are undefined, and if the corridor is static. |
 
 ---

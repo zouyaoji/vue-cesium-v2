@@ -408,9 +408,9 @@ The `vc-graphics-polygon` component is used to load a polygon that defined by an
 | closeTop | Boolean | `true` | `optional` When false, leaves off the top of an extruded polygon open. |
 | closeBottom | Boolean | `true` | `optional` When false, leaves off the bottom of an extruded polygon open. |
 | arcType | Number | `1` | `optional` The type of line the polygon edges must follow. **NONE: 0, GEODESIC: 1, RHUMB: 2** |
-| shadows | Number | `0` | `optional` An enum Property specifying whether the polygon casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
+| shadows | Number | `0` | `optional` An enum Property specifying whether the polygon casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
 | distanceDisplayCondition | Object | | `optional` A Property specifying at what distance from the camera that this polygon will be displayed. **structure: { near: number, far: number }** |
-| classificationType | Number | `2` | `optional` An enum Property specifying whether this polygon will classify terrain, 3D Tiles, or both when on the ground. **TERRAIN: 0, CESIUM_3D_TILE: 1, BOTH: 2, NUMBER_OF_CLASSIFICATION_TYPES: 3** |
+| classificationType | Number | `2` | `optional` An enum Property specifying whether this polygon will classify terrain, 3D Tiles, or both when on the ground. **TERRAIN: 0, CESIUM_3D_TILE: 1, BOTH: 2**|
 | zIndex | Number | `0` | `optional` A property specifying the zIndex used for ordering ground geometry. Only has an effect if the polygon is constant and neither height or extrudedHeight are specified. |
 
 ---

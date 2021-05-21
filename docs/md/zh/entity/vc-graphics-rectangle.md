@@ -211,9 +211,9 @@
 | outline | Boolean | `false` | `optional` 指定 rectangle 是否绘制轮廓线。 |
 | outlineColor | Object\|String\|Array | `'BALCK'` | `optional` 指定 rectangle 轮廓线颜色。 |
 | outlineWidth | Number | `1.0` | `optional` 指定 rectangle 轮廓线宽度。 |
-| shadows | Number | `0` | `optional` 指定 rectangle 是否投射或接收阴影。 **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
+| shadows | Number | `0` | `optional` 指定 rectangle 是否投射或接收阴影。 **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
 | distanceDisplayCondition | Object | | `optional` 指定 rectangle 随相机距离改变是否显示参数。 **结构：{ near: number, far: number }** |
-| classificationType | Number | `2` | `optional` 指定 rectangle 贴对象模式 。 **TERRAIN: 0, CESIUM_3D_TILE: 1, BOTH: 2, NUMBER_OF_CLASSIFICATION_TYPES: 3**  |
+| classificationType | Number | `2` | `optional` 指定 rectangle 贴对象模式 。 **TERRAIN: 0, CESIUM_3D_TILE: 1, BOTH: 2** |
 | zIndex | Number | `0` | `optional` 指定 rectangle 顺序，没设置高度和拉伸高度时有效。 |
 
 ---

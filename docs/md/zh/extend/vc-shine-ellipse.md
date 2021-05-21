@@ -12,7 +12,7 @@
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-shine-ellipse @ready="subReady" :position="position" color="red"></vc-shine-ellipse>
+        <vc-shine-ellipse ref="ellipse" @ready="subReady" :position="position" color="red"></vc-shine-ellipse>
         <vc-layer-imagery>
           <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
@@ -28,12 +28,15 @@
       },
       methods: {
         ready(cesiumInstance) {
+          window.vm = this
           this.cesiumInstance = cesiumInstance
         },
-        subReady() {
+        subReady({cesiumObject}) {
           const { Cesium, viewer } = this.cesiumInstance
           viewer.scene.globe.depthTestAgainstTerrain = true
-          viewer.zoomTo(viewer.entities)
+          cesiumObject.createPromise.then(() => {
+            viewer.zoomTo(viewer.entities)
+          })
         }
       }
     }
@@ -46,7 +49,7 @@
 <template>
   <div class="viewer">
     <vc-viewer @ready="ready">
-      <vc-shine-ellipse @ready="subReady" :position="position" color="red"></vc-shine-ellipse>
+      <vc-shine-ellipse ref="ellipse" @ready="subReady" :position="position" color="red"></vc-shine-ellipse>
       <vc-layer-imagery>
         <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
@@ -62,12 +65,15 @@
     },
     methods: {
       ready(cesiumInstance) {
+        window.vm = this
         this.cesiumInstance = cesiumInstance
       },
-      subReady() {
+      subReady({cesiumObject}) {
         const { Cesium, viewer } = this.cesiumInstance
         viewer.scene.globe.depthTestAgainstTerrain = true
-        viewer.zoomTo(viewer.entities)
+        cesiumObject.createPromise.then(() => {
+          viewer.zoomTo(viewer.entities)
+        })
       }
     }
   }

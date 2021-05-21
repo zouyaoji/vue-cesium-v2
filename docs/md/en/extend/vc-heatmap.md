@@ -13,7 +13,7 @@ The `vc-heatmap` component is used to load the heat map. Implemented by `heatmap
     <div class="viewer">
       <vc-viewer @ready="ready">
         <vc-heatmap
-          ref="heatMap"
+          ref="heatmap"
           :bounds="bounds"
           :options="options"
           :min="min"
@@ -72,8 +72,19 @@ The `vc-heatmap` component is used to load the heat map. Implemented by `heatmap
           })
         },
         subReady({ Cesium, viewer, cesiumObject }) {
-          console.log(cesiumObject)
-          viewer.zoomTo(cesiumObject)
+          this.$refs.heatmap.$refs.childRef.createPromise.then(({ Cesium, viewer, cesiumObject }) => {
+            console.log(cesiumObject)
+            if (cesiumObject instanceof Cesium.GroundPrimitive) {
+              setTimeout(() => {
+                const geometry = cesiumObject.geometryInstances.geometry.constructor.createGeometry(cesiumObject.geometryInstances.geometry)
+                viewer.scene.camera.flyToBoundingSphere(geometry.boundingSphere)
+              }, 500)
+            } else if (cesiumObject instanceof Cesium.Entity) {
+              viewer.flyTo(cesiumObject)
+            } else {
+              viewer.camera.flyTo({ destination: cesiumObject.imageryProvider.rectangle })
+            }
+          })
         },
         getData(data) {
           var result = []
@@ -105,7 +116,7 @@ The `vc-heatmap` component is used to load the heat map. Implemented by `heatmap
   <div class="viewer">
     <vc-viewer @ready="ready">
       <vc-heatmap
-        ref="heatMap"
+        ref="heatmap"
         :bounds="bounds"
         :options="options"
         :min="min"
@@ -164,8 +175,19 @@ The `vc-heatmap` component is used to load the heat map. Implemented by `heatmap
         })
       },
       subReady({ Cesium, viewer, cesiumObject }) {
-        console.log(cesiumObject)
-        viewer.zoomTo(cesiumObject)
+        this.$refs.heatmap.$refs.childRef.createPromise.then(({ Cesium, viewer, cesiumObject }) => {
+          console.log(cesiumObject)
+          if (cesiumObject instanceof Cesium.GroundPrimitive) {
+            setTimeout(() => {
+              const geometry = cesiumObject.geometryInstances.geometry.constructor.createGeometry(cesiumObject.geometryInstances.geometry)
+              viewer.scene.camera.flyToBoundingSphere(geometry.boundingSphere)
+            }, 500)
+          } else if (cesiumObject instanceof Cesium.Entity) {
+            viewer.flyTo(cesiumObject)
+          } else {
+            viewer.camera.flyTo({ destination: cesiumObject.imageryProvider.rectangle })
+          }
+        })
       },
       getData(data) {
         var result = []

@@ -82,6 +82,7 @@
       },
       methods: {
         ready({ Cesium, viewer, cesiumObject }) {
+          window.vm = this
           this.viewer = viewer
           viewer.scene.globe.depthTestAgainstTerrain = true
           const { positionModal } = this

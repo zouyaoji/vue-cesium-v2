@@ -263,7 +263,7 @@ The `vc-graphics-polyline-volume` component is used to load a polyline volume de
 | outline | Boolean | false | `optional` A boolean Property specifying whether the volume is outlined. |
 | outlineColor | Object\|String\|Array | | `optional` A Property specifying the Color of the outline. |
 | outlineWidth | Number | 1.0 | `optional` A numeric Property specifying the width of the outline. |
-| shadows | Number | | `optional` An enum Property specifying whether the box casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
+| shadows | Number | | `optional` An enum Property specifying whether the box casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
 | distanceDisplayCondition | Object | | `optional` A Property specifying at what distance from the camera that this volume will be displayed. **struct: { near: number, far: number }** |
 
 ---

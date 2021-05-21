@@ -60,13 +60,13 @@ The `vc-scan-radar` component is used to the radar scanning special effects. Ref
 <template>
   <div class="viewer">
     <vc-viewer @ready="ready">
-      <vc-scan-circle
+      <vc-scan-radar
         @ready="subReady"
         :radius="1500"
         :interval="3000"
         :color="[0,1.0,0,1]"
         :position="position"
-      ></vc-scan-circle>
+      ></vc-scan-radar>
       <vc-layer-imagery>
         <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>

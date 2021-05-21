@@ -159,10 +159,10 @@
 | outline | Boolean | `false` | `optional` 指定 ellipsoid 是否绘制轮廓线。 |
 | outlineColor | Object\|String\|Array | `'BLACK'` | `optional` 指定 ellipsoid 轮廓线颜色。 |
 | outlineWidth | Number | `1.0` | `optional` 指定 ellipsoid 轮廓线宽度。 |
-| stackPartitions | Number | `64` | `optional` A Property specifying the number of stacks. |
-| slicePartitions | Number | `64` | `optional` A Property specifying the number of radial slices. |
+| stackPartitions | Number | `64` | `optional` 指定 ellipsoid 横向线数量。 |
+| slicePartitions | Number | `64` | `optional` 指定 ellipsoid 径向线数量。 |
 | subdivisions | Number | `128` | `optional` 指定 ellipsoid 每个轮环的样本数，确定曲率粒度。 |
-| shadows | Number | `0` | `optional` 指定 ellipsoid 是否投射或接受每一个光源的阴影。 **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
+| shadows | Number | `0` | `optional` 指定 ellipsoid 是否投射或接受每一个光源的阴影。 **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
 | distanceDisplayCondition | Object | | `optional` 指定 ellipsoid 随相机距离的显示条件。 **结构：{ near: number, far: number }** |
 
 ---

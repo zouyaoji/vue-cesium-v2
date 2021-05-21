@@ -179,7 +179,7 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
 <!-- prettier-ignore -->
 | name | type | default | description |
 | ----------------- | ------ | -------- | ------------------------------------------- | --- |
-| url | String | `http://{s}.map.bdimg.com/onlinelabel/?qt=tile&styles=pl&x={x}&y={y}&z={z}` | `optional` 指定服务地址。 |
+| url | String | `http://{s}.map.bdimg.com/onlinelabel/?qt=tile&styles=pl&x={x}&y={y}&z={z}` | `optional` Specify the service address. |
 | credit | String\|Object | `''` | `optional` The credit of service |
 |minimumLevel|Number|`0`|`optional`The minimum tile level to request, or undefined if there is no minimum.|
 |maximumLevel|Number|`20`|`optional`The maximum tile level to request, or undefined if there is no maximum.|

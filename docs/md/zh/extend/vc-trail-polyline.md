@@ -118,9 +118,11 @@
         this.$refs.parabola.forEach((v) => {
           promises.push(v.createPromise)
         })
-        Promise.all([this.$refs.line.createPromise, ...promises]).then(() => {
-          const { Cesium, viewer } = this.cesiumInstance
-          viewer.zoomTo(viewer.entities)
+        Promise.all([this.$refs.line.createPromise, ...promises]).then((e) => {
+          Promise.all(e.map(v => v.cesiumObject.createPromise)).then(() => {
+            const { Cesium, viewer } = this.cesiumInstance
+            viewer.zoomTo(viewer.entities)
+          })
         })
       },
       methods: {
@@ -285,9 +287,11 @@
       this.$refs.parabola.forEach((v) => {
         promises.push(v.createPromise)
       })
-      Promise.all([this.$refs.line.createPromise, ...promises]).then(() => {
-        const { Cesium, viewer } = this.cesiumInstance
-        viewer.zoomTo(viewer.entities)
+      Promise.all([this.$refs.line.createPromise, ...promises]).then((e) => {
+        Promise.all(e.map(v => v.cesiumObject.createPromise)).then(() => {
+          const { Cesium, viewer } = this.cesiumInstance
+          viewer.zoomTo(viewer.entities)
+        })
       })
     },
     methods: {

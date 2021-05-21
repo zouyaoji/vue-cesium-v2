@@ -99,7 +99,7 @@ The `vc-graphics-model` component is used to load a 3D model based on glTF. Need
 | incrementallyLoadTextures | Boolean | `true` | `optional` Determine if textures may continue to stream in after the model is loaded. |
 | runAnimations | Boolean | `true` | `optional` A boolean Property specifying if glTF animations specified in the model should be started. |
 | clampAnimations | Boolean | `true` | `optional` A boolean Property specifying if glTF animations should hold the last pose for time durations with no keyframes. |
-| shadows | Number | `1` | `optional` An enum Property specifying whether the model casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
+| shadows | Number | `1` | `optional` An enum Property specifying whether the model casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
 | heightReference | Number | `0` | `optional` A Property specifying what the height is relative to. **NONE: 0, CLAMP_TO_GROUND: 1, RELATIVE_TO_GROUND: 2** |
 | silhouetteColor | Object | `'RED'` | `optional` A Property specifying the Color of the silhouette. |
 | silhouetteSize | Number | `0.0` | `optional` A numeric Property specifying the size of the silhouette in pixels. |

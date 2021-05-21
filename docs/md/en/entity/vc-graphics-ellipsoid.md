@@ -157,8 +157,8 @@ The `vc-graphics-ellipsoid` component is used to load an ellipsoid or spheres. N
 | stackPartitions | Number | `64` | `optional` A Property specifying the number of stacks. |
 | slicePartitions | Number | `64` | `optional` A Property specifying the number of radial slices. |
 | subdivisions | Number | `128` | `optional` A Property specifying the number of samples per outline ring, determining the granularity of the curvature. |
-| shadows | Number | `0` | `optional` An enum Property specifying whether the ellipsoid casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
-| distanceDisplayCondition | Object | | `optional` A Property specifying at what distance from the camera that this ellipsoid will be displayed.  **结构：{ near: number, far: number }** |
+| shadows | Number | `0` | `optional` An enum Property specifying whether the ellipsoid casts or receives shadows from each light source. **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
+| distanceDisplayCondition | Object | | `optional` A Property specifying at what distance from the camera that this ellipsoid will be displayed.  **structure: { near: number, far: number }** |
 
 ---
 

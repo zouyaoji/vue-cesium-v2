@@ -145,7 +145,7 @@
 | outline | Boolean | `false` | `optional` 指定是否绘制 box 轮廓线。 |
 | outlineColor | Object\|String\|Array | `'BLACK'` | `optional` 指定是否绘制 box 轮廓线的颜色。 |
 | outlineWidth | Number | `1.0` | `optional` 指定绘制 box 轮廓线的宽度。 |
-| shadows | Number | `0` | `optional` 指定这些是否投射或接收来自每个光源的阴影。 **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
+| shadows | Number | `0` | `optional` 指定这些是否投射或接收来自每个光源的阴影。 **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
 | distanceDisplayCondition | Object | | `optional` 指定 box 显示条件。 **结构：{ near: number, far: number }** |
 
 ---

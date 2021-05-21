@@ -17,14 +17,12 @@ The `vc-ripple-circle-double` component is used to load the double circle ripple
           imageUrl="./statics/SampleData/images/redCircle2.png"
           :position="position"
           ref="circle"
-          v-if="flag"
         ></vc-ripple-circle-double>
         <vc-ripple-circle-double
           @ready="subReady"
           imageUrl="./statics/SampleData/images/redCircle2.png"
           :position="position"
           ref="circle"
-          v-if="flag"
           :height="3000"
         ></vc-ripple-circle-double>
         <vc-entity>
@@ -75,14 +73,12 @@ The `vc-ripple-circle-double` component is used to load the double circle ripple
         imageUrl="./statics/SampleData/images/redCircle2.png"
         :position="position"
         ref="circle"
-        v-if="flag"
       ></vc-ripple-circle-double>
       <vc-ripple-circle-double
         @ready="subReady"
         imageUrl="./statics/SampleData/images/redCircle2.png"
         :position="position"
         ref="circle"
-        v-if="flag"
         :height="3000"
       ></vc-ripple-circle-double>
       <vc-entity>

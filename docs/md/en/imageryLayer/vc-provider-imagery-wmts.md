@@ -247,7 +247,7 @@ The `vc-provider-imagery-wmts` component is used to load tiled imagery served by
 | style | String | | `required`The style name for WMTS requests. |
 | tileMatrixSetID | String | | `required`The identifier of the TileMatrixSet to use for WMTS requests. |
 | tileMatrixLabels | Array | | `optional` A list of identifiers in the TileMatrix to use for WMTS requests, one per TileMatrix level. |
-| clock | Clock | | optional A Clock instance that is used when determining the value for the time dimension. Required when options.times is specified. |
+| clock | Clock | | `optional` A Clock instance that is used when determining the value for the time dimension. Required when options.times is specified. |
 | times | TimeIntervalCollection | | `optional` TimeIntervalCollection with its data property being an object containing time dynamic dimension and their values. |
 | dimensions | Object | | `optional` A object containing static dimensions and their values. |
 | tileWidth | Number | `256` | `optional` The tile width in pixels. |

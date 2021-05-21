@@ -82,7 +82,7 @@ The `vc-graphics-label` component is used to load a two dimensional label. Need 
 | scale | Number | `1.0` | `optional` A numeric Property specifying the scale to apply to the text. |
 | showBackground | Boolean | `false` | `optional` A boolean Property specifying the visibility of the background behind the label. |
 | backgroundColor | Object\|String\|Array | `[0.165, 0.165, 0.165, 0.8]` | `optional` A Property specifying the background Color. |
-| backgroundPadding | Object | `{x: 7, y: 5}` | `optional` A Cartesian2 Property specifying the horizontal and vertical background padding in pixels. **结构：{ x: number, y: number }** |
+| backgroundPadding | Object | `{x: 7, y: 5}` | `optional` A Cartesian2 Property specifying the horizontal and vertical background padding in pixels. **structure: { x: number, y: number }** |
 | pixelOffset | Object | `{x: 0, y: 0 }` | `optional` A Cartesian2 Property specifying the pixel offset. **structure: { x: number, y: number }** |
 | eyeOffset | Object | `{x: 0, y: 0, z: 0}` | `optional` A Cartesian3 Property specifying the eye offset. **structure: { x: number, y: number, z: number }** |
 | horizontalOrigin | Number | `0` | `optional` A Property specifying the HorizontalOrigin. |

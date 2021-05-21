@@ -138,6 +138,7 @@
       @ready="ready"
     >
       <vc-navigation></vc-navigation>
+      <vc-map-overview></vc-map-overview>
       <vc-layer-imagery>
         <vc-provider-imagery-tianditu mapStyle="img_c" :token="tk"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>

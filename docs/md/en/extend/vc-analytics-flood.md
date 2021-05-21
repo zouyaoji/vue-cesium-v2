@@ -81,7 +81,7 @@ The `vc-analytics-flood` component is used to simulate flood analysis. **Note** 
           this.flooding = _.isActive
         },
         clear() {
-          this.$refs.flood.unload()
+          this.$refs.flood.clear()
         }
       }
     }

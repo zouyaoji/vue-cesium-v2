@@ -18,7 +18,7 @@ import 'vue-cesium/lib/vc-map-overview.css'
   <template>
     <div class="viewer">
       <vc-viewer :timeline="timeline" @ready="ready">
-        <vc-map-overview></vc-map-overview>
+        <vc-map-overview ref="map"></vc-map-overview>
         <vc-layer-imagery>
           <vc-provider-imagery-openstreetmap></vc-provider-imagery-openstreetmap>
         </vc-layer-imagery>
@@ -37,6 +37,7 @@ import 'vue-cesium/lib/vc-map-overview.css'
         ready (cesiumInstance) {
           this.cesiumInstance = cesiumInstance
           const {Cesium, viewer} = this.cesiumInstance
+          window.vm = this
         }
       }
     }

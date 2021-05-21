@@ -125,7 +125,7 @@
 | outlineWidth | Number | `1.0` | `optional` 指定 cylinder 轮廓线宽度。 |
 | numberOfVerticalLines | Number | `16` | `optional` 指定沿轮廓线周长绘制的垂直线数。 |
 | slices | Number | `128` | `optional` 指定 cylinder 边节点数量。 |
-| shadows | Number | `0` | `optional` 指定 cylinder 是否投射或接收每个点光源的阴影。 **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
+| shadows | Number | `0` | `optional` 指定 cylinder 是否投射或接收每个点光源的阴影。 **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
 | distanceDisplayCondition | Object | | `optional` 指定 cylinder 随相机距离显示条件。 **结构：{ near: number, far: number }** |
 
 ---

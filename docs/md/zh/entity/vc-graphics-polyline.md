@@ -139,8 +139,8 @@
 | depthFailMaterial | Object\|String\|Array | | `optional` 指定用于绘制低于地形的线的材质。 |
 | arcType | Number | `1` | `optional` 指定线条类型。 **NONE: 0, GEODESIC: 1, RHUMB: 2** |
 | clampToGround | Boolean | `false` | `optional` 指定线是否贴地。 |
-| shadows | Number | | `optional` 指定这些是否投射或接收来自每个光源的阴影。 **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3, NUMBER_OF_SHADOW_MODES: 4, RECEIVE_ONLY: 3** |
-| classificationType | Number | `2` | `optional` 指定相机到线的距离。 **TERRAIN: 0, CESIUM_3D_TILE: 1, BOTH: 2, NUMBER_OF_CLASSIFICATION_TYPES: 3** |
+| shadows | Number | | `optional` 指定这些是否投射或接收来自每个光源的阴影。 **DISABLED: 0, ENABLED: 1, CAST_ONLY: 2, RECEIVE_ONLY: 3** |
+| classificationType | Number | `2` | `optional` 指定相机到线的距离。 **TERRAIN: 0, CESIUM_3D_TILE: 1, BOTH: 2**|
 | distanceDisplayCondition | Object | | `optional` 指定相机到线的距离。 **结构：{ near: number, far: number }** |
 | zIndex | Number | `0` | `optional` 指定用于排序地面几何的 zIndex。 仅当`clampToGround`为真且支持地形上的折线时才有效。 |
 
