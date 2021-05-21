@@ -16,69 +16,9 @@
         </vc-primitive-polyline-ground>
       </template>
     </vc-collection-primitive>
-    <vc-collection-primitive-polyline ref="polylineCollection" v-else>
-      <vc-primitive-polyline
-        :key="index"
-        :material="polylineMaterial"
-        :positions="polyline.positions"
-        :width="polylineWidth"
-        v-for="(polyline, index) of polylines"
-      ></vc-primitive-polyline>
-    </vc-collection-primitive-polyline>
-
-    <vc-collection-primitive-point ref="pointCollection">
-      <template v-for="(polyline, index) of polylines">
-        <template v-for="(position, subIndex) of polyline.positions">
-          <vc-primitive-point
-            :color="pointColor"
-            :key="'point' + index + 'position' + subIndex"
-            :pixelSize="pointPixelSize"
-            :position="position"
-          ></vc-primitive-point>
-        </template>
-      </template>
-    </vc-collection-primitive-point>
-    <vc-collection-primitive-label ref="labelCollection">
-      <template v-for="(polyline, index) of polylines">
-        <template v-for="(position, subIndex) of polyline.positions">
-          <vc-primitive-label
-            :backgroundColor="backgroundColor"
-            :fillColor="fillColor"
-            :font="font"
-            :horizontalOrigin="1"
-            :key="'label' + index + 'position' + subIndex"
-            :labelStyle="labelStyle"
-            :outlineColor="outlineColor"
-            :outlineWidth="outlineWidth"
-            :pixelOffset="pixelOffset"
-            :position="position"
-            :showBackground="showBackground"
-            :text="$vc.lang.measure.distance + ': ' + getDistanceText(polyline.distances[subIndex])"
-            v-if="subIndex === polyline.positions.length - 1"
-          ></vc-primitive-label>
-          <vc-primitive-label
-            :backgroundColor="backgroundColor"
-            :fillColor="fillColor"
-            :font="font"
-            :horizontalOrigin="0"
-            :key="'label' + index + 'position' + subIndex"
-            :labelStyle="labelStyle"
-            :outlineColor="outlineColor"
-            :outlineWidth="outlineWidth"
-            :pixelOffset="pixelOffset"
-            :position="getMidPoistion(polyline.positions[subIndex], polyline.positions[subIndex + 1])"
-            :showBackground="showBackground"
-            :text="getDistanceText(polyline.distances[subIndex + 1] - polyline.distances[subIndex])"
-            :verticalOrigin="0"
-            v-if="
-              ((subIndex !== polyline.positions.length - 1 && polyline.positions.length > 2 + subIndex) ||
-                (polyline.positions.length > 2 + subIndex ||
-                  (polyline.positions.length - 2 === subIndex && polyline.positions.length !== 2)) && alongLine)
-            "
-          ></vc-primitive-label>
-        </template>
-      </template>
-    </vc-collection-primitive-label>
+    <vc-collection-primitive-polyline ref="polylineCollection" :polylines="primitivePolylines" v-else></vc-collection-primitive-polyline>
+    <vc-collection-primitive-point ref="pointCollection" :points="points"></vc-collection-primitive-point>
+    <vc-collection-primitive-label ref="labelCollection" :labels="labels"></vc-collection-primitive-label>
   </i>
 </template>
 <script>
@@ -91,8 +31,7 @@ export default {
     return {
       type: 'distanceMeasuring',
       measuring: false,
-      polylines: [],
-      nowaiting: true
+      polylines: []
     }
   },
   props: {
@@ -130,6 +69,65 @@ export default {
       })
     }
   },
+  computed: {
+    primitivePolylines () {
+      const polylines = []
+      this.polylines.forEach((item, index) => {
+        const polyline = {
+          material: this.polylineMaterial,
+          positions: item.positions,
+          width: this.polylineWidth,
+          polylineIndex: index
+        }
+        polylines.push(polyline)
+      })
+      return polylines
+    },
+    labels () {
+      const labels = []
+      this.polylines.forEach((polyline, index) => {
+        polyline.positions.forEach((position, subIndex) => {
+          if (subIndex === polyline.positions.length - 1) {
+            const label = {
+              backgroundColor: this.backgroundColor,
+              fillColor: this.fillColor,
+              font: this.font,
+              labelStyle: this.labelStyle,
+              outlineColor: this.outlineColor,
+              outlineWidth: this.outlineWidth,
+              pixelOffset: this.pixelOffset,
+              position: position,
+              showBackground: this.showBackground,
+              disableDepthTestDistance: Number.POSITIVE_INFINITY,
+              text: this.$vc.lang.measure.distance + ': ' + this.getDistanceText(polyline.distances[subIndex])
+            }
+            labels.push(label)
+          }
+          if (((subIndex !== polyline.positions.length - 1 && polyline.positions.length > 2 + subIndex) ||
+                (polyline.positions.length > 2 + subIndex ||
+                  (polyline.positions.length - 2 === subIndex && polyline.positions.length !== 2)) && this.alongLine)) {
+            const label = {
+              backgroundColor: this.backgroundColor,
+              fillColor: this.fillColor,
+              font: this.font,
+              horizontalOrigin: 0,
+              labelStyle: this.labelStyle,
+              outlineColor: this.outlineColor,
+              outlineWidth: this.outlineWidth,
+              pixelOffset: this.pixelOffset,
+              position: this.getMidPoistion(polyline.positions[subIndex], polyline.positions[subIndex + 1]),
+              showBackground: this.showBackground,
+              disableDepthTestDistance: Number.POSITIVE_INFINITY,
+              text: this.getDistanceText(polyline.distances[subIndex + 1] - polyline.distances[subIndex]),
+              verticalOrigin: 0
+            }
+            labels.push(label)
+          }
+        })
+      })
+      return labels
+    }
+  },
   methods: {
     getDistanceText (distance) {
       return distance > 1000 ? (distance / 1000).toFixed(2) + 'km' : distance.toFixed(2) + 'm'
@@ -139,6 +137,7 @@ export default {
       return Cartesian3.midpoint(left, right, new Cartesian3())
     },
     clear () {
+      console.log('asd')
       this.polylines = []
       this.measuring = false
     },

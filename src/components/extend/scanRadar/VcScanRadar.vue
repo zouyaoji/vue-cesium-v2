@@ -20,9 +20,23 @@ export default {
       default: 3000
     }
   },
-  mounted () {
-    this.getParent(this.$parent).createPromise.then(({ Cesium, viewer }) => {
-      const { $props, transformProps } = this
+  watch: {
+    position () {
+      this.reload()
+    },
+    color () {
+      this.reload()
+    },
+    radius () {
+      this.reload()
+    },
+    interval () {
+      this.reload()
+    }
+  },
+  methods: {
+    async createCesiumObject () {
+      const { $props, transformProps, viewer } = this
       const options = transformProps($props)
       const cartographicCenter = Cesium.Cartographic.fromCartesian(options.position)
       const _Cartesian3Center = Cesium.Cartographic.toCartesian(cartographicCenter)
@@ -75,25 +89,13 @@ export default {
         },
         u_scanColor: options.color
       }
-    })
-  },
-  methods: {
-    async createCesiumObject () {
-      return this.$refs.stage.createPromise.then(({ Cesium, viewer, cesiumObject }) => {
-        if (!this.$refs.stage._mounted) {
-          return this.$refs.stage.load().then(({ Cesium, viewer, cesiumObject }) => {
-            return cesiumObject
-          })
-        } else {
-          return cesiumObject
-        }
-      })
+      return this.$refs.stage
     },
     async mount () {
       return true
     },
     async unmount () {
-      return this.$refs.stage && this.$refs.stage.unload()
+      return true
     }
   },
   created () {
@@ -106,7 +108,6 @@ export default {
   },
   data () {
     return {
-      nowaiting: true,
       fsScanSegment: `
         uniform sampler2D colorTexture;
         uniform sampler2D depthTexture;

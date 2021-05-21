@@ -1,11 +1,11 @@
 <script>
 import { differenceBy } from 'lodash-es'
-import { scene, blendOption } from '../../../mixins/mixinProps'
+import { scene, blendOption, show } from '../../../mixins/mixinProps'
 import mixinPrimitiveCollection from '../../../mixins/primitives/mixinPrimitiveCollection'
 
 export default {
   name: 'vc-collection-primitive-label',
-  mixins: [scene, blendOption, mixinPrimitiveCollection],
+  mixins: [scene, blendOption, show, mixinPrimitiveCollection],
   props: {
     labels: {
       type: Array,

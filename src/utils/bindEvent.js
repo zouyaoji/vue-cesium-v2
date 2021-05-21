@@ -10,7 +10,7 @@ import { toKebabCase } from './util'
 export default function (instance, eventList, flag = true) {
   const ev = eventList || Events[toKebabCase(this.$options.name)]
   ev && ev.forEach(eventName => {
-    if (instance[eventName]) {
+    if (instance && instance[eventName]) {
       const listener = this.$listeners[eventName] || this.$listeners[eventName.toLowerCase()]
       const methodName = flag ? 'addEventListener' : 'removeEventListener'
       listener && instance[eventName][methodName](listener.fns)

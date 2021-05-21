@@ -30,12 +30,19 @@ export default {
   },
   data () {
     return {
-      nowaiting: true,
       material: {}
     }
   },
-  mounted () {
-    this.getParent(this.$parent).createPromise.then(({ Cesium, viewer }) => {
+  created () {
+    Object.defineProperties(this, {
+      entity: {
+        enumerable: true,
+        get: () => this.cesiumObject
+      }
+    })
+  },
+  methods: {
+    async createCesiumObject () {
       const { deviationAlpha, color, imageUrl } = this
       const colorObject = makeColor(color)
       this.flag = true
@@ -58,33 +65,13 @@ export default {
           }
         }
       }
-    })
-  },
-  created () {
-    Object.defineProperties(this, {
-      entity: {
-        enumerable: true,
-        get: () => this.cesiumObject
-      }
-    })
-  },
-  methods: {
-    async createCesiumObject () {
-      return this.$refs.entity.createPromise.then(({ Cesium, viewer, cesiumObject }) => {
-        if (!this.$refs.entity._mounted) {
-          return this.$refs.entity.load().then(({ Cesium, viewer, cesiumObject }) => {
-            return cesiumObject
-          })
-        } else {
-          return cesiumObject
-        }
-      })
+      return this.$refs.entity
     },
     async mount () {
       return true
     },
     async unmount () {
-      return this.$refs.entity && this.$refs.entity.unload()
+      return true
     }
   }
 }

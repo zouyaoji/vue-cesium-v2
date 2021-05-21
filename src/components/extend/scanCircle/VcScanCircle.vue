@@ -20,17 +20,35 @@ export default {
       default: 3000
     }
   },
-  mounted () {
-    this.getParent(this.$parent).createPromise.then(({ Cesium, viewer }) => {
-      const { $props, transformProps } = this
+  watch: {
+    position () {
+      this.reload()
+    },
+    color () {
+      this.reload()
+    },
+    radius () {
+      this.reload()
+    },
+    interval () {
+      this.reload()
+    }
+  },
+  methods: {
+    async createCesiumObject () {
+      const { $props, transformProps, viewer } = this
       const options = transformProps($props)
       const cartographicCenter = Cesium.Cartographic.fromCartesian(options.position)
       const _Cartesian3Center = Cesium.Cartographic.toCartesian(cartographicCenter)
       const _Cartesian4Center = new Cesium.Cartesian4(_Cartesian3Center.x, _Cartesian3Center.y, _Cartesian3Center.z, 1)
-      const _CartographicCenter1 = new Cesium.Cartographic(cartographicCenter.longitude, cartographicCenter.latitude, cartographicCenter.height + 500)
+      const _CartographicCenter1 = new Cesium.Cartographic(
+        cartographicCenter.longitude,
+        cartographicCenter.latitude,
+        cartographicCenter.height + 500
+      )
       const _Cartesian3Center1 = Cesium.Cartographic.toCartesian(_CartographicCenter1)
       const _Cartesian4Center1 = new Cesium.Cartesian4(_Cartesian3Center1.x, _Cartesian3Center1.y, _Cartesian3Center1.z, 1)
-      const _time = (new Date()).getTime()
+      const _time = new Date().getTime()
       const _scratchCartesian4Center = new Cesium.Cartesian4()
       const _scratchCartesian4Center1 = new Cesium.Cartesian4()
       const _scratchCartesian3Normal = new Cesium.Cartesian3()
@@ -48,29 +66,17 @@ export default {
           return _scratchCartesian3Normal
         },
         u_radius: function () {
-          return options.radius * (((new Date()).getTime() - _time) % options.interval) / options.interval
+          return (options.radius * ((new Date().getTime() - _time) % options.interval)) / options.interval
         },
         u_scanColor: options.color
       }
-    })
-  },
-  methods: {
-    async createCesiumObject () {
-      return this.$refs.stage.createPromise.then(({ Cesium, viewer, cesiumObject }) => {
-        if (!this.$refs.stage._mounted) {
-          return this.$refs.stage.load().then(({ Cesium, viewer, cesiumObject }) => {
-            return cesiumObject
-          })
-        } else {
-          return cesiumObject
-        }
-      })
+      return this.$refs.stage
     },
     async mount () {
       return true
     },
     async unmount () {
-      return this.$refs.stage && this.$refs.stage.unload()
+      return true
     }
   },
   created () {
@@ -83,7 +89,6 @@ export default {
   },
   data () {
     return {
-      nowaiting: true,
       fsScanSegment: `
         uniform sampler2D colorTexture;
         uniform sampler2D depthTexture;

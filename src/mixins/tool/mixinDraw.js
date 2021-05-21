@@ -36,7 +36,7 @@ const watch = {
   },
   async drawing (val) {
     let nextTick = false
-    const { polylines, startNew, drawType, $parent, getParent } = this
+    const { polylines, startNew, drawType, getVcParent } = this
     const polyline = polylines[polylines.length - 1]
     if (!val && polyline && !polyline.positions.length) {
       this.polylines.pop()
@@ -58,7 +58,7 @@ const watch = {
           break
       }
       const measureCmpNames = ['vc-measure-height', 'vc-measure-distance', 'vc-measure-area']
-      for (const $node of getParent($parent).$slots.default || []) {
+      for (const $node of getVcParent(this).$slots.default || []) {
         if ($node.componentOptions && drawCmpNames.indexOf($node.componentOptions.tag) !== -1) {
           $node.child.drawing = false
           nextTick = true
@@ -310,8 +310,7 @@ export default {
       showToolbar: false,
       tooltipPosition: [0, 0, 0],
       showTooltip: false,
-      tooltip: '',
-      nowaiting: true
+      tooltip: ''
     }
   },
   props,

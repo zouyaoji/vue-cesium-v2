@@ -1,11 +1,11 @@
 <script>
 import { differenceBy } from 'lodash-es'
-import { modelMatrix, debugShowBoundingVolume } from '../../../mixins/mixinProps'
+import { modelMatrix, debugShowBoundingVolume, show } from '../../../mixins/mixinProps'
 import mixinPrimitiveCollection from '../../../mixins/primitives/mixinPrimitiveCollection'
 
 export default {
   name: 'vc-collection-primitive-polyline',
-  mixins: [modelMatrix, debugShowBoundingVolume, mixinPrimitiveCollection],
+  mixins: [modelMatrix, debugShowBoundingVolume, show, mixinPrimitiveCollection],
   props: {
     polylines: {
       type: Array,

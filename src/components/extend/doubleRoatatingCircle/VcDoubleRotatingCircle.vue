@@ -54,27 +54,13 @@ export default {
       rotation1: 0,
       stRotation1: 0,
       rotation2: 0,
-      stRotation2: 0,
-      nowaiting: true
+      stRotation2: 0
     }
-  },
-  mounted () {
-    this.getParent(this.$parent).createPromise.then(({ Cesium, viewer }) => {
-      this.init()
-    })
   },
   methods: {
     async createCesiumObject () {
-      return Promise.all([this.$refs.entity1.createPromise, this.$refs.entity2.createPromise]).then((entities) => {
-        if (!this.$refs.entity1._mounted || !this.$refs.entity1._mounted) {
-          return Promise.all([this.$refs.entity1.load(), this.$refs.entity2.load()]).then((entities) => {
-            this.init()
-            return entities
-          })
-        } else {
-          return entities
-        }
-      })
+      this.init()
+      return Promise.all([this.$refs.entity1, this.$refs.entity2])
     },
     init () {
       const { deviationRotation1, deviationRotation2 } = this
@@ -104,9 +90,7 @@ export default {
       this.rotation2 = undefined
       this.stRotation1 = undefined
       this.stRotation2 = undefined
-      return this.$refs.entity1 && this.$refs.entity2
-        ? Promise.all([this.$refs.entity1.unload(), this.$refs.entity2.unload()])
-        : true
+      return true
     }
   },
   created () {

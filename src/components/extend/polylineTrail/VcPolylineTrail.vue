@@ -35,30 +35,18 @@ export default {
       material: {}
     }
   },
-  mounted () {
-    this.getParent(this.$parent).createPromise.then(({ Cesium, viewer }) => {
+  methods: {
+    async createCesiumObject () {
       const { color, imageUrl, interval, loop } = this
       const colorCesium = makeColor(color)
       this.material = new PolylineTrailMaterialProperty(colorCesium, interval, imageUrl, loop)
-    })
-  },
-  methods: {
-    async createCesiumObject () {
-      return this.$refs.entity.createPromise.then(({ Cesium, viewer, cesiumObject }) => {
-        if (!this.$refs.entity._mounted) {
-          return this.$refs.entity.load().then(({ Cesium, viewer, cesiumObject }) => {
-            return cesiumObject
-          })
-        } else {
-          return cesiumObject
-        }
-      })
+      return this.$refs.entity
     },
     async mount () {
       return true
     },
     async unmount () {
-      return this.$refs.entity && this.$refs.entity.unload()
+      return true
     }
   },
   created () {

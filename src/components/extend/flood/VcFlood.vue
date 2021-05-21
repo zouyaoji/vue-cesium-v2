@@ -22,8 +22,7 @@ export default {
       attributes: null,
       extrudedHeight: 0.1,
       flooding: false,
-      appearance: null,
-      nowaiting: true
+      show: false
     }
   },
   mixins: [cmp],
@@ -51,9 +50,9 @@ export default {
           this.extrudedHeight = this.extrudedHeight >= this.minHeight ? this.minHeight : 0.1
           this.floodDone = false
         }
-        this._mounted = true
         this.viewer.clock.onTick.addEventListener(this.onTick)
         listener && this.$emit('activeEvt', { isActive: val })
+        this.show = true
       } else {
         this.viewer.clock.onTick.removeEventListener(this.onTick)
         listener && this.$emit('activeEvt', { isActive: val })
@@ -72,42 +71,29 @@ export default {
         color: ColorGeometryInstanceAttribute.fromColor(makeColor(color))
       }
       this.extrudedHeight = minHeight
-      return this.$refs.primitive.createPromise.then(({ Cesium, viewer, cesiumObject }) => {
-        if (!this.$refs.primitive._mounted) {
-          return this.$refs.primitive.load().then(({ Cesium, viewer, cesiumObject }) => {
-            return cesiumObject
-          })
-        } else {
-          return cesiumObject
-        }
-      })
+      return true
     },
-    onTick () {
+    onTick (e) {
       const { maxHeight, speed } = this
       if (this.extrudedHeight < maxHeight) {
-        this.extrudedHeight = this.extrudedHeight + speed / 12.0
+        this.extrudedHeight += speed
+        const listener = this.$listeners.tickEvt
+        listener && this.$emit('tickEvt', { clock: e, extrudedHeight: this.extrudedHeight })
       } else {
         this.floodDone = true
         this.flooding = false
       }
     },
-    clear () {},
+    clear () {
+      this.extrudedHeight = 0
+    },
     async mount () {
       return true
     },
     async unmount () {
       this.extrudedHeight = this.minHeight
       this.flooding = false
-      this.$refs.primitive && this.$refs.primitive.unload()
     }
-  },
-  created () {
-    Object.defineProperties(this, {
-      floodObject: {
-        enumerable: true,
-        get: () => this.$services && this.cesiumObject
-      }
-    })
   }
 }
 </script>

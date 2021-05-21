@@ -2,7 +2,7 @@
  * @Author: zouyaoji
  * @Date: 2018-02-06 17:56:48
  * @Last Modified by: zouyaoji
- * @Last Modified time: 2021-03-16 09:15:27
+ * @Last Modified time: 2021-05-22 01:00:11
  */
 <template>
   <div id="cesiumContainer" ref="viewer" style="width:100%; height:100%;">
@@ -166,7 +166,8 @@ export default {
         }
       }
     },
-    navigation: { // for supermap
+    navigation: {
+      // for supermap
       type: Boolean,
       default: false
     },
@@ -176,7 +177,7 @@ export default {
     },
     UTCoffset: {
       type: Number,
-      default: -(new Date().getTimezoneOffset())
+      default: -new Date().getTimezoneOffset()
     },
     removeCesiumScript: {
       type: Boolean,
@@ -380,7 +381,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
               window.localStorage.setItem('cesium-hasSeenNavHelp', 'true')
             }
           }
-        } catch (e) { }
+        } catch (e) {}
         const navigationHelpButton = new Cesium.NavigationHelpButton({
           container: toolbar,
           instructionsInitiallyVisible: Cesium.defaultValue(this.navigationInstructionsInitiallyVisible, showNavHelp)
@@ -423,7 +424,9 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         viewerContainer.appendChild(timelineContainer)
         const timeline = new Cesium.Timeline(timelineContainer, viewer.clock)
         const that = this
-        timeline.makeLabel = time => { return that.localeDateTimeFormatter(time) }
+        timeline.makeLabel = (time) => {
+          return that.localeDateTimeFormatter(time)
+        }
         timeline.addEventListener('settime', onTimelineScrubfunction, false)
         timeline.zoomTo(viewer.clock.startTime, viewer.clock.stopTime)
         viewer._timeline = timeline
@@ -615,9 +618,6 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
       }
     },
     init () {
-      if (this._mounted) {
-        return false
-      }
       this.Cesium = Cesium
       const $el = this.$refs.viewer
       const accessToken = this.accessToken
@@ -743,43 +743,46 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
 
       const that = this
       const listener = that.$listeners['update:camera']
-      listener && viewer.camera.changed.addEventListener(() => {
-        const cartographic = viewer.camera.positionCartographic
-        let camera
-        if (that.camera.position.lng) {
-          camera = {
-            position: {
-              lng: Cesium.Math.toDegrees(cartographic.longitude),
-              lat: Cesium.Math.toDegrees(cartographic.latitude),
-              height: cartographic.height
-            },
-            heading: Cesium.Math.toDegrees(viewer.camera.heading || 360),
-            pitch: Cesium.Math.toDegrees(viewer.camera.pitch || -90),
-            roll: Cesium.Math.toDegrees(viewer.camera.roll || 0)
+      listener &&
+        viewer.camera.changed.addEventListener(() => {
+          const cartographic = viewer.camera.positionCartographic
+          let camera
+          if (that.camera.position.lng) {
+            camera = {
+              position: {
+                lng: Cesium.Math.toDegrees(cartographic.longitude),
+                lat: Cesium.Math.toDegrees(cartographic.latitude),
+                height: cartographic.height
+              },
+              heading: Cesium.Math.toDegrees(viewer.camera.heading || 360),
+              pitch: Cesium.Math.toDegrees(viewer.camera.pitch || -90),
+              roll: Cesium.Math.toDegrees(viewer.camera.roll || 0)
+            }
+          } else {
+            camera = {
+              position: {
+                x: viewer.camera.position.x,
+                y: viewer.camera.position.y,
+                z: viewer.camera.position.z
+              },
+              heading: viewer.camera.heading || 2 * Math.PI,
+              pitch: viewer.camera.pitch || -Math.PI / 2,
+              roll: viewer.camera.roll || 0
+            }
           }
-        } else {
-          camera = {
-            position: {
-              x: viewer.camera.position.x,
-              y: viewer.camera.position.y,
-              z: viewer.camera.position.z
-            },
-            heading: viewer.camera.heading || 2 * Math.PI,
-            pitch: viewer.camera.pitch || -Math.PI / 2,
-            roll: viewer.camera.roll || 0
-          }
-        }
 
-        if (listener) {
-          that.$emit('update:camera', camera)
-        }
-      })
+          if (listener) {
+            that.$emit('update:camera', camera)
+          }
+        })
       if (Cesium.defined(viewer.animation)) {
         viewer.animation.viewModel.dateFormatter = this.localeDateTimeFormatter
         viewer.animation.viewModel.timeFormatter = this.localeTimeFormatter
       }
       if (Cesium.defined(viewer.timeline)) {
-        viewer.timeline.makeLabel = time => { return that.localeDateTimeFormatter(time) }
+        viewer.timeline.makeLabel = (time) => {
+          return that.localeDateTimeFormatter(time)
+        }
         viewer.timeline.zoomTo(viewer.clock.startTime, viewer.clock.stopTime)
       }
       this.viewerContainer = viewer._element
@@ -793,10 +796,11 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
       viewer.widgetResized = new Cesium.Event()
       viewer.imageryLayers.layerAdded.addEventListener(this.layerAdded)
       registerEvents(true)
-      global.XE ? this.$emit('ready', { Cesium, viewer, earth: this.earth }) : this.$emit('ready', { Cesium, viewer })
+      global.XE
+        ? this.$emit('ready', { Cesium, viewer, earth: this.earth, vm: this })
+        : this.$emit('ready', { Cesium, viewer, vm: this })
       this._mounted = true
-      this._resolve({ Cesium, viewer })
-      return { Cesium, viewer }
+      return { Cesium, viewer, vm: this }
     },
     setCamera (val) {
       const { viewer } = this
@@ -829,7 +833,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
       // 维护影像图层顺序
       if (autoSortImageryLayers) {
         layer.sortOrder = Cesium.defined(layer.sortOrder) ? layer.sortOrder : 9999
-        viewer.imageryLayers._layers.sort((a, b) => (a.sortOrder - b.sortOrder))
+        viewer.imageryLayers._layers.sort((a, b) => a.sortOrder - b.sortOrder)
         viewer.imageryLayers._update()
       }
     },
@@ -844,7 +848,8 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
       } else {
         objDT = new Date(gregorianDT.year, gregorianDT.month - 1, gregorianDT.day)
         if (this.$vc.lang.isoName === 'zh-hans') {
-          objDT = gregorianDT.year + '年' + objDT.toLocaleString(this.$vc.lang.isoName, { month: 'short' }) + gregorianDT.day + '日'
+          objDT =
+            gregorianDT.year + '年' + objDT.toLocaleString(this.$vc.lang.isoName, { month: 'short' }) + gregorianDT.day + '日'
         } else {
           objDT = gregorianDT.day + ' ' + objDT.toLocaleString(this.$vc.lang.isoName, { month: 'short' }) + ' ' + gregorianDT.year
         }
@@ -863,7 +868,10 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
       bindEvents.call(this, viewer, undefined, flag)
       const that = this
       Events['viewer-property-events'].forEach((eventName) => {
-        const instance = isArray(eventName.name) && viewer[eventName.name[0]] ? viewer[eventName.name[0]][eventName.name[1]] : viewer[eventName.name]
+        const instance =
+          isArray(eventName.name) && viewer[eventName.name[0]]
+            ? viewer[eventName.name[0]][eventName.name[1]]
+            : viewer[eventName.name]
         instance && bindEvents.call(that, instance, eventName.events, flag)
       })
       const handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas)
@@ -931,6 +939,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         const $script = document.createElement('script')
         global.document.body.appendChild($script)
         $script.src = cesiumPath
+        const that = this
         return new Promise((resolve, reject) => {
           $script.onload = () => {
             if (global.Cesium) {
@@ -941,9 +950,14 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
                 $scriptZlib.src = `${dirName}/Workers/zlib.min.js`
               }
               resolve(global.Cesium)
-            } else if (global.XE) { // 兼容 cesiumlab earthsdk
+              const listener = that.$listeners.cesiumReady
+              listener && this.$emit('cesiumReady', global.Cesium)
+            } else if (global.XE) {
+              // 兼容 cesiumlab earthsdk
               global.XE.ready().then(() => {
                 resolve(global.Cesium)
+                const listener = that.$listeners.cesiumReady
+                listener && this.$emit('cesiumReady', global.Cesium)
               })
             } else {
               reject(new Error('[C_PKG_FULLNAME] ERROR: ' + 'Error loading CesiumJS!'))
@@ -959,22 +973,102 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
       // 保证只添加一个CesiumJS标签
       this.$vc.scriptPromise = this.$vc.scriptPromise || this.getCesiumScript()
       await this.$vc.scriptPromise
+    },
+    async beforeLoad () {
+      const listener = this.$listeners.beforeLoad
+      listener && this.$emit('beforeLoad', this)
+      // Make sure to add only one CesiumJS script tag
+      // 保证只添加一个CesiumJS标签
+      this.$vc.scriptPromise = this.$vc.scriptPromise || this.getCesiumScript()
+      await this.$vc.scriptPromise
+    },
+    async load () {
+      if (this._mounted) {
+        return false
+      }
+      await this.beforeLoad()
+      return this.init()
+    },
+    async reload () {
+      return this.unload().then(() => {
+        return this.load()
+      })
+    },
+    async unload () {
+      if (!this._mounted) {
+        return false
+      }
+
+      let unloadingResolve
+      this.$vc.viewerUnloadingPromise = new Promise((resolve, reject) => {
+        unloadingResolve = resolve
+      })
+
+      // If the component has subcomponents, you need to remove the subcomponents first. 如果该组件带有子组件，需要先移除子组件。
+      for (let i = 0; i < this.children.length; i++) {
+        const vcChildCmp = this.children[i]
+        await vcChildCmp.unload()
+      }
+
+      const { viewer, removeCesiumScript, earth, registerEvents } = this
+
+      if (global.Cesium) {
+        viewer.imageryLayers.layerAdded.removeEventListener(this.layerAdded)
+        registerEvents(false)
+      }
+
+      this.$vc._screenSpaceEventHandler && this.$vc._screenSpaceEventHandler.destroy()
+      this.$vc._screenSpaceEventHandler = undefined
+      global.XE ? earth && earth.destroy() : viewer && viewer.destroy()
+      this.viewer = undefined
+      this._mounted = false
+
+      if (removeCesiumScript && global.Cesium) {
+        const scripts = document.getElementsByTagName('script')
+        const removeScripts = []
+        for (const script of scripts) {
+          script.src.indexOf('/Cesium.js') > -1 && removeScripts.push(script)
+          script.src.indexOf('/Workers/zlib.min.js') > -1 && removeScripts.push(script)
+          if (global.XE) {
+            script.src.indexOf('/rxjs.umd.min.js') > -1 && removeScripts.push(script)
+            script.src.indexOf('/XbsjCesium.js') > -1 && removeScripts.push(script)
+            script.src.indexOf('/viewerCesiumNavigationMixin.js') > -1 && removeScripts.push(script)
+            script.src.indexOf('/XbsjEarth.js') > -1 && removeScripts.push(script)
+          }
+        }
+        removeScripts.forEach((script) => {
+          script.parentNode.removeChild(script)
+        })
+        const links = document.getElementsByTagName('link')
+        for (const link of links) {
+          if (link.href.indexOf('Widgets/widgets.css') > -1) {
+            document.getElementsByTagName('head')[0].removeChild(link)
+          }
+        }
+        global.Cesium && (global.Cesium = undefined)
+        global.XbsjCesium && (global.XbsjCesium = undefined)
+        global.XbsjEarth && (global.XbsjEarth = undefined)
+        global.XE && (global.XE = undefined)
+        this.$vc.scriptPromise = undefined
+      }
+
+      const listener = this.$listeners.destroyed
+      listener && this.$emit('destroyed', this)
+      unloadingResolve(true)
+      this.$vc.viewerUnloadingPromise = undefined
+      return true
     }
   },
-  mounted () {
-    const { init, beforeInit } = this
-    const that = this
-    beforeInit()
-      .then(() => {
-        const listener = that.$listeners.cesiumReady
-        listener && this.$emit('cesiumReady', Cesium)
-        that.$nextTick(() => {
-          init()
-        })
-      })
-    // .catch((e) => _reject(new Error(`[C_PKG_FULLNAME] ERROR: ` + 'An error occurred during the initialization of the Viewer!')))
+  async mounted () {
+    try {
+      await this.$vc.viewerUnloadingPromise
+      this._resolve(this.load())
+    } catch (e) {
+      this._reject(e)
+    }
   },
   created () {
+    this.children = []
     this._mounted = false
     // this._createPromise = Promise.resolve(this.beforeInit())
     // 注释上面方法，测试发现在切换路由时，实测 Vue 生命周期是先触发新组件的 created，再触发旧组件的 destroyed，再触发新组件的 mounted 。
@@ -1023,43 +1117,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
     })
   },
   destroyed () {
-    const { viewer, removeCesiumScript, earth, registerEvents } = this
-    registerEvents(false)
-    this.$vc._screenSpaceEventHandler && this.$vc._screenSpaceEventHandler.destroy()
-    global.XE ? earth && earth.destroy() : viewer && viewer.destroy()
-
-    this.viewer = undefined
-    this._mounted = false
-    this.$vc._screenSpaceEventHandler = undefined
-
-    if (removeCesiumScript && global.Cesium) {
-      const scripts = document.getElementsByTagName('script')
-      const removeScripts = []
-      for (const script of scripts) {
-        script.src.indexOf('/Cesium.js') > -1 && removeScripts.push(script)
-        script.src.indexOf('/Workers/zlib.min.js') > -1 && removeScripts.push(script)
-        if (global.XE) {
-          script.src.indexOf('/rxjs.umd.min.js') > -1 && removeScripts.push(script)
-          script.src.indexOf('/XbsjCesium.js') > -1 && removeScripts.push(script)
-          script.src.indexOf('/viewerCesiumNavigationMixin.js') > -1 && removeScripts.push(script)
-          script.src.indexOf('/XbsjEarth.js') > -1 && removeScripts.push(script)
-        }
-      }
-      removeScripts.forEach((script) => {
-        script.parentNode.removeChild(script)
-      })
-      const links = document.getElementsByTagName('link')
-      for (const link of links) {
-        if (link.href.indexOf('Widgets/widgets.css') > -1) {
-          document.getElementsByTagName('head')[0].removeChild(link)
-        }
-      }
-      global.Cesium && (global.Cesium = undefined)
-      global.XbsjCesium && (global.XbsjCesium = undefined)
-      global.XbsjEarth && (global.XbsjEarth = undefined)
-      global.XE && (global.XE = undefined)
-      this.$vc.scriptPromise = undefined
-    }
+    this.unload()
   }
 }
 </script>

@@ -1,14 +1,14 @@
 <template>
   <i :class="$options.name" style="display: none !important">
-    <vc-entity :show="show" ref="1" v-if="type === 1">
+    <vc-entity :show="show" ref="childRef" v-if="type === 1">
       <vc-graphics-rectangle :coordinates="coordinates" :material="material"></vc-graphics-rectangle>
     </vc-entity>
-    <vc-primitive-ground :appearance="appearance" :show="show" ref="0" v-else-if="type === 0">
+    <vc-primitive-ground :appearance="appearance" :releaseGeometryInstances="false" :show="show" ref="childRef" v-else-if="type === 0">
       <vc-instance-geometry>
         <vc-geometry-rectangle :rectangle="coordinates"></vc-geometry-rectangle>
       </vc-instance-geometry>
     </vc-primitive-ground>
-    <vc-layer-imagery :show="show" ref="2" v-else-if="type === 2">
+    <vc-layer-imagery :show="show" ref="childRef" v-else-if="type === 2">
       <vc-provider-imagery-tile-single :rectangle="coordinates" :url="layerUrl"></vc-provider-imagery-tile-single>
     </vc-layer-imagery>
   </i>
@@ -41,7 +41,8 @@ export default {
       appearance: null,
       coordinates: { west: 0, south: 0, east: 0, north: 0 },
       layerUrl: '',
-      nowaiting: true
+      // nowaiting: true,
+      canRender: false
     }
   },
   mixins: [cmp],
@@ -75,7 +76,7 @@ export default {
   watch: {
     changeProps: {
       async handler (val, oldValue) {
-        await this.getParent(this.$parent).createPromise
+        await this.getVcParent(this).createPromise
         if (JSON.stringify(val) === JSON.stringify(oldValue)) return
         const { _heatmapInstance } = this
         if (JSON.stringify(val.bounds) !== JSON.stringify(oldValue.bounds)) {
@@ -91,8 +92,8 @@ export default {
       deep: true
     }
   },
-  mounted () {
-    this.getParent(this.$parent).createPromise.then(({ Cesium, viewer }) => {
+  methods: {
+    async createCesiumObject () {
       const { bounds, options, min, max, data, defaultOptions } = this
       this._WMP = new Cesium.WebMercatorProjection()
       this._id = this.getID()
@@ -135,20 +136,8 @@ export default {
           }
         })
       })
-    })
-  },
-  methods: {
-    async createCesiumObject () {
-      const { type } = this
-      return this.$refs[type].createPromise.then(({ Cesium, viewer, cesiumObject }) => {
-        if (!this.$refs[type]._mounted) {
-          return this.$refs[type].load().then(({ Cesium, viewer, cesiumObject }) => {
-            return cesiumObject
-          })
-        } else {
-          return cesiumObject
-        }
-      })
+
+      return this._heatmapInstance
     },
     materialCallback () {
       return this.layerUrl
@@ -180,9 +169,8 @@ export default {
       return true
     },
     async unmount () {
-      document.body.removeChild(this._container)
-      const { type } = this
-      return this.$refs[type] && this.$refs[type].unload()
+      this._container && this._container.parentNode.removeChild(this._container)
+      return true
     },
     setWidthAndHeight (mbb) {
       const { defaultOptions } = this

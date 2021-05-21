@@ -81,7 +81,9 @@ const methods = {
       entityOptions.id !== entity.id && (entityOptions.id = entity.id)
     }
 
-    return dataSources && dataSources.add(datasource)
+    return dataSources.add(datasource).then(() => {
+      return true
+    })
   },
   async unmount () {
     const { dataSources, datasource, registerEvents } = this

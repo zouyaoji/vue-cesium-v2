@@ -22,7 +22,7 @@ export default {
         type: Boolean | Object,
         default: () => {
           return {
-            form: 'BD09',
+            from: 'BD09',
             to: 'WGS84'
           }
         }

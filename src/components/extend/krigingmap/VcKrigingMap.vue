@@ -1,6 +1,6 @@
 <template>
   <i :class="$options.name" style="display: none !important">
-    <vc-datasource-geojson :data="data" :options="datasourceOptions" :show="show" ref="geojsonDatasource" v-if="data !== null"></vc-datasource-geojson>
+    <vc-datasource-geojson :data="data" :options="datasourceOptions" :show="show" ref="geojsonDatasource" @ready="ready"></vc-datasource-geojson>
   </i>
 </template>
 <script>
@@ -14,11 +14,10 @@ export default {
   data () {
     return {
       coordinates: { west: 0, south: 0, east: 0, north: 0 },
-      data: null,
+      data: {},
       datasourceOptions: {
         clampToGround: true
-      },
-      nowaiting: true
+      }
     }
   },
   mixins: [cmp],
@@ -66,14 +65,8 @@ export default {
     },
     cell: Number
   },
-  created () {
-    this._creatPromise = new Promise((resolve, reject) => {
-      this._resolve = resolve
-      this._reject = reject
-    })
-  },
-  mounted () {
-    this.getParent(this.$parent).createPromise.then(async ({ Cesium, viewer }) => {
+  methods: {
+    async createCesiumObject () {
       const { values, lngs, lats, krigingModel, krigingSigma2, breaks, clipCoords, krigingAlpha } = this
       const variogram = kriging.train(values, lngs, lats, krigingModel, krigingSigma2, krigingAlpha)
 
@@ -134,24 +127,10 @@ export default {
       // // 按照面积对图层进行排序，规避turf的一个bug
       // isobandsResult.features.sort(sortArea)
       this.data = isobandsResult
-
-      this._resolve(true)
-    })
-  },
-  methods: {
-    async createCesiumObject () {
-      return this._creatPromise.then(() => {
-        return this.$refs.geojsonDatasource.createPromise.then(({ Cesium, viewer, cesiumObject }) => {
-          const { setPolygonColor } = this
-          if (!this.$refs.geojsonDatasource._mounted) {
-            return this.$refs.geojsonDatasource.load().then(({ Cesium, viewer, cesiumObject }) => {
-              return setPolygonColor(cesiumObject)
-            })
-          } else {
-            return setPolygonColor(cesiumObject)
-          }
-        })
-      })
+      return this.$refs.geojsonDatasource
+    },
+    ready ({ cesiumObject }) {
+      this.setPolygonColor(cesiumObject)
     },
     setPolygonColor (cesiumObject) {
       const { breaks, colors, canvasAlpha } = this
@@ -190,7 +169,7 @@ export default {
       return true
     },
     async unmount () {
-      return this.$refs.geojsonDatasource && this.$refs.geojsonDatasource.unload()
+      return true
     }
   }
 }

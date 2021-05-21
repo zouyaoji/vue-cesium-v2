@@ -46,71 +46,9 @@
       </template>
     </vc-collection-primitive>
     <!-- 非贴地线 -->
-    <vc-collection-primitive-polyline ref="polylineCollection" v-else>
-      <vc-primitive-polyline
-        :key="index"
-        :loop="true"
-        :material="polylineMaterial"
-        :positions="polyline.positions"
-        :width="polylineWidth"
-        v-for="(polyline, index) of polylines"
-      ></vc-primitive-polyline>
-    </vc-collection-primitive-polyline>
-    <vc-collection-primitive-point ref="pointCollection">
-      <template v-for="(polyline, index) of polylines">
-        <template v-for="(position, subIndex) of polyline.positions">
-          <vc-primitive-point
-            :color="pointColor"
-            :key="'point' + index + 'position' + subIndex"
-            :pixelSize="pointPixelSize"
-            :position="position"
-          ></vc-primitive-point>
-        </template>
-      </template>
-    </vc-collection-primitive-point>
-    <vc-collection-primitive-label ref="labelCollection">
-      <template v-for="(polyline, index) of polylines">
-        <vc-primitive-label
-          :backgroundColor="backgroundColor"
-          :font="font"
-          :horizontalOrigin="1"
-          :key="'label' + index"
-          :labelStyle="labelStyle"
-          :outlineColor="outlineColor"
-          :outlineWidth="outlineWidth"
-          :pixelOffset="pixelOffset"
-          :position="polyline.positions[polyline.positions.length - 1]"
-          :showBackground="showBackground"
-          :text="
-            $vc.lang.measure.area +
-              ': ' +
-              (polyline.area > 1000000 ? (polyline.area / 1000000).toFixed(2) + 'km²' : polyline.area.toFixed(2) + '㎡')
-          "
-        ></vc-primitive-label>
-        <template v-for="(position, subIndex) of polyline.positions">
-          <vc-primitive-label
-            :backgroundColor="backgroundColor"
-            :fillColor="fillColor"
-            :font="font"
-            :horizontalOrigin="0"
-            :key="'label' + index + 'position' + subIndex"
-            :labelStyle="labelStyle"
-            :outlineColor="outlineColor"
-            :outlineWidth="outlineWidth"
-            :pixelOffset="pixelOffset"
-            :position="
-              subIndex !== polyline.positions.length - 1
-                ? getMidPoistion(polyline.positions[subIndex], polyline.positions[subIndex + 1])
-                : getMidPoistion(polyline.positions[subIndex], polyline.positions[0])
-            "
-            :showBackground="showBackground"
-            :text="getDistanceText(polyline.distances[subIndex + 1] - polyline.distances[subIndex])"
-            :verticalOrigin="0"
-            v-if="alongLine && polyline.positions.length > 1 && subIndex + 1 < polyline.distances.length"
-          ></vc-primitive-label>
-        </template>
-      </template>
-    </vc-collection-primitive-label>
+    <vc-collection-primitive-polyline ref="polylineCollection" :polylines="primitivePolylines" v-else></vc-collection-primitive-polyline>
+    <vc-collection-primitive-point ref="pointCollection" :points="points"></vc-collection-primitive-point>
+    <vc-collection-primitive-label ref="labelCollection" :labels="labels"></vc-collection-primitive-label>
   </i>
 </template>
 
@@ -127,8 +65,7 @@ export default {
       index: 0,
       type: 'areaMeasuring',
       measuring: false,
-      polylines: [],
-      nowaiting: true
+      polylines: []
     }
   },
   props: {
@@ -177,6 +114,67 @@ export default {
         polyline.distances = distances
         polyline.distance = totalDistance
       })
+    }
+  },
+  computed: {
+    primitivePolylines () {
+      const polylines = []
+      this.polylines.forEach((item, index) => {
+        const polyline = {
+          material: this.polylineMaterial,
+          positions: item.positions,
+          width: this.polylineWidth,
+          polylineIndex: index,
+          loop: true
+        }
+        polylines.push(polyline)
+      })
+      return polylines
+    },
+    labels () {
+      const labels = []
+      this.polylines.forEach((polyline, index) => {
+        const label = {
+          backgroundColor: this.backgroundColor,
+          fillColor: this.fillColor,
+          font: this.font,
+          horizontalOrigin: 1,
+          labelStyle: this.labelStyle,
+          outlineColor: this.outlineColor,
+          outlineWidth: this.outlineWidth,
+          pixelOffset: this.pixelOffset,
+          position: polyline.positions[polyline.positions.length - 1],
+          showBackground: this.showBackground,
+          disableDepthTestDistance: Number.POSITIVE_INFINITY,
+          text: this.$vc.lang.measure.area +
+              ': ' +
+              (polyline.area > 1000000 ? (polyline.area / 1000000).toFixed(2) + 'km²' : polyline.area.toFixed(2) + '㎡')
+        }
+        labels.push(label)
+        polyline.positions.forEach((position, subIndex) => {
+          if (this.alongLine && polyline.positions.length > 1 && subIndex + 1 < polyline.distances.length) {
+            const label = {
+              backgroundColor: this.backgroundColor,
+              fillColor: this.fillColor,
+              font: this.font,
+              horizontalOrigin: 0,
+              labelStyle: this.labelStyle,
+              outlineColor: this.outlineColor,
+              outlineWidth: this.outlineWidth,
+              pixelOffset: this.pixelOffset,
+              position: subIndex !== polyline.positions.length - 1
+                ? this.getMidPoistion(polyline.positions[subIndex], polyline.positions[subIndex + 1])
+                : this.getMidPoistion(polyline.positions[subIndex], polyline.positions[0]),
+              showBackground: this.showBackground,
+              disableDepthTestDistance: Number.POSITIVE_INFINITY,
+              text: this.getDistanceText(polyline.distances[subIndex + 1] - polyline.distances[subIndex]),
+              verticalOrigin: 0
+            }
+            labels.push(label)
+          }
+        })
+      })
+      return labels
     }
   },
   methods: {
@@ -320,7 +318,7 @@ export default {
     clear () {
       this.distance = 0
       this.polylines = []
-      this.labels = []
+      // this.labels = []
       this.measuring = false
     }
   }

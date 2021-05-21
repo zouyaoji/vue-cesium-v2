@@ -25,12 +25,11 @@ export default {
   },
   data () {
     return {
-      nowaiting: true,
       callBackColor: {}
     }
   },
-  mounted () {
-    this.getParent(this.$parent).createPromise.then(({ Cesium, viewer }) => {
+  methods: {
+    async createCesiumObject () {
       const { deviationAlpha, color } = this
       const colorObject = makeColor(color)
       this.flag = true
@@ -45,19 +44,7 @@ export default {
         }
         return colorObject.withAlpha(this.x)
       }
-    })
-  },
-  methods: {
-    async createCesiumObject () {
-      return this.$refs.entity.createPromise.then(({ Cesium, viewer, cesiumObject }) => {
-        if (!this.$refs.entity._mounted) {
-          return this.$refs.entity.load().then(({ Cesium, viewer, cesiumObject }) => {
-            return cesiumObject
-          })
-        } else {
-          return cesiumObject
-        }
-      })
+      return this.$refs.entity
     },
     async mount () {
       return true

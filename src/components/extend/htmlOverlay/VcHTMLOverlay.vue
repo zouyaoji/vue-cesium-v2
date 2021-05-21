@@ -1,5 +1,5 @@
 <template>
-  <div @click="onClick" class="vc-html-container">
+  <div @click="onClick" class="vc-html-container" v-if="canRender">
     <slot></slot>
   </div>
 </template>
@@ -19,7 +19,8 @@ export default {
   },
   data () {
     return {
-      nowaiting: true
+      // nowaiting: true,
+      canRender: false
     }
   },
   methods: {
@@ -29,12 +30,13 @@ export default {
       return this.$el
     },
     async mount () {
+      this.canRender = true
       return true
     },
     async unmount () {
       const { viewer, onPreRender } = this
       viewer.scene.preRender.removeEventListener(onPreRender)
-      this.$el.style.display = 'none'
+      this.canRender = false
       return true
     },
     onPreRender () {
@@ -59,6 +61,8 @@ export default {
               this.$el.style.display = 'block'
             }
           }
+        } else {
+          this.$el.style.display = 'block'
         }
       }
     },

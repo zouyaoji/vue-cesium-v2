@@ -49,27 +49,13 @@ export default {
     return {
       material: {},
       radius1: undefined,
-      radius2: undefined,
-      nowaiting: true
+      radius2: undefined
     }
-  },
-  mounted () {
-    this.getParent(this.$parent).createPromise.then(({ Cesium, viewer }) => {
-      this.init()
-    })
   },
   methods: {
     async createCesiumObject () {
-      return Promise.all([this.$refs.entity1.createPromise, this.$refs.entity2.createPromise]).then((entities) => {
-        if (!this.$refs.entity1._mounted || !this.$refs.entity1._mounted) {
-          this.init()
-          return Promise.all([this.$refs.entity1.load(), this.$refs.entity2.load()]).then((entities) => {
-            return entities
-          })
-        } else {
-          return entities
-        }
-      })
+      this.init()
+      return Promise.all([this.$refs.entity1, this.$refs.entity2])
     },
     init () {
       const { minRadius, maxRadius, imageUrl, interval, changeRadius1, changeRadius2, color } = this
@@ -99,9 +85,7 @@ export default {
     async unmount () {
       this.radius1 = 0
       this.radius2 = 0
-      return this.$refs.entity1 && this.$refs.entity2
-        ? Promise.all([this.$refs.entity1.unload(), this.$refs.entity2.unload()])
-        : true
+      return true
     },
     changeRadius1 () {
       const { deviationRadius, maxRadius, minRadius } = this

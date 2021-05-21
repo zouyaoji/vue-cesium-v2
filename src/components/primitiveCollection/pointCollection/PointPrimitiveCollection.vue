@@ -1,11 +1,11 @@
 <script>
 import { differenceBy } from 'lodash-es'
-import { blendOption, modelMatrix, debugShowBoundingVolume } from '../../../mixins/mixinProps'
+import { blendOption, modelMatrix, debugShowBoundingVolume, show } from '../../../mixins/mixinProps'
 import mixinPrimitiveCollection from '../../../mixins/primitives/mixinPrimitiveCollection'
 
 export default {
   name: 'vc-collection-primitive-point',
-  mixins: [blendOption, modelMatrix, debugShowBoundingVolume, mixinPrimitiveCollection],
+  mixins: [blendOption, modelMatrix, debugShowBoundingVolume, show, mixinPrimitiveCollection],
   props: {
     points: {
       type: Array,

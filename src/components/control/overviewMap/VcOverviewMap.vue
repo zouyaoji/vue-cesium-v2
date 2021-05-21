@@ -1,5 +1,5 @@
 <template>
-  <div :style="ovStyle" class="vc-leaflet-control-minimap" id="vc-overview-map" ref="leafletContainer"></div>
+  <div :style="ovStyle" class="vc-leaflet-control-minimap" id="vc-overview-map" ref="leafletContainer" v-if="canRender"></div>
 </template>
 
 <script>
@@ -55,11 +55,11 @@ export default {
   },
   data () {
     return {
-      nowaiting: true,
       bottom: 10,
       right: 10,
       top: 50,
-      left: 10
+      left: 10,
+      canRender: false
     }
   },
   computed: {
@@ -95,25 +95,30 @@ export default {
   },
   methods: {
     async createCesiumObject () {
-      const { viewer, width, height, anchor, aimingRectOptions, shadowRectOptions, toggleDisplay } = this
-      const url = 'https://webst01.is.autonavi.com/appmaptile?style=7&x={x}&y={y}&z={z}'
-      const layer = new TileLayer(url, {
-        minZoom: 0,
-        maxZoom: 20
+      this.canRender = true
+      return new Promise((resolve, reject) => {
+        this.$nextTick(() => {
+          const { viewer, width, height, anchor, aimingRectOptions, shadowRectOptions, toggleDisplay } = this
+          const url = 'https://webst01.is.autonavi.com/appmaptile?style=7&x={x}&y={y}&z={z}'
+          const layer = new TileLayer(url, {
+            minZoom: 0,
+            maxZoom: 20
+          })
+          const container = this.$refs.leafletContainer
+          const options = {
+            container: container,
+            toggleDisplay: toggleDisplay,
+            width: width,
+            height: height,
+            position: anchor,
+            aimingRectOptions: aimingRectOptions,
+            shadowRectOptions: shadowRectOptions
+          }
+          viewer.widgetResized.addEventListener(this.widgetResized)
+          this.widgetResized()
+          resolve(new CesiumOverviewMapControl(viewer, layer, options, this))
+        })
       })
-      const container = this.$refs.leafletContainer
-      const options = {
-        container: container,
-        toggleDisplay: toggleDisplay,
-        width: width,
-        height: height,
-        position: anchor,
-        aimingRectOptions: aimingRectOptions,
-        shadowRectOptions: shadowRectOptions
-      }
-      viewer.widgetResized.addEventListener(this.widgetResized)
-      this.widgetResized()
-      return new CesiumOverviewMapControl(viewer, layer, options, this)
     },
     widgetResized () {
       let bottom = 10
@@ -163,6 +168,7 @@ export default {
     },
     async unmount () {
       this.viewer.widgetResized.removeEventListener(this.widgetResized)
+      this.canRender = false
       return true
     }
   },

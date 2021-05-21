@@ -26,10 +26,12 @@ const graphics = [
 ]
 /**
  * Get the parent component. 获取 vc-viewer 组件。
- * @param {VueComponent} $component.
+ * @param {VueComponent} cmp.
  */
-const getParent = ($component) =>
-  !$component.cesiumClass && $component.$options.name !== 'vc-viewer' ? getParent($component.$parent) : $component
+const getVcParent = (cmp) => {
+  const parentVm = cmp.$parent
+  return !parentVm.cesiumClass && parentVm.$options.name !== 'vc-viewer' ? getVcParent(parentVm) : parentVm
+}
 
 /**
  * @vueMethods
@@ -45,13 +47,15 @@ const methods = {
       return false
     }
 
+    await this.beforeLoad()
+
     const { createCesiumObject, mount, setPropWatchers } = this
-    const $parent = getParent(this.$parent)
+    const $parent = getVcParent(this)
     const Cesium = (this.Cesium = $parent.Cesium)
     const viewer = (this.viewer = $parent.viewer)
     // If you call the unload method to unload the component, the Cesium object of the parent component may be unloaded. You need to load the parent component first.
     // 如果调用过 unload 方法卸载组件，父组件的 Cesium 对象可能会被卸载 需要先加载父组件。
-    if (!$parent.cesiumObject) {
+    if (!$parent.cesiumObject && !this.nowaiting) {
       return $parent.load()
     }
     // Register vue Watchers. 注册 Vue 侦听器。
@@ -61,6 +65,7 @@ const methods = {
       that.originInstance = cesiumObject
       // Load the created Cesium object. 加载创建的 Cesium 对象。
       return mount().then(() => {
+        $parent.children.push(this)
         that._mounted = true
         // Trigger the component's 'ready' event. 触发该组件的 'ready' 事件。
         that.$emit('ready', { Cesium, viewer, cesiumObject, vm: that })
@@ -73,9 +78,12 @@ const methods = {
    * @returns {Promise<Boolean>} returns true on success and false on failure. 成功返回 true，失败返回 false。
    */
   async unload () {
+    await this.beforeUnload()
+
     // If the component has subcomponents, you need to remove the subcomponents first. 如果该组件带有子组件，需要先移除子组件。
-    for (const $node of (this.$slots.default || []).map((vnode) => vnode.componentInstance).filter((cmp) => !!cmp)) {
-      await $node.unload()
+    for (let i = 0; i < this.children.length; i++) {
+      const vcChildCmp = this.children[i]
+      await vcChildCmp.unload()
     }
     const that = this
     return this._mounted
@@ -86,7 +94,7 @@ const methods = {
           that._mounted = false
           // If the component cannot be rendered without the parent component, the parent component needs to be removed.
           // 如果该组件的渲染和父组件是绑定在一起的，需要移除父组件。
-          return that.renderByParent ? that.$parent.unload() : true
+          return that.renderByParent && !this.unloadingPromise ? that.$parent.unload() : true
         })
       : false
   },
@@ -265,10 +273,13 @@ const methods = {
       await this.$parent.createPromise
     }
   },
+  async beforeUnload () {
+    await this.unloadingPromise
+  },
   /**
    * 获取 vc-viewer 组件
    */
-  getParent
+  getVcParent: getVcParent
 }
 /**
  * VueCesium common minxin
@@ -284,20 +295,28 @@ export default {
   },
   created () {
     this._mounted = false
-    this.cesiumClass = nameClassMap[this.$options.name]
-    const { beforeLoad, load } = this
-    const $parent = getParent(this.$parent)
-    // this._createPromise = Promise.resolve(beforeLoad()).then(() => load())
-    this._createPromise = Promise.resolve(beforeLoad()).then(() => {
-      return new Promise((resolve, reject) => {
-        const viewer = $parent.viewer
-        viewer && resolve(load())
+    this.cesiumClass = this.cesiumClass || nameClassMap[this.$options.name]
+    this.children = []
+    const $parent = getVcParent(this)
+    this._createPromise = new Promise((resolve, reject) => {
+      try {
+        let isLoading = false
+        if (this.$services.viewer) {
+          isLoading = true
+          this.load().then((e) => {
+            resolve(e)
+            isLoading = false
+          })
+        }
+
         $parent.$on('ready', () => {
-          resolve(load())
-          // .then(val => resolve(val))
-          // .catch((error) => reject(new Error(`[C_PKG_FULLNAME] ERROR: An error occurred during the initialization of the ${this.cesiumClass}!` + error)))
+          if (!isLoading) {
+            resolve(this.load())
+          }
         })
-      })
+      } catch (e) {
+        reject(e)
+      }
     })
 
     Object.defineProperties(this, {
@@ -315,9 +334,13 @@ export default {
       }
     })
   },
-  destroyed () {
-    this.unload().then(() => {
-      this.$emit('destroyed', this)
+  beforeDestroy () {
+    this.unloadingPromise = new Promise((resolve, reject) => {
+      this.unload().then(() => {
+        resolve(true)
+        this.unloadingPromise = undefined
+        this.$emit('destroyed', this)
+      })
     })
   }
 }

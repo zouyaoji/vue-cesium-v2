@@ -105,7 +105,27 @@ const nameClassMap = {
   'vc-geometry-outline-wall': 'WallOutlineGeometry',
   // stage
   'vc-stage-process-post': 'PostProcessStage',
-  'vc-collection-stage-process-post': 'PostProcessStageCollection'
+  'vc-collection-stage-process-post': 'PostProcessStageCollection',
+  // extend
+  'vc-measure-distance': 'VcMeasureDistance',
+  'vc-measure-area': 'VcMeasureArea',
+  'vc-measure-height': 'VcMeasureHeight',
+  'vc-handler-draw-point': 'VcHandlerDrawPoint',
+  'vc-handler-draw-polyline': 'VcHandlerDrawPolyline',
+  'vc-handler-draw-polygon': 'VcHandlerDrawPolygon',
+  'vc-kriging-map': 'VcKrigingMap',
+  'vc-heatmap': 'VcHeatmap',
+  'vc-windmap': 'VcWindMap',
+  'vc-analytics-flood': 'VcAnalyticsFlood',
+  'vc-scan-circle': 'VcScanCircle',
+  'vc-scan-radar': 'VcScanRadar',
+  'vc-ripple-circle-double': 'VcRippleCircleDouble',
+  'vc-circle-roatating-double': 'VcCircleRoatatingDouble',
+  'vc-shine-ellipse': 'VcShineEllipse',
+  'vc-shine-point': 'VcShinePoint',
+  'vc-trail-polyline': 'VcTrailPolyline',
+  'vc-trail-wall': 'VcTrailWall',
+  'vc-overlay-html': 'VcOverlayHtml'
 }
 
 export default nameClassMap

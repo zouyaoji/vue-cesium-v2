@@ -1,4 +1,5 @@
 import cmp from '../virtualCmp'
+import VisibilityState from './VisibilityState'
 const props = {
   mode: {
     type: Number,
@@ -71,7 +72,7 @@ const props = {
 const watch = {
   async measuring (val) {
     let nextTick = false
-    const { polylines, startNew, type, $parent, getParent } = this
+    const { polylines, startNew, type, getVcParent } = this
     const polyline = polylines[polylines.length - 1]
     if (!val && polyline && !polyline.positions.length) {
       this.polylines.pop()
@@ -93,7 +94,7 @@ const watch = {
       }
 
       const drawCmpNames = ['vc-handler-draw-polyline', 'vc-handler-draw-point', 'vc-handler-draw-polygon']
-      for (const $node of getParent($parent).$slots.default || []) {
+      for (const $node of getVcParent(this).$slots.default || []) {
         if ($node.componentOptions && measureCmpNames.indexOf($node.componentOptions.tag) !== -1) {
           $node.child.measuring = false
           nextTick = true
@@ -111,6 +112,25 @@ const watch = {
     listener && this.$emit('activeEvt', { type: type, isActive: val })
   }
 }
+const computed = {
+  points () {
+    const points = []
+    this.polylines.forEach((polyline, index) => {
+      polyline.positions.forEach((position, subIndex) => {
+        const point = {
+          color: this.pointColor,
+          pixelSize: this.pointPixelSize,
+          position: position,
+          polylineIndex: index,
+          positionIndex: subIndex,
+          disableDepthTestDistance: Number.POSITIVE_INFINITY
+        }
+        points.push(point)
+      })
+    })
+    return points
+  }
+}
 
 const methods = {
   async createCesiumObject () {
@@ -123,6 +143,7 @@ const methods = {
     this.handler = handler
     this.enterMoveAction = false
     this.lastCartesianRemoved = false
+    this.visibilityState = new VisibilityState()
     return this.polylines
   },
   async mount () {
@@ -136,7 +157,7 @@ const methods = {
       return
     }
     const { Cesium, viewer, polylines, type, onMeasureEvt } = this
-    const cartesian = viewer.scene.pickPosition(movement.position)
+    const cartesian = this.getWorldPosition(viewer.scene, movement.position)
     if (!Cesium.defined(cartesian)) {
       return
     }
@@ -213,7 +234,7 @@ const methods = {
     if (!polyline.positions.length) {
       return
     }
-    const cartesian = viewer.scene.pickPosition(movement.endPosition)
+    const cartesian = this.getWorldPosition(viewer.scene, movement.endPosition)
     if (!Cesium.defined(cartesian)) {
       return
     }
@@ -280,7 +301,7 @@ const methods = {
     if (polyline.positions.length === 0) {
       return
     }
-    const cartesian = viewer.scene.pickPosition(movement.position)
+    const cartesian = this.getWorldPosition(viewer.scene, movement.position)
     if (!Cesium.defined(cartesian)) {
       return
     }
@@ -475,9 +496,6 @@ const methods = {
       } else {
         this.$refs.polylineCollection && (this.$refs.polylineCollection.cesiumObject._opaqueRS.depthTest.enabled = false)
       }
-      this.$refs.pointCollection && (this.$refs.pointCollection.cesiumObject._rsOpaque = rs)
-      this.$refs.labelCollection.cesiumObject._billboardCollection._rsTranslucent = rs
-      this.$refs.labelCollection.cesiumObject._backgroundBillboardCollection._rsTranslucent = rs
 
       const listener = this.$listeners.measureEvt
       const { type } = this
@@ -499,6 +517,36 @@ const methods = {
         listener && this.$emit('measureEvt', { polyline: polyline, label: labelsResult, type: 'heightMeasuring', finished: flag })
       }
     }
+  },
+  getWorldPosition (scene, windowPosition, result) {
+    const { Cesium3DTileFeature, Cesium3DTileset, Cartesian3, defined, Model, Ray } = Cesium
+    let position
+    const cartesianScratch = {}
+    const rayScratch = new Ray()
+    if (scene.pickPositionSupported) {
+      this.visibilityState.hide(scene)
+      const pickObj = scene.pick(windowPosition, 1, 1)
+      this.visibilityState.restore(scene)
+      if (defined(pickObj)) {
+        if (
+          pickObj instanceof Cesium3DTileFeature ||
+          pickObj.primitive instanceof Cesium3DTileset ||
+          pickObj.primitive instanceof Model
+        ) {
+          position = scene.pickPosition(windowPosition, cartesianScratch)
+          if (Cesium.defined(position)) {
+            return Cartesian3.clone(position, result)
+          }
+        }
+      }
+    }
+    if (defined(scene.globe)) {
+      const ray = scene.camera.getPickRay(windowPosition, rayScratch)
+      position = scene.globe.pick(ray, scene, cartesianScratch)
+      return defined(position) ? Cartesian3.clone(position, result) : undefined
+    }
+
+    return undefined
   }
 }
 
@@ -506,6 +554,7 @@ export default {
   mixins: [cmp],
   props,
   watch,
+  computed,
   methods,
   created () {
     Object.defineProperties(this, {

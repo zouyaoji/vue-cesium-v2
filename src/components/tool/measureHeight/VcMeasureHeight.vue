@@ -37,6 +37,7 @@
         :position="label.position"
         :showBackground="showBackground"
         :text="label.text"
+        :disableDepthTestDistance="Number.POSITIVE_INFINITY"
         v-for="(label, index) of labels"
       ></vc-primitive-label>
     </vc-collection-primitive-label>
@@ -54,8 +55,7 @@ export default {
       measuring: false,
       startPoint: {},
       polylines: [],
-      labels: [],
-      nowaiting: true
+      labels: []
     }
   },
   methods: {

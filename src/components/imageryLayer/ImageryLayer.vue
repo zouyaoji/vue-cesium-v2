@@ -67,21 +67,11 @@ export default {
       const { viewer, imageryLayer } = this
       return !viewer.isDestroyed() && viewer.imageryLayers.remove(imageryLayer)
     },
-    async refresh () {
-      return this.unmount().then(() => {
-        return this.createCesiumObject().then(cesiumObject => {
-          this.originInstance = cesiumObject
-          return this.mount()
-        })
-      })
-    },
     setProvider (provider) {
-      if (provider !== this._provider) {
-        this._provider = provider
-        provider && this.refresh()
-        const listener = this.$listeners['update:imageryProvider']
-        if (listener) this.$emit('update:imageryProvider', provider)
-      }
+      this.imageryLayer._imageryProvider = provider
+      const listener = this.$listeners['update:imageryProvider']
+      if (listener) this.$emit('update:imageryProvider', provider)
+      return true
     },
     getServices () {
       const vm = this
