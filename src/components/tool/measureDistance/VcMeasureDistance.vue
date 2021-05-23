@@ -137,7 +137,6 @@ export default {
       return Cartesian3.midpoint(left, right, new Cartesian3())
     },
     clear () {
-      console.log('asd')
       this.polylines = []
       this.measuring = false
     },
