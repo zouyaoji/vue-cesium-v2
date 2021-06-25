@@ -69,13 +69,13 @@ function action (movement) {
 
     this.pickedFeature = undefined
   } else {
-    if (this.pickedFeature && this.pickedFeature !== pickedFeature) {
+    if (this.pickedFeature && this.pickedFeature.id !== pickedFeature.id) {
       pickedFeatureAndCallbackNames.push({ // 拾取到对象，this.pickedFeature也有记录，两者不同，说明操作到另外一个对象上去了
         callbackName: callbackNameOut,
         pickedFeature: this.pickedFeature
       })
     }
-    if (callbackName === 'mousemove' && (!this.pickedFeature || this.pickedFeature !== pickedFeature)) {
+    if (callbackName === 'mousemove' && (!this.pickedFeature || this.pickedFeature.id !== pickedFeature.id)) {
       pickedFeatureAndCallbackNames.push({
         callbackName: 'mouseover',
         pickedFeature
