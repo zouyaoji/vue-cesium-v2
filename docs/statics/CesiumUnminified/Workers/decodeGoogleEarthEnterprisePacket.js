@@ -21,10 +21,10 @@
  * See https://github.com/CesiumGS/cesium/blob/master/LICENSE.md for full licensing details.
  */
 
-define(['./when-54c2dc71', './Check-6c0211bc', './RuntimeError-2109023a', './createTaskProcessorWorker'], function (when, Check, RuntimeError, createTaskProcessorWorker) { 'use strict';
+define(['./Check-5e798bbf', './RuntimeError-7f634f5d', './when-208fe5b0', './createTaskProcessorWorker'], function (Check, RuntimeError, when, createTaskProcessorWorker) { 'use strict';
 
-  var compressedMagic = 0x7468dead;
-  var compressedMagicSwap = 0xadde6874;
+  var compressedMagic$1 = 0x7468dead;
+  var compressedMagicSwap$1 = 0xadde6874;
 
   /**
    * Decodes data that is received from the Google Earth Enterprise server.
@@ -53,7 +53,7 @@ define(['./when-54c2dc71', './Check-6c0211bc', './RuntimeError-2109023a', './cre
 
     var dataView = new DataView(data);
     var magic = dataView.getUint32(0, true);
-    if (magic === compressedMagic || magic === compressedMagicSwap) {
+    if (magic === compressedMagic$1 || magic === compressedMagicSwap$1) {
       // Occasionally packets don't come back encoded, so just return
       return data;
     }
@@ -3561,29 +3561,44 @@ define(['./when-54c2dc71', './Check-6c0211bc', './RuntimeError-2109023a', './cre
     return tileInfo;
   }
 
+  var numMeshesPerPacket = 5;
+  var numSubMeshesPerMesh = 4;
+
+  // Each terrain packet will have 5 meshes - each containg 4 sub-meshes:
+  //    1 even level mesh and its 4 odd level children.
+  // Any remaining bytes after the 20 sub-meshes contains water surface meshes,
+  // which are ignored.
   function processTerrain(buffer, totalSize, transferableObjects) {
     var dv = new DataView(buffer);
 
-    var offset = 0;
-    var terrainTiles = [];
-    while (offset < totalSize) {
-      // Each tile is split into 4 parts
-      var tileStart = offset;
-      for (var quad = 0; quad < 4; ++quad) {
-        var size = dv.getUint32(offset, true);
-        offset += sizeOfUint32;
-        offset += size;
+    // Find the sub-meshes.
+    var advanceMesh = function (pos) {
+      for (var sub = 0; sub < numSubMeshesPerMesh; ++sub) {
+        var size = dv.getUint32(pos, true);
+        pos += sizeOfUint32;
+        pos += size;
+        if (pos > totalSize) {
+          throw new RuntimeError.RuntimeError("Malformed terrain packet found.");
+        }
       }
-      var tile = buffer.slice(tileStart, offset);
-      transferableObjects.push(tile);
-      terrainTiles.push(tile);
+      return pos;
+    };
+
+    var offset = 0;
+    var terrainMeshes = [];
+    while (terrainMeshes.length < numMeshesPerPacket) {
+      var start = offset;
+      offset = advanceMesh(offset);
+      var mesh = buffer.slice(start, offset);
+      transferableObjects.push(mesh);
+      terrainMeshes.push(mesh);
     }
 
-    return terrainTiles;
+    return terrainMeshes;
   }
 
-  var compressedMagic$1 = 0x7468dead;
-  var compressedMagicSwap$1 = 0xadde6874;
+  var compressedMagic = 0x7468dead;
+  var compressedMagicSwap = 0xadde6874;
 
   function uncompressPacket(data) {
     // The layout of this decoded data is
@@ -3596,12 +3611,12 @@ define(['./when-54c2dc71', './Check-6c0211bc', './RuntimeError-2109023a', './cre
     var offset = 0;
     var magic = dv.getUint32(offset, true);
     offset += sizeOfUint32;
-    if (magic !== compressedMagic$1 && magic !== compressedMagicSwap$1) {
+    if (magic !== compressedMagic && magic !== compressedMagicSwap) {
       throw new RuntimeError.RuntimeError("Invalid magic");
     }
 
     // Get the size of the compressed buffer - the endianness depends on which magic was used
-    var size = dv.getUint32(offset, magic === compressedMagic$1);
+    var size = dv.getUint32(offset, magic === compressedMagic);
     offset += sizeOfUint32;
 
     var compressedPacket = new Uint8Array(data, offset);

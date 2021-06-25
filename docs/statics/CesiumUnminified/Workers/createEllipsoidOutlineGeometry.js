@@ -21,7 +21,7 @@
  * See https://github.com/CesiumGS/cesium/blob/master/LICENSE.md for full licensing details.
  */
 
-define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-ea28baad', './Transforms-75068085', './RuntimeError-2109023a', './WebGLConstants-76bb35d1', './ComponentDatatype-a26dd044', './GeometryAttribute-e92aa207', './GeometryAttributes-4fcfcf40', './IndexDatatype-66029622', './GeometryOffsetAttribute-d746452d', './EllipsoidOutlineGeometry-f345866b'], function (when, Check, _Math, Cartesian2, Transforms, RuntimeError, WebGLConstants, ComponentDatatype, GeometryAttribute, GeometryAttributes, IndexDatatype, GeometryOffsetAttribute, EllipsoidOutlineGeometry) { 'use strict';
+define(['./when-208fe5b0', './EllipsoidOutlineGeometry-91f2c235', './GeometryOffsetAttribute-6fce6185', './Check-5e798bbf', './Transforms-b2c3e401', './Cartesian2-e9bb1bb3', './Math-56f06cd5', './RuntimeError-7f634f5d', './ComponentDatatype-b3120730', './WebGLConstants-76bb35d1', './GeometryAttribute-dddfbf98', './GeometryAttributes-b0b294d8', './IndexDatatype-4d4b60a0'], function (when, EllipsoidOutlineGeometry, GeometryOffsetAttribute, Check, Transforms, Cartesian2, _Math, RuntimeError, ComponentDatatype, WebGLConstants, GeometryAttribute, GeometryAttributes, IndexDatatype) { 'use strict';
 
   function createEllipsoidOutlineGeometry(ellipsoidGeometry, offset) {
     if (when.defined(ellipsoidGeometry.buffer)) {

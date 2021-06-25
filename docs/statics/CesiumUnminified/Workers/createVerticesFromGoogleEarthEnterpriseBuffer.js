@@ -21,7 +21,7 @@
  * See https://github.com/CesiumGS/cesium/blob/master/LICENSE.md for full licensing details.
  */
 
-define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-ea28baad', './Transforms-75068085', './RuntimeError-2109023a', './WebGLConstants-76bb35d1', './ComponentDatatype-a26dd044', './AttributeCompression-8a649799', './IntersectionTests-074515f6', './Plane-2e8286e3', './WebMercatorProjection-75bbddfc', './createTaskProcessorWorker', './EllipsoidTangentPlane-f46879ff', './OrientedBoundingBox-4ccaa124', './TerrainEncoding-fb763fbf'], function (when, Check, _Math, Cartesian2, Transforms, RuntimeError, WebGLConstants, ComponentDatatype, AttributeCompression, IntersectionTests, Plane, WebMercatorProjection, createTaskProcessorWorker, EllipsoidTangentPlane, OrientedBoundingBox, TerrainEncoding) { 'use strict';
+define(['./EllipsoidTangentPlane-f517eeed', './Transforms-b2c3e401', './Cartesian2-e9bb1bb3', './when-208fe5b0', './TerrainEncoding-00c05ce8', './Math-56f06cd5', './OrientedBoundingBox-df00886d', './RuntimeError-7f634f5d', './WebMercatorProjection-7b54c659', './createTaskProcessorWorker', './Check-5e798bbf', './IntersectionTests-19697198', './Plane-6fbc10a1', './AttributeCompression-d1cd1d9c', './ComponentDatatype-b3120730', './WebGLConstants-76bb35d1'], function (EllipsoidTangentPlane, Transforms, Cartesian2, when, TerrainEncoding, _Math, OrientedBoundingBox, RuntimeError, WebMercatorProjection, createTaskProcessorWorker, Check, IntersectionTests, Plane, AttributeCompression, ComponentDatatype, WebGLConstants) { 'use strict';
 
   var sizeOfUint16 = Uint16Array.BYTES_PER_ELEMENT;
   var sizeOfInt32 = Int32Array.BYTES_PER_ELEMENT;
