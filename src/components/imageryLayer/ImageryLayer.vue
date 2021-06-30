@@ -68,9 +68,14 @@ export default {
       return !viewer.isDestroyed() && viewer.imageryLayers.remove(imageryLayer)
     },
     setProvider (provider) {
-      this.imageryLayer._imageryProvider = provider
-      const listener = this.$listeners['update:imageryProvider']
-      if (listener) this.$emit('update:imageryProvider', provider)
+      if (undefined === provider) {
+        this.unmount()
+      } else {
+        this.imageryLayer._imageryProvider = provider
+        const listener = this.$listeners['update:imageryProvider']
+        if (listener) this.$emit('update:imageryProvider', provider)
+      }
+
       return true
     },
     getServices () {
