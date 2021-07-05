@@ -21,7 +21,7 @@
  * See https://github.com/CesiumGS/cesium/blob/master/LICENSE.md for full licensing details.
  */
 
-define(['./ComponentDatatype-b3120730', './when-208fe5b0', './IndexDatatype-4d4b60a0', './RuntimeError-7f634f5d', './createTaskProcessorWorker', './Check-5e798bbf', './WebGLConstants-76bb35d1', './Math-56f06cd5'], function (ComponentDatatype, when, IndexDatatype, RuntimeError, createTaskProcessorWorker, Check, WebGLConstants, _Math) { 'use strict';
+define(['./ComponentDatatype-cc8f5f00', './when-208fe5b0', './IndexDatatype-3a89c589', './RuntimeError-7f634f5d', './createTaskProcessorWorker', './Check-5e798bbf', './WebGLConstants-5e2a49ab', './Math-56f06cd5'], function (ComponentDatatype, when, IndexDatatype, RuntimeError, createTaskProcessorWorker, Check, WebGLConstants, _Math) { 'use strict';
 
   /* global require */
 
