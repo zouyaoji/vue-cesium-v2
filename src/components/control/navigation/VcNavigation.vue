@@ -86,7 +86,9 @@ export default {
         enableMyLocation: {
           amap: {
             key: undefined
-          }
+          },
+          maximumHeight: undefined,
+          hpr: [0, 0, 3000]
         }
       },
       ldBottom: 2,

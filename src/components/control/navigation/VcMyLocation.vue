@@ -129,11 +129,11 @@ export default {
     zoomToMyLocation (position) {
       const longitude = position.lng
       const latitude = position.lat
-      const { Cartesian3, Rectangle, Ellipsoid, sampleTerrain } = Cesium
+      const { Cartesian3, Rectangle, Ellipsoid, sampleTerrain, defined, SceneMode } = Cesium
       const { datasource, describeWithoutUnderscores } = this
 
       datasource.entities.removeAll()
-      datasource.entities.add({
+      const myPositionEntity = datasource.entities.add({
         id: 'My Location',
         position: Cartesian3.fromDegrees(longitude, latitude),
         point: {
@@ -147,6 +147,18 @@ export default {
           latitude: latitude
         })
       })
+
+      const options = {
+        duration: this.duration
+      }
+
+      defined(this.enableMyLocation.maximumHeight) && (options.maximumHeight = this.enableMyLocation.maximumHeight)
+      defined(this.enableMyLocation.hpr) && Array.isArray(this.enableMyLocation.hpr) &&
+        (options.offset = new Cesium.HeadingPitchRange(this.enableMyLocation.hpr[0], this.enableMyLocation.hpr[1], this.enableMyLocation.hpr[2]))
+
+      if (this.viewer.scene.mode === SceneMode.SCENE2D || this.viewer.scene.mode === SceneMode.COLUMBUS_VIEW) {
+        return this.viewer.flyTo(myPositionEntity, options)
+      }
 
       // west, south, east, north, result
       const rectangle = Rectangle.fromDegrees(longitude - 0.01, latitude - 0.01, longitude + 0.01, latitude + 0.01)
