@@ -214,26 +214,26 @@ export default {
       const {
         Cartesian3,
         EllipsoidTangentPlane,
-        Ellipsoid,
         Math: CesiumMath,
         PolygonGeometryLibrary,
         PolygonHierarchy,
         VertexFormat,
         ArcType
       } = Cesium
+      const { viewer } = this
       const perPositionHeight = !this.clampToGround
       // Request the triangles that make up the polygon from Cesium.
       // 获取组成多边形的三角形。
-      const tangentPlane = EllipsoidTangentPlane.fromPoints(positions, Ellipsoid.WGS84)
+      const tangentPlane = EllipsoidTangentPlane.fromPoints(positions, viewer.scene.globe.ellipsoid)
       const polygons = PolygonGeometryLibrary.polygonsFromHierarchy(
         new PolygonHierarchy(positions),
         tangentPlane.projectPointsOntoPlane.bind(tangentPlane),
         this.clampToGround,
-        Ellipsoid.WGS84
+        viewer.scene.globe.ellipsoid
       )
 
       const geom = PolygonGeometryLibrary.createGeometryFromPositions(
-        Ellipsoid.WGS84,
+        viewer.scene.globe.ellipsoid,
         polygons.polygons[0],
         CesiumMath.RADIANS_PER_DEGREE,
         perPositionHeight,

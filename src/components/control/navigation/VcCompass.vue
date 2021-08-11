@@ -119,7 +119,7 @@ export default {
       }
     },
     handleDoubleClick (e) {
-      const { Cartesian2, Cartesian3, defined, Ellipsoid, Matrix4, Ray, SceneMode, Transforms } = Cesium
+      const { Cartesian2, Cartesian3, defined, Matrix4, Ray, SceneMode, Transforms } = Cesium
 
       const scene = this.viewer.scene
       const camera = scene.camera
@@ -156,7 +156,7 @@ export default {
         return
       }
 
-      const rotateFrame = Transforms.eastNorthUpToFixedFrame(center, Ellipsoid.WGS84)
+      const rotateFrame = Transforms.eastNorthUpToFixedFrame(center, this.viewer.scene.globe.ellipsoid)
 
       const lookVector = Cartesian3.subtract(center, camera.position, new Cartesian3())
 
@@ -200,7 +200,7 @@ function viewerChange (viewModel) {
 }
 
 function orbit (viewModel, compassElement, cursorVector) {
-  const { Cartesian2, Cartesian3, defined, getTimestamp, Math: CesiumMath, Matrix4, Ellipsoid, Ray, SceneMode, Transforms } = Cesium
+  const { Cartesian2, Cartesian3, defined, getTimestamp, Math: CesiumMath, Matrix4, Ray, SceneMode, Transforms } = Cesium
   let scene = viewModel.viewer.scene
   let camera = scene.camera
   const sscc = scene.screenSpaceCameraController
@@ -256,10 +256,10 @@ function orbit (viewModel, compassElement, cursorVector) {
 
   let center = scene.globe.pick(ray, scene, centerScratch)
   if (!defined(center)) {
-    viewModel.orbitFrame = Transforms.eastNorthUpToFixedFrame(camera.positionWC, Ellipsoid.WGS84, newTransformScratch)
+    viewModel.orbitFrame = Transforms.eastNorthUpToFixedFrame(camera.positionWC, viewModel.viewer.scene.globe.ellipsoid, newTransformScratch)
     viewModel.orbitIsLook = true
   } else {
-    viewModel.orbitFrame = Transforms.eastNorthUpToFixedFrame(center, Ellipsoid.WGS84, newTransformScratch)
+    viewModel.orbitFrame = Transforms.eastNorthUpToFixedFrame(center, viewModel.viewer.scene.globe.ellipsoid, newTransformScratch)
     viewModel.orbitIsLook = false
   }
 
@@ -367,7 +367,7 @@ function rotate (viewModel, compassElement, cursorVector) {
   document.removeEventListener('touchmove', viewModel.rotateMouseMoveFunction, false)
   document.removeEventListener('mouseup', viewModel.rotateMouseUpFunction, false)
   document.removeEventListener('touchend', viewModel.rotateMouseUpFunction, false)
-  const { Cartesian2, Cartesian3, defined, Math: CesiumMath, Matrix4, Ellipsoid, Ray, Transforms } = Cesium
+  const { Cartesian2, Cartesian3, defined, Math: CesiumMath, Matrix4, Ray, Transforms } = Cesium
   viewModel.rotateMouseMoveFunction = undefined
   viewModel.rotateMouseUpFunction = undefined
 
@@ -382,10 +382,10 @@ function rotate (viewModel, compassElement, cursorVector) {
 
   const viewCenter = scene.globe.pick(ray, scene, centerScratch)
   if (!defined(viewCenter)) {
-    viewModel.rotateFrame = Transforms.eastNorthUpToFixedFrame(camera.positionWC, Ellipsoid.WGS84, newTransformScratch)
+    viewModel.rotateFrame = Transforms.eastNorthUpToFixedFrame(camera.positionWC, viewModel.viewer.scene.globe.ellipsoid, newTransformScratch)
     viewModel.rotateIsLook = true
   } else {
-    viewModel.rotateFrame = Transforms.eastNorthUpToFixedFrame(viewCenter, Ellipsoid.WGS84, newTransformScratch)
+    viewModel.rotateFrame = Transforms.eastNorthUpToFixedFrame(viewCenter, viewModel.viewer.scene.globe.ellipsoid, newTransformScratch)
     viewModel.rotateIsLook = false
   }
 

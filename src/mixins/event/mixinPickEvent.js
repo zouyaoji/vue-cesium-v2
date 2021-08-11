@@ -98,7 +98,7 @@ function action (movement) {
     const ray = scene.camera.getPickRay(position)
     intersection = scene.globe.pick(ray, scene)
   } else {
-    intersection = scene.camera.pickEllipsoid(position, Cesium.Ellipsoid.WGS84)
+    intersection = scene.camera.pickEllipsoid(position, viewer.scene.globe.ellipsoid)
   }
 
   let button = -1

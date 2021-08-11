@@ -422,9 +422,10 @@ const methods = {
    * @returns {Number} 返回两点之间的测地距离。
    */
   getGeodesicDistance (pointOne, pointTwo) {
-    const { Ellipsoid, EllipsoidGeodesic } = Cesium
-    const pickedPointCartographic = Ellipsoid.WGS84.cartesianToCartographic(pointOne)
-    const lastPointCartographic = Ellipsoid.WGS84.cartesianToCartographic(pointTwo)
+    const { EllipsoidGeodesic } = Cesium
+    const { viewer } = this
+    const pickedPointCartographic = viewer.scene.globe.ellipsoid.cartesianToCartographic(pointOne)
+    const lastPointCartographic = viewer.scene.globe.ellipsoid.cartesianToCartographic(pointTwo)
     const geodesic = new EllipsoidGeodesic(pickedPointCartographic, lastPointCartographic)
     return geodesic.surfaceDistance
   },

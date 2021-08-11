@@ -25,11 +25,11 @@ export default {
   },
   methods: {
     async createCesiumObject () {
-      const { viewer, onPreRender } = this
-      viewer.scene.preRender.addEventListener(onPreRender)
       return this.$el
     },
     async mount () {
+      const { viewer, onPreRender } = this
+      viewer.scene.preRender.addEventListener(onPreRender)
       this.canRender = true
       return true
     },

@@ -196,15 +196,15 @@ export default {
       }
     },
     getCameraFocus (scene) {
-      const { defined, Ellipsoid, IntersectionTests, Ray } = Cesium
+      const { defined, IntersectionTests, Ray } = Cesium
       const ray = new Ray(scene.camera.positionWC, scene.camera.directionWC)
-      const intersections = IntersectionTests.rayEllipsoid(ray, Ellipsoid.WGS84)
+      const intersections = IntersectionTests.rayEllipsoid(ray, this.viewer.scene.globe.ellipsoid)
       if (defined(intersections)) {
         return Ray.getPoint(ray, intersections.start)
       }
       // Camera direction is not pointing at the globe, so use the ellipsoid horizon point as
       // the focal point.
-      return IntersectionTests.grazingAltitudeLocation(ray, Ellipsoid.WGS84)
+      return IntersectionTests.grazingAltitudeLocation(ray, this.viewer.scene.globe.ellipsoid)
     }
   }
 }

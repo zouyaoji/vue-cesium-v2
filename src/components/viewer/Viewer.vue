@@ -2,7 +2,7 @@
  * @Author: zouyaoji
  * @Date: 2018-02-06 17:56:48
  * @Last Modified by: zouyaoji
- * @Last Modified time: 2021-05-22 01:00:11
+ * @Last Modified time: 2021-08-09 14:31:29
  */
 <template>
   <div id="cesiumContainer" ref="viewer" style="width:100%; height:100%;">
@@ -728,6 +728,10 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         navigation
       }
       this.removeNullItem(options)
+
+      if (Cesium.VERSION >= '1.83') {
+        delete options.terrainExaggeration
+      }
       let viewer = {}
       if (!global.XE) {
         viewer = new Cesium.Viewer($el, options)
@@ -736,6 +740,10 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         viewer = this.earth.czm.viewer
       }
       this.viewer = viewer
+
+      if (Cesium.VERSION >= '1.83') {
+        viewer.scene.globe.terrainExaggeration = terrainExaggeration
+      }
 
       if (Cesium.defined(this.camera)) {
         this.setCamera(this.camera)

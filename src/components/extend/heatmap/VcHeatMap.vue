@@ -95,7 +95,7 @@ export default {
   methods: {
     async createCesiumObject () {
       const { bounds, options, min, max, data, defaultOptions } = this
-      this._WMP = new Cesium.WebMercatorProjection()
+      this._WMP = new Cesium.WebMercatorProjection(this.viewer.scene.globe.ellipsoid)
       this._id = this.getID()
       options.gradient = options.gradient ? options.gradient : defaultOptions.gradient
       const { breaks, colors } = options

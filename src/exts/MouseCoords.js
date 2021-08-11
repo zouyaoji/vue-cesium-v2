@@ -4,13 +4,14 @@ import prettifyProjection from './prettifyProjection'
 import EarthGravityModel1996 from './EarthGravityModel1996'
 class MouseCoords {
   constructor (options = {}) {
+    console.log('test--------------', options)
     const { Cartographic, knockout } = Cesium
     const gridFileUrl = options.gridFileUrl
     gridFileUrl && (this.geoidModel = new EarthGravityModel1996(gridFileUrl))
 
-    this.proj4Projection = '+proj=utm +ellps=GRS80 +units=m +no_defs'
-    this.projectionUnits = 'm'
-    this.proj4longlat = '+proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees +no_defs'
+    this.proj4Projection = options.proj4Projection || '+proj=utm +ellps=GRS80 +units=m +no_defs'
+    this.projectionUnits = options.projectionUnits || 'm'
+    this.proj4longlat = options.proj4longlat || '+proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees +no_defs'
 
     this.lastHeightSamplePosition = new Cartographic()
     this.accurateSamplingDebounceTime = 250
