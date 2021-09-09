@@ -11,7 +11,7 @@
 ```javascript
 import Vue from 'vue'
 import VueCesium from 'vue-cesium'
-// VueCesium 默认使用 `https://unpkg.com/cesium/Build/Cesium/Cesium.js`
+// VueCesium 默认使用 `https://cdn.jsdelivr.net/npm/cesium@latest/Build/Cesium/Cesium.js`
 Vue.use(VueCesium)
 ```
 
@@ -30,7 +30,7 @@ Vue.use(VueCesium, {
   // 个人在线SuperMap Cesium Build包（在官方基础上二次开发出来的）：
   // cesiumPath: 'https://zouyaoji.top/vue-cesium/statics/SuperMapCesium/Cesium.js'
   // 官方在线Cesium Build包，有CDN加速，推荐用这个：
-  cesiumPath: 'https://unpkg.com/cesium/Build/Cesium/Cesium.js',
+  cesiumPath: 'https://cdn.jsdelivr.net/npm/cesium@latest/Build/Cesium/Cesium.js',
   // 指定Cesium.Ion.defaultAccessToken，使用Cesium ion的数据源需要到https://cesium.com/ion/申请一个账户，获取Access Token。不指定的话可能导致 Cesium 在线影像加载不了
   accessToken: ''
 })
@@ -62,7 +62,7 @@ Vue.use(VueCesium, {
 ```javascript
 import Vue from 'vue'
 import { Viewer, ImageryLayer } from 'vue-cesium'
-// VueCesium 默认使用 `https://unpkg.com/cesium/Build/Cesium/Cesium.js`
+// VueCesium 默认使用 `https://cdn.jsdelivr.net/npm/cesium@latest/Build/Cesium/Cesium.js`
 Vue.use(Viewer)
 Vue.use(ImageryLayer)
 ```

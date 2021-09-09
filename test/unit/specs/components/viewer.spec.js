@@ -1,3 +1,11 @@
+/*
+ * @Author: zouyaoji@https://github.com/zouyaoji
+ * @Date: 2021-04-06 09:23:38
+ * @LastEditTime: 2021-09-09 10:21:47
+ * @LastEditors: zouyaoji
+ * @Description:
+ * @FilePath: \vue-cesium-v2\test\unit\specs\components\viewer.spec.js
+ */
 
 import { Viewer } from '@/components/viewer'
 import { destroyVM, createTest, createVue, waitImmediate } from '../../util'
@@ -14,7 +22,7 @@ describe('vc-viewer', () => {
     })
   }).timeout(12000)
   it('cesiumPath', done => {
-    const vm = createTest(Viewer, { cesiumPath: 'https://unpkg.com/cesium@latest/Build/Cesium/Cesium.js' }, true)
+    const vm = createTest(Viewer, { cesiumPath: 'https://cdn.jsdelivr.net/npm/cesium@latest/Build/Cesium/Cesium.js' }, true)
     vm.$on('ready', ({ Cesium, viewer }) => {
       expect(viewer).to.be.instanceof(Cesium.Viewer)
       expect(vm.$el).to.contain('.cesium-widget canvas')

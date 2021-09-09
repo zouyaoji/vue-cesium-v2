@@ -58,6 +58,7 @@ The `vc-collection-primitive-polyline` component is used to load a renderable co
             positions.push({ lng: Math.random() * 40 + 85, lat: Math.random() * 30 + 21 })
             positions.push({ lng: Math.random() * 40 + 85, lat: Math.random() * 30 + 21 })
             polyline.positions = positions
+            polyline.material = '#' + Math.random().toString(16).substr(2, 6).toUpperCase()
             polylines.push(polyline)
           }
           this.polylines = polylines
@@ -143,6 +144,7 @@ The `vc-collection-primitive-polyline` component is used to load a renderable co
           positions.push({ lng: Math.random() * 40 + 85, lat: Math.random() * 30 + 21 })
           positions.push({ lng: Math.random() * 40 + 85, lat: Math.random() * 30 + 21 })
           polyline.positions = positions
+          polyline.material = '#' + Math.random().toString(16).substr(2, 6).toUpperCase()
           polylines.push(polyline)
         }
         this.polylines = polylines

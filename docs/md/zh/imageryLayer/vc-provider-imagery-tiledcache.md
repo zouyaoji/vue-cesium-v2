@@ -14,13 +14,13 @@
       <vc-viewer @ready="ready" fullscreenButton :fullscreenElement="fullscreenElement">
         <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
           <vc-provider-imagery-tiledcache
-            url="https://songluck.com/gis/TiledCacheService/TiledCacheServlet"
+            url="https://www.songluck.com/gis/TiledCacheService/TiledCacheServlet"
             dir="WhiteMap"
           ></vc-provider-imagery-tiledcache>
         </vc-layer-imagery>
         <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
           <vc-provider-imagery-tiledcache
-            url="https://songluck.com/gis/TiledCacheService/TiledCacheServlet"
+            url="https://www.songluck.com/gis/TiledCacheService/TiledCacheServlet"
             dir="Labels"
           ></vc-provider-imagery-tiledcache>
         </vc-layer-imagery>
@@ -65,13 +65,13 @@
     <vc-viewer @ready="ready" fullscreenButton :fullscreenElement="fullscreenElement">
       <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
         <vc-provider-imagery-tiledcache
-          url="https://songluck.com/gis/TiledCacheService/TiledCacheServlet"
+          url="https://www.songluck.com/gis/TiledCacheService/TiledCacheServlet"
           dir="WhiteMap"
         ></vc-provider-imagery-tiledcache>
       </vc-layer-imagery>
       <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
         <vc-provider-imagery-tiledcache
-          url="https://songluck.com/gis/TiledCacheService/TiledCacheServlet"
+          url="https://www.songluck.com/gis/TiledCacheService/TiledCacheServlet"
           dir="Labels"
         ></vc-provider-imagery-tiledcache>
       </vc-layer-imagery>

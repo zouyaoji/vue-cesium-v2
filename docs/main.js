@@ -1,3 +1,11 @@
+/*
+ * @Author: zouyaoji@https://github.com/zouyaoji
+ * @Date: 2021-06-30 22:20:50
+ * @LastEditTime: 2021-09-09 09:40:48
+ * @LastEditors: zouyaoji
+ * @Description:
+ * @FilePath: \vue-cesium-v2\docs\main.js
+ */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './components/App.vue'
@@ -31,7 +39,7 @@ Vue.use(VueCesium, {
   // cesiumPath: 'https://unpkg.com/cesium@1.54.0/Build/Cesium/Cesium.js',
   // cesiumPath: './statics/SupermapCesium/Cesium.js', // 超图
   // cesiumPath: './statics/EarthSDK/XbsjEarth/XbsjEarth.js', // CesiumLab EarthSDK
-  cesiumPath: './statics/Cesium/Cesium.js',
+  // cesiumPath: './statics/Cesium/Cesium.js',
   // cesiumPath: './statics/CesiumUnminified/Cesium.js',
 
   // lang: lang,
