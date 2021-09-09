@@ -4,7 +4,6 @@ import prettifyProjection from './prettifyProjection'
 import EarthGravityModel1996 from './EarthGravityModel1996'
 class MouseCoords {
   constructor (options = {}) {
-    console.log('test--------------', options)
     const { Cartographic, knockout } = Cesium
     const gridFileUrl = options.gridFileUrl
     gridFileUrl && (this.geoidModel = new EarthGravityModel1996(gridFileUrl))

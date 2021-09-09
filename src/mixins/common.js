@@ -161,7 +161,7 @@ const methods = {
                 // Attributes are writable and directly respond to changes in attributes.
                 // 属性可写，直接动态响应属性的改变。
                 if (watcherOptions && watcherOptions.cesiumObjectBuilder) {
-                  const newVal = watcherOptions.cesiumObjectBuilder.call(that, val)
+                  const newVal = watcherOptions.cesiumObjectBuilder.call(that, val, that.viewer.scene.globe.ellipsoid)
                   // If an exclude condition has been defined for the object, such as "_callback", Cesium will automatically handle it internally and no longer need to be assigned.
                   // 如果对象已经定义了 exclude 条件，如已经定义了“_callback”，Cesium 内部会自动处理的 不用再赋值了。
                   if (!(Cesium.defined(cesiumObject[cesiumProp]) && Cesium.defined(cesiumObject[cesiumProp]._callback))) {
@@ -257,7 +257,7 @@ const methods = {
       const cmpName = this.$options.name
       const propOptions = allProps[prop] && allProps[prop].props[prop]
       return propOptions && propOptions.watcherOptions && !isEmptyObj(value)
-        ? propOptions.watcherOptions.cesiumObjectBuilder.call(this, value)
+        ? propOptions.watcherOptions.cesiumObjectBuilder.call(this, value, this.viewer.scene.globe.ellipsoid)
         : isFunction(value) && (cmpName && (cmpName.indexOf('graphics') !== -1 || cmpName === 'vc-entity'))
           ? new Cesium.CallbackProperty(value, false)
           : value

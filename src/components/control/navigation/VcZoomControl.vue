@@ -43,7 +43,7 @@ export default {
         const resetView = this.defaultResetView
         if (resetView && resetView.lng) {
           viewer.camera.setView({
-            destination: Cesium.Cartesian3.fromDegrees(resetView.lng, resetView.lat, resetView.height),
+            destination: Cesium.Cartesian3.fromDegrees(resetView.lng, resetView.lat, resetView.height, viewer.scene.globe.ellipsoid),
             orientation: {
               heading: Cesium.Math.toRadians(resetView.heading || 360),
               pitch: Cesium.Math.toRadians(resetView.pitch || -90),
@@ -168,7 +168,7 @@ export default {
         const resetView = this.defaultResetView
         if (resetView && resetView.lng) {
           camera.flyTo({
-            destination: Cartesian3.fromDegrees(resetView.lng, resetView.lat, resetView.height),
+            destination: Cartesian3.fromDegrees(resetView.lng, resetView.lat, resetView.height, this.viewer.scene.globe.ellipsoid),
             orientation: {
               heading: Cesium.Math.toRadians(resetView.heading || 360),
               pitch: Cesium.Math.toRadians(resetView.pitch || -90),
@@ -190,7 +190,7 @@ export default {
           }
         } else {
           camera.flyTo({
-            destination: Cartesian3.fromDegrees(105, 29.999999999999993, 19059568.497290563)
+            destination: Cartesian3.fromDegrees(105, 29.999999999999993, 19059568.497290563, this.viewer.scene.globe.ellipsoid)
           })
         }
       }

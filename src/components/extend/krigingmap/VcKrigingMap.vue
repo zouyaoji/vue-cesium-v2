@@ -99,7 +99,7 @@ export default {
       if (coords.length > 4) {
         rectangle = Cesium.PolygonGeometry.computeRectangle({
           polygonHierarchy: new Cesium.PolygonHierarchy(
-            Cesium.Cartesian3.fromDegreesArray(coords)
+            Cesium.Cartesian3.fromDegreesArray(coords, this.viewer.scene.globe.ellipsoid)
           )
         })
       } else {

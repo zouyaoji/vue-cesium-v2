@@ -281,7 +281,7 @@ export default {
       const { Cartographic, Math: CesiumMath } = Cesium
       const array = []
       for (let i = 0, len = positions.length; i < len; i++) {
-        const cartographic = Cartographic.fromCartesian(positions[i])
+        const cartographic = Cartographic.fromCartesian(positions[i], this.viewer.scene.globe.ellipsoid)
         const longitude = CesiumMath.toDegrees(cartographic.longitude).toFixed(6)
         const latitude = CesiumMath.toDegrees(cartographic.latitude).toFixed(6)
         array.push({ x: longitude, y: latitude })

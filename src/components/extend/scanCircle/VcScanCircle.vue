@@ -38,15 +38,15 @@ export default {
     async createCesiumObject () {
       const { $props, transformProps, viewer } = this
       const options = transformProps($props)
-      const cartographicCenter = Cesium.Cartographic.fromCartesian(options.position)
-      const _Cartesian3Center = Cesium.Cartographic.toCartesian(cartographicCenter)
+      const cartographicCenter = Cesium.Cartographic.fromCartesian(options.position, viewer.scene.globe.ellipsoid)
+      const _Cartesian3Center = Cesium.Cartographic.toCartesian(cartographicCenter, viewer.scene.globe.ellipsoid)
       const _Cartesian4Center = new Cesium.Cartesian4(_Cartesian3Center.x, _Cartesian3Center.y, _Cartesian3Center.z, 1)
       const _CartographicCenter1 = new Cesium.Cartographic(
         cartographicCenter.longitude,
         cartographicCenter.latitude,
         cartographicCenter.height + 500
       )
-      const _Cartesian3Center1 = Cesium.Cartographic.toCartesian(_CartographicCenter1)
+      const _Cartesian3Center1 = Cesium.Cartographic.toCartesian(_CartographicCenter1, viewer.scene.globe.ellipsoid)
       const _Cartesian4Center1 = new Cesium.Cartesian4(_Cartesian3Center1.x, _Cartesian3Center1.y, _Cartesian3Center1.z, 1)
       const _time = new Date().getTime()
       const _scratchCartesian4Center = new Cesium.Cartesian4()

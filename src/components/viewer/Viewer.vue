@@ -809,7 +809,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
       const position = val.position
       if (position.lng && position.lat) {
         viewer.camera.setView({
-          destination: Cesium.Cartesian3.fromDegrees(position.lng, position.lat, position.height || 0),
+          destination: Cesium.Cartesian3.fromDegrees(position.lng, position.lat, position.height || 0, viewer.scene.globe.ellipsoid),
           orientation: {
             heading: Cesium.Math.toRadians(val.heading || 360),
             pitch: Cesium.Math.toRadians(val.pitch || -90),
@@ -932,7 +932,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
           ? this.cesiumPath
           : typeof this._Cesium !== 'undefined' && Object.prototype.hasOwnProperty.call(this._Cesium(), 'cesiumPath')
             ? this._Cesium().cesiumPath
-            : 'https://unpkg.com/cesium/Build/Cesium/Cesium.js'
+            : 'https://cdn.jsdelivr.net/npm/cesium@latest/Build/Cesium/Cesium.js'
 
         const dirName = dirname(cesiumPath)
         // 引入样式 earthsdk 会自动引 不用引入了

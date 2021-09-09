@@ -43,18 +43,20 @@ export function makeCartesian2 (val, isConstant = false) {
  * // const options = [108, 35, 1000]
  * const position = makeCartesian3 (options) // return Cesium.Cartesian3
  */
-export function makeCartesian3 (val, isConstant = false) {
-  const { CallbackProperty, Cartesian3 } = Cesium
+export function makeCartesian3 (val, ellipsoid, isConstant = false) {
+  const { CallbackProperty, Cartesian3, Ellipsoid } = Cesium
 
   if (val instanceof Cartesian3) {
     return val
   }
 
+  ellipsoid = ellipsoid || Ellipsoid.WGS84
+
   if (isObject(val)) {
     if (Object.prototype.hasOwnProperty.call(val, 'x')) {
       return new Cartesian3(val.x, val.y, val.z || 0)
     } else if (Object.prototype.hasOwnProperty.call(val, 'lng')) {
-      return Cartesian3.fromDegrees(val.lng, val.lat, val.height || 0)
+      return Cartesian3.fromDegrees(val.lng, val.lat, val.height || 0, ellipsoid)
     }
   }
 
@@ -74,12 +76,15 @@ export function makeCartesian3 (val, isConstant = false) {
  * @param {Array} val
  * @returns {Array<Cartesian3>}
  */
-export function makeCartesian3Array (vals, isConstant = false) {
-  const { CallbackProperty, Cartesian3 } = Cesium
+export function makeCartesian3Array (vals, ellipsoid, isConstant = false) {
+  const { CallbackProperty, Cartesian3, Ellipsoid } = Cesium
   if (isArray(vals)) {
     if (vals[0] instanceof Cartesian3 || vals._callback) {
       return vals
     }
+
+    ellipsoid = ellipsoid || Ellipsoid.WGS84
+
     if (isArray(vals[0])) {
       const coordinates = []
       for (let i = 0; i < vals.length; i++) {
@@ -87,7 +92,7 @@ export function makeCartesian3Array (vals, isConstant = false) {
         coordinates.push(vals[i][1])
         coordinates.push(vals[i][2] || 0)
       }
-      return Cartesian3.fromRadiansArrayHeights(coordinates)
+      return Cartesian3.fromRadiansArrayHeights(coordinates, ellipsoid)
     } else if (isObject(vals[0])) {
       const coordinates = []
       if (vals[0].lng) {
@@ -96,7 +101,7 @@ export function makeCartesian3Array (vals, isConstant = false) {
           coordinates.push(item.lat)
           coordinates.push(item.height || 0)
         })
-        return Cartesian3.fromDegreesArrayHeights(coordinates)
+        return Cartesian3.fromDegreesArrayHeights(coordinates, ellipsoid)
       } else {
         if (vals[0].x) {
           vals.forEach((item) => {
@@ -104,12 +109,12 @@ export function makeCartesian3Array (vals, isConstant = false) {
             coordinates.push(item.y)
             coordinates.push(item.z || 0)
           })
-          return Cartesian3.fromRadiansArrayHeights(coordinates)
+          return Cartesian3.fromRadiansArrayHeights(coordinates, ellipsoid)
         }
       }
     }
 
-    return Cartesian3.fromDegreesArrayHeights(vals)
+    return Cartesian3.fromDegreesArrayHeights(vals, ellipsoid)
   }
 
   if (isFunction(vals)) {
@@ -182,11 +187,11 @@ export function makeQuaternion (val, isConstant = false) {
  * 解析 HierarchyJson
  * @param {Object} val
  */
-function parsePolygonHierarchyJson (val) {
+function parsePolygonHierarchyJson (val, ellipsoid) {
   val.forEach((element) => {
-    element.positions = makeCartesian3Array(element.positions)
+    element.positions = makeCartesian3Array(element.positions, ellipsoid)
     if (element.holes) {
-      parsePolygonHierarchyJson(element.holes)
+      parsePolygonHierarchyJson(element.holes, ellipsoid)
     }
   })
 }
@@ -195,7 +200,7 @@ function parsePolygonHierarchyJson (val) {
  * 普通数组或对象转 Cesium.PolygonHierarchy 对象。
  * @param {Object|Array} val
  */
-export function makePolygonHierarchy (val, isConstant = false) {
+export function makePolygonHierarchy (val, ellipsoid, isConstant = false) {
   const { PolygonHierarchy, CallbackProperty } = Cesium
 
   if (val instanceof PolygonHierarchy) {
@@ -207,11 +212,11 @@ export function makePolygonHierarchy (val, isConstant = false) {
   }
 
   if (isArray(val) && val.length >= 3) {
-    return new PolygonHierarchy(makeCartesian3Array(val))
+    return new PolygonHierarchy(makeCartesian3Array(val, ellipsoid))
   }
   if (Cesium.defined(val.positions)) {
-    val.positions = makeCartesian3Array(val.positions)
-    parsePolygonHierarchyJson(val.holes)
+    val.positions = makeCartesian3Array(val.positions, ellipsoid)
+    parsePolygonHierarchyJson(val.holes, ellipsoid)
   }
 
   return val
