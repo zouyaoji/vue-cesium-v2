@@ -332,10 +332,12 @@ export function makeMaterialProperty (val, isConstant = false) {
     StripeMaterialProperty
   } = Cesium
 
-  if (/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$/.test(val) ||
+  if (
+    /(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$/.test(val) ||
     val instanceof Resource ||
     val instanceof HTMLCanvasElement ||
-    val instanceof HTMLVideoElement) {
+    val instanceof HTMLVideoElement
+  ) {
     const result = new ImageMaterialProperty({
       image: val,
       repeat: makeCartesian2({ x: 1.0, y: 1.0 }),
@@ -441,7 +443,14 @@ export function makeMaterial (val) {
     f(val)
     return new Cesium.Material(val)
   }
-  return val
+
+  if (isArray(val) || isString(val)) {
+    const material = Cesium.Material.fromType('Color')
+    material.uniforms.color = makeColor(val)
+    return material
+  }
+
+  return undefined
 }
 
 /**

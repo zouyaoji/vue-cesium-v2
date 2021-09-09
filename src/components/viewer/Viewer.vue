@@ -1,9 +1,3 @@
-/*
- * @Author: zouyaoji
- * @Date: 2018-02-06 17:56:48
- * @Last Modified by: zouyaoji
- * @Last Modified time: 2021-08-09 14:31:29
- */
 <template>
   <div id="cesiumContainer" ref="viewer" style="width:100%; height:100%;">
     <slot></slot>
@@ -39,7 +33,7 @@ export default {
       default: false
     },
     geocoder: {
-      type: Boolean,
+      type: [Boolean, Array],
       default: false
     },
     homeButton: {
@@ -86,8 +80,8 @@ export default {
     terrainProviderViewModels: Object,
     imageryProvider: Object,
     terrainProvider: Object,
-    skyBox: Object,
-    skyAtmosphere: Object,
+    skyBox: [Object, Boolean],
+    skyAtmosphere: [Object, Boolean],
     fullscreenElement: {
       type: [Element, String]
     },
@@ -115,8 +109,8 @@ export default {
       type: Boolean,
       default: true
     },
-    creditContainer: String,
-    creditViewport: String,
+    creditContainer: [Element, String],
+    creditViewport: [Element, String],
     dataSources: Object,
     terrainExaggeration: {
       type: Number,
@@ -845,28 +839,33 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         viewer.imageryLayers._update()
       }
     },
-    localeDateTimeFormatter (datetime, viewModel, ignoredate) {
+    localeDateTimeFormatter (date, viewModel, ignoredate) {
+      const { JulianDate } = Cesium
       if (this.UTCoffset) {
-        datetime = Cesium.JulianDate.addMinutes(datetime, this.UTCoffset, {})
+        date = JulianDate.addMinutes(date, this.UTCoffset, new JulianDate())
       }
-      const gregorianDT = Cesium.JulianDate.toGregorianDate(datetime)
-      let objDT
-      if (ignoredate) {
-        objDT = ''
-      } else {
-        objDT = new Date(gregorianDT.year, gregorianDT.month - 1, gregorianDT.day)
-        if (this.$vc.lang.isoName === 'zh-hans') {
-          objDT =
-            gregorianDT.year + '年' + objDT.toLocaleString(this.$vc.lang.isoName, { month: 'short' }) + gregorianDT.day + '日'
-        } else {
-          objDT = gregorianDT.day + ' ' + objDT.toLocaleString(this.$vc.lang.isoName, { month: 'short' }) + ' ' + gregorianDT.year
-        }
-        if (viewModel || gregorianDT.hour + gregorianDT.minute === 0) {
-          return objDT
-        }
-        objDT += ' '
+      const jsDate = JulianDate.toDate(date)
+      const timeString = jsDate
+        .toLocaleString(this.$vc.lang.isoName, {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          hour12: false
+        })
+        .replace(/,/g, '')
+      const dateString = jsDate
+        .toLocaleString(this.$vc.lang.isoName, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        })
+        .replace(/,/g, '')
+
+      if (!ignoredate && (viewModel || jsDate.getHours() + jsDate.getMinutes() === 0)) {
+        return dateString
       }
-      return objDT + Cesium.sprintf('%02d:%02d:%02d ' + this.TZcode, gregorianDT.hour, gregorianDT.minute, gregorianDT.second)
+
+      return ignoredate ? `${timeString} ${this.TZcode}` : `${dateString} ${timeString} ${this.TZcode}`
     },
     localeTimeFormatter (time, viewModel) {
       return this.localeDateTimeFormatter(time, viewModel, true)

@@ -42,6 +42,8 @@ class TiandituImageryProvider {
         case 'eia_c':
         case 'eva_w':
         case 'eva_c':
+        case 'ibo_c':
+        case 'ibo_w':
           TiandituMapsStyleLabels[TiandituMapsStyle[key]] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
           break
       }
@@ -156,7 +158,7 @@ function buildImageResource (x, y, level) {
   const subdomains = this._subdomains
   let url = this._url.replace('{s}', subdomains[(x + y + level) % subdomains.length])
   const uri = new Uri(url)
-  let obj = queryToObject(defaultValue(uri.query, ''))
+  let obj = queryToObject(defaultValue(uri.query?.(), ''))
   obj = combine(options, obj)
   obj.tilematrix = tileMatrixLabel
   obj.layer = this._layer
@@ -165,8 +167,8 @@ function buildImageResource (x, y, level) {
   obj.tilecol = x
   obj.tilematrixset = this._tileMatrixSetID
   obj.format = this._format
-  uri.query = objectToQuery(obj)
-  url = uri.toString()
+  const query = objectToQuery(obj)
+  url = uri.toString() + '?' + query
   defined(this._proxy) && (url = this._proxy.getURL(url))
   defined(this._token) && (url += '&tk=' + this._token)
   return url
