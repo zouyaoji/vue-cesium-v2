@@ -21,7 +21,7 @@
  * See https://github.com/CesiumGS/cesium/blob/master/LICENSE.md for full licensing details.
  */
 
-define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './RuntimeError-2109023a', './WebGLConstants-76bb35d1', './ComponentDatatype-a26dd044', './IndexDatatype-66029622', './createTaskProcessorWorker'], function (when, Check, _Math, RuntimeError, WebGLConstants, ComponentDatatype, IndexDatatype, createTaskProcessorWorker) { 'use strict';
+define(['./ComponentDatatype-cc8f5f00', './when-208fe5b0', './IndexDatatype-3a89c589', './RuntimeError-7f634f5d', './createTaskProcessorWorker', './Check-5e798bbf', './WebGLConstants-5e2a49ab', './Math-56f06cd5'], function (ComponentDatatype, when, IndexDatatype, RuntimeError, createTaskProcessorWorker, Check, WebGLConstants, _Math) { 'use strict';
 
   /* global require */
 
@@ -352,7 +352,7 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './RuntimeErro
   }
 
   function decode(parameters) {
-    if (when.defined(parameters.primitive)) {
+    if (when.defined(parameters.bufferView)) {
       return decodePrimitive(parameters);
     }
     return decodePointCloud(parameters);

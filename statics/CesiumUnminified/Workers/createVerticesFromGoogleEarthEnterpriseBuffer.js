@@ -21,7 +21,7 @@
  * See https://github.com/CesiumGS/cesium/blob/master/LICENSE.md for full licensing details.
  */
 
-define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-ea28baad', './Transforms-75068085', './RuntimeError-2109023a', './WebGLConstants-76bb35d1', './ComponentDatatype-a26dd044', './AttributeCompression-8a649799', './IntersectionTests-074515f6', './Plane-2e8286e3', './WebMercatorProjection-75bbddfc', './createTaskProcessorWorker', './EllipsoidTangentPlane-f46879ff', './OrientedBoundingBox-4ccaa124', './TerrainEncoding-fb763fbf'], function (when, Check, _Math, Cartesian2, Transforms, RuntimeError, WebGLConstants, ComponentDatatype, AttributeCompression, IntersectionTests, Plane, WebMercatorProjection, createTaskProcessorWorker, EllipsoidTangentPlane, OrientedBoundingBox, TerrainEncoding) { 'use strict';
+define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesian2-e9bb1bb3', './when-208fe5b0', './TerrainEncoding-8d274519', './Math-56f06cd5', './OrientedBoundingBox-dfa225d1', './RuntimeError-7f634f5d', './WebMercatorProjection-7b54c659', './createTaskProcessorWorker', './Check-5e798bbf', './AttributeCompression-d1cd1d9c', './ComponentDatatype-cc8f5f00', './WebGLConstants-5e2a49ab', './EllipsoidTangentPlane-e79f0327', './IntersectionTests-4352af03', './Plane-9825d2dd'], function (AxisAlignedBoundingBox, Transforms, Cartesian2, when, TerrainEncoding, _Math, OrientedBoundingBox, RuntimeError, WebMercatorProjection, createTaskProcessorWorker, Check, AttributeCompression, ComponentDatatype, WebGLConstants, EllipsoidTangentPlane, IntersectionTests, Plane) { 'use strict';
 
   var sizeOfUint16 = Uint16Array.BYTES_PER_ELEMENT;
   var sizeOfInt32 = Int32Array.BYTES_PER_ELEMENT;
@@ -55,6 +55,7 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
       parameters.rectangle,
       parameters.nativeRectangle,
       parameters.exaggeration,
+      parameters.exaggerationRelativeHeight,
       parameters.skirtHeight,
       parameters.includeWebMercatorT,
       parameters.negativeAltitudeExponentBias,
@@ -68,7 +69,7 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
     return {
       vertices: vertices.buffer,
       indices: indices.buffer,
-      numberOfAttributes: statistics.encoding.getStride(),
+      numberOfAttributes: statistics.encoding.stride,
       minimumHeight: statistics.minimumHeight,
       maximumHeight: statistics.maximumHeight,
       boundingSphere3D: statistics.boundingSphere3D,
@@ -97,6 +98,7 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
     rectangle,
     nativeRectangle,
     exaggeration,
+    exaggerationRelativeHeight,
     skirtHeight,
     includeWebMercatorT,
     negativeAltitudeExponentBias,
@@ -142,6 +144,9 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
         (WebMercatorProjection.WebMercatorProjection.geodeticLatitudeToMercatorAngle(geographicNorth) -
           southMercatorY);
     }
+
+    var hasExaggeration = exaggeration !== 1.0;
+    var includeGeodeticSurfaceNormals = hasExaggeration;
 
     var dv = new DataView(buffer);
 
@@ -202,6 +207,9 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
     var uvs = new Array(size);
     var heights = new Array(size);
     var webMercatorTs = includeWebMercatorT ? new Array(size) : [];
+    var geodeticSurfaceNormals = includeGeodeticSurfaceNormals
+      ? new Array(size)
+      : [];
     var indices = new Array(indicesSize);
 
     // Points are laid out in rows starting at SW, so storing border points as we
@@ -262,7 +270,7 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
         }
 
         // Height is stored in units of (1/EarthRadius) or (1/6371010.0)
-        height *= 6371010.0 * exaggeration;
+        height *= 6371010.0;
 
         scratchCartographic.height = height;
 
@@ -322,6 +330,11 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
             oneOverMercatorHeight;
         }
 
+        if (includeGeodeticSurfaceNormals) {
+          var normal = ellipsoid.geodeticSurfaceNormal(pos);
+          geodeticSurfaceNormals[pointOffset] = normal;
+        }
+
         Transforms.Matrix4.multiplyByPoint(toENU, pos, scratchCartesian);
 
         Cartesian2.Cartesian3.minimumByComponent(scratchCartesian, minimum, minimum);
@@ -353,6 +366,9 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
     heights.length = pointOffset;
     if (includeWebMercatorT) {
       webMercatorTs.length = pointOffset;
+    }
+    if (includeGeodeticSurfaceNormals) {
+      geodeticSurfaceNormals.length = pointOffset;
     }
 
     var vertexCountWithoutSkirts = pointOffset;
@@ -390,6 +406,7 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
       heights,
       uvs,
       webMercatorTs,
+      geodeticSurfaceNormals,
       indices,
       skirtOptions,
       westBorder,
@@ -402,6 +419,7 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
       heights,
       uvs,
       webMercatorTs,
+      geodeticSurfaceNormals,
       indices,
       skirtOptions,
       southBorder,
@@ -413,6 +431,7 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
       heights,
       uvs,
       webMercatorTs,
+      geodeticSurfaceNormals,
       indices,
       skirtOptions,
       eastBorder,
@@ -425,6 +444,7 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
       heights,
       uvs,
       webMercatorTs,
+      geodeticSurfaceNormals,
       indices,
       skirtOptions,
       northBorder,
@@ -470,16 +490,20 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
       minHeight
     );
 
-    var aaBox = new EllipsoidTangentPlane.AxisAlignedBoundingBox(minimum, maximum, relativeToCenter);
+    var aaBox = new AxisAlignedBoundingBox.AxisAlignedBoundingBox(minimum, maximum, relativeToCenter);
     var encoding = new TerrainEncoding.TerrainEncoding(
+      relativeToCenter,
       aaBox,
       skirtOptions.hMin,
       maxHeight,
       fromENU,
       false,
-      includeWebMercatorT
+      includeWebMercatorT,
+      includeGeodeticSurfaceNormals,
+      exaggeration,
+      exaggerationRelativeHeight
     );
-    var vertices = new Float32Array(size * encoding.getStride());
+    var vertices = new Float32Array(size * encoding.stride);
 
     var bufferIndex = 0;
     for (var k = 0; k < size; ++k) {
@@ -490,7 +514,8 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
         uvs[k],
         heights[k],
         undefined,
-        webMercatorTs[k]
+        webMercatorTs[k],
+        geodeticSurfaceNormals[k]
       );
     }
 
@@ -548,6 +573,7 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
     heights,
     uvs,
     webMercatorTs,
+    geodeticSurfaceNormals,
     indices,
     skirtOptions,
     borderPoints,
@@ -597,6 +623,9 @@ define(['./when-54c2dc71', './Check-6c0211bc', './Math-850675ea', './Cartesian2-
       uvs.push(Cartesian2.Cartesian2.clone(uvs[borderIndex])); // Copy UVs from border point
       if (webMercatorTs.length > 0) {
         webMercatorTs.push(webMercatorTs[borderIndex]);
+      }
+      if (geodeticSurfaceNormals.length > 0) {
+        geodeticSurfaceNormals.push(geodeticSurfaceNormals[borderIndex]);
       }
 
       Transforms.Matrix4.multiplyByPoint(skirtOptions.toENU, pos, scratchCartesian);
