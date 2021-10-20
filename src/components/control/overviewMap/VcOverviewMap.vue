@@ -99,8 +99,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.$nextTick(() => {
           const { viewer, width, height, anchor, aimingRectOptions, shadowRectOptions, toggleDisplay } = this
-          const url = 'https://webst01.is.autonavi.com/appmaptile?style=7&x={x}&y={y}&z={z}'
-          const layer = new TileLayer(url, {
+          const layer = new TileLayer(this.url, {
             minZoom: 0,
             maxZoom: 20
           })

@@ -11,7 +11,7 @@
 <doc-preview>
   <template>
     <div class="viewer">
-      <vc-viewer :timeline="timeline" @ready="ready">
+      <vc-viewer sceneModePicker :timeline="timeline" @ready="ready">
         <vc-navigation @legendChanged="legendChanged" :options="options"></vc-navigation>
         <vc-layer-imagery>
           <vc-provider-imagery-openstreetmap></vc-provider-imagery-openstreetmap>
