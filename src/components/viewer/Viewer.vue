@@ -727,10 +727,10 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         delete options.terrainExaggeration
       }
       let viewer = {}
-      if (!global.XE) {
+      if (!globalThis.XE) {
         viewer = new Cesium.Viewer($el, options)
       } else {
-        this.earth = new global.XE.Earth($el, options)
+        this.earth = new globalThis.XE.Earth($el, options)
         viewer = this.earth.czm.viewer
       }
       this.viewer = viewer
@@ -798,7 +798,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
       viewer.widgetResized = new Cesium.Event()
       viewer.imageryLayers.layerAdded.addEventListener(this.layerAdded)
       registerEvents(true)
-      global.XE
+      globalThis.XE
         ? this.$emit('ready', { Cesium, viewer, earth: this.earth, vm: this })
         : this.$emit('ready', { Cesium, viewer, vm: this })
       this._mounted = true
@@ -927,7 +927,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
       )
     },
     getCesiumScript () {
-      if (!global.Cesium) {
+      if (!globalThis.Cesium) {
         const cesiumPath = this.cesiumPath
           ? this.cesiumPath
           : typeof this._Cesium !== 'undefined' && Object.prototype.hasOwnProperty.call(this._Cesium(), 'cesiumPath')
@@ -939,32 +939,32 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         if (cesiumPath.indexOf('/XbsjEarth.js') === -1) {
           const $link = document.createElement('link')
           $link.rel = 'stylesheet'
-          global.document.head.appendChild($link)
+          globalThis.document.head.appendChild($link)
           $link.href = `${dirName}/Widgets/widgets.css`
         }
 
         const $script = document.createElement('script')
-        global.document.body.appendChild($script)
+        globalThis.document.body.appendChild($script)
         $script.src = cesiumPath
         const that = this
         return new Promise((resolve, reject) => {
           $script.onload = () => {
-            if (global.Cesium) {
+            if (globalThis.Cesium) {
               // 超图WebGL3D需要引入zlib.min.js
               if (Cesium.SuperMapImageryProvider && Number(Cesium.VERSION) < 1.54) {
                 const $scriptZlib = document.createElement('script')
-                global.document.body.appendChild($scriptZlib)
+                globalThis.document.body.appendChild($scriptZlib)
                 $scriptZlib.src = `${dirName}/Workers/zlib.min.js`
               }
-              resolve(global.Cesium)
+              resolve(globalThis.Cesium)
               const listener = that.$listeners.cesiumReady
-              listener && this.$emit('cesiumReady', global.Cesium)
-            } else if (global.XE) {
+              listener && this.$emit('cesiumReady', globalThis.Cesium)
+            } else if (globalThis.XE) {
               // 兼容 cesiumlab earthsdk
-              global.XE.ready().then(() => {
-                resolve(global.Cesium)
+              globalThis.XE.ready().then(() => {
+                resolve(globalThis.Cesium)
                 const listener = that.$listeners.cesiumReady
-                listener && this.$emit('cesiumReady', global.Cesium)
+                listener && this.$emit('cesiumReady', globalThis.Cesium)
               })
             } else {
               reject(new Error('[C_PKG_FULLNAME] ERROR: ' + 'Error loading CesiumJS!'))
@@ -972,7 +972,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
           }
         })
       } else {
-        return Promise.resolve(global.Cesium)
+        return Promise.resolve(globalThis.Cesium)
       }
     },
     async beforeInit () {
@@ -1019,24 +1019,24 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
 
       const { viewer, removeCesiumScript, earth, registerEvents } = this
 
-      if (global.Cesium) {
+      if (globalThis.Cesium) {
         viewer.imageryLayers.layerAdded.removeEventListener(this.layerAdded)
         registerEvents(false)
       }
 
       this.$vc._screenSpaceEventHandler && this.$vc._screenSpaceEventHandler.destroy()
       this.$vc._screenSpaceEventHandler = undefined
-      global.XE ? earth && earth.destroy() : viewer && viewer.destroy()
+      globalThis.XE ? earth && earth.destroy() : viewer && viewer.destroy()
       this.viewer = undefined
       this._mounted = false
 
-      if (removeCesiumScript && global.Cesium) {
+      if (removeCesiumScript && globalThis.Cesium) {
         const scripts = document.getElementsByTagName('script')
         const removeScripts = []
         for (const script of scripts) {
           script.src.indexOf('/Cesium.js') > -1 && removeScripts.push(script)
           script.src.indexOf('/Workers/zlib.min.js') > -1 && removeScripts.push(script)
-          if (global.XE) {
+          if (globalThis.XE) {
             script.src.indexOf('/rxjs.umd.min.js') > -1 && removeScripts.push(script)
             script.src.indexOf('/XbsjCesium.js') > -1 && removeScripts.push(script)
             script.src.indexOf('/viewerCesiumNavigationMixin.js') > -1 && removeScripts.push(script)
@@ -1052,10 +1052,10 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
             document.getElementsByTagName('head')[0].removeChild(link)
           }
         }
-        global.Cesium && (global.Cesium = undefined)
-        global.XbsjCesium && (global.XbsjCesium = undefined)
-        global.XbsjEarth && (global.XbsjEarth = undefined)
-        global.XE && (global.XE = undefined)
+        globalThis.Cesium && (globalThis.Cesium = undefined)
+        globalThis.XbsjCesium && (globalThis.XbsjCesium = undefined)
+        globalThis.XbsjEarth && (globalThis.XbsjEarth = undefined)
+        globalThis.XE && (globalThis.XE = undefined)
         this.$vc.scriptPromise = undefined
       }
 
