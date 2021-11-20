@@ -995,6 +995,22 @@ const routeMap = [
           zh: 'EarthSDK例子',
           en: 'EarthSDK Demo'
         }
+      },
+      {
+        path: 'vc-demo-mars3d',
+        component: 'other/vc-demo-mars3d',
+        name: {
+          zh: '火星mars3d例子',
+          en: 'mars3d Demo'
+        }
+      },
+      {
+        path: 'vc-demo-dc-sdk',
+        component: 'other/vc-demo-dc-sdk',
+        name: {
+          zh: 'DC-SDK例子',
+          en: 'DC-SDK Demo'
+        }
       }
     ]
   }

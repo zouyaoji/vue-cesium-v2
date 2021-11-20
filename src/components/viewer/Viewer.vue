@@ -10,6 +10,9 @@ import { Events } from '../../utils/events'
 import services from '../../mixins/services'
 import mergeDescriptors from '../../utils/mergeDescriptors.js'
 import { dirname, isArray } from '../../utils/util.js'
+import { getMars3dConfig } from './loadUtil'
+
+let loadLibs = []
 
 export default {
   name: 'vc-viewer',
@@ -727,12 +730,19 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         delete options.terrainExaggeration
       }
       let viewer = {}
-      if (!globalThis.XE) {
-        viewer = new Cesium.Viewer($el, options)
-      } else {
+      if (globalThis.mars3d) {
+        this.map = new mars3d.Map($el.id, options)
+        viewer = this.map?._viewer
+      } else if (globalThis.DC) {
+        this.dcViewer = new DC.Viewer($el.id, options)
+        viewer = this.dcViewer?.delegate
+      } else if (globalThis.XE) {
         this.earth = new globalThis.XE.Earth($el, options)
-        viewer = this.earth.czm.viewer
+        viewer = this.earth?.czm.viewer
+      } else {
+        viewer = new Cesium.Viewer($el, options)
       }
+
       this.viewer = viewer
 
       if (Cesium.VERSION >= '1.83') {
@@ -798,9 +808,30 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
       viewer.widgetResized = new Cesium.Event()
       viewer.imageryLayers.layerAdded.addEventListener(this.layerAdded)
       registerEvents(true)
-      globalThis.XE
-        ? this.$emit('ready', { Cesium, viewer, earth: this.earth, vm: this })
-        : this.$emit('ready', { Cesium, viewer, vm: this })
+      // globalThis.XE
+      //   ? this.$emit('ready', { Cesium, viewer, earth: this.earth, vm: this })
+      //   : this.$emit('ready', { Cesium, viewer, vm: this })
+      const readyObj = {
+        Cesium,
+        viewer,
+        vm: this
+      }
+      if (globalThis.XE) {
+        Object.assign(readyObj, {
+          earth: this.earth
+        })
+      } else if (globalThis.mars3d) {
+        Object.assign(readyObj, {
+          map: this.map
+        })
+      } else if (globalThis.DC) {
+        Object.assign(readyObj, {
+          dcViewer: this.dcViewer
+        })
+      }
+
+      const listenerReady = this.$listeners.ready
+      listenerReady && this.$emit('ready', readyObj)
       this._mounted = true
       return { Cesium, viewer, vm: this }
     },
@@ -809,7 +840,12 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
       const position = val.position
       if (position.lng && position.lat) {
         viewer.camera.setView({
-          destination: Cesium.Cartesian3.fromDegrees(position.lng, position.lat, position.height || 0, viewer.scene.globe.ellipsoid),
+          destination: Cesium.Cartesian3.fromDegrees(
+            position.lng,
+            position.lat,
+            position.height || 0,
+            viewer.scene.globe.ellipsoid
+          ),
           orientation: {
             heading: Cesium.Math.toRadians(val.heading || 360),
             pitch: Cesium.Math.toRadians(val.pitch || -90),
@@ -926,49 +962,90 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         }
       )
     },
-    getCesiumScript () {
+    async getCesiumScript () {
       if (!globalThis.Cesium) {
-        const cesiumPath = this.cesiumPath
+        let cesiumPath = this.cesiumPath
           ? this.cesiumPath
           : typeof this._Cesium !== 'undefined' && Object.prototype.hasOwnProperty.call(this._Cesium(), 'cesiumPath')
             ? this._Cesium().cesiumPath
             : 'https://cdn.jsdelivr.net/npm/cesium@latest/Build/Cesium/Cesium.js'
 
         const dirName = dirname(cesiumPath)
-        // 引入样式 earthsdk 会自动引 不用引入了
-        if (cesiumPath.indexOf('/XbsjEarth.js') === -1) {
-          const $link = document.createElement('link')
-          $link.rel = 'stylesheet'
-          globalThis.document.head.appendChild($link)
-          $link.href = `${dirName}/Widgets/widgets.css`
+        if (!cesiumPath?.includes('.js')) {
+          // 认为是mars3d
+          if (cesiumPath?.lastIndexOf('/') !== cesiumPath.length - 1) {
+            cesiumPath += '/'
+          }
+          const libsConfig = getMars3dConfig(cesiumPath)
+          const include = this.$vc.cfg?.include || 'mars3d'
+          const arrInclude = include.split(',')
+          const keys = {}
+          for (let i = 0, len = arrInclude.length; i < len; i++) {
+            const key = arrInclude[i]
+            if (keys[key]) {
+              // 规避重复引入lib
+              continue
+            }
+            keys[key] = true
+            loadLibs.push(...libsConfig[key])
+          }
+        } else if (cesiumPath.includes('dc.base')) {
+          loadLibs.push(cesiumPath)
+          loadLibs.push(cesiumPath.replace('dc.base', 'dc.core'))
+          loadLibs.push(cesiumPath.replace('dc.base', 'dc.core').replace('.js', '.css'))
+        } else if (cesiumPath.includes('/XbsjEarth.js')) {
+          loadLibs.push(cesiumPath)
+        } else {
+          loadLibs.push(cesiumPath)
+          loadLibs.push(`${dirName}/Widgets/widgets.css`)
         }
 
-        const $script = document.createElement('script')
-        globalThis.document.body.appendChild($script)
-        $script.src = cesiumPath
-        const that = this
-        return new Promise((resolve, reject) => {
-          $script.onload = () => {
-            if (globalThis.Cesium) {
-              // 超图WebGL3D需要引入zlib.min.js
-              if (Cesium.SuperMapImageryProvider && Number(Cesium.VERSION) < 1.54) {
-                const $scriptZlib = document.createElement('script')
-                globalThis.document.body.appendChild($scriptZlib)
-                $scriptZlib.src = `${dirName}/Workers/zlib.min.js`
-              }
-              resolve(globalThis.Cesium)
-              const listener = that.$listeners.cesiumReady
+        const secondaryLibs = loadLibs
+        if (!cesiumPath?.includes('.js')) {
+          // mars3d 必须要等 Cesium 先初始化
+          const primaryLib = loadLibs.find((v) => v.includes('Cesium.js'))
+          await loadScript(primaryLib)
+          secondaryLibs.splice(secondaryLibs.indexOf(primaryLib), 1)
+        }
+
+        const scriptLoadPromises = []
+        secondaryLibs.forEach((url) => {
+          // eslint-disable-next-line prefer-regex-literals
+          const cssExpr = new RegExp('\\.css')
+          if (cssExpr.test(url)) {
+            scriptLoadPromises.push(loadLink(url))
+          } else {
+            scriptLoadPromises.push(loadScript(url))
+          }
+        })
+
+        return Promise.all(scriptLoadPromises).then(() => {
+          if (globalThis.Cesium) {
+            const listener = this.$listeners.cesiumReady
+            listener && this.$emit('cesiumReady', globalThis.Cesium)
+            return globalThis.Cesium
+          } else if (globalThis.XE) {
+            // 兼容 cesiumlab earthsdk
+            return globalThis.XE.ready().then(() => {
+              // resolve(globalThis.Cesium)
+              const listener = this.$listeners.cesiumReady
               listener && this.$emit('cesiumReady', globalThis.Cesium)
-            } else if (globalThis.XE) {
-              // 兼容 cesiumlab earthsdk
-              globalThis.XE.ready().then(() => {
-                resolve(globalThis.Cesium)
-                const listener = that.$listeners.cesiumReady
-                listener && this.$emit('cesiumReady', globalThis.Cesium)
-              })
-            } else {
-              reject(new Error('[C_PKG_FULLNAME] ERROR: ' + 'Error loading CesiumJS!'))
-            }
+              return globalThis.Cesium
+            })
+          } else if (globalThis.DC) {
+            // 兼容  dc-sdk
+            globalThis.DC.use(globalThis.DcCore.default)
+            globalThis.DC.baseUrl = `${dirName}/resources/`
+            globalThis.DC.ready(() => {
+              globalThis.Cesium = globalThis.DC.Namespace.Cesium
+
+              const listener = this.$listeners.cesiumReady
+              listener && this.$emit('cesiumReady', globalThis.DC)
+              return globalThis.Cesium
+            })
+            return globalThis.Cesium
+          } else {
+            this._reject(new Error('VueCesium ERROR: ' + 'Error loading CesiumJS!'))
           }
         })
       } else {
@@ -1017,7 +1094,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         await vcChildCmp.unload()
       }
 
-      const { viewer, removeCesiumScript, earth, registerEvents } = this
+      const { viewer, earth, map, dcViewer, removeCesiumScript, registerEvents } = this
 
       if (globalThis.Cesium) {
         viewer.imageryLayers.layerAdded.removeEventListener(this.layerAdded)
@@ -1026,7 +1103,17 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
 
       this.$vc._screenSpaceEventHandler && this.$vc._screenSpaceEventHandler.destroy()
       this.$vc._screenSpaceEventHandler = undefined
-      globalThis.XE ? earth && earth.destroy() : viewer && viewer.destroy()
+
+      if (globalThis.XE) {
+        earth && earth.destroy()
+      } else if (globalThis.mars3d) {
+        map && map.destroy()
+      } else if (globalThis.DC) {
+        dcViewer && dcViewer.destroy()
+      } else {
+        viewer && viewer.destroy()
+      }
+
       this.viewer = undefined
       this._mounted = false
 
@@ -1042,21 +1129,27 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
             script.src.indexOf('/viewerCesiumNavigationMixin.js') > -1 && removeScripts.push(script)
             script.src.indexOf('/XbsjEarth.js') > -1 && removeScripts.push(script)
           }
+
+          loadLibs.includes(script.src) && !removeScripts.includes(script) && removeScripts.push(script)
         }
-        removeScripts.forEach((script) => {
-          script.parentNode.removeChild(script)
-        })
+
         const links = document.getElementsByTagName('link')
         for (const link of links) {
-          if (link.href.indexOf('Widgets/widgets.css') > -1) {
-            document.getElementsByTagName('head')[0].removeChild(link)
-          }
+          link.href.includes('Widgets/widgets.css') && !removeScripts.includes(link) && removeScripts.push(link)
+          loadLibs.includes(link.href) && !removeScripts.includes(link) && removeScripts.push(link)
         }
+        removeScripts.forEach((script) => {
+          script.parentNode && script.parentNode.removeChild(script)
+        })
         globalThis.Cesium && (globalThis.Cesium = undefined)
         globalThis.XbsjCesium && (globalThis.XbsjCesium = undefined)
         globalThis.XbsjEarth && (globalThis.XbsjEarth = undefined)
         globalThis.XE && (globalThis.XE = undefined)
+        globalThis.mars3d && (globalThis.mars3d = undefined)
+        globalThis.DC && (globalThis.DC = undefined)
+        globalThis.DcCore && (globalThis.DcCore = undefined)
         this.$vc.scriptPromise = undefined
+        loadLibs = []
       }
 
       const listener = this.$listeners.destroyed
@@ -1126,5 +1219,29 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
   destroyed () {
     this.unload()
   }
+}
+
+const loadScript = (src) => {
+  const $script = document.createElement('script')
+  $script.async = true
+  $script.src = src
+  document.body.appendChild($script)
+  return new Promise((resolve, reject) => {
+    $script.onload = () => {
+      resolve(true)
+    }
+  })
+}
+
+const loadLink = (src) => {
+  const $link = document.createElement('link')
+  $link.rel = 'stylesheet'
+  $link.href = src
+  document.head.appendChild($link)
+  return new Promise((resolve, reject) => {
+    $link.onload = () => {
+      resolve(true)
+    }
+  })
 }
 </script>

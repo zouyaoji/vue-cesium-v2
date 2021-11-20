@@ -26,7 +26,9 @@ module.exports = {
     'standard'
   ],
   globals: {
-    Cesium: true
+    Cesium: true,
+    mars3d: true,
+    DC: true
   },
   // required to lint *.vue files
   plugins: [
