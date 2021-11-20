@@ -16,8 +16,8 @@
 
 ## Languages
 
-- [中文](https://github.com/zouyaoji/vue-cesium/blob/master/README.zh.md)
-- [English](https://github.com/zouyaoji/vue-cesium/blob/master/README.md)
+- [中文](https://github.com/zouyaoji/vue-cesium-v2/blob/master/README.zh.md)
+- [English](https://github.com/zouyaoji/vue-cesium-v2/blob/master/README.md)
 
 - [中文 for vue 3.x](https://github.com/zouyaoji/vue-cesium/blob/dev/README.zh.md)
 - [English for vue 3.x](https://github.com/zouyaoji/vue-cesium/blob/dev/README.md)
