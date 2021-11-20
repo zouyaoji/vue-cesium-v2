@@ -2,20 +2,19 @@
 
 <p align="center"><img src="https://zouyaoji.top/vue-cesium/favicon.png" width="200px"></p>
 
-<p align="center">Cesium components for Vue 2.x that can help you load Cesium built package or other third-party packages which are built on Cesium.</p>
+<p align="center">VueCesium, a Vue 2.x & Vue 3.x based component library of CesiumJS for GISer</p>
 
 [![Travis](https://img.shields.io/travis/zouyaoji/vue-cesium?style=plastic)](https://travis-ci.org/zouyaoji/vue-cesium)
 [![npm](https://img.shields.io/npm/v/vue-cesium?style=plastic)](https://www.npmjs.com/package/vue-cesium)
 [![npm](https://img.shields.io/npm/dm/vue-cesium?style=plastic)](https://www.npmjs.com/package/vue-cesium)
 [![license](https://img.shields.io/github/license/zouyaoji/vue-cesium?style=plastic)](https://github.com/zouyaoji/vue-cesium/blob/master/LICENSE)
-[![Coverage Status](https://img.shields.io/coveralls/github/zouyaoji/vue-cesium?style=plastic)](https://coveralls.io/github/zouyaoji/vue-cesium?branch=master)
+<!-- [![Coverage Status](https://img.shields.io/coveralls/github/zouyaoji/vue-cesium?style=plastic)](https://coveralls.io/github/zouyaoji/vue-cesium?branch=master) -->
 [![Package Quality](https://npm.packagequality.com/shield/vue-cesium.svg)](https://packagequality.com/#?package=vue-cesium)
 [![Package Quality](https://img.shields.io/github/stars/zouyaoji/vue-cesium?style=social)](https://packagequality.com/#?package=vue-cesium)
 
 ## Introduction
 
-- Cesium components for Vue 2.x that can help you load Cesium built package or other third-party packages which are built on Cesium.
-- Continuous development...
+- Cesium components for Vue 2.x & Vue 3.x that can help you load Cesium built package or other third-party packages which are built on Cesium.
 - [For more examples](https://github.com/zouyaoji/vue-cesium-demo)
 
 ## Contributing

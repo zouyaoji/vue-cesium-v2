@@ -3,13 +3,15 @@
 <p align="center">
   <img src="https://zouyaoji.top/vue-cesium/favicon.png" width="200px">
 </p>
-<p align="center">Vue 2.x components for CesiumJS. Load Cesium built package or other third-party packages which are built on Cesium.</p>
+<p align="center">Vue 2.x & Vue 3.x components for CesiumJS. Load Cesium built package or other third-party packages which are built on Cesium.</p>
 
 [![Travis](https://img.shields.io/travis/zouyaoji/vue-cesium?style=plastic)](https://travis-ci.org/zouyaoji/vue-cesium)
 [![npm](https://img.shields.io/npm/v/vue-cesium?style=plastic)](https://www.npmjs.com/package/vue-cesium)
 [![npm](https://img.shields.io/npm/dm/vue-cesium?style=plastic)](https://www.npmjs.com/package/vue-cesium)
 [![license](https://img.shields.io/github/license/zouyaoji/vue-cesium?style=plastic)](https://github.com/zouyaoji/vue-cesium/blob/master/LICENSE)
-[![Coverage Status](https://img.shields.io/coveralls/github/zouyaoji/vue-cesium?style=plastic)](https://coveralls.io/github/zouyaoji/vue-cesium?branch=master)
+
+<!-- [![Coverage Status](https://img.shields.io/coveralls/github/zouyaoji/vue-cesium?style=plastic)](https://coveralls.io/github/zouyaoji/vue-cesium?branch=master) -->
+
 [![Package Quality](https://npm.packagequality.com/shield/vue-cesium.svg)](https://packagequality.com/#?package=vue-cesium)
 
 ## Languages
@@ -22,17 +24,21 @@
 
 ## Links
 
-- [Documentation](https://zouyaoji.top/vue-cesium)
+- [Documentation](https://zouyaoji.top/vue-cesium-v2)
 - [Official Demo](https://sandcastle.cesium.com/)
 - [More examples](https://github.com/zouyaoji/vue-cesium-demo)
 
 ## Get Start
 
-`VueCesium` using the built CesiumJS library. You can use online, local, official native libraries or third-party libraries built on Cesium depending on your project needs. The `SuperMap iClient 3D for WebGL` and the `EarthSDK` of CesiumLab have been tested.
+VueCesium, a Vue 2.x & Vue 3.x based component library of CesiumJS for GISer.
 
-[Developed components](https://github.com/zouyaoji/vue-cesium/blob/master/src/utils/nameClassMap.js).
+Support loading official CesiumJS, or third-party platforms based on CesiumJS:
 
-In the gradual improvement...
+- [CesiumJS](https://cesium.com/platform/cesiumjs/)
+- [SuperMap iClient3D for WebGL](http://support.supermap.com.cn:8090/webgl/web/index.html)
+- [Earth SDK](http://www.earthsdk.com/)
+- [Mars3D](http://mars3d.cn/)
+- [DC-SDK](http://dc.dvgis.cn/#/index)
 
 ### Installation
 
@@ -43,25 +49,12 @@ npm i --save vue-cesium
 ### Usage
 
 ```js
+// main.js
 import Vue from 'vue'
 import VueCesium from 'vue-cesium'
 import lang from 'vue-cesium/lang/zh-hans'
 // import lang from 'vue-cesium/lang/en-us'
 Vue.use(VueCesium)
-// or
-// Vue.use(VueCesium, {
-//   // cesiumPath is path of Cesium.js', for example:
-//   // local Cesium Build package:
-//   // cesiumPath: '/static/Cesium/Cesium.js'
-//   // Online Cesium Build package：
-//   // cesiumPath: 'https://zouyaoji.top/vue-cesium/statics/Cesium/Cesium.js'
-//   // cesiumPath: 'https://cdn.jsdelivr.net/npm/cesium@latest/Build/Cesium/Cesium.js',
-//   // cesiumPath: 'https://unpkg.com/cesium/Build/CesiumUnminified/Cesium.js',
-//   // cesiumPath: 'https://unpkg.com/cesium@latest/Build/Cesium/Cesium.js',
-//   cesiumPath: 'https://unpkg.com/cesium/Build/Cesium/Cesium.js',  // default
-//   accessToken: `Your accessToken`,
-//   lang: lang // 2.0.3+ //  zh-hans
-// })
 ```
 
 ```html
@@ -79,9 +72,24 @@ Vue.use(VueCesium)
 </style>
 ```
 
-## Contributing
+### Configuration
 
-[Contributing Guide](https://github.com/zouyaoji/vue-cesium/blob/master/CONTRIBUTING.md)
+```js
+// main.js
+import lang from 'vue-cesium/lang/zh-hans'
+// import lang from 'vue-cesium/lang/en-us'
+
+Vue.use(VueCesium, {
+  // cesiumPath is the web service address that guides the use of Cesium.js, which can be a local or CDN address such as
+  // cesiumPath: /static/Cesium/Cesium.js
+  // cesiumPath: 'https://unpkg.com/cesium/Build/Cesium/Cesium.js'
+  // cesiumPath: 'https://cdn.jsdelivr.net/npm/cesium@latest/Build/Cesium/Cesium.js'
+  cesiumPath: 'https://cdn.jsdelivr.net/npm/cesium@latest/Build/Cesium/Cesium.js',
+  // If you need to use Cesium ion resources, you need to specify it. Go to https://cesium.com/ion/ to apply for an account and get Access Token. If it is not specified, it may cause the loading of CesiumIon's online images and terrain to fail.
+  accessToken: 'Your Cesium Ion defaultAccessToken',
+  lang: lang // 2.0.3+ //  zh-hans
+})
+```
 
 ## License
 
@@ -89,23 +97,23 @@ Vue.use(VueCesium)
 
 Copyright (c) 2018-present, zouyaoji <370681295@qq.com>
 
-## Donate
+## Sponsors
 
-> Your support is the driving force for me to move forward and better support the open source cause! ~
+[See](https://zouyaoji.top/vue-cesium/#/en-US/donations)
 
-- PayPal
+## Contributors
 
-  <a href="https://www.paypal.me/zouyaoji" target="_blank"><img src="https://zouyaoji.top/vue-cesium/statics/assets/images/paypal.png" height="40" /></a>
+This project wouldn't exist without our amazing contributors
 
-- WeChat | AliPay
-
-  ![WeChat](https://zouyaoji.top/vue-cesium/images/wechat.png) ![AliPay](https://zouyaoji.top/vue-cesium/images/alipay.png)
+<a href="https://github.com/zouyaoji/vue-cesium-v2/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=zouyaoji/vue-cesium-v2" />
+</a>
 
 ## QQGroup
 
 [16533444](https://jq.qq.com/?_wv=1027&k=5BCrKOi)
 
-![开心农场](https://zouyaoji.top/vue-cesium/statics/assets/images/开心农场.png) ![数字视觉](https://zouyaoji.top/vue-cesium/statics/assets/images/数字视觉.png)
+![开心农场](https://zouyaoji.top/vue-cesium/images/开心农场.png) ![数字视觉](https://zouyaoji.top/vue-cesium/images/数字视觉.png)
 
 ## Reference
 
