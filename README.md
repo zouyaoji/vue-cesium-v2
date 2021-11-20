@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://zouyaoji.top/vue-cesium/favicon.png" width="200px">
 </p>
-<p align="center">Vue 2.x & Vue 3.x components for CesiumJS. Load Cesium built package or other third-party packages which are built on Cesium.</p>
+<p align="center">VueCesium, a Vue 2.x & Vue 3.x based component library of CesiumJS for GISer.</p>
 
 [![Travis](https://img.shields.io/travis/zouyaoji/vue-cesium?style=plastic)](https://travis-ci.org/zouyaoji/vue-cesium)
 [![npm](https://img.shields.io/npm/v/vue-cesium?style=plastic)](https://www.npmjs.com/package/vue-cesium)
