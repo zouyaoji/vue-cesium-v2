@@ -169,12 +169,12 @@ export default {
       default: false
     },
     TZcode: {
-      type: String,
-      default: new Date().getTimezoneOffset() === 0 ? 'UTC' : 'UTC' + '+' + -(new Date().getTimezoneOffset() / 60)
+      type: String
+      // default: new Date().getTimezoneOffset() === 0 ? 'UTC' : 'UTC' + '+' + -(new Date().getTimezoneOffset() / 60)
     },
     UTCoffset: {
-      type: Number,
-      default: -new Date().getTimezoneOffset()
+      type: Number
+      // default: -new Date().getTimezoneOffset()
     },
     removeCesiumScript: {
       type: Boolean,
@@ -877,8 +877,13 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
     },
     localeDateTimeFormatter (date, viewModel, ignoredate) {
       const { JulianDate } = Cesium
+      let TZCode
       if (this.UTCoffset) {
         date = JulianDate.addMinutes(date, this.UTCoffset, new JulianDate())
+        const offset = new Date().getTimezoneOffset() - this.UTCOffset
+        TZCode = offset === 0 ? 'UTC' : 'UTC' + '+' + -(offset / 60)
+      } else {
+        TZCode = new Date().getTimezoneOffset() === 0 ? 'UTC' : 'UTC' + '+' + -(new Date().getTimezoneOffset() / 60)
       }
       const jsDate = JulianDate.toDate(date)
       const timeString = jsDate
@@ -901,7 +906,9 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         return dateString
       }
 
-      return ignoredate ? `${timeString} ${this.TZcode}` : `${dateString} ${timeString} ${this.TZcode}`
+      this.TZCode && (TZCode = this.TZCode)
+
+      return ignoredate ? `${timeString} ${TZCode}` : `${dateString} ${timeString} ${TZCode}`
     },
     localeTimeFormatter (time, viewModel) {
       return this.localeDateTimeFormatter(time, viewModel, true)
