@@ -1,0 +1,23 @@
+/**
+ * Cesium - https://github.com/CesiumGS/cesium
+ *
+ * Copyright 2011-2020 Cesium Contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Columbus View (Pat. Pend.)
+ *
+ * Portions licensed separately.
+ * See https://github.com/CesiumGS/cesium/blob/master/LICENSE.md for full licensing details.
+ */
+define(["exports","./when-8d13db60","./Check-70bec281","./Math-61ede240","./Cartographic-f27b0939","./Cartesian2-09435a6c"],function(e,d,h,c,i,t){var u={octEncodeInRange:function(e,t,n){h.Check.defined("vector",e),h.Check.defined("result",n);var o=i.Cartesian3.magnitudeSquared(e);if(Math.abs(o-1)>c.CesiumMath.EPSILON6)throw new h.DeveloperError("vector must be normalized.");if(n.x=e.x/(Math.abs(e.x)+Math.abs(e.y)+Math.abs(e.z)),n.y=e.y/(Math.abs(e.x)+Math.abs(e.y)+Math.abs(e.z)),e.z<0){var r=n.x,a=n.y;n.x=(1-Math.abs(a))*c.CesiumMath.signNotZero(r),n.y=(1-Math.abs(r))*c.CesiumMath.signNotZero(a)}return n.x=c.CesiumMath.toSNorm(n.x,t),n.y=c.CesiumMath.toSNorm(n.y,t),n},octEncode:function(e,t){return u.octEncodeInRange(e,255,t)}},n=new t.Cartesian2,o=new Uint8Array(1);function r(e){return o[0]=e,o[0]}u.octEncodeToCartesian4=function(e,t){return u.octEncodeInRange(e,65535,n),t.x=r(n.x*(1/256)),t.y=r(n.x),t.z=r(n.y*(1/256)),t.w=r(n.y),t},u.octDecodeInRange=function(e,t,n,o){if(h.Check.defined("result",o),e<0||n<e||t<0||n<t)throw new h.DeveloperError("x and y must be unsigned normalized integers between 0 and "+n);if(o.x=c.CesiumMath.fromSNorm(e,n),o.y=c.CesiumMath.fromSNorm(t,n),o.z=1-(Math.abs(o.x)+Math.abs(o.y)),o.z<0){var r=o.x;o.x=(1-Math.abs(o.y))*c.CesiumMath.signNotZero(r),o.y=(1-Math.abs(r))*c.CesiumMath.signNotZero(o.y)}return i.Cartesian3.normalize(o,o)},u.octDecode=function(e,t,n){return u.octDecodeInRange(e,t,255,n)},u.octDecodeFromCartesian4=function(e,t){h.Check.typeOf.object("encoded",e),h.Check.typeOf.object("result",t);var n=e.x,o=e.y,r=e.z,a=e.w;if(n<0||255<n||o<0||255<o||r<0||255<r||a<0||255<a)throw new h.DeveloperError("x, y, z, and w must be unsigned normalized integers between 0 and 255");var c=256*n+o,i=256*r+a;return u.octDecodeInRange(c,i,65535,t)},u.octPackFloat=function(e){return h.Check.defined("encoded",e),256*e.x+e.y};var f=new t.Cartesian2;function s(e){return e>>1^-(1&e)}u.octEncodeFloat=function(e){return u.octEncode(e,f),u.octPackFloat(f)},u.octDecodeFloat=function(e,t){h.Check.defined("value",e);var n=e/256,o=Math.floor(n),r=256*(n-o);return u.octDecode(o,r,t)},u.octPack=function(e,t,n,o){h.Check.defined("v1",e),h.Check.defined("v2",t),h.Check.defined("v3",n),h.Check.defined("result",o);var r=u.octEncodeFloat(e),a=u.octEncodeFloat(t),c=u.octEncode(n,f);return o.x=65536*c.x+r,o.y=65536*c.y+a,o},u.octUnpack=function(e,t,n,o){h.Check.defined("packed",e),h.Check.defined("v1",t),h.Check.defined("v2",n),h.Check.defined("v3",o);var r=e.x/65536,a=Math.floor(r),c=65536*(r-a);r=e.y/65536;var i=Math.floor(r),d=65536*(r-i);u.octDecodeFloat(c,t),u.octDecodeFloat(d,n),u.octDecode(a,i,o)},u.compressTextureCoordinates=function(e){return h.Check.defined("textureCoordinates",e),4096*(4095*e.x|0)+(4095*e.y|0)},u.decompressTextureCoordinates=function(e,t){h.Check.defined("compressed",e),h.Check.defined("result",t);var n=e/4096,o=Math.floor(n);return t.x=o/4095,t.y=(e-4096*o)/4095,t},u.zigZagDeltaDecode=function(e,t,n){h.Check.defined("uBuffer",e),h.Check.defined("vBuffer",t),h.Check.typeOf.number.equals("uBuffer.length","vBuffer.length",e.length,t.length),d.defined(n)&&h.Check.typeOf.number.equals("uBuffer.length","heightBuffer.length",e.length,n.length);for(var o=e.length,r=0,a=0,c=0,i=0;i<o;++i)r+=s(e[i]),a+=s(t[i]),e[i]=r,t[i]=a,d.defined(n)&&(c+=s(n[i]),n[i]=c)},u.octShortToFloat=function(e){return c.CesiumMath.clamp(3051850947599719e-20*e,-1,1)},u.octShortDecode=function(e,t,n){if(h.Check.defined("result",n),n.x=u.octShortToFloat(e),n.y=u.octShortToFloat(t),n.z=1-(Math.abs(n.x)+Math.abs(n.y)),n.z<0){var o=n.x;n.x=(1-Math.abs(n.y))*c.CesiumMath.signNotZero(o),n.y=(1-Math.abs(o))*c.CesiumMath.signNotZero(n.y)}return i.Cartesian3.normalize(n,n)},e.AttributeCompression=u});

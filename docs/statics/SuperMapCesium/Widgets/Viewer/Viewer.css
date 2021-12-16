@@ -93,7 +93,7 @@
 .cesium-viewer-geocoderContainer {
     position: relative;
     display: inline-block;
-    margin: 0 3px;
+    margin: 35px 3px;
 }
 
 .cesium-viewer-cesium3DTilesInspectorContainer {

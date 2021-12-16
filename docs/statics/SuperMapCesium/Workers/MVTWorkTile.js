@@ -1,7 +1,7 @@
 /**
- * Cesium - https://github.com/AnalyticalGraphicsInc/cesium
+ * Cesium - https://github.com/CesiumGS/cesium
  *
- * Copyright 2011-2017 Cesium Contributors
+ * Copyright 2011-2020 Cesium Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@
  * Columbus View (Pat. Pend.)
  *
  * Portions licensed separately.
- * See https://github.com/AnalyticalGraphicsInc/cesium/blob/master/LICENSE.md for full licensing details.
+ * See https://github.com/CesiumGS/cesium/blob/master/LICENSE.md for full licensing details.
  */
-define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9e6', './defined-21f7e510', './pbf-9fe59c76'], function (when, createTaskProcessorWorker, earcut2_2_1, defined, pbf) { 'use strict';
+define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9e6', './pbf-9fe59c76'], function (when, createTaskProcessorWorker, earcut2_2_1, pbf) {
 
     function DictionaryCoder(strings) {
         this._stringToNumber = {};
@@ -65,7 +65,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         var offset = 0;
         var maxSize = 0;
         var layoutMembers = members.map(function (member) {
-            //assert_1(member.name.length);
             var typeSize = sizeOf(member.type);
             var memberOffset = offset = align(offset, Math.max(alignment, typeSize));
             var components = member.components || 1;
@@ -231,7 +230,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         var srcData = srcImg.data;
         var dstData = dstImg.data;
 
-        //assert_1(srcData !== dstData);
 
         for (var y = 0; y < size.height; y++) {
             var srcOffset = ((srcPt.y + y) * srcImg.width + srcPt.x) * channels;
@@ -693,10 +691,10 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     Color$1.red = new Color$1(1, 0, 0, 1);
 
     var NullType = {kind: 'null'};
-    var NumberType$1 = {kind: 'number'};
+    var NumberType = {kind: 'number'};
     var StringType = {kind: 'string'};
     var BooleanType = {kind: 'boolean'};
-    var ColorType$1 = {kind: 'color'};
+    var ColorType = {kind: 'color'};
     var ObjectType = {kind: 'object'};
     var ValueType = {kind: 'value'};
     var FormattedType = {kind: 'formatted'};
@@ -723,10 +721,10 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
     var valueMemberTypes = [
         NullType,
-        NumberType$1,
+        NumberType,
         StringType,
         BooleanType,
-        ColorType$1,
+        ColorType,
         FormattedType,
         ObjectType,
         array(ValueType),
@@ -763,11 +761,123 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         return ("Expected " + (toString$2(expected)) + " but found " + (toString$2(t)) + " instead.");
     }
 
-    var NumberType$2 = {kind: 'number'};
+    var Collator = function Collator(caseSensitive       , diacriticSensitive       , locale             ) {
+        if (caseSensitive)
+        { this.sensitivity = diacriticSensitive ? 'variant' : 'case'; }
+        else
+        { this.sensitivity = diacriticSensitive ? 'accent' : 'base'; }
+
+        this.locale = locale;
+        this.collator = new Intl.Collator(this.locale ? this.locale : [],
+            {sensitivity: this.sensitivity, usage: 'search'});
+    };
+
+    Collator.prototype.compare = function compare (lhs      , rhs      )       {
+        return this.collator.compare(lhs, rhs);
+    };
+
+    Collator.prototype.resolvedLocale = function resolvedLocale ()       {
+        // We create a Collator without "usage: search" because we don't want
+        // the search options encoded in our result (e.g. "en-u-co-search")
+        return new Intl.Collator(this.locale ? this.locale : [])
+            .resolvedOptions().locale;
+    };
+
+    var FormattedSection = function FormattedSection(text, image, scale, fontStack, textColor) {
+        this.text = text;
+        this.image = image;
+        this.scale = scale;
+        this.fontStack = fontStack;
+        this.textColor = textColor;
+    };
+
+    var Formatted$1 = function Formatted(sections) {
+        this.sections = sections;
+    };
+
+    Formatted$1.fromString = function fromString(unformatted) {
+        return new Formatted$1([new FormattedSection(unformatted, null, null, null, null)]);
+    };
+
+    Formatted$1.prototype.isEmpty = function isEmpty() {
+        if (this.sections.length === 0) {
+            return true;
+        }
+        return !this.sections.some(function (section) {
+            return section.text.length !== 0 ||
+                (section.image && section.image.name.length !== 0);
+        });
+    };
+
+    Formatted$1.factory = function factory(text) {
+        if (text instanceof Formatted$1) {
+            return text;
+        } else {
+            return Formatted$1.fromString(text);
+        }
+    };
+
+    Formatted$1.prototype.toString = function toString() {
+        if (this.sections.length === 0) {
+            return '';
+        }
+        return this.sections.map(function (section) {
+            return section.text;
+        }).join('');
+    };
+
+    Formatted$1.prototype.serialize = function serialize() {
+        var serialized = ["format"];
+        for (var i = 0, list = this.sections; i < list.length; i += 1) {
+            var section = list[i];
+
+            if (section.image) {
+                serialized.push(["image", section.image.name]);
+                continue;
+            }
+            serialized.push(section.text);
+            var options = {};
+            if (section.fontStack) {
+                options["text-font"] = ["literal", section.fontStack.split(',')];
+            }
+            if (section.scale) {
+                options["font-scale"] = section.scale;
+            }
+            if (section.textColor) {
+                options["text-color"] = (["rgba"]          ).concat(section.textColor.toArray());
+            }
+            serialized.push(options);
+        }
+        return serialized;
+    };
+
+    var ResolvedImage$1 = function ResolvedImage(options) {
+        this.name = options.name;
+        this.available = options.available;
+    };
+
+    ResolvedImage$1.prototype.toString = function toString() {
+        return this.name;
+    };
+
+    ResolvedImage$1.fromString = function fromString(name) {
+        return new ResolvedImage$1({name: name, available: false});
+    };
+
+    ResolvedImage$1.prototype.serialize = function serialize() {
+        return ["image", this.name];
+    };
+
+    var NullType$1 = {kind: 'null'};
+    var NumberType$1 = {kind: 'number'};
     var StringType$1 = {kind: 'string'};
     var BooleanType$1 = {kind: 'boolean'};
+    var ColorType$1 = {kind: 'color'};
     var ObjectType$1 = {kind: 'object'};
     var ValueType$1 = {kind: 'value'};
+    var CollatorType = {kind: 'collator'};
+    var FormattedType$1 = {kind: 'formatted'};
+    var ResolvedImageType$1 = {kind: 'resolvedImage'};
 
     function array$1(itemType, N) {
         return {
@@ -777,11 +887,137 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         };
     }
 
+    function Values$1() {
+    }
+
+    Values$1.validateRGBA = function(r, g, b, a){
+        if (!(
+            typeof r === 'number' && r >= 0 && r <= 255 &&
+                typeof g === 'number' && g >= 0 && g <= 255 &&
+                typeof b === 'number' && b >= 0 && b <= 255
+            )) {
+            var value = typeof a === 'number' ? [r, g, b, a] : [r, g, b];
+            return ("Invalid rgba value [" + (value.join(', ')) + "]: 'r', 'g', and 'b' must be between 0 and 255.");
+        }
+        if (!(
+            typeof a === 'undefined' || (typeof a === 'number' && a >= 0 && a <= 1)
+            )) {
+            return ("Invalid rgba value [" + ([r, g, b, a].join(', ')) + "]: 'a' must be between 0 and 1.");
+        }
+        return null;
+    };
+
+    Values$1.isValue = function(mixed){
+        if (mixed === null) {
+            return true;
+        } else if (typeof mixed === 'string') {
+            return true;
+        } else if (typeof mixed === 'boolean') {
+            return true;
+        } else if (typeof mixed === 'number') {
+            return true;
+        } else if (mixed instanceof Color$1) {
+            return true;
+        } else if (mixed instanceof Collator) {
+            return true;
+        } else if (mixed instanceof Formatted$1) {
+            return true;
+        } else if (mixed instanceof ResolvedImage$1) {
+            return true;
+        } else if (Array.isArray(mixed)) {
+            for (var i = 0, list = mixed; i < list.length; i += 1) {
+                var item = list[i];
+
+                if (!Values$1.isValue(item)) {
+                    return false;
+                }
+            }
+            return true;
+        } else if (typeof mixed === 'object') {
+            for (var key in mixed) {
+                if (!Values$1.isValue(mixed[key])) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    Values$1.typeOf = function(value){
+        if (value === null) {
+            return NullType$1;
+        } else if (typeof value === 'string') {
+            return StringType$1;
+        } else if (typeof value === 'boolean') {
+            return BooleanType$1;
+        } else if (typeof value === 'number') {
+            return NumberType$1;
+        } else if (value instanceof Color$1) {
+            return ColorType$1;
+        } else if (value instanceof Collator) {
+            return CollatorType;
+        } else if (value instanceof Formatted$1) {
+            return FormattedType$1;
+        } else if (value instanceof ResolvedImage$1) {
+            return ResolvedImageType$1;
+        } else if (Array.isArray(value)) {
+            var length = value.length;
+            var itemType;
+
+            for (var i = 0, list = value; i < list.length; i += 1) {
+                var item = list[i];
+
+                var t = Values$1.typeOf(item);
+                if (!itemType) {
+                    itemType = t;
+                } else if (itemType === t) {
+                    continue;
+                } else {
+                    itemType = ValueType$1;
+                    break;
+                }
+            }
+
+            return array$1(itemType || ValueType$1, length);
+        } else {
+            return ObjectType$1;
+        }
+    };
+
+    Values$1.toString$1 = function(value){
+        var type = typeof value;
+        if (value === null) {
+            return '';
+        } else if (type === 'string' || type === 'number' || type === 'boolean') {
+            return String(value);
+        } else if (value instanceof Color$1 || value instanceof Formatted$1 || value instanceof ResolvedImage$1) {
+            return value.toString();
+        } else {
+            return JSON.stringify(value);
+        }
+    };
+
+    var NumberType$2 = {kind: 'number'};
+    var StringType$2 = {kind: 'string'};
+    var BooleanType$2 = {kind: 'boolean'};
+    var ObjectType$2 = {kind: 'object'};
+    var ValueType$2 = {kind: 'value'};
+
+    function array$2(itemType, N) {
+        return {
+            kind: 'array',
+            itemType: itemType,
+            N: N
+        };
+    }
+
     var types = {
-        string: StringType$1,
+        string: StringType$2,
         number: NumberType$2,
-        boolean: BooleanType$1,
-        object: ObjectType$1
+        boolean: BooleanType$2,
+        object: ObjectType$2
     };
 
     var Assertion = function Assertion(type, args) {
@@ -808,7 +1044,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                 itemType = types[type$1];
                 i++;
             } else {
-                itemType = ValueType$1;
+                itemType = ValueType$2;
             }
 
             var N;
@@ -824,15 +1060,14 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                 i++;
             }
 
-            type = array$1(itemType, N);
+            type = array$2(itemType, N);
         } else {
-            assert_1(types[name], name);
             type = types[name];
         }
 
         var parsed = [];
         for (; i < args.length; i++) {
-            var input = context.parse(args[i], i, ValueType$1);
+            var input = context.parse(args[i], i, ValueType$2);
             if (!input) {
                 return null;
             }
@@ -845,15 +1080,14 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     Assertion.prototype.evaluate = function evaluate(ctx) {
         for (var i = 0; i < this.args.length; i++) {
             var value = this.args[i].evaluate(ctx);
-            var error = checkSubtype(this.type, typeOf(value));
+            var error = checkSubtype(this.type, Values$1.typeOf(value));
             if (!error) {
                 return value;
             } else if (i === this.args.length - 1) {
-                throw new RuntimeError(("Expected value to be of type " + (toString(this.type)) + ", but found " + (toString(typeOf(value))) + " instead."));
+                throw new RuntimeError(("Expected value to be of type " + (toString(this.type)) + ", but found " + (toString(Values$1.typeOf(value))) + " instead."));
             }
         }
 
-        assert_1(false);
         return null;
     };
 
@@ -890,9 +1124,9 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     };
 
     var NumberType$3 = {kind: 'number'};
-    var ValueType$2 = {kind: 'value'};
+    var ValueType$3 = {kind: 'value'};
 
-    function array$2(itemType, N) {
+    function array$3(itemType, N) {
         return {
             kind: 'array',
             itemType: itemType,
@@ -912,7 +1146,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         }
 
         var index = context.parse(args[1], 1, NumberType$3);
-        var input = context.parse(args[2], 2, array$2(context.expectedType || ValueType$2));
+        var input = context.parse(args[2], 2, array$3(context.expectedType || ValueType$3));
 
         if (!index || !input) {
             return null;
@@ -954,7 +1188,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         return ["at", this.index.serialize(), this.input.serialize()];
     };
 
-    var BooleanType$2 = {kind: 'boolean'};
+    var BooleanType$3 = {kind: 'boolean'};
 
     var Case = function Case(type, branches, otherwise) {
         this.type = type;
@@ -977,7 +1211,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
         var branches = [];
         for (var i = 1; i < args.length - 1; i += 2) {
-            var test = context.parse(args[i], i, BooleanType$2);
+            var test = context.parse(args[i], i, BooleanType$3);
             if (!test) {
                 return null;
             }
@@ -997,7 +1231,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             return null;
         }
 
-        assert_1(outputType);
         return new Case((outputType ), branches, otherwise);
     };
 
@@ -1047,24 +1280,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         return serialized;
     };
 
-    var ResolvedImage$1 = function ResolvedImage(options) {
-        this.name = options.name;
-        this.available = options.available;
-    };
-
-    ResolvedImage$1.prototype.toString = function toString() {
-        return this.name;
-    };
-
-    ResolvedImage$1.fromString = function fromString(name) {
-        return new ResolvedImage$1({name: name, available: false});
-    };
-
-    ResolvedImage$1.prototype.serialize = function serialize() {
-        return ["image", this.name];
-    };
-
-    var ValueType$3 = {kind: 'value'};
+    var ValueType$4 = {kind: 'value'};
 
     var Coalesce = function Coalesce(type, args) {
         this.type = type;
@@ -1092,7 +1308,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             outputType = outputType || parsed.type;
             parsedArgs.push(parsed);
         }
-        assert_1(outputType);
 
         // Above, we parse arguments without inferred type annotation so that
         // they don't produce a runtime error for `null` input, which would
@@ -1105,7 +1320,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             });
 
         return needsAnnotation ?
-            new Coalesce(ValueType$3, parsedArgs) :
+            new Coalesce(ValueType$4, parsedArgs) :
             new Coalesce((outputType ), parsedArgs);
     };
 
@@ -1158,16 +1373,16 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     };
 
     var NumberType$4 = {kind: 'number'};
-    var StringType$2 = {kind: 'string'};
-    var BooleanType$3 = {kind: 'boolean'};
+    var StringType$3 = {kind: 'string'};
+    var BooleanType$4 = {kind: 'boolean'};
     var ColorType$2 = {kind: 'color'};
-    var ValueType$4 = {kind: 'value'};
+    var ValueType$5 = {kind: 'value'};
 
     var types$1 = {
-        'to-boolean': BooleanType$3,
+        'to-boolean': BooleanType$4,
         'to-color': ColorType$2,
         'to-number': NumberType$4,
-        'to-string': StringType$2
+        'to-string': StringType$3
     };
 
     /**
@@ -1188,7 +1403,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         }
 
         var name = (args[0] );
-        assert_1(types$1[name], name);
 
         if ((name === 'to-boolean' || name === 'to-string') && args.length !== 2) {
             return context.error("Expected one argument.");
@@ -1198,7 +1412,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
         var parsed = [];
         for (var i = 1; i < args.length; i++) {
-            var input = context.parse(args[i], i, ValueType$4);
+            var input = context.parse(args[i], i, ValueType$5);
             if (!input) {
                 return null;
             }
@@ -1295,34 +1509,12 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         return serialized;
     };
 
-    var Collator = function Collator(caseSensitive       , diacriticSensitive       , locale             ) {
-        if (caseSensitive)
-        { this.sensitivity = diacriticSensitive ? 'variant' : 'case'; }
-        else
-        { this.sensitivity = diacriticSensitive ? 'accent' : 'base'; }
-
-        this.locale = locale;
-        this.collator = new Intl.Collator(this.locale ? this.locale : [],
-            {sensitivity: this.sensitivity, usage: 'search'});
-    };
-
-    Collator.prototype.compare = function compare (lhs      , rhs      )       {
-        return this.collator.compare(lhs, rhs);
-    };
-
-    Collator.prototype.resolvedLocale = function resolvedLocale ()       {
-        // We create a Collator without "usage: search" because we don't want
-        // the search options encoded in our result (e.g. "en-u-co-search")
-        return new Intl.Collator(this.locale ? this.locale : [])
-            .resolvedOptions().locale;
-    };
-
-    var StringType$3 = {kind: 'string'};
-    var BooleanType$4 = {kind: 'boolean'};
-    var CollatorType = {kind: 'collator'};
+    var StringType$4 = {kind: 'string'};
+    var BooleanType$5 = {kind: 'boolean'};
+    var CollatorType$1 = {kind: 'collator'};
 
     var CollatorExpression = function CollatorExpression(caseSensitive, diacriticSensitive, locale) {
-        this.type = CollatorType;
+        this.type = CollatorType$1;
         this.locale = locale;
         this.caseSensitive = caseSensitive;
         this.diacriticSensitive = diacriticSensitive;
@@ -1339,20 +1531,20 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         }
 
         var caseSensitive = context.parse(
-            options['case-sensitive'] === undefined ? false : options['case-sensitive'], 1, BooleanType$4);
+            options['case-sensitive'] === undefined ? false : options['case-sensitive'], 1, BooleanType$5);
         if (!caseSensitive) {
             return null;
         }
 
         var diacriticSensitive = context.parse(
-            options['diacritic-sensitive'] === undefined ? false : options['diacritic-sensitive'], 1, BooleanType$4);
+            options['diacritic-sensitive'] === undefined ? false : options['diacritic-sensitive'], 1, BooleanType$5);
         if (!diacriticSensitive) {
             return null;
         }
 
         var locale = null;
         if (options['locale']) {
-            locale = context.parse(options['locale'], 1, StringType$3);
+            locale = context.parse(options['locale'], 1, StringType$4);
             if (!locale) {
                 return null;
             }
@@ -1389,206 +1581,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             options['locale'] = this.locale.serialize();
         }
         return ["collator", options];
-    };
-
-    var FormattedSection = function FormattedSection(text, image, scale, fontStack, textColor) {
-        this.text = text;
-        this.image = image;
-        this.scale = scale;
-        this.fontStack = fontStack;
-        this.textColor = textColor;
-    };
-
-    var Formatted$1 = function Formatted(sections) {
-        this.sections = sections;
-    };
-
-    Formatted$1.fromString = function fromString(unformatted) {
-        return new Formatted$1([new FormattedSection(unformatted, null, null, null, null)]);
-    };
-
-    Formatted$1.prototype.isEmpty = function isEmpty() {
-        if (this.sections.length === 0) {
-            return true;
-        }
-        return !this.sections.some(function (section) {
-            return section.text.length !== 0 ||
-                (section.image && section.image.name.length !== 0);
-        });
-    };
-
-    Formatted$1.factory = function factory(text) {
-        if (text instanceof Formatted$1) {
-            return text;
-        } else {
-            return Formatted$1.fromString(text);
-        }
-    };
-
-    Formatted$1.prototype.toString = function toString() {
-        if (this.sections.length === 0) {
-            return '';
-        }
-        return this.sections.map(function (section) {
-            return section.text;
-        }).join('');
-    };
-
-    Formatted$1.prototype.serialize = function serialize() {
-        var serialized = ["format"];
-        for (var i = 0, list = this.sections; i < list.length; i += 1) {
-            var section = list[i];
-
-            if (section.image) {
-                serialized.push(["image", section.image.name]);
-                continue;
-            }
-            serialized.push(section.text);
-            var options = {};
-            if (section.fontStack) {
-                options["text-font"] = ["literal", section.fontStack.split(',')];
-            }
-            if (section.scale) {
-                options["font-scale"] = section.scale;
-            }
-            if (section.textColor) {
-                options["text-color"] = (["rgba"]          ).concat(section.textColor.toArray());
-            }
-            serialized.push(options);
-        }
-        return serialized;
-    };
-
-    var NullType$1 = {kind: 'null'};
-    var NumberType$5 = {kind: 'number'};
-    var StringType$4 = {kind: 'string'};
-    var BooleanType$5 = {kind: 'boolean'};
-    var ColorType$3 = {kind: 'color'};
-    var ObjectType$2 = {kind: 'object'};
-    var ValueType$5 = {kind: 'value'};
-    var CollatorType$1 = {kind: 'collator'};
-    var FormattedType$1 = {kind: 'formatted'};
-    var ResolvedImageType$1 = {kind: 'resolvedImage'};
-
-    function array$3(itemType, N) {
-        return {
-            kind: 'array',
-            itemType: itemType,
-            N: N
-        };
-    }
-
-    function Values$1() {
-    }
-
-    Values$1.validateRGBA = function(r, g, b, a){
-        if (!(
-            typeof r === 'number' && r >= 0 && r <= 255 &&
-                typeof g === 'number' && g >= 0 && g <= 255 &&
-                typeof b === 'number' && b >= 0 && b <= 255
-            )) {
-            var value = typeof a === 'number' ? [r, g, b, a] : [r, g, b];
-            return ("Invalid rgba value [" + (value.join(', ')) + "]: 'r', 'g', and 'b' must be between 0 and 255.");
-        }
-        if (!(
-            typeof a === 'undefined' || (typeof a === 'number' && a >= 0 && a <= 1)
-            )) {
-            return ("Invalid rgba value [" + ([r, g, b, a].join(', ')) + "]: 'a' must be between 0 and 1.");
-        }
-        return null;
-    };
-
-    Values$1.isValue = function(mixed){
-        if (mixed === null) {
-            return true;
-        } else if (typeof mixed === 'string') {
-            return true;
-        } else if (typeof mixed === 'boolean') {
-            return true;
-        } else if (typeof mixed === 'number') {
-            return true;
-        } else if (mixed instanceof Color$1) {
-            return true;
-        } else if (mixed instanceof Collator) {
-            return true;
-        } else if (mixed instanceof Formatted$1) {
-            return true;
-        } else if (mixed instanceof ResolvedImage$1) {
-            return true;
-        } else if (Array.isArray(mixed)) {
-            for (var i = 0, list = mixed; i < list.length; i += 1) {
-                var item = list[i];
-
-                if (!Values$1.isValue(item)) {
-                    return false;
-                }
-            }
-            return true;
-        } else if (typeof mixed === 'object') {
-            for (var key in mixed) {
-                if (!Values$1.isValue(mixed[key])) {
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            return false;
-        }
-    };
-
-    Values$1.typeOf = function(value){
-        if (value === null) {
-            return NullType$1;
-        } else if (typeof value === 'string') {
-            return StringType$4;
-        } else if (typeof value === 'boolean') {
-            return BooleanType$5;
-        } else if (typeof value === 'number') {
-            return NumberType$5;
-        } else if (value instanceof Color$1) {
-            return ColorType$3;
-        } else if (value instanceof Collator) {
-            return CollatorType$1;
-        } else if (value instanceof Formatted$1) {
-            return FormattedType$1;
-        } else if (value instanceof ResolvedImage$1) {
-            return ResolvedImageType$1;
-        } else if (Array.isArray(value)) {
-            var length = value.length;
-            var itemType;
-
-            for (var i = 0, list = value; i < list.length; i += 1) {
-                var item = list[i];
-
-                var t = Values$1.typeOf(item);
-                if (!itemType) {
-                    itemType = t;
-                } else if (itemType === t) {
-                    continue;
-                } else {
-                    itemType = ValueType$5;
-                    break;
-                }
-            }
-
-            return array$3(itemType || ValueType$5, length);
-        } else {
-            assert_1(typeof value === 'object');
-            return ObjectType$2;
-        }
-    };
-
-    Values$1.toString$1 = function(value){
-        var type = typeof value;
-        if (value === null) {
-            return '';
-        } else if (type === 'string' || type === 'number' || type === 'boolean') {
-            return String(value);
-        } else if (value instanceof Color$1 || value instanceof Formatted$1 || value instanceof ResolvedImage$1) {
-            return value.toString();
-        } else {
-            return JSON.stringify(value);
-        }
     };
 
     var BooleanType$6 = {kind: 'boolean'};
@@ -1797,9 +1789,9 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     ComparisonEnum.LessThanOrEqual = makeComparison('<=', lteq, lteqCollate);
     ComparisonEnum.GreaterThanOrEqual = makeComparison('>=', gteq, gteqCollate);
 
-    var NumberType$6 = {kind: 'number'};
+    var NumberType$5 = {kind: 'number'};
     var StringType$5 = {kind: 'string'};
-    var ColorType$4 = {kind: 'color'};
+    var ColorType$3 = {kind: 'color'};
     var ValueType$7 = {kind: 'value'};
     var FormattedType$2 = {kind: 'formatted'};
     var ResolvedImageType$2 = {kind: 'resolvedImage'};
@@ -1837,7 +1829,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
                 var scale = null;
                 if (arg['font-scale']) {
-                    scale = context.parse(arg['font-scale'], 1, NumberType$6);
+                    scale = context.parse(arg['font-scale'], 1, NumberType$5);
                     if (!scale) {
                         return null;
                     }
@@ -1853,7 +1845,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
                 var textColor = null;
                 if (arg['text-color']) {
-                    textColor = context.parse(arg['text-color'], 1, ColorType$4);
+                    textColor = context.parse(arg['text-color'], 1, ColorType$3);
                     if (!textColor) {
                         return null;
                     }
@@ -1990,7 +1982,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         return ["image", this.input.serialize()];
     };
 
-    var Interpolate$1 = function Interpolate(type, operator, interpolation, input, stops) {
+    var Interpolate = function Interpolate(type, operator, interpolation, input, stops) {
         this.type = type;
         this.operator = operator;
         this.interpolation = interpolation;
@@ -2008,7 +2000,10 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         }
     };
 
-    Interpolate$1.interpolationFactor = function interpolationFactor(interpolation, input, lower, upper) {
+    var NumberType$6 = {kind: 'number'};
+    var ColorType$4 = {kind: 'color'};
+
+    Interpolate.interpolationFactor = function interpolationFactor(interpolation, input, lower, upper) {
         var t = 0;
         if (interpolation.name === 'exponential') {
             t = exponentialInterpolation(input, interpolation.base, lower, upper);
@@ -2022,7 +2017,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         return t;
     };
 
-    Interpolate$1.parse = function parse(args, context) {
+    Interpolate.parse = function parse(args, context) {
         var operator = args[0];
         var interpolation = args[1];
         var input = args[2];
@@ -2070,7 +2065,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             return context.error("Expected an even number of arguments.");
         }
 
-        input = context.parse(input, 2, NumberType);
+        input = context.parse(input, 2, NumberType$6);
         if (!input) {
             return null;
         }
@@ -2079,7 +2074,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
         var outputType = (null );
         if (operator === 'interpolate-hcl' || operator === 'interpolate-lab') {
-            outputType = ColorType;
+            outputType = ColorType$4;
         } else if (context.expectedType && context.expectedType.kind !== 'value') {
             outputType = context.expectedType;
         }
@@ -2117,10 +2112,10 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             return context.error(("Type " + (toString(outputType)) + " is not interpolatable."));
         }
 
-        return new Interpolate$1(outputType, (operator ), interpolation, input, stops);
+        return new Interpolate(outputType, (operator ), interpolation, input, stops);
     };
 
-    Interpolate$1.prototype.evaluate = function evaluate(ctx) {
+    Interpolate.prototype.evaluate = function evaluate(ctx) {
         var labels = this.labels;
         var outputs = this.outputs;
 
@@ -2141,7 +2136,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         var index = findStopLessThanOrEqualTo(labels, value);
         var lower = labels[index];
         var upper = labels[index + 1];
-        var t = Interpolate$1.interpolationFactor(this.interpolation, value, lower, upper);
+        var t = Interpolate.interpolationFactor(this.interpolation, value, lower, upper);
 
         var outputLower = outputs[index].evaluate(ctx);
         var outputUpper = outputs[index + 1].evaluate(ctx);
@@ -2155,7 +2150,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         }
     };
 
-    Interpolate$1.prototype.eachChild = function eachChild(fn) {
+    Interpolate.prototype.eachChild = function eachChild(fn) {
         fn(this.input);
         for (var i = 0, list = this.outputs; i < list.length; i += 1) {
             var expression = list[i];
@@ -2164,7 +2159,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         }
     };
 
-    Interpolate$1.prototype.possibleOutputs = function possibleOutputs() {
+    Interpolate.prototype.possibleOutputs = function possibleOutputs() {
         var ref;
 
         return (ref = []).concat.apply(ref, this.outputs.map(function (output) {
@@ -2172,7 +2167,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         }));
     };
 
-    Interpolate$1.prototype.serialize = function serialize() {
+    Interpolate.prototype.serialize = function serialize() {
         var interpolation;
         if (this.interpolation.name === 'linear') {
             interpolation = ["linear"];
@@ -2500,10 +2495,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             // Same as Color
             return this.value.serialize();
         } else {
-            assert_1(this.value === null ||
-                typeof this.value === 'string' ||
-                typeof this.value === 'number' ||
-                typeof this.value === 'boolean');
             return (this.value );
         }
     };
@@ -2589,8 +2580,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         if (!otherwise) {
             return null;
         }
-
-        assert_1(inputType && outputType);
 
         if (input.type.kind !== 'value' && context.concat(1).checkSubtype((inputType ), input.type)) {
             return null;
@@ -2977,9 +2966,9 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         'format': FormatExpression$1,
         'image': ImageExpression$1,
         'in': In,
-        'interpolate': Interpolate$1,
-        'interpolate-hcl': Interpolate$1,
-        'interpolate-lab': Interpolate$1,
+        'interpolate': Interpolate,
+        'interpolate-hcl': Interpolate,
+        'interpolate-lab': Interpolate,
         'length': Length,
         'let': Let,
         'literal': Literal,
@@ -3449,7 +3438,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
      * deserialization.
      */
     StructArray.serialize = function serialize(array, transferables) {
-        //assert_1(!array.isTransferred);
         if(array.isTransferred){
             console.log("StructArray array.isTransferred.");
         }
@@ -3501,7 +3489,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
      * @param {number} n The new size of the array.
      */
     StructArray.prototype.resize = function resize(n) {
-        //assert_1(!this.isTransferred);
         this.reserve(n);
         this.length = n;
     };
@@ -3629,7 +3616,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     };
 
     FeaturePositionMap.prototype.getPositions = function getPositions(id) {
-        //assert_1(this.indexed);
 
         // binary search for the first occurrence of id in this.ids;
         // relies on ids/positions being sorted by id, which happens in serialization
@@ -4737,6 +4723,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             'text-halo-color': ['halo_color'],
             'icon-halo-color': ['halo_color'],
             'text-halo-blur': ['halo_blur'],
+            'text-show-background': ['show-background'],
             'icon-halo-blur': ['halo_blur'],
             'text-halo-width': ['halo_width'],
             'icon-halo-width': ['halo_width'],
@@ -5039,6 +5026,9 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
     LineBucket.prototype.upload = function upload(context) {
         if (!this.uploaded) {
+            if(this.layoutVertexArray == null) {
+                return;
+            }
             this.layoutVertexBuffer = context.createVertexBuffer(this.layoutVertexArray, members$3);
             this.indexBuffer = context.createIndexBuffer(this.indexArray);
         }
@@ -5057,10 +5047,10 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     };
 
     LineBucket.prototype.clear = function clear() {
-        if (defined.defined(this.layoutVertexArray)) {
+        if (when.defined(this.layoutVertexArray)) {
             this.layoutVertexArray = null;
         }
-        if (defined.defined(this.indexArray)) {
+        if (when.defined(this.indexArray)) {
             this.indexArray = null;
         }
     };
@@ -5750,7 +5740,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     		if (!ret.buffer) {
     		  ret = new Uint8Array(ret);
     		}
-    		assert(ret.buffer);
+    		assert$1(ret.buffer);
     		return ret;
     	  };
 
@@ -5795,7 +5785,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     		  return new Uint8Array(readbuffer(f));
     		}
     		data = read(f, 'binary');
-    		assert(typeof data === 'object');
+    		assert$1(typeof data === 'object');
     		return data;
     	  };
 
@@ -5886,10 +5876,10 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     	moduleOverrides = undefined;
 
     	// perform assertions in shell.js after we set up out() and err(), as otherwise if an assertion fails it cannot print the message
-    	assert(typeof Module['memoryInitializerPrefixURL'] === 'undefined', 'Module.memoryInitializerPrefixURL option was removed, use Module.locateFile instead');
-    	assert(typeof Module['pthreadMainPrefixURL'] === 'undefined', 'Module.pthreadMainPrefixURL option was removed, use Module.locateFile instead');
-    	assert(typeof Module['cdInitializerPrefixURL'] === 'undefined', 'Module.cdInitializerPrefixURL option was removed, use Module.locateFile instead');
-    	assert(typeof Module['filePackagePrefixURL'] === 'undefined', 'Module.filePackagePrefixURL option was removed, use Module.locateFile instead');
+    	assert$1(typeof Module['memoryInitializerPrefixURL'] === 'undefined', 'Module.memoryInitializerPrefixURL option was removed, use Module.locateFile instead');
+    	assert$1(typeof Module['pthreadMainPrefixURL'] === 'undefined', 'Module.pthreadMainPrefixURL option was removed, use Module.locateFile instead');
+    	assert$1(typeof Module['cdInitializerPrefixURL'] === 'undefined', 'Module.cdInitializerPrefixURL option was removed, use Module.locateFile instead');
+    	assert$1(typeof Module['filePackagePrefixURL'] === 'undefined', 'Module.filePackagePrefixURL option was removed, use Module.locateFile instead');
 
     	// stack management, and other functionality that is provided by the compiled code,
     	// should not be used before it is ready
@@ -5982,7 +5972,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     	var ABORT = false;
 
     	/** @type {function(*, string=)} */
-    	function assert(condition, text) {
+    	function assert$1(condition, text) {
     	  if (!condition) {
     		abort('Assertion failed: ' + text);
     	  }
@@ -5991,7 +5981,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     	// Returns the C function with a specified identifier (for C++, you need to do manual name mangling)
     	function getCFunc(ident) {
     	  var func = Module['_' + ident]; // closure exported function
-    	  assert(func, 'Cannot call unknown function ' + ident + ', make sure it is exported');
+    	  assert$1(func, 'Cannot call unknown function ' + ident + ', make sure it is exported');
     	  return func;
     	}
 
@@ -6025,7 +6015,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     	  var func = getCFunc(ident);
     	  var cArgs = [];
     	  var stack = 0;
-    	  assert(returnType !== 'array', 'Return type should not be "array".');
+    	  assert$1(returnType !== 'array', 'Return type should not be "array".');
     	  if (args) {
     		for (var i = 0; i < args.length; i++) {
     		  var converter = toC[argTypes[i]];
@@ -6180,7 +6170,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     	// Returns the number of bytes written, EXCLUDING the null terminator.
 
     	function stringToUTF8(str, outPtr, maxBytesToWrite) {
-    	  assert(typeof maxBytesToWrite == 'number', 'stringToUTF8(str, outPtr, maxBytesToWrite) is missing the third parameter that specifies the length of the output buffer!');
+    	  assert$1(typeof maxBytesToWrite == 'number', 'stringToUTF8(str, outPtr, maxBytesToWrite) is missing the third parameter that specifies the length of the output buffer!');
     	  return stringToUTF8Array(str, HEAPU8,outPtr, maxBytesToWrite);
     	}
 
@@ -6191,7 +6181,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     	var UTF16Decoder = typeof TextDecoder !== 'undefined' ? new TextDecoder('utf-16le') : undefined;
 
     	function writeArrayToMemory(array, buffer) {
-    	  assert(array.length >= 0, 'writeArrayToMemory array must have a length (should be an array or typed array)');
+    	  assert$1(array.length >= 0, 'writeArrayToMemory array must have a length (should be an array or typed array)');
     	  HEAP8.set(array, buffer);
     	}
 
@@ -6280,20 +6270,20 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     		DYNAMIC_BASE = 5248752,
     		DYNAMICTOP_PTR = 5840;
 
-    	assert(STACK_BASE % 16 === 0, 'stack must start aligned');
-    	assert(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
+    	assert$1(STACK_BASE % 16 === 0, 'stack must start aligned');
+    	assert$1(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
 
 
 
     	var TOTAL_STACK = 5242880;
-    	if (Module['TOTAL_STACK']) assert(TOTAL_STACK === Module['TOTAL_STACK'], 'the stack size can no longer be determined at runtime');
+    	if (Module['TOTAL_STACK']) assert$1(TOTAL_STACK === Module['TOTAL_STACK'], 'the stack size can no longer be determined at runtime');
 
     	var INITIAL_TOTAL_MEMORY = Module['TOTAL_MEMORY'] || 16777216;
     	if (INITIAL_TOTAL_MEMORY < TOTAL_STACK) err('TOTAL_MEMORY should be larger than TOTAL_STACK, was ' + INITIAL_TOTAL_MEMORY + '! (TOTAL_STACK=' + TOTAL_STACK + ')');
 
     	// Initialize the runtime's memory
     	// check for full engine support (use string 'subarray' to avoid closure compiler confusion)
-    	assert(typeof Int32Array !== 'undefined' && typeof Float64Array !== 'undefined' && Int32Array.prototype.subarray !== undefined && Int32Array.prototype.set !== undefined,
+    	assert$1(typeof Int32Array !== 'undefined' && typeof Float64Array !== 'undefined' && Int32Array.prototype.subarray !== undefined && Int32Array.prototype.set !== undefined,
     		   'JS engine does not provide full typed array support');
 
 
@@ -6305,18 +6295,18 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     	// Use a provided buffer, if there is one, or else allocate a new one
     	if (Module['buffer']) {
     	  buffer = Module['buffer'];
-    	  assert(buffer.byteLength === INITIAL_TOTAL_MEMORY, 'provided buffer should be ' + INITIAL_TOTAL_MEMORY + ' bytes, but it is ' + buffer.byteLength);
+    	  assert$1(buffer.byteLength === INITIAL_TOTAL_MEMORY, 'provided buffer should be ' + INITIAL_TOTAL_MEMORY + ' bytes, but it is ' + buffer.byteLength);
     	} else {
     	  // Use a WebAssembly memory where available
     	  if (typeof WebAssembly === 'object' && typeof WebAssembly.Memory === 'function') {
-    		assert(INITIAL_TOTAL_MEMORY % WASM_PAGE_SIZE === 0);
+    		assert$1(INITIAL_TOTAL_MEMORY % WASM_PAGE_SIZE === 0);
     		wasmMemory = new WebAssembly.Memory({ 'initial': INITIAL_TOTAL_MEMORY / WASM_PAGE_SIZE });
     		buffer = wasmMemory.buffer;
     	  } else
     	  {
     		buffer = new ArrayBuffer(INITIAL_TOTAL_MEMORY);
     	  }
-    	  assert(buffer.byteLength === INITIAL_TOTAL_MEMORY);
+    	  assert$1(buffer.byteLength === INITIAL_TOTAL_MEMORY);
     	}
     	updateGlobalBufferViews();
 
@@ -6326,7 +6316,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
     	// Initializes the stack cookie. Called at the startup of main and at the startup of each thread in pthreads mode.
     	function writeStackCookie() {
-    	  assert((STACK_MAX & 3) == 0);
+    	  assert$1((STACK_MAX & 3) == 0);
     	  HEAPU32[(STACK_MAX >> 2)-1] = 0x02135467;
     	  HEAPU32[(STACK_MAX >> 2)-2] = 0x89BACDFE;
     	}
@@ -6427,10 +6417,10 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     	}
 
 
-    	assert(Math.imul, 'This browser does not support Math.imul(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill');
-    	assert(Math.fround, 'This browser does not support Math.fround(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill');
-    	assert(Math.clz32, 'This browser does not support Math.clz32(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill');
-    	assert(Math.trunc, 'This browser does not support Math.trunc(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill');
+    	assert$1(Math.imul, 'This browser does not support Math.imul(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill');
+    	assert$1(Math.fround, 'This browser does not support Math.fround(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill');
+    	assert$1(Math.clz32, 'This browser does not support Math.clz32(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill');
+    	assert$1(Math.trunc, 'This browser does not support Math.trunc(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill');
 
 
 
@@ -6452,7 +6442,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     		Module['monitorRunDependencies'](runDependencies);
     	  }
     	  if (id) {
-    		assert(!runDependencyTracking[id]);
+    		assert$1(!runDependencyTracking[id]);
     		runDependencyTracking[id] = 1;
     		if (runDependencyWatcher === null && typeof setInterval !== 'undefined') {
     		  // Check for missing dependencies every few seconds
@@ -6473,7 +6463,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     		Module['monitorRunDependencies'](runDependencies);
     	  }
     	  if (id) {
-    		assert(runDependencyTracking[id]);
+    		assert$1(runDependencyTracking[id]);
     		delete runDependencyTracking[id];
     	  }
     	  if (runDependencies == 0) {
@@ -6609,7 +6599,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     	  function receiveInstantiatedSource(output) {
     		// 'output' is a WebAssemblyInstantiatedSource object which has both the module and instance.
     		// receiveInstance() will swap in the exports (to Module.asm) so they can be called
-    		assert(Module === trueModule, 'the Module object should not be replaced during async compilation - perhaps the order of HTML elements is wrong?');
+    		assert$1(Module === trueModule, 'the Module object should not be replaced during async compilation - perhaps the order of HTML elements is wrong?');
     		trueModule = null;
     		  // TODO: Due to Closure regression https://github.com/google/closure-compiler/issues/3193, the above line no longer optimizes out down to the following line.
     		  // When the regression is fixed, can restore the above USE_PTHREADS-enabled path.
@@ -6683,7 +6673,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     	  env['__table_base'] = 0;
 
     	  var exports = createWasm(env);
-    	  assert(exports, 'binaryen setup failed (no wasm support?)');
+    	  assert$1(exports, 'binaryen setup failed (no wasm support?)');
     	  return exports;
     	};
 
@@ -6703,7 +6693,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
     	/* no memory initializer */
     	var tempDoublePtr = 5856;
-    	assert(tempDoublePtr % 8 == 0);
+    	assert$1(tempDoublePtr % 8 == 0);
 
     	// {{PRE_LIBRARY}}
 
@@ -6775,7 +6765,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     	  function ___lock() {}
     var SYSCALLS={buffers:[null,[],[]],printChar:function (stream, curr) {
     			var buffer = SYSCALLS.buffers[stream];
-    			assert(buffer);
+    			assert$1(buffer);
     			if (curr === 0 || curr === 10) {
     			  (stream === 1 ? out : err)(UTF8ArrayToString(buffer, 0));
     			  buffer.length = 0;
@@ -6791,11 +6781,11 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     			return ret;
     		  },get64:function () {
     			var low = SYSCALLS.get(), high = SYSCALLS.get();
-    			if (low >= 0) assert(high === 0);
-    			else assert(high === -1);
+    			if (low >= 0) assert$1(high === 0);
+    			else assert$1(high === -1);
     			return low;
     		  },getZero:function () {
-    			assert(SYSCALLS.get() === 0);
+    			assert$1(SYSCALLS.get() === 0);
     		  }};function ___syscall140(which, varargs) {SYSCALLS.varargs = varargs;
     	  try {
     	   // llseek
@@ -6920,7 +6910,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     		}function _emscripten_resize_heap(requestedSize) {
     		  var oldSize = _emscripten_get_heap_size();
     		  // With pthreads, races can happen (another thread might increase the size in between), so return a failure, and let the caller retry.
-    		  assert(requestedSize > oldSize);
+    		  assert$1(requestedSize > oldSize);
     	  
     	  
     		  var PAGE_MULTIPLE = 65536;
@@ -7031,274 +7021,274 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
     	var real___ZSt18uncaught_exceptionv = asm["__ZSt18uncaught_exceptionv"];
     	asm["__ZSt18uncaught_exceptionv"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real___ZSt18uncaught_exceptionv.apply(null, arguments);
     	};
 
     	var real____cxa_can_catch = asm["___cxa_can_catch"];
     	asm["___cxa_can_catch"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real____cxa_can_catch.apply(null, arguments);
     	};
 
     	var real____cxa_is_pointer_type = asm["___cxa_is_pointer_type"];
     	asm["___cxa_is_pointer_type"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real____cxa_is_pointer_type.apply(null, arguments);
     	};
 
     	var real____errno_location = asm["___errno_location"];
     	asm["___errno_location"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real____errno_location.apply(null, arguments);
     	};
 
     	var real__earcut = asm["_earcut"];
     	asm["_earcut"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real__earcut.apply(null, arguments);
     	};
 
     	var real__fflush = asm["_fflush"];
     	asm["_fflush"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real__fflush.apply(null, arguments);
     	};
 
     	var real__free = asm["_free"];
     	asm["_free"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real__free.apply(null, arguments);
     	};
 
     	var real__llvm_maxnum_f64 = asm["_llvm_maxnum_f64"];
     	asm["_llvm_maxnum_f64"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real__llvm_maxnum_f64.apply(null, arguments);
     	};
 
     	var real__llvm_minnum_f64 = asm["_llvm_minnum_f64"];
     	asm["_llvm_minnum_f64"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real__llvm_minnum_f64.apply(null, arguments);
     	};
 
     	var real__malloc = asm["_malloc"];
     	asm["_malloc"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real__malloc.apply(null, arguments);
     	};
 
     	var real__sbrk = asm["_sbrk"];
     	asm["_sbrk"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real__sbrk.apply(null, arguments);
     	};
 
     	var real_establishStackSpace = asm["establishStackSpace"];
     	asm["establishStackSpace"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real_establishStackSpace.apply(null, arguments);
     	};
 
     	var real_stackAlloc = asm["stackAlloc"];
     	asm["stackAlloc"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real_stackAlloc.apply(null, arguments);
     	};
 
     	var real_stackRestore = asm["stackRestore"];
     	asm["stackRestore"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real_stackRestore.apply(null, arguments);
     	};
 
     	var real_stackSave = asm["stackSave"];
     	asm["stackSave"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return real_stackSave.apply(null, arguments);
     	};
     	Module["asm"] = asm;
     	var __ZSt18uncaught_exceptionv = Module["__ZSt18uncaught_exceptionv"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["__ZSt18uncaught_exceptionv"].apply(null, arguments)
     	};
 
     	var ___cxa_can_catch = Module["___cxa_can_catch"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["___cxa_can_catch"].apply(null, arguments)
     	};
 
     	var ___cxa_is_pointer_type = Module["___cxa_is_pointer_type"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["___cxa_is_pointer_type"].apply(null, arguments)
     	};
 
     	var ___errno_location = Module["___errno_location"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["___errno_location"].apply(null, arguments)
     	};
 
     	var _earcut = Module["_earcut"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["_earcut"].apply(null, arguments)
     	};
 
     	var _emscripten_replace_memory = Module["_emscripten_replace_memory"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["_emscripten_replace_memory"].apply(null, arguments)
     	};
 
     	var _fflush = Module["_fflush"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["_fflush"].apply(null, arguments)
     	};
 
     	var _free = Module["_free"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["_free"].apply(null, arguments)
     	};
 
     	var _llvm_maxnum_f64 = Module["_llvm_maxnum_f64"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["_llvm_maxnum_f64"].apply(null, arguments)
     	};
 
     	var _llvm_minnum_f64 = Module["_llvm_minnum_f64"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["_llvm_minnum_f64"].apply(null, arguments)
     	};
 
     	var _malloc = Module["_malloc"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["_malloc"].apply(null, arguments)
     	};
 
     	var _memcpy = Module["_memcpy"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["_memcpy"].apply(null, arguments)
     	};
 
     	var _memset = Module["_memset"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["_memset"].apply(null, arguments)
     	};
 
     	var _sbrk = Module["_sbrk"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["_sbrk"].apply(null, arguments)
     	};
 
     	var establishStackSpace = Module["establishStackSpace"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["establishStackSpace"].apply(null, arguments)
     	};
 
     	var stackAlloc = Module["stackAlloc"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["stackAlloc"].apply(null, arguments)
     	};
 
     	var stackRestore = Module["stackRestore"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["stackRestore"].apply(null, arguments)
     	};
 
     	var stackSave = Module["stackSave"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["stackSave"].apply(null, arguments)
     	};
 
     	var dynCall_ii = Module["dynCall_ii"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["dynCall_ii"].apply(null, arguments)
     	};
 
     	var dynCall_iidiiii = Module["dynCall_iidiiii"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["dynCall_iidiiii"].apply(null, arguments)
     	};
 
     	var dynCall_iiii = Module["dynCall_iiii"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["dynCall_iiii"].apply(null, arguments)
     	};
 
     	var dynCall_jiji = Module["dynCall_jiji"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["dynCall_jiji"].apply(null, arguments)
     	};
 
     	var dynCall_v = Module["dynCall_v"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["dynCall_v"].apply(null, arguments)
     	};
 
     	var dynCall_vi = Module["dynCall_vi"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["dynCall_vi"].apply(null, arguments)
     	};
 
     	var dynCall_vii = Module["dynCall_vii"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["dynCall_vii"].apply(null, arguments)
     	};
 
     	var dynCall_viiii = Module["dynCall_viiii"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["dynCall_viiii"].apply(null, arguments)
     	};
 
     	var dynCall_viiiii = Module["dynCall_viiiii"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["dynCall_viiiii"].apply(null, arguments)
     	};
 
     	var dynCall_viiiiii = Module["dynCall_viiiiii"] = function() {
-    	  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-    	  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+    	  assert$1(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+    	  assert$1(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
     	  return Module["asm"]["dynCall_viiiiii"].apply(null, arguments)
     	};
 
@@ -7432,7 +7422,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
     		if (Module['onRuntimeInitialized']) Module['onRuntimeInitialized']();
 
-    		assert(!Module['_main'], 'compiled without a main, but one is present. if you added it from JS, use Module["onRuntimeInitialized"]');
+    		assert$1(!Module['_main'], 'compiled without a main, but one is present. if you added it from JS, use Module["onRuntimeInitialized"]');
 
     		postRun();
     	  }
@@ -7502,7 +7492,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     // {{MODULE_ADDITIONS}}
 
     var earcutWasmReady = false;
-    if (defined.defined(earcutWasm)) {
+    if (when.defined(earcutWasm)) {
         earcutWasm.onRuntimeInitialized = function () {
             earcutWasmReady = true;
         };
@@ -7618,6 +7608,9 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     };
     FillBucket.prototype.upload = function upload(context) {
         if (!this.uploaded) {
+            if(this.layoutVertexArray == null) {
+                return;
+            }
             this.layoutVertexBuffer = context.createVertexBuffer(this.layoutVertexArray, members$1);
             this.indexBuffer = context.createIndexBuffer(this.indexArray);
             this.indexBuffer2 = context.createIndexBuffer(this.indexArray2);
@@ -7639,13 +7632,13 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     };
 
     FillBucket.prototype.clear = function clear() {
-        if (defined.defined(this.layoutVertexArray)) {
+        if (when.defined(this.layoutVertexArray)) {
             this.layoutVertexArray = null;
         }
-        if (defined.defined(this.indexArray)) {
+        if (when.defined(this.indexArray)) {
             this.indexArray = null;
         }
-        if (defined.defined(this.indexArray2)) {
+        if (when.defined(this.indexArray2)) {
             this.indexArray2 = null;
         }
     };
@@ -7699,7 +7692,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             
             var indices;
 
-            if (defined.defined(indexData) && defined.defined(indexData[feature.id])) {
+            if (when.defined(indexData) && when.defined(indexData[feature.id])) {
                 indices = indexData[feature.id];
             } else if (earcutWasmReady === true) {
                 var data = new Int32Array(flattened);
@@ -7786,7 +7779,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
      * deserialization.
      */
     StructArray$1.serialize = function serialize (array, transferables) {
-        //assert_1(!array.isTransferred);
         if(array.isTransferred){
             console.log("StructArray array.isTransferred.");
         }
@@ -7838,7 +7830,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
      * @param {number} n The new size of the array.
      */
     StructArray$1.prototype.resize = function resize (n      ) {
-        //assert_1(!this.isTransferred);
         this.reserve(n);
         this.length = n;
     };
@@ -7945,7 +7936,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         FeatureIndexArray.prototype.constructor = FeatureIndexArray;
 
         FeatureIndexArray.prototype.get = function get (index        )                     {
-            //assert_1(!this.isTransferred);
             return new FeatureIndexStruct(this, index);
         };
 
@@ -8340,7 +8330,8 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                 }
 
             } else {
-                throw new Error('unknown command ' + cmd);
+                console.log('VectorTileFeature loadGeometry unknown command ' + cmd);
+                //throw new Error('unknown command ' + cmd);
             }
         }
 
@@ -9123,6 +9114,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     }
 
     isConstant.isFeatureConstant = function(e){
+        var CompoundExpression = ParsingContext.CompoundExpression;
         if (e instanceof CompoundExpression) {
             if (e.name === 'get' && e.args.length === 1) {
                 return false;
@@ -9151,6 +9143,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     };
 
     isConstant.isStateConstant = function(e){
+        var CompoundExpression = ParsingContext.CompoundExpression;
         if (e instanceof CompoundExpression) {
             if (e.name === 'feature-state') {
                 return false;
@@ -9166,6 +9159,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     };
 
     isConstant.isGlobalPropertyConstant = function(e, properties){
+        var CompoundExpression = ParsingContext.CompoundExpression;
         if (e instanceof CompoundExpression && properties.indexOf(e.name) >= 0) {
             return false;
         }
@@ -9238,7 +9232,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                 this.error(("Expression name must be a string, but found " + (typeof op) + " instead. If you wanted a literal array, use [\"literal\", [...]]."), 0);
                 return null;
             }
-
             var Expr = this.registry[op];
             if (Expr) {
                 var parsed = Expr.parse(expr, this);
@@ -9343,36 +9336,41 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         return error;
     };
 
-    var CompoundExpression$1 = function CompoundExpression(name, type, evaluate, args) {
+    function get(key, obj) {
+        const v = obj[key];
+        return typeof v === 'undefined' ? null : v;
+    }
+
+    var CompoundExpression = function CompoundExpression(name, type, evaluate, args) {
         this.name = name;
         this.type = type;
         this._evaluate = evaluate;
         this.args = args;
     };
 
-    CompoundExpression$1.prototype.evaluate = function evaluate(ctx) {
-        return this._evaluate(ctx, this.args);
+    CompoundExpression.prototype.evaluate = function evaluate(ctx, crossFields) {
+        return this._evaluate(ctx, this.args, crossFields);
     };
 
-    CompoundExpression$1.prototype.eachChild = function eachChild(fn) {
+    CompoundExpression.prototype.eachChild = function eachChild(fn) {
         this.args.forEach(fn);
     };
 
-    CompoundExpression$1.prototype.possibleOutputs = function possibleOutputs() {
+    CompoundExpression.prototype.possibleOutputs = function possibleOutputs() {
         return [undefined];
     };
 
-    CompoundExpression$1.prototype.serialize = function serialize() {
+    CompoundExpression.prototype.serialize = function serialize() {
         return [this.name].concat(this.args.map(function (arg) {
             return arg.serialize();
         }));
     };
 
-    CompoundExpression$1.parse = function parse(args, context) {
+    CompoundExpression.parse = function parse(args, context) {
         var ref$1;
 
         var op = (args[0] );
-        var definition = CompoundExpression$1.definitions[op];
+        var definition = CompoundExpression.definitions[op];
         if (!definition) {
             return context.error(("Unknown expression \"" + op + "\". If you wanted a literal array, use [\"literal\", [...]]."), 0);
         }
@@ -9444,11 +9442,9 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             }
 
             if (signatureContext.errors.length === 0) {
-                return new CompoundExpression$1(op, type, evaluate, parsedArgs);
+                return new CompoundExpression(op, type, evaluate, parsedArgs);
             }
         }
-
-        //assert_1(!signatureContext || signatureContext.errors.length > 0);
 
         if (overloads.length === 1) {
             (ref$1 = context.errors).push.apply(ref$1, signatureContext.errors);
@@ -9478,11 +9474,10 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         return null;
     };
 
-    CompoundExpression$1.register = function register(registry, definitions) {
-        //assert_1(!CompoundExpression.definitions);
-        CompoundExpression$1.definitions = definitions;
+    CompoundExpression.register = function register(registry, definitions) {
+        CompoundExpression.definitions = definitions;
         for (var name in definitions) {
-            registry[name] = CompoundExpression$1;
+            registry[name] = CompoundExpression;
         }
     };
 
@@ -9531,7 +9526,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         return new Color(r / 255 * alpha, g / 255 * alpha, b / 255 * alpha, alpha);
     }
 
-    CompoundExpression$1.register(expressions, {
+    CompoundExpression.register(expressions, {
         'error': [
             ErrorType,
             [StringType$8],
@@ -9920,11 +9915,59 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         'filter-==': [
             BooleanType$8,
             [StringType$8, ValueType$a],
-            function (ctx, ref) {
+            function (ctx, ref, crossFields) {
                 var k = ref[0];
                 var v = ref[1];
 
-                return ctx.properties()[(k     ).value] === (v     ).value;
+                if(!crossFields) {
+                    return ctx.properties()[(k     ).value] === (v     ).value;
+                } else {
+                    var a, b;
+                    var kValue = (k     ).value;
+                    var vValue = (v     ).value;
+                    if(/(\S*)\s*([+-])\s*(\S*)/.test(kValue)) {
+                        var group = kValue.match(/(\S*)\s*([+-])\s*(\S*)/);
+                        var value1 = ctx.properties()[group[1]];
+                        var op = group[2];
+                        var value2 = ctx.properties()[group[3]];
+                        switch (op) {
+                            case "+":
+                                a = value1 + value2;
+                                break;
+                            case "-":
+                                a = value1 - value2;
+                                break;
+                        }
+                        b = (v     ).value;
+                        return a === b;
+                    } else if(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/.test(kValue)) {
+                        var group1 = kValue.match(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/);
+                        var substractOp1 = group1[1];
+                        var value1 = ctx.properties()[group1[2]];
+                        var substractNum1 = group1[3];
+                        if(substractOp1 == "left") {
+                            a = value1.substring(0, substractNum1);
+                        } else {
+                            a = value1.substring(value1.length - substractNum1);
+                        }
+                        if(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/.test(vValue)) {
+                            var group2 = vValue.match(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/);
+                            var substractOp2 = group2[1];
+                            var value2 = ctx.properties()[group2[2]];
+                            var substractNum2 = group2[3];
+                            if(substractOp2 == "left") {
+                                b = value2.substring(0, substractNum2);
+                            } else {
+                                b = value2.substring(value2.length - substractNum2);
+                            }
+                        } else {
+                            b = (v     ).value;
+                        }
+                        return a === b;
+                    }else {
+                        return ctx.properties()[(k     ).value] === ctx.properties()[(v     ).value];
+                    }
+                }
             }
         ],
         'filter-id-==': [
@@ -9934,6 +9977,28 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                 var v = ref[0];
 
                 return ctx.id() === (v     ).value;
+            }
+        ],
+        'filter-like': [
+            BooleanType$8,
+            [StringType$8, StringType$8],
+            function (ctx, ref) {
+                var a = ref[0].value;
+                var b = ref[1].value;
+                var properties = ctx.properties();
+                if(!(a in properties)) {
+                    return false;
+                }
+                if(/^%.*[^%]$/.test(b)) { // 以百分号开头并且不以百分号结尾
+                    b = b.replace("%", "");
+                    return properties[a].endsWith(b);
+                } else if(/^(?!%).+%$/.test(b)) { // 以百分号结尾并且不以百分号开头
+                    b = b.replace("%", "");
+                    return properties[a].startsWith(b);
+                } else { // 百分号开头百分号结尾 or 不含百分号
+                    b = b.replace(/%/g, "");
+                    return (properties[a].indexOf(b)) > -1;
+                }
             }
         ],
         'filter-type-==': [
@@ -9948,12 +10013,60 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         'filter-<': [
             BooleanType$8,
             [StringType$8, ValueType$a],
-            function (ctx, ref) {
+            function (ctx, ref, crossFields) {
                 var k = ref[0];
                 var v = ref[1];
 
-                var a = ctx.properties()[(k     ).value];
-                var b = (v     ).value;
+                var a, b;
+                var kValue = (k     ).value;
+                var vValue = (v     ).value;
+                if(/(\S*)\s*([+-])\s*(\S*)/.test(kValue)) {
+                    var group = kValue.match(/(\S*)\s*([+-])\s*(\S*)/);
+                    var value1 = ctx.properties()[group[1]];
+                    var op = group[2];
+                    var value2 = ctx.properties()[group[3]];
+                    switch (op) {
+                        case "+":
+                            a = value1 + value2;
+                            break;
+                        case "-":
+                            a = value1 - value2;
+                            break;
+                    }
+                    b = (v     ).value;
+                } else if(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/.test(kValue)) {
+                    var group1 = kValue.match(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/);
+                    var substractOp1 = group1[1];
+                    var value1 = ctx.properties()[group1[2]];
+                    var substractNum1 = group1[3];
+                    if(substractOp1 == "left") {
+                        a = value1.substring(0, substractNum1);
+                    } else {
+                        a = value1.substring(value1.length - substractNum1);
+                    }
+                    if(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/.test(vValue)) {
+                        var group2 = vValue.match(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/);
+                        var substractOp2 = group2[1];
+                        var value2 = ctx.properties()[group2[2]];
+                        var substractNum2 = group2[3];
+                        if(substractOp2 == "left") {
+                            b = value2.substring(0, substractNum2);
+                        } else {
+                            b = value2.substring(value2.length - substractNum2);
+                        }
+                    } else {
+                        b = (v     ).value;
+                    }
+                }else {
+                    a = ctx.properties()[(k     ).value];
+                    b = (v     ).value;
+                    if(crossFields) {
+                        b = ctx.properties()[b];
+                    }
+                }
+                if(typeof b === 'number' && !isNaN(Number(a))) {
+                    a = Number(a);
+                }
                 return typeof a === typeof b && a < b;
             }
         ],
@@ -9971,12 +10084,59 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         'filter->': [
             BooleanType$8,
             [StringType$8, ValueType$a],
-            function (ctx, ref) {
+            function (ctx, ref, crossFields) {
                 var k = ref[0];
                 var v = ref[1];
-
-                var a = ctx.properties()[(k     ).value];
-                var b = (v     ).value;
+                var a, b;
+                var kValue = (k     ).value;
+                var vValue = (v     ).value;
+                if(/(\S*)\s*([+-])\s*(\S*)/.test(kValue)) {
+                    var group = kValue.match(/(\S*)\s*([+-])\s*(\S*)/);
+                    var value1 = ctx.properties()[group[1]];
+                    var op = group[2];
+                    var value2 = ctx.properties()[group[3]];
+                    switch (op) {
+                        case "+":
+                            a = value1 + value2;
+                            break;
+                        case "-":
+                            a = value1 - value2;
+                            break;
+                    }
+                    b = (v     ).value;
+                } else if(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/.test(kValue)) {
+                    var group1 = kValue.match(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/);
+                    var substractOp1 = group1[1];
+                    var value1 = ctx.properties()[group1[2]];
+                    var substractNum1 = group1[3];
+                    if(substractOp1 == "left") {
+                        a = value1.substring(0, substractNum1);
+                    } else {
+                        a = value1.substring(value1.length - substractNum1);
+                    }
+                    if(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/.test(vValue)) {
+                        var group2 = vValue.match(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/);
+                        var substractOp2 = group2[1];
+                        var value2 = ctx.properties()[group2[2]];
+                        var substractNum2 = group2[3];
+                        if(substractOp2 == "left") {
+                            b = value2.substring(0, substractNum2);
+                        } else {
+                            b = value2.substring(value2.length - substractNum2);
+                        }
+                    } else {
+                        b = (v     ).value;
+                    }
+                }else {
+                    a = ctx.properties()[(k     ).value];
+                    b = (v     ).value;
+                    if(crossFields) {
+                        b = ctx.properties()[b];
+                    }
+                }
+                if(typeof b === 'number' && !isNaN(Number(a))) {
+                    a = Number(a);
+                }
                 return typeof a === typeof b && a > b;
             }
         ],
@@ -9994,12 +10154,60 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         'filter-<=': [
             BooleanType$8,
             [StringType$8, ValueType$a],
-            function (ctx, ref) {
+            function (ctx, ref, crossFields) {
                 var k = ref[0];
                 var v = ref[1];
 
-                var a = ctx.properties()[(k     ).value];
-                var b = (v     ).value;
+                var a, b;
+                var kValue = (k     ).value;
+                var vValue = (v     ).value;
+                if(/(\S*)\s*([+-])\s*(\S*)/.test(kValue)) {
+                    var group = kValue.match(/(\S*)\s*([+-])\s*(\S*)/);
+                    var value1 = ctx.properties()[group[1]];
+                    var op = group[2];
+                    var value2 = ctx.properties()[group[3]];
+                    switch (op) {
+                        case "+":
+                            a = value1 + value2;
+                            break;
+                        case "-":
+                            a = value1 - value2;
+                            break;
+                    }
+                    b = (v     ).value;
+                } else if(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/.test(kValue)) {
+                    var group1 = kValue.match(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/);
+                    var substractOp1 = group1[1];
+                    var value1 = ctx.properties()[group1[2]];
+                    var substractNum1 = group1[3];
+                    if(substractOp1 == "left") {
+                        a = value1.substring(0, substractNum1);
+                    } else {
+                        a = value1.substring(value1.length - substractNum1);
+                    }
+                    if(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/.test(vValue)) {
+                        var group2 = vValue.match(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/);
+                        var substractOp2 = group2[1];
+                        var value2 = ctx.properties()[group2[2]];
+                        var substractNum2 = group2[3];
+                        if(substractOp2 == "left") {
+                            b = value2.substring(0, substractNum2);
+                        } else {
+                            b = value2.substring(value2.length - substractNum2);
+                        }
+                    } else {
+                        b = (v     ).value;
+                    }
+                }else {
+                    a = ctx.properties()[(k     ).value];
+                    b = (v     ).value;
+                    if(crossFields) {
+                        b = ctx.properties()[b];
+                    }
+                }
+                if(typeof b === 'number' && !isNaN(Number(a))) {
+                    a = Number(a);
+                }
                 return typeof a === typeof b && a <= b;
             }
         ],
@@ -10017,12 +10225,60 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         'filter->=': [
             BooleanType$8,
             [StringType$8, ValueType$a],
-            function (ctx, ref) {
+            function (ctx, ref, crossFields) {
                 var k = ref[0];
                 var v = ref[1];
 
-                var a = ctx.properties()[(k     ).value];
-                var b = (v     ).value;
+                var a, b;
+                var kValue = (k     ).value;
+                var vValue = (v     ).value;
+                if(/(\S*)\s*([+-])\s*(\S*)/.test(kValue)) {
+                    var group = kValue.match(/(\S*)\s*([+-])\s*(\S*)/);
+                    var value1 = ctx.properties()[group[1]];
+                    var op = group[2];
+                    var value2 = ctx.properties()[group[3]];
+                    switch (op) {
+                        case "+":
+                            a = value1 + value2;
+                            break;
+                        case "-":
+                            a = value1 - value2;
+                            break;
+                    }
+                    b = (v     ).value;
+                } else if(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/.test(kValue)) {
+                    var group1 = kValue.match(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/);
+                    var substractOp1 = group1[1];
+                    var value1 = ctx.properties()[group1[2]];
+                    var substractNum1 = group1[3];
+                    if(substractOp1 == "left") {
+                        a = value1.substring(0, substractNum1);
+                    } else {
+                        a = value1.substring(value1.length - substractNum1);
+                    }
+                    if(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/.test(vValue)) {
+                        var group2 = vValue.match(/^(left|right)\s*\((.+)\s*,\s*(\d+)\)/);
+                        var substractOp2 = group2[1];
+                        var value2 = ctx.properties()[group2[2]];
+                        var substractNum2 = group2[3];
+                        if(substractOp2 == "left") {
+                            b = value2.substring(0, substractNum2);
+                        } else {
+                            b = value2.substring(value2.length - substractNum2);
+                        }
+                    } else {
+                        b = (v     ).value;
+                    }
+                }else {
+                    a = ctx.properties()[(k     ).value];
+                    b = (v     ).value;
+                    if(crossFields) {
+                        b = ctx.properties()[b];
+                    }
+                }
+                if(typeof b === 'number' && !isNaN(Number(a))) {
+                    a = Number(a);
+                }
                 return typeof a === typeof b && a >= b;
             }
         ],
@@ -10120,6 +10376,33 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                 ]
             ]
         },
+        'crossFields': {
+            type: BooleanType$8,
+            overloads: [
+                [
+                    [BooleanType$8, BooleanType$8],
+                    function (ctx, ref) {
+                        var a = ref[0];
+                        var b = ref[1];
+
+                        return a.evaluate(ctx, true) && b.evaluate(ctx, true);
+                    }
+                ],
+                [
+                    varargs(BooleanType$8),
+                    function (ctx, args) {
+                        for (var i = 0, list = args; i < list.length; i += 1) {
+                            var arg = list[i];
+
+                            if (!arg.evaluate(ctx, true)) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                ]
+            ]
+        },
         'any': {
             type: BooleanType$8,
             overloads: [
@@ -10150,10 +10433,10 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         '!': [
             BooleanType$8,
             [BooleanType$8],
-            function (ctx, ref) {
+            function (ctx, ref, crossFields) {
                 var b = ref[0];
 
-                return !b.evaluate(ctx);
+                return !b.evaluate(ctx, crossFields);
             }
         ],
         'is-supported-script': [
@@ -10207,6 +10490,8 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             }
         ]
     });
+
+    ParsingContext.CompoundExpression = CompoundExpression;
 
     var StyleExpression$1 = function StyleExpression(expression, propertySpec) {
         this.expression = expression;
@@ -10307,6 +10592,47 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         };
     }
 
+    // Zoom-dependent expressions may only use ["zoom"] as the input to a top-level "step" or "interpolate"
+    // expression (collectively referred to as a "curve"). The curve may be wrapped in one or more "let" or
+    // "coalesce" expressions.
+    function findZoomCurve(expression) {
+        var result = null;
+        if (expression instanceof Let) {
+            result = findZoomCurve(expression.result);
+
+        } else if (expression instanceof Coalesce) {
+            for (var arg of expression.args) {
+                result = findZoomCurve(arg);
+                if (result) {
+                    break;
+                }
+            }
+
+        } else if ((expression instanceof Step || expression instanceof Interpolate) &&
+            expression.input instanceof ParsingContext.CompoundExpression &&
+            expression.input.name === 'zoom') {
+
+            result = expression;
+        }
+
+        if (result instanceof ParsingError) {
+            return result;
+        }
+
+        expression.eachChild((child) => {
+            const childResult = findZoomCurve(child);
+            if (childResult instanceof ParsingError) {
+                result = childResult;
+            } else if (!result && childResult) {
+                result = new ParsingError('', '"zoom" expression may only be used as input to a top-level "step" or "interpolate" expression.');
+            } else if (result && childResult && result !== childResult) {
+                result = new ParsingError('', 'Only one zoom-based "step" or "interpolate" subexpression may be used in an expression.');
+            }
+        });
+
+        return result;
+    }
+
     function getExpectedType(spec) {
         var types = {
             color: ColorType$6,
@@ -10332,7 +10658,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             propertySpec && propertySpec.type === 'string' ? {typeAnnotation: 'coerce'} : undefined);
 
         if (!parsed) {
-            //assert_1(parser.errors.length > 0);
             return error(parser.errors);
         }
 
@@ -10369,6 +10694,99 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             input = undefined;
         }
         return coalesce(input, parameters.default, propertySpec.default);
+    }
+
+    function createExpression(expression, propertySpec) {
+        var parser = new ParsingContext(expressions, [], propertySpec ? getExpectedType(propertySpec) : undefined);
+
+        // For string-valued properties, coerce to string at the top level rather than asserting.
+        var parsed = parser.parse(expression, undefined, undefined, undefined,
+            propertySpec && propertySpec.type === 'string' ? {typeAnnotation: 'coerce'} : undefined);
+
+        if (!parsed) {
+            assert(parser.errors.length > 0);
+            return error(parser.errors);
+        }
+
+        return success(new StyleExpression$1(parsed, propertySpec));
+    }
+
+    function ZoomConstantExpression$1(kind, expression) {
+        this.kind = kind;
+        this._styleExpression = expression;
+        this.isStateDependent = kind !== ('constant') && !isConstant.isStateConstant(expression.expression);
+    }
+
+    ZoomConstantExpression$1.prototype.evaluateWithoutErrorHandling = function(globals, feature, featureState, canonical, availableImages, formattedSection) {
+        return this._styleExpression.evaluateWithoutErrorHandling(globals, feature, featureState, canonical, availableImages, formattedSection);
+    };
+
+    ZoomConstantExpression$1.prototype.evaluate = function(globals, feature, featureState, canonical, availableImages, formattedSection) {
+        return this._styleExpression.evaluate(globals, feature, featureState, canonical, availableImages, formattedSection);
+    };
+
+    function ZoomDependentExpression$1(kind, expression, zoomStops, interpolationType) {
+        this.kind = kind;
+        this.zoomStops = zoomStops;
+        this._styleExpression = expression;
+        this.isStateDependent = kind !== ('camera') && !isConstant.isStateConstant(expression.expression);
+        this.interpolationType = interpolationType;
+    }
+
+    ZoomDependentExpression$1.prototype.evaluateWithoutErrorHandling = function(globals, feature, featureState, canonical, availableImages, formattedSection) {
+        return this._styleExpression.evaluateWithoutErrorHandling(globals, feature, featureState, canonical, availableImages, formattedSection);
+    };
+
+    ZoomDependentExpression$1.prototype.evaluate = function(globals, feature, featureState, canonical, availableImages, formattedSection) {
+        return this._styleExpression.evaluate(globals, feature, featureState, canonical, availableImages, formattedSection);
+    };
+
+    ZoomDependentExpression$1.prototype.interpolationFactor = function(input, lower, upper) {
+        if (this.interpolationType) {
+            return Interpolate.interpolationFactor(this.interpolationType, input, lower, upper);
+        } else {
+            return 0;
+        }
+    };
+
+    function createPropertyExpression(expression, propertySpec) {
+        expression = createExpression(expression, propertySpec);
+        if (expression.result === 'error') {
+            return expression;
+        }
+
+        var parsed = expression.value.expression;
+
+        var isFeatureConstant = isConstant.isFeatureConstant(parsed);
+        if (!isFeatureConstant && !Supports.supportsPropertyExpression(propertySpec)) {
+            return error([new ParsingError('', 'data expressions not supported')]);
+        }
+
+        var isZoomConstant = isConstant.isGlobalPropertyConstant(parsed, ['zoom']);
+        if (!isZoomConstant && !Supports.supportsZoomExpression(propertySpec)) {
+            return error([new ParsingError('', 'zoom expressions not supported')]);
+        }
+
+        var zoomCurve = findZoomCurve(parsed);
+        if (!zoomCurve && !isZoomConstant) {
+            return error([new ParsingError('', '"zoom" expression may only be used as input to a top-level "step" or "interpolate" expression.')]);
+        } else if (zoomCurve instanceof ParsingError) {
+            return error([zoomCurve]);
+        } else if (zoomCurve instanceof Interpolate && !Supports.supportsInterpolation(propertySpec)) {
+            return error([new ParsingError('', '"interpolate" expressions cannot be used with this property')]);
+        }
+
+        if (!zoomCurve) {
+            return success(isFeatureConstant ?
+                new ZoomConstantExpression$1('constant', expression.value) :
+                new ZoomConstantExpression$1('source', expression.value));
+        }
+
+        var interpolationType = zoomCurve instanceof Interpolate ? zoomCurve.interpolation : undefined;
+
+        return success(isFeatureConstant ?
+            new ZoomDependentExpression$1('camera', expression.value, zoomCurve.labels, interpolationType) :
+        new ZoomDependentExpression$1('composite', expression.value, zoomCurve.labels, interpolationType));
     }
 
     function createFunction(parameters, propertySpec) {
@@ -10562,6 +10980,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         if (!Array.isArray(filter) || filter.length === 0) {
             return false;
         }
+
         switch (filter[0]) {
             case 'has':
                 return filter.length >= 2 && filter[1] !== '$id' && filter[1] !== '$type';
@@ -10571,6 +10990,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             case '!in':
             case '!has':
             case 'none':
+            case 'crossFields':
                 return false;
 
             case '==':
@@ -10579,6 +10999,8 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             case '>=':
             case '<':
             case '<=':
+            case 'like':
+            case '!like':
                 return filter.length !== 3 || (Array.isArray(filter[1]) || Array.isArray(filter[2]));
 
             case 'any':
@@ -10591,7 +11013,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                     }
                 }
                 return true;
-
             default:
                 return true;
         }
@@ -10623,6 +11044,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                 return true;
             };
         }
+
 
         if (!featureFilter.isExpressionFilter(filter)) {
             filter = convertFilter(filter);
@@ -10662,12 +11084,15 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                         op === '>=' ? convertComparisonOp(filter[1], filter[2], op) :
                         op === 'any' ? convertDisjunctionOp(filter.slice(1)) :
                             op === 'all' ? ['all'].concat(filter.slice(1).map(convertFilter)) :
+                                op === 'crossFields' ? ['crossFields'].concat(filter.slice(1).map(convertFilter)) :
                                 op === 'none' ? ['all'].concat(filter.slice(1).map(convertFilter).map(convertNegation)) :
                                     op === 'in' ? convertInOp(filter[1], filter.slice(2)) :
                                         op === '!in' ? convertNegation(convertInOp(filter[1], filter.slice(2))) :
                                             op === 'has' ? convertHasOp(filter[1]) :
                                                 op === '!has' ? convertNegation(convertHasOp(filter[1])) :
-                                                    true;
+                                                    op === 'like' ? convertComparisonOp(filter[1], filter[2], 'like') :
+                                                        op === '!like' ? convertNegation(convertComparisonOp(filter[1], filter[2], 'like')) :
+                                                        true;
         return converted;
     }
 
@@ -10731,11 +11156,12 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         this.featureIndexArray = featureIndexArray || new FeatureIndexArray$1();
     };
 
-    FeatureIndex.prototype.insert = function insert(feature, geometry, featureIndex, sourceLayerIndex, bucketIndex, is3D) {
+    FeatureIndex.prototype.insert = function insert(feature, geometry, featureIndex, sourceLayerIndex, bucketIndex, is3D, padding) {
         var key = this.featureIndexArray.length;
         this.featureIndexArray.emplaceBack(featureIndex, sourceLayerIndex, bucketIndex);
 
         var grid = this.grid;
+        padding = padding || 0;
 
         for (var r = 0; r < geometry.length; r++) {
             var ring = geometry[r];
@@ -10753,7 +11179,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                 bbox[1] < EXTENT &&
                 bbox[2] >= 0 &&
                 bbox[3] >= 0) {
-                grid.insert(key, bbox[0], bbox[1], bbox[2], bbox[3]);
+                grid.insert(key, bbox[0] - padding, bbox[1] - padding, bbox[2] + padding, bbox[3] + padding);
             }
         }
     };
@@ -10772,15 +11198,19 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
         this.loadVTLayers();
 
-        var params = args.params || {},
-            pixelsToTileUnits = EXTENT / args.tileSize,
-            filter = featureFilter.createFilter(params.filter);
+        var params = args.params || {};
+        var pixelsToTileUnits = computePixelsToTileUnits(this.z, args.tileSize, params);
+        var filter = featureFilter.createFilter(params.filter);
 
         var queryGeometry = args.queryGeometry;
         var queryPadding = 5;
 
         var bounds = getBounds(queryGeometry);
-        var matching = this.grid.query(bounds.minX - queryPadding, bounds.minY - queryPadding, bounds.maxX + queryPadding, bounds.maxY + queryPadding);
+        var matching = [];
+        if(when.defined(params.selectTolerance)){
+            queryPadding += pixelsToTileUnits * params.selectTolerance;
+        }
+        matching = this.grid.query(bounds.minX - queryPadding, bounds.minY - queryPadding, bounds.maxX + queryPadding, bounds.maxY + queryPadding);
         matching.sort(topDownFeatureComparator);
 
         var result = {};
@@ -10813,7 +11243,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     //                        // `feature-state` expression evaluation requires feature state to be available
     //                        featureState = sourceFeatureState.getState(styleLayer.sourceLayer || '_geojsonTileLayer', feature.id);
     //                    }
-                    return styleLayer.queryIntersectsFeature(queryGeometry, feature, featureState, featureGeometry, this$1.z, args.transform, pixelsToTileUnits, args.pixelPosMatrix);
+                    return styleLayer.queryIntersectsFeature(queryGeometry, feature, featureState, featureGeometry, this$1.z, args.transform, pixelsToTileUnits, args.pixelPosMatrix, args.adjustScale);
                 }
             );
         };
@@ -10824,7 +11254,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     };
 
     FeatureIndex.prototype.loadMatchingFeature = function loadMatchingFeature(result, bucketIndex, sourceLayerIndex, featureIndex, filter, filterLayerIDs, styleLayers, intersectionTest) {
-        if(!defined.defined(bucketIndex) || !defined.defined(sourceLayerIndex) || !defined.defined(featureIndex)){
+        if(!when.defined(bucketIndex) || !when.defined(sourceLayerIndex) || !when.defined(featureIndex)){
             return;
         }
 
@@ -10937,6 +11367,19 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         return b - a;
     }
 
+    function computePixelsToTileUnits(tileLevel, tileSize, options) {
+        if(when.defined(options) && options.realtime && when.defined(options.zoom)) {
+            var currentZoom = options.zoom;
+            var diff = currentZoom - tileLevel;
+            var result = (EXTENT / (tileSize * Math.pow(2, diff)));
+            // 线宽以512尺寸的切片大小为基准
+            result *= tileSize / 512;
+            return result;
+        } else {
+            return EXTENT / tileSize;
+        }
+    }
+
     WebWorkerTransfer.register('FeatureIndex', FeatureIndex, {omit: ['rawTileData', 'sourceLayerCoder', 'vtLayers']});
 
     const refProperties = ['type', 'source', 'source-layer', 'minzoom', 'maxzoom', 'filter', 'layout'];
@@ -11038,8 +11481,11 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         this.zoom = options.zoom;
         this.overscaling = options.overscaling;
         this.layers = options.layers;
-        this.layerIds = this.layers.map(function (layer) {
-            return layer.id;
+        this._sourceLayerIds = {};
+        var that = this;
+        this.layerIds = this.layers.map(function (layer, index) {
+            that._sourceLayerIds[layer.sourceLayer] = index;
+            return layer.sourceLayer;
         });
         this.index = options.index;
         this.hasPattern = false;
@@ -11070,6 +11516,14 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             var feature = ref.feature;
             var index = ref.index;
             var sourceLayerIndex = ref.sourceLayerIndex;
+            var sourceLayerId = ref.sourceLayerId;
+            var currentLayerIndex = this._sourceLayerIds[sourceLayerId];
+            var currentLayer = this.layers[currentLayerIndex];
+            if(!currentLayer) {
+                continue;
+            }
+            var pixelsToTileUnits = EXTENT / 512;
+            var circleRadius = currentLayer.paint.get('circle-radius').value.value * pixelsToTileUnits;
 
             if (this.layers[0]._featureFilter(new EvaluationParameters$1(0), feature)) {
                 var geometry = loadGeometry(feature);
@@ -11085,7 +11539,8 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                     index: index,
                     geometry: geometry,
                     patterns: {},
-                    sortKey: sortKey
+                    sortKey: sortKey,
+                    circleRadius: circleRadius
                 };
 
                 bucketFeatures.push(bucketFeature);
@@ -11109,7 +11564,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             var feature$1 = features[index$1].feature;
 
             this.addFeature(bucketFeature$1, geometry$1, index$1);
-            options.featureIndex.insert(feature$1, geometry$1, index$1, sourceLayerIndex$1, this.index);
+            options.featureIndex.insert(feature$1, geometry$1, index$1, sourceLayerIndex$1, this.index, undefined, ref$1.circleRadius);
         }
     };
 
@@ -11145,6 +11600,15 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         this.indexBuffer.destroy();
         this.programConfigurations.destroy();
         this.segments.destroy();
+    };
+
+    CircleBucket.prototype.clear = function clear() {
+        if (when.defined(this.layoutVertexArray)) {
+            this.layoutVertexArray = null;
+        }
+        if (when.defined(this.indexArray)) {
+            this.indexArray = null;
+        }
     };
 
     CircleBucket.prototype.addFeature = function addFeature(feature, geometry, index) {
@@ -11204,7 +11668,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     };
 
     DataConstantProperty.prototype.possiblyEvaluate = function possiblyEvaluate(value, parameters) {
-        //assert_1(!value.isDataDriven());
         return value.expression.evaluate(parameters);
     };
 
@@ -11350,310 +11813,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     };
 
     /**
-     * @module util
-     * @private
-     */
-    function Util$1() {
-    }
-
-    /**
-     * Given a value `t` that varies between 0 and 1, return
-     * an interpolation function that eases between 0 and 1 in a pleasing
-     * cubic in-out fashion.
-     *
-     * @private
-     */
-    Util$1.easeCubicInOut = function (t) {
-        if (t <= 0) {
-            return 0;
-        }
-        if (t >= 1) {
-            return 1;
-        }
-        var t2 = t * t,
-            t3 = t2 * t;
-        return 4 * (t < 0.5 ? t3 : 3 * (t - t2) + t3 - 0.75);
-    };
-
-    /*
-     * Call an asynchronous function on an array of arguments,
-     * calling `callback` with the completed results of all calls.
-     *
-     * @param array input to each call of the async function.
-     * @param fn an async function with signature (data, callback)
-     * @param callback a callback run after all async work is done.
-     * called with an array, containing the results of each async call.
-     * @private
-     */
-    Util$1.asyncAll = function (array, fn, callback) {
-        if (!array.length) {
-            return callback(null, []);
-        }
-        var remaining = array.length;
-        var results = new Array(array.length);
-        var error = null;
-        array.forEach(function (item, i) {
-            fn(item, function (err, result) {
-                if (err) {
-                    error = err;
-                }
-                results[i] = ((result     )        ); // https://github.com/facebook/flow/issues/2123
-                if (--remaining === 0) {
-                    callback(error, results);
-                }
-            });
-        });
-    };
-
-    /**
-     * Given a destination object and optionally many source objects,
-     * copy all properties from the source objects into the destination.
-     * The last source object given overrides properties from previous
-     * source objects.
-     *
-     * @param dest destination object
-     * @param sources sources from which properties are pulled
-     * @private
-     */
-    Util$1.extend = function (dest) {
-        var sources = [], len = arguments.length - 1;
-        while (len-- > 0) sources[ len ] = arguments[ len + 1 ];
-
-        for (var i = 0, list = sources; i < list.length; i += 1) {
-            var src = list[i];
-
-            for (var k in src) {
-                dest[k] = src[k];
-            }
-        }
-        return dest;
-    };
-
-    var id$1 = 1;
-
-    /**
-     * Return a unique numeric id, starting at 1 and incrementing with
-     * each call.
-     *
-     * @returns unique numeric id.
-     * @private
-     */
-    Util$1.uniqueId = function () {
-        return id$1++;
-    };
-
-    /**
-     * Return a random UUID (v4). Taken from: https://gist.github.com/jed/982883
-     * @private
-     */
-    Util$1.uuid = function () {
-        function b(a) {
-            return a ? (a ^ Math.random() * 16 >> a / 4).toString(16) :
-                //$FlowFixMe: Flow doesn't like the implied array literal conversion here
-                ([1e7] + -[1e3] + -4e3 + -8e3 + -1e11).replace(/[018]/g, b);
-        }
-
-        return b();
-    };
-
-    /**
-     * Validate a string to match UUID(v4) of the
-     * form: xxxxxxxx-xxxx-4xxx-[89ab]xxx-xxxxxxxxxxxx
-     * @param str string to validate.
-     * @private
-     */
-    Util$1.validateUuid = function (str) {
-        return str ? /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(str) : false;
-    };
-
-    /**
-     * Given an array of member function names as strings, replace all of them
-     * with bound versions that will always refer to `context` as `this`. This
-     * is useful for classes where otherwise event bindings would reassign
-     * `this` to the evented object or some other value: this lets you ensure
-     * the `this` value always.
-     *
-     * @param fns list of member function names
-     * @param context the context value
-     * @example
-     * function MyClass() {
-    *   bindAll(['ontimer'], this);
-    *   this.name = 'Tom';
-    * }
-     * MyClass.prototype.ontimer = function() {
-    *   alert(this.name);
-    * };
-     * var myClass = new MyClass();
-     * setTimeout(myClass.ontimer, 100);
-     * @private
-     */
-    Util$1.bindAll = function (fns, context) {
-        fns.forEach(function (fn) {
-            if (!context[fn]) {
-                return;
-            }
-            context[fn] = context[fn].bind(context);
-        });
-    };
-
-    /**
-     * Determine if a string ends with a particular substring
-     *
-     * @private
-     */
-    Util$1.endsWith = function (string, suffix) {
-        return string.indexOf(suffix, string.length - suffix.length) !== -1;
-    };
-
-    /**
-     * Create an object by mapping all the values of an existing object while
-     * preserving their keys.
-     *
-     * @private
-     */
-    Util$1.mapObject = function (input, iterator, context) {
-        var output = {};
-        for (var key in input) {
-            output[key] = iterator.call(context || this, input[key], key, input);
-        }
-        return output;
-    };
-
-    /**
-     * Create an object by filtering out values of an existing object.
-     *
-     * @private
-     */
-    Util$1.filterObject = function (input, iterator, context) {
-        var output = {};
-        for (var key in input) {
-            if (iterator.call(context || this, input[key], key, input)) {
-                output[key] = input[key];
-            }
-        }
-        return output;
-    };
-
-    /**
-     * Deeply clones two objects.
-     *
-     * @private
-     */
-    Util$1.clone = function (input) {
-        if (Array.isArray(input)) {
-            return input.map(Util$1.clone);
-        } else if (typeof input === 'object' && input) {
-            return ((Util$1.mapObject(input, Util$1.clone)     )   );
-        } else {
-            return input;
-        }
-    };
-
-    Util$1.deepEqual = function (a, b) {
-        if (Array.isArray(a)) {
-            if (!Array.isArray(b) || a.length !== b.length) {
-                return false;
-            }
-            for (var i = 0; i < a.length; i++) {
-                if (!Util$1.deepEqual(a[i], b[i])) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        if (typeof a === 'object' && a !== null && b !== null) {
-            if (!(typeof b === 'object')) {
-                return false;
-            }
-            var keys = Object.keys(a);
-            if (keys.length !== Object.keys(b).length) {
-                return false;
-            }
-            for (var key in a) {
-                if (!Util$1.deepEqual(a[key], b[key])) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        return a === b;
-    };
-
-    /**
-     * Check if two arrays have at least one common element.
-     *
-     * @private
-     */
-    Util$1.arraysIntersect = function (a, b) {
-        for (var l = 0; l < a.length; l++) {
-            if (b.indexOf(a[l]) >= 0) {
-                return true;
-            }
-        }
-        return false;
-    };
-
-    /**
-     * Indicates if the provided Points are in a counter clockwise (true) or clockwise (false) order
-     *
-     * @private
-     * @returns true for a counter clockwise set of points
-     */
-    // http://bryceboe.com/2006/10/23/line-segment-intersection-algorithm/
-    Util$1.isCounterClockwise = function (a, b, c) {
-        return (c.y - a.y) * (b.x - a.x) > (b.y - a.y) * (c.x - a.x);
-    };
-
-    /* global self, WorkerGlobalScope */
-    /**
-     *  Retuns true if the when run in the web-worker context.
-     *
-     * @private
-     * @returns {boolean}
-     */
-    Util$1.isWorker = function () {
-        return typeof WorkerGlobalScope !== 'undefined' && typeof self !== 'undefined' &&
-            self instanceof WorkerGlobalScope;
-    };
-
-    var _isSafari$1 = null;
-
-    /**
-     * Returns true when run in WebKit derived browsers.
-     * This is used as a workaround for a memory leak in Safari caused by using Transferable objects to
-     * transfer data between WebWorkers and the main thread.
-     * https://github.com/mapbox/mapbox-gl-js/issues/8771
-     *
-     * This should be removed once the underlying Safari issue is fixed.
-     *
-     * @private
-     * @param scope {WindowOrWorkerGlobalScope} Since this function is used both on the main thread and WebWorker context,
-     *      let the calling scope pass in the global scope object.
-     * @returns {boolean}
-     */
-    Util$1.isSafari = function (scope) {
-        if (_isSafari$1 == null) {
-            var userAgent = scope.navigator ? scope.navigator.userAgent : null;
-            _isSafari$1 = !!scope.safari || !!(userAgent && (/\b(iPad|iPhone|iPod)\b/.test(userAgent) || (!!userAgent.match('Safari') && !userAgent.match('Chrome'))));
-        }
-        return _isSafari$1;
-    };
-
-    /**
-     * Replace tokens in a string template with values in an object
-     *
-     * @param properties a key/value relationship between tokens and replacements
-     * @param text the template string
-     * @returns the template with tokens replaced
-     * @private
-     */
-    Util$1.resolveTokens = function (properties, text) {
-        return text.replace(/{([^{}]+)}/g, function (match, key) {
-            return key in properties ? String(properties[key]) : '';
-        });
-    };
-
-    /**
      * Paint properties are _transitionable_: they can change in a fluid manner, interpolating or cross-fading between
      * old and new value. The duration of the transition, and the delay before it begins, is configurable.
      *
@@ -11672,7 +11831,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
     TransitionablePropertyValue.prototype.transitioned = function transitioned(parameters, prior) {
         return new TransitioningPropertyValue(this.property, this.value, prior, // eslint-disable-line no-use-before-define
-            Util$1.extend({}, parameters.transition, this.transition), parameters.now);
+            Util.extend({}, parameters.transition, this.transition), parameters.now);
     };
 
     TransitionablePropertyValue.prototype.untransitioned = function untransitioned() {
@@ -12029,6 +12188,9 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
         if (name === 'visibility') {
             this.visibility = value;
+            if(this.config && this.config.layout) {
+                this.config.layout.visibility = value;
+            }
             return;
         }
 
@@ -14782,6 +14944,18 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             },
             "property-type": "data-driven"
         },
+        "text-show-background": {
+            type: "boolean",
+            "default": false,
+            transition: false,
+            expression: {
+                interpolated: false,
+                parameters: [
+                    "zoom"
+                ]
+            },
+            "property-type": "data-constant"
+        },
         "text-halo-blur": {
             type: "number",
             "default": 0,
@@ -15591,7 +15765,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                 QueryUtils.translateDistance(this.paint.get('circle-translate'));
         };
 
-        CircleStyleLayer.prototype.queryIntersectsFeature = function queryIntersectsFeature(queryGeometry, feature, featureState, geometry, zoom, transform, pixelsToTileUnits, pixelPosMatrix) {
+        CircleStyleLayer.prototype.queryIntersectsFeature = function queryIntersectsFeature(queryGeometry, feature, featureState, geometry, zoom, transform, pixelsToTileUnits, pixelPosMatrix, adjustedScale) {
             pixelPosMatrix = createMat4();
             var translatedPolygon = QueryUtils.translate(queryGeometry,
                 this.paint.get('circle-translate'),
@@ -15621,9 +15795,9 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                     var adjustedSize = transformedSize;
                     var projectedCenter = transformMat4([], [point.x, point.y, 0, 1], pixelPosMatrix);
                     if (this.paint.get('circle-pitch-scale') === 'viewport' && this.paint.get('circle-pitch-alignment') === 'map') ; else if (this.paint.get('circle-pitch-scale') === 'map' && this.paint.get('circle-pitch-alignment') === 'viewport') ;
-                    adjustedSize *= 10.0;
 
-                    if (IntersectionTest.polygonIntersectsBufferedPoint(transformedPolygon, transformedPoint, adjustedSize)) {
+                    adjustedScale = when.defined(adjustedScale) ? adjustedScale : 10.0;
+                    if (IntersectionTest.polygonIntersectsBufferedPoint(transformedPolygon, transformedPoint, adjustedSize * adjustedScale)) {
                         return true;
                     }
                 }
@@ -15823,7 +15997,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
             var constant = value.expression.evaluate(parameters, (null   ), {}, availableImages);
             return this._calculate(constant, constant, constant, parameters);
         } else {
-            //assert_1(!value.isDataDriven());
             return this._calculate(
                 value.expression.evaluate(new EvaluationParameters(Math.floor(parameters.zoom - 1.0), parameters)),
                 value.expression.evaluate(new EvaluationParameters(Math.floor(parameters.zoom), parameters)),
@@ -15971,9 +16144,11 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                 this.paint.get('line-translate'),
                 this.paint.get('line-translate-anchor'),
                 0, pixelsToTileUnits);
-            var halfWidth = pixelsToTileUnits / 2 * getLineWidth(
+            var evaluatedLineWidth = getLineWidth(
                 this.paint.get('line-width').evaluate(feature, featureState),
                 this.paint.get('line-gap-width').evaluate(feature, featureState));
+            evaluatedLineWidth = Math.max(evaluatedLineWidth, 5.0);
+            var halfWidth = pixelsToTileUnits / 2 * evaluatedLineWidth;
             var lineOffset = this.paint.get('line-offset').evaluate(feature, featureState);
             if (lineOffset) {
                 geometry = offsetLine(geometry, lineOffset * pixelsToTileUnits);
@@ -16543,9 +16718,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
     };
 
     Shaping.fitIconToText = function(shapedIcon, shapedText, textFit, padding, iconOffset, fontScale){
-    //        assert_1(textFit !== 'none');
-    //        assert_1(Array.isArray(padding) && padding.length === 4);
-    //        assert_1(Array.isArray(iconOffset) && iconOffset.length === 2);
 
         var image = shapedIcon.image;
 
@@ -18207,6 +18379,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         "text-halo-color": new DataDrivenProperty(StyleSpec["paint_symbol"]["text-halo-color"]),
         "text-halo-width": new DataDrivenProperty(StyleSpec["paint_symbol"]["text-halo-width"]),
         "text-halo-blur": new DataDrivenProperty(StyleSpec["paint_symbol"]["text-halo-blur"]),
+        "text-show-background": new DataDrivenProperty(StyleSpec["paint_symbol"]["text-show-background"]),
         "text-translate": new DataConstantProperty(StyleSpec["paint_symbol"]["text-translate"]),
         "text-translate-anchor": new DataConstantProperty(StyleSpec["paint_symbol"]["text-translate-anchor"])
     });
@@ -18293,7 +18466,6 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         };
 
         SymbolStyleLayer.prototype.queryIntersectsFeature = function queryIntersectsFeature() {
-            assert_1(false); // Should take a different path in FeatureIndex
             return false;
         };
 
@@ -18501,6 +18673,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
         }
         catch (err) {
         }
+        result.pickId = parameters.pickId;
         return result;
     }
 
@@ -18535,7 +18708,7 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
                 var features = [];
                 for (var index = 0; index < sourceLayer.length; index++) {
                     var feature = sourceLayer.feature(index);
-                    features.push({feature: feature, index: index, sourceLayerIndex: sourceLayerIndex});
+                    features.push({feature: feature, index: index, sourceLayerIndex: sourceLayerIndex, sourceLayerId: sourceLayerId});
                 }
 
                 for (var i = 0, list = layerFamilies[sourceLayerId]; i < list.length; i += 1) {
@@ -18553,8 +18726,8 @@ define(['./when-8d13db60', './createTaskProcessorWorker', './earcut-2.2.1-b404d9
 
                     //recalculateLayers(family, this.zoom, availableImages);
                     recalculateLayers(family, 0, null);
-
-                    var bucket = buckets[layer.id] = layer.createBucket({
+                    var bucketName = layer.id;
+                    var bucket = buckets[bucketName] = layer.createBucket({
                         index: featureIndex.bucketLayerIDs.length,
                         layers: family,
     //                    zoom: this.zoom,
