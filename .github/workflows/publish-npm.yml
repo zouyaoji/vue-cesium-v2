@@ -5,41 +5,33 @@ on:
     types: [created]
 
 jobs:
-  # test:
-  #   runs-on: windows-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Setup node
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '14'
-  #     - name: Install dependencies
-  #       run: npm install
-  #     - name: Test
-  #       run: npm run test
-
-  publish:
-    # needs: test
-    runs-on: windows-latest
+  build:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
-          registry-url: https://registry.npmjs.com/
-      - run: npm install
+          node-version: 14
+      - run: npm ci
       - run: npm run build
-      - name: Get version
-        run: echo "TAG_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      # - name: build
-      #   run: npm run build
-      #   env:
-      #     TAG_VERSION: ${{env.TAG_VERSION}}
-      - name: generate npm token
-        run: echo "//registry.npmjs.com/:_authToken=${{ secrets.NPM_PUBLISH_TOKEN }}" > ./.npmrc
-      - name: Publish npm
-        run: npm publish
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          registry-url: https://npm.pkg.github.com/
+      - run: npm ci
+      # - name: Get version
+      #   run: echo "TAG_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      # - name: generate npm token
+      #   run: echo "//registry.npmjs.com/:_authToken=${{ secrets.NPM_PUBLISH_TOKEN }}" > ./.npmrc
+      # - name: Publish npm
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_PUBLISH_TOKEN}}
-          TAG_VERSION: ${{env.TAG_VERSION}}
-          REGISTRY: https://registry.npmjs.com/
+          # TAG_VERSION: ${{env.TAG_VERSION}}
+          # REGISTRY: https://registry.npmjs.com/
