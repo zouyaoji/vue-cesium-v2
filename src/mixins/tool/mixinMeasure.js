@@ -532,7 +532,9 @@ const methods = {
         if (
           pickObj instanceof Cesium3DTileFeature ||
           pickObj.primitive instanceof Cesium3DTileset ||
-          pickObj.primitive instanceof Model
+          pickObj.primitive instanceof Model ||
+          // 兼容处理超图 S3MTilesLayer
+          pickObj.primitive instanceof Cesium.S3MTilesLayer
         ) {
           position = scene.pickPosition(windowPosition, cartesianScratch)
           if (Cesium.defined(position)) {
