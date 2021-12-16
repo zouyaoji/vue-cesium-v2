@@ -1,7 +1,7 @@
 /**
- * Cesium - https://github.com/AnalyticalGraphicsInc/cesium
+ * Cesium - https://github.com/CesiumGS/cesium
  *
- * Copyright 2011-2017 Cesium Contributors
+ * Copyright 2011-2020 Cesium Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,65 +18,6 @@
  * Columbus View (Pat. Pend.)
  *
  * Portions licensed separately.
- * See https://github.com/AnalyticalGraphicsInc/cesium/blob/master/LICENSE.md for full licensing details.
+ * See https://github.com/CesiumGS/cesium/blob/master/LICENSE.md for full licensing details.
  */
-define(['./when-8d13db60', './createTaskProcessorWorker', './pako_inflate-8ea163f9', './unzip-b0fc9445'], function (when, createTaskProcessorWorker, pako_inflate, unzip) { 'use strict';
-
-    var unzipwasmReady = false;
-    unzip.unzip.onRuntimeInitialized = function() {
-        unzipwasmReady = true;
-    };
-
-    var unzipwasm = unzip.unzip.cwrap('unzip', 'number', ['number', 'number', 'number', 'number']);
-    var freec = unzip.unzip.cwrap('freePointer', null, ['number']);
-    function unzipWithwasm(datazip) {
-        var unzipsize = datazip.length * 4;
-        var offset = unzip.unzip._malloc(Uint8Array.BYTES_PER_ELEMENT * unzipsize); //开辟内存
-        var tar = new Uint8Array(unzipsize);
-        unzip.unzip.HEAPU8.set(tar, offset / Uint8Array.BYTES_PER_ELEMENT);
-        var offset1 = unzip.unzip._malloc(Uint8Array.BYTES_PER_ELEMENT * datazip.length);
-        unzip.unzip.HEAPU8.set(datazip, offset1 / Uint8Array.BYTES_PER_ELEMENT);
-
-        var resultLen;
-        while ((resultLen = unzipwasm(offset, unzipsize, offset1, datazip.length)) == 0) {
-            freec(offset); //释放内存
-            unzipsize *= 4;
-            offset = unzip.unzip._malloc(Uint8Array.BYTES_PER_ELEMENT * unzipsize);
-            tar = new Uint8Array(unzipsize);
-            unzip.unzip.HEAPU8.set(tar, offset / Uint8Array.BYTES_PER_ELEMENT);
-        }
-        var res = new Uint8Array(unzip.unzip.HEAPU8.buffer, offset, resultLen);
-        datazip = null;
-        tar = null;
-        var buffer = new Uint8Array(res);
-        freec(offset);
-        freec(offset1);
-        return buffer;
-    }
-
-    function UnZipTerrainData(parameters, transferableObjects) {
-        var buffer = parameters.data;
-        var dataZip = new Uint8Array(buffer);
-
-        var unzipBuffer;
-        if (unzipwasmReady === true) {
-            unzipBuffer = unzipWithwasm(dataZip);
-            return {
-                data : unzipBuffer
-            };
-        } else {
-            unzipBuffer = pako_inflate.pako.inflate(dataZip).buffer;
-        }
-        
-        transferableObjects.push(unzipBuffer);
-
-        return {
-            data : new Uint8Array(unzipBuffer)
-        };
-    }
-
-    var UnZipTerrainData$1 = createTaskProcessorWorker(UnZipTerrainData);
-
-    return UnZipTerrainData$1;
-
-});
+define(["./when-8d13db60","./createTaskProcessorWorker","./pako_inflate-8ea163f9","./unzip-9ad5f9b4"],function(n,r,t,f){var E=!1;if("undefined"!=typeof WebAssembly){f.unzip.onRuntimeInitialized=function(){E=!0};var p=f.unzip.cwrap("unzip","number",["number","number","number","number"]),l=f.unzip.cwrap("freePointer",null,["number"])}return r(function(n,r){var e,a=n.data,i=new Uint8Array(a);return!0===E?{data:e=function(n){var r=4*n.length,e=f.unzip._malloc(Uint8Array.BYTES_PER_ELEMENT*r),a=new Uint8Array(r);f.unzip.HEAPU8.set(a,e/Uint8Array.BYTES_PER_ELEMENT);var i,t=f.unzip._malloc(Uint8Array.BYTES_PER_ELEMENT*n.length);for(f.unzip.HEAPU8.set(n,t/Uint8Array.BYTES_PER_ELEMENT);0==(i=p(e,r,t,n.length));)l(e),r*=4,e=f.unzip._malloc(Uint8Array.BYTES_PER_ELEMENT*r),a=new Uint8Array(r),f.unzip.HEAPU8.set(a,e/Uint8Array.BYTES_PER_ELEMENT);var E=new Uint8Array(f.unzip.HEAPU8.buffer,e,i);a=n=null;var u=new Uint8Array(E);return l(e),l(t),u}(i)}:(e=t.pako.inflate(i).buffer,r.push(e),{data:new Uint8Array(e)})})});

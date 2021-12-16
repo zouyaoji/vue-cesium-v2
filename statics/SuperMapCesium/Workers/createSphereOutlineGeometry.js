@@ -1,7 +1,7 @@
 /**
- * Cesium - https://github.com/AnalyticalGraphicsInc/cesium
+ * Cesium - https://github.com/CesiumGS/cesium
  *
- * Copyright 2011-2017 Cesium Contributors
+ * Copyright 2011-2020 Cesium Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,121 +18,6 @@
  * Columbus View (Pat. Pend.)
  *
  * Portions licensed separately.
- * See https://github.com/AnalyticalGraphicsInc/cesium/blob/master/LICENSE.md for full licensing details.
+ * See https://github.com/CesiumGS/cesium/blob/master/LICENSE.md for full licensing details.
  */
-define(['./when-8d13db60', './Check-70bec281', './Math-61ede240', './Cartographic-fe4be337', './Cartesian2-85064f09', './BoundingSphere-775c5788', './Cartesian4-5af5bb24', './RuntimeError-ba10bc3e', './WebGLConstants-4c11ee5f', './ComponentDatatype-5862616f', './GeometryAttribute-91704ebb', './PrimitiveType-97893bc7', './FeatureDetection-7bd32c34', './Transforms-b2e71640', './buildModuleUrl-14bfe498', './GeometryAttributes-aacecde6', './IndexDatatype-9435b55f', './GeometryOffsetAttribute-ca302482', './EllipsoidOutlineGeometry-907e3eb7'], function (when, Check, _Math, Cartographic, Cartesian2, BoundingSphere, Cartesian4, RuntimeError, WebGLConstants, ComponentDatatype, GeometryAttribute, PrimitiveType, FeatureDetection, Transforms, buildModuleUrl, GeometryAttributes, IndexDatatype, GeometryOffsetAttribute, EllipsoidOutlineGeometry) { 'use strict';
-
-    /**
-         * A description of the outline of a sphere.
-         *
-         * @alias SphereOutlineGeometry
-         * @constructor
-         *
-         * @param {Object} [options] Object with the following properties:
-         * @param {Number} [options.radius=1.0] The radius of the sphere.
-         * @param {Number} [options.stackPartitions=10] The count of stacks for the sphere (1 greater than the number of parallel lines).
-         * @param {Number} [options.slicePartitions=8] The count of slices for the sphere (Equal to the number of radial lines).
-         * @param {Number} [options.subdivisions=200] The number of points per line, determining the granularity of the curvature .
-         *
-         * @exception {DeveloperError} options.stackPartitions must be greater than or equal to one.
-         * @exception {DeveloperError} options.slicePartitions must be greater than or equal to zero.
-         * @exception {DeveloperError} options.subdivisions must be greater than or equal to zero.
-         *
-         * @example
-         * var sphere = new Cesium.SphereOutlineGeometry({
-         *   radius : 100.0,
-         *   stackPartitions : 6,
-         *   slicePartitions: 5
-         * });
-         * var geometry = Cesium.SphereOutlineGeometry.createGeometry(sphere);
-         */
-        function SphereOutlineGeometry(options) {
-            var radius = when.defaultValue(options.radius, 1.0);
-            var radii = new Cartographic.Cartesian3(radius, radius, radius);
-            var ellipsoidOptions = {
-                    radii: radii,
-                    stackPartitions: options.stackPartitions,
-                    slicePartitions: options.slicePartitions,
-                    subdivisions: options.subdivisions
-            };
-
-            this._ellipsoidGeometry = new EllipsoidOutlineGeometry.EllipsoidOutlineGeometry(ellipsoidOptions);
-            this._workerName = 'createSphereOutlineGeometry';
-        }
-
-        /**
-         * The number of elements used to pack the object into an array.
-         * @type {Number}
-         */
-        SphereOutlineGeometry.packedLength = EllipsoidOutlineGeometry.EllipsoidOutlineGeometry.packedLength;
-
-        /**
-         * Stores the provided instance into the provided array.
-         *
-         * @param {SphereOutlineGeometry} value The value to pack.
-         * @param {Number[]} array The array to pack into.
-         * @param {Number} [startingIndex=0] The index into the array at which to start packing the elements.
-         *
-         * @returns {Number[]} The array that was packed into
-         */
-        SphereOutlineGeometry.pack = function(value, array, startingIndex) {
-            //>>includeStart('debug', pragmas.debug);
-            Check.Check.typeOf.object('value', value);
-            //>>includeEnd('debug');
-
-            return EllipsoidOutlineGeometry.EllipsoidOutlineGeometry.pack(value._ellipsoidGeometry, array, startingIndex);
-        };
-
-        var scratchEllipsoidGeometry = new EllipsoidOutlineGeometry.EllipsoidOutlineGeometry();
-        var scratchOptions = {
-            radius : undefined,
-            radii : new Cartographic.Cartesian3(),
-            stackPartitions : undefined,
-            slicePartitions : undefined,
-            subdivisions : undefined
-        };
-
-        /**
-         * Retrieves an instance from a packed array.
-         *
-         * @param {Number[]} array The packed array.
-         * @param {Number} [startingIndex=0] The starting index of the element to be unpacked.
-         * @param {SphereOutlineGeometry} [result] The object into which to store the result.
-         * @returns {SphereOutlineGeometry} The modified result parameter or a new SphereOutlineGeometry instance if one was not provided.
-         */
-        SphereOutlineGeometry.unpack = function(array, startingIndex, result) {
-            var ellipsoidGeometry = EllipsoidOutlineGeometry.EllipsoidOutlineGeometry.unpack(array, startingIndex, scratchEllipsoidGeometry);
-            scratchOptions.stackPartitions = ellipsoidGeometry._stackPartitions;
-            scratchOptions.slicePartitions = ellipsoidGeometry._slicePartitions;
-            scratchOptions.subdivisions = ellipsoidGeometry._subdivisions;
-
-            if (!when.defined(result)) {
-                scratchOptions.radius = ellipsoidGeometry._radii.x;
-                return new SphereOutlineGeometry(scratchOptions);
-            }
-
-            Cartographic.Cartesian3.clone(ellipsoidGeometry._radii, scratchOptions.radii);
-            result._ellipsoidGeometry = new EllipsoidOutlineGeometry.EllipsoidOutlineGeometry(scratchOptions);
-            return result;
-        };
-
-        /**
-         * Computes the geometric representation of an outline of a sphere, including its vertices, indices, and a bounding sphere.
-         *
-         * @param {SphereOutlineGeometry} sphereGeometry A description of the sphere outline.
-         * @returns {Geometry} The computed vertices and indices.
-         */
-        SphereOutlineGeometry.createGeometry = function(sphereGeometry) {
-            return EllipsoidOutlineGeometry.EllipsoidOutlineGeometry.createGeometry(sphereGeometry._ellipsoidGeometry);
-        };
-
-    function createSphereOutlineGeometry(sphereGeometry, offset) {
-        if (when.defined(offset)) {
-            sphereGeometry = SphereOutlineGeometry.unpack(sphereGeometry, offset);
-        }
-        return SphereOutlineGeometry.createGeometry(sphereGeometry);
-    }
-
-    return createSphereOutlineGeometry;
-
-});
+define(["./when-8d13db60","./Check-70bec281","./Math-61ede240","./Cartographic-f27b0939","./Cartesian2-09435a6c","./BoundingSphere-c409f092","./Cartesian4-5af5bb24","./RuntimeError-ba10bc3e","./WebGLConstants-4c11ee5f","./ComponentDatatype-5862616f","./GeometryAttribute-2243653a","./PrimitiveType-97893bc7","./FeatureDetection-7bd32c34","./Transforms-1509c877","./buildModuleUrl-392763e2","./GeometryAttributes-aacecde6","./IndexDatatype-9435b55f","./arrayFill-9766fb2e","./GeometryOffsetAttribute-999fc023","./EllipsoidOutlineGeometry-dcd209b1"],function(n,r,e,a,i,t,o,s,d,l,c,u,p,m,y,b,f,G,k,v){function h(e){var i=n.defaultValue(e.radius,1),t={radii:new a.Cartesian3(i,i,i),stackPartitions:e.stackPartitions,slicePartitions:e.slicePartitions,subdivisions:e.subdivisions};this._ellipsoidGeometry=new v.EllipsoidOutlineGeometry(t),this._workerName="createSphereOutlineGeometry"}h.packedLength=v.EllipsoidOutlineGeometry.packedLength,h.pack=function(e,i,t){return r.Check.typeOf.object("value",e),v.EllipsoidOutlineGeometry.pack(e._ellipsoidGeometry,i,t)};var O=new v.EllipsoidOutlineGeometry,P={radius:void 0,radii:new a.Cartesian3,stackPartitions:void 0,slicePartitions:void 0,subdivisions:void 0};return h.unpack=function(e,i,t){var r=v.EllipsoidOutlineGeometry.unpack(e,i,O);return P.stackPartitions=r._stackPartitions,P.slicePartitions=r._slicePartitions,P.subdivisions=r._subdivisions,n.defined(t)?(a.Cartesian3.clone(r._radii,P.radii),t._ellipsoidGeometry=new v.EllipsoidOutlineGeometry(P),t):(P.radius=r._radii.x,new h(P))},h.createGeometry=function(e){return v.EllipsoidOutlineGeometry.createGeometry(e._ellipsoidGeometry)},function(e,i){return n.defined(i)&&(e=h.unpack(e,i)),h.createGeometry(e)}});

@@ -1,7 +1,7 @@
 /**
- * Cesium - https://github.com/AnalyticalGraphicsInc/cesium
+ * Cesium - https://github.com/CesiumGS/cesium
  *
- * Copyright 2011-2017 Cesium Contributors
+ * Copyright 2011-2020 Cesium Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,61 +18,6 @@
  * Columbus View (Pat. Pend.)
  *
  * Portions licensed separately.
- * See https://github.com/AnalyticalGraphicsInc/cesium/blob/master/LICENSE.md for full licensing details.
+ * See https://github.com/CesiumGS/cesium/blob/master/LICENSE.md for full licensing details.
  */
-define(['exports', './Math-61ede240'], function (exports, _Math) { 'use strict';
-
-    /**
-         * @private
-         */
-        var CylinderGeometryLibrary = {};
-
-        /**
-         * @private
-         */
-        CylinderGeometryLibrary.computePositions = function(length, topRadius, bottomRadius, slices, fill){
-            var topZ = length * 0.5;
-            var bottomZ = -topZ;
-
-            var twoSlice = slices + slices;
-            var size = (fill) ? 2 * twoSlice : twoSlice;
-            var positions = new Float64Array(size*3);
-            var i;
-            var index = 0;
-            var tbIndex = 0;
-            var bottomOffset = (fill) ? twoSlice*3 : 0;
-            var topOffset = (fill) ? (twoSlice + slices)*3 : slices*3;
-
-            for (i = 0; i < slices; i++) {
-                var angle = i / slices * _Math.CesiumMath.TWO_PI;
-                var x = Math.cos(angle);
-                var y = Math.sin(angle);
-                var bottomX = x * bottomRadius;
-                var bottomY = y * bottomRadius;
-                var topX = x * topRadius;
-                var topY = y * topRadius;
-
-                positions[tbIndex + bottomOffset] = bottomX;
-                positions[tbIndex + bottomOffset + 1] = bottomY;
-                positions[tbIndex + bottomOffset + 2] = bottomZ;
-
-                positions[tbIndex + topOffset] = topX;
-                positions[tbIndex + topOffset + 1] = topY;
-                positions[tbIndex + topOffset + 2] = topZ;
-                tbIndex += 3;
-                if (fill) {
-                    positions[index++] = bottomX;
-                    positions[index++] = bottomY;
-                    positions[index++] = bottomZ;
-                    positions[index++] = topX;
-                    positions[index++] = topY;
-                    positions[index++] = topZ;
-                }
-            }
-
-            return positions;
-        };
-
-    exports.CylinderGeometryLibrary = CylinderGeometryLibrary;
-
-});
+define(["exports","./Math-61ede240"],function(r,b){var e={computePositions:function(r,e,t,a,n){var o,i=.5*r,s=-i,u=a+a,c=new Float64Array(3*(n?2*u:u)),f=0,h=0,y=n?3*u:0,M=n?3*(u+a):3*a;for(o=0;o<a;o++){var d=o/a*b.CesiumMath.TWO_PI,m=Math.cos(d),v=Math.sin(d),l=m*t,p=v*t,C=m*e,P=v*e;c[h+y]=l,c[h+y+1]=p,c[h+y+2]=s,c[h+M]=C,c[h+M+1]=P,c[h+M+2]=i,h+=3,n&&(c[f++]=l,c[f++]=p,c[f++]=s,c[f++]=C,c[f++]=P,c[f++]=i)}return c}};r.CylinderGeometryLibrary=e});
