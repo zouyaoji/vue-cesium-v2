@@ -98,7 +98,7 @@ export default {
               pixelOffset: this.pixelOffset,
               position: position,
               showBackground: this.showBackground,
-              disableDepthTestDistance: Number.POSITIVE_INFINITY,
+              disableDepthTestDistance: Cesium.SuperMapVersion ? 0 : Number.POSITIVE_INFINITY,
               text: this.$vc.lang.measure.distance + ': ' + this.getDistanceText(polyline.distances[subIndex])
             }
             labels.push(label)

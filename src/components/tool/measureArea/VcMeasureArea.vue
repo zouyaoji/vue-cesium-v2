@@ -145,7 +145,7 @@ export default {
           pixelOffset: this.pixelOffset,
           position: polyline.positions[polyline.positions.length - 1],
           showBackground: this.showBackground,
-          disableDepthTestDistance: Number.POSITIVE_INFINITY,
+          disableDepthTestDistance: Cesium.SuperMapVersion ? 0 : Number.POSITIVE_INFINITY,
           text: this.$vc.lang.measure.area +
               ': ' +
               (polyline.area > 1000000 ? (polyline.area / 1000000).toFixed(2) + 'km²' : polyline.area.toFixed(2) + '㎡')

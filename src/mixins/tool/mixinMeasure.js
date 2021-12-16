@@ -123,7 +123,7 @@ const computed = {
           position: position,
           polylineIndex: index,
           positionIndex: subIndex,
-          disableDepthTestDistance: Number.POSITIVE_INFINITY
+          disableDepthTestDistance: Cesium.SuperMapVersion ? 0 : Number.POSITIVE_INFINITY
         }
         points.push(point)
       })
@@ -492,8 +492,11 @@ const methods = {
           enabled: false
         }
       })
-      if (Cesium.SuperMapImageryProvider) {
+      if (Cesium.SuperMapVersion) {
         this.$refs.polylineCollection && (this.$refs.polylineCollection.cesiumObject._opaqueRS = rs)
+        this.$refs.pointCollection && (this.$refs.pointCollection.cesiumObject._rsOpaque = rs)
+        this.$refs.labelCollection.cesiumObject._billboardCollection._rsTranslucent = rs
+        this.$refs.labelCollection.cesiumObject._backgroundBillboardCollection._rsTranslucent = rs
       } else {
         this.$refs.polylineCollection && (this.$refs.polylineCollection.cesiumObject._opaqueRS.depthTest.enabled = false)
       }
@@ -521,9 +524,15 @@ const methods = {
   },
   getWorldPosition (scene, windowPosition, result) {
     const { Cesium3DTileFeature, Cesium3DTileset, Cartesian3, defined, Model, Ray } = Cesium
+    if (Cesium.SuperMapVersion) {
+      // 超图版本下 PointPrimitive 在隐藏了的状态下仍然能被拾取到
+      // 因此直接返回拾取坐标
+      return scene.pickPosition(windowPosition)
+    }
     let position
     const cartesianScratch = {}
     const rayScratch = new Ray()
+
     if (scene.pickPositionSupported) {
       this.visibilityState.hide(scene)
       const pickObj = scene.pick(windowPosition, 1, 1)
@@ -533,7 +542,6 @@ const methods = {
           pickObj instanceof Cesium3DTileFeature ||
           pickObj.primitive instanceof Cesium3DTileset ||
           pickObj.primitive instanceof Model ||
-          // 兼容处理超图 S3MTilesLayer
           pickObj.primitive instanceof Cesium.S3MTilesLayer
         ) {
           position = scene.pickPosition(windowPosition, cartesianScratch)
