@@ -5,21 +5,21 @@ on:
     types: [created]
 
 jobs:
-  # test:
-  #   runs-on: windows-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Setup node
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '14'
-  #     - name: Install dependencies
-  #       run: npm install
-  #     - name: Test
-  #       run: npm run test
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      # - name: Test
+      #   run: npm run test
 
   publish:
-    # needs: test
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -29,8 +29,6 @@ jobs:
           registry-url: https://registry.npmjs.com/
       - name: Get version
         run: echo "TAG_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Install dependencies
-        run: npm install
       - name: build
         run: npm run build
         env:
