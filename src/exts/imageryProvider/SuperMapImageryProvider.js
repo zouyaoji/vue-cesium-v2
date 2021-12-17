@@ -173,19 +173,19 @@ class SuperMapImageryProvider {
         const promise = this.m_indexedDBScheduler.getElementFromDB(this.tablename, url)
         return defined(promise)
           ? when(
-              promise,
-              (value) => {
-                if (defined(value)) {
-                  const image = new Image()
-                  image.src = value
-                  return image
-                }
-                return ImageryProvider.loadImage(that, resource)
-              },
-              (e) => {
-                return ImageryProvider.loadImage(that, resource)
+            promise,
+            (value) => {
+              if (defined(value)) {
+                const image = new Image()
+                image.src = value
+                return image
               }
-            )
+              return ImageryProvider.loadImage(that, resource)
+            },
+            (e) => {
+              return ImageryProvider.loadImage(that, resource)
+            }
+          )
           : ImageryProvider.loadImage(that, resource)
       }
     }

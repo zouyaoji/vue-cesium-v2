@@ -88,14 +88,14 @@ const methods = {
     const that = this
     return this._mounted
       ? this.unmount().then(async () => {
-          // Teardown the watchers. 注销 Vue 侦听器。
-          that.setPropWatchers(false)
-          that.originInstance = undefined
-          that._mounted = false
-          // If the component cannot be rendered without the parent component, the parent component needs to be removed.
-          // 如果该组件的渲染和父组件是绑定在一起的，需要移除父组件。
-          return that.renderByParent && !this.unloadingPromise ? that.$parent.unload() : true
-        })
+        // Teardown the watchers. 注销 Vue 侦听器。
+        that.setPropWatchers(false)
+        that.originInstance = undefined
+        that._mounted = false
+        // If the component cannot be rendered without the parent component, the parent component needs to be removed.
+        // 如果该组件的渲染和父组件是绑定在一起的，需要移除父组件。
+        return that.renderByParent && !this.unloadingPromise ? that.$parent.unload() : true
+      })
       : false
   },
   /**
