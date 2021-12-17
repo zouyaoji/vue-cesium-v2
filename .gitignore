@@ -46,3 +46,4 @@ coverage
 /package-lock.json
 /lib
 .vscode
+.pnpm-debug.log*

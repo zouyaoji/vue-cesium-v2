@@ -5,18 +5,7 @@ on:
     types: [created]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 14
-      - run: npm ci
-      - run: npm run build
-
   publish:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,14 +13,18 @@ jobs:
         with:
           node-version: 14
           registry-url: https://npm.pkg.github.com/
-      - run: npm ci
-      # - name: Get version
-      #   run: echo "TAG_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      # - name: generate npm token
-      #   run: echo "//registry.npmjs.com/:_authToken=${{ secrets.NPM_PUBLISH_TOKEN }}" > ./.npmrc
-      # - name: Publish npm
-      - run: npm publish
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      - name: Get version
+        run: echo "TAG_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Gen npmrc
+        run: echo "//registry.npmjs.com/:_authToken=${{ secrets.NPM_PUBLISH_TOKEN }}" > ./.npmrc
+      - name: Build&publish
+        run: sh ./scripts/publish.sh
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_PUBLISH_TOKEN}}
-          # TAG_VERSION: ${{env.TAG_VERSION}}
-          # REGISTRY: https://registry.npmjs.com/
+          TAG_VERSION: ${{env.TAG_VERSION}}
+          REGISTRY: https://registry.npmjs.com/
