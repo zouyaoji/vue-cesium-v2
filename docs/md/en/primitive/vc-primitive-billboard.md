@@ -17,8 +17,8 @@ The `vc-primitive-billboard` component is used to load a viewport-aligned image 
             :image="image"
             :scale="0.4"
             :show="show"
-            :distanceDisplayCondition="distanceDisplayCondition"
-            :horizontalOrigin="horizontalOrigin"
+            :distance-display-condition="distanceDisplayCondition"
+            :horizontal-origin="horizontalOrigin"
             :position="position"
             @click="clicked"
           ></vc-primitive-billboard>
@@ -63,8 +63,8 @@ The `vc-primitive-billboard` component is used to load a viewport-aligned image 
           :image="image"
           :scale="0.4"
           :show="show"
-          :distanceDisplayCondition="distanceDisplayCondition"
-          :horizontalOrigin="horizontalOrigin"
+          :distance-display-condition="distanceDisplayCondition"
+          :horizontal-origin="horizontalOrigin"
           :position="position"
           @click="clicked"
         ></vc-primitive-billboard>

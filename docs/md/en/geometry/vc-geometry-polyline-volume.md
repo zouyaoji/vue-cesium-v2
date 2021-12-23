@@ -14,13 +14,13 @@
   <template>
     <div class="viewer">
       <vc-viewer ref="viewer" @LEFT_CLICK="LEFT_CLICK">
-        <vc-primitive :appearance="appearance" :geometryInstances.sync="geometryInstances">
+        <vc-primitive :appearance="appearance" :geometry-instances.sync="geometryInstances">
           <vc-instance-geometry :attributes="attributes">
             <vc-geometry-polyline-volume
               ref="polylineVolume"
-              :polylinePositions="positions"
-              :shapePositions="shape"
-              :vertexFormat="vertexFormat"
+              :polyline-positions="positions"
+              :shape-positions="shape"
+              :vertex-format="vertexFormat"
             ></vc-geometry-polyline-volume>
           </vc-instance-geometry>
         </vc-primitive>
@@ -28,8 +28,8 @@
           <vc-instance-geometry :attributes="attributes">
             <vc-geometry-outline-polyline-volume
               ref="polylineVolumeOutline"
-              :polylinePositions="positionsOutline"
-              :shapePositions="shape"
+              :polyline-positions="positionsOutline"
+              :shape-positions="shape"
             >
             </vc-geometry-outline-polyline-volume>
           </vc-instance-geometry>
@@ -109,13 +109,13 @@
 <template>
   <div class="viewer">
     <vc-viewer ref="viewer" @LEFT_CLICK="LEFT_CLICK">
-      <vc-primitive :appearance="appearance" :geometryInstances.sync="geometryInstances">
+      <vc-primitive :appearance="appearance" :geometry-instances.sync="geometryInstances">
         <vc-instance-geometry :attributes="attributes">
           <vc-geometry-polyline-volume
             ref="polylineVolume"
-            :polylinePositions="positions"
-            :shapePositions="shape"
-            :vertexFormat="vertexFormat"
+            :polyline-positions="positions"
+            :shape-positions="shape"
+            :vertex-format="vertexFormat"
           ></vc-geometry-polyline-volume>
         </vc-instance-geometry>
       </vc-primitive>
@@ -123,8 +123,8 @@
         <vc-instance-geometry :attributes="attributes">
           <vc-geometry-outline-polyline-volume
             ref="polylineVolumeOutline"
-            :polylinePositions="positionsOutline"
-            :shapePositions="shape"
+            :polyline-positions="positionsOutline"
+            :shape-positions="shape"
           >
           </vc-geometry-outline-polyline-volume>
         </vc-instance-geometry>

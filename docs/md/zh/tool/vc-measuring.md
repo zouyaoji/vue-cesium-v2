@@ -13,14 +13,14 @@
 <doc-preview>
   <template>
     <div class="viewer">
-      <vc-viewer @ready="ready" scene3DOnly>
+      <vc-viewer @ready="ready" scene3-d-only>
         <vc-measure-distance
-          :clampToGround="clampToGround"
+          :clamp-to-ground="clampToGround"
           ref="measureDistance"
           @activeEvt="activeEvt"
           @measureEvt="measureEvt"
           @movingEvt="movingEvt"
-          :removeLastPosition="removeLastPosition"
+          :remove-last-position="removeLastPosition"
           :editable="editable"
         ></vc-measure-distance>
         <vc-measure-area
@@ -28,8 +28,8 @@
           @activeEvt="activeEvt"
           @measureEvt="measureEvt"
           @movingEvt="movingEvt"
-          :clampToGround="clampToGround"
-          :removeLastPosition="removeLastPosition"
+          :clamp-to-ground="clampToGround"
+          :remove-last-position="removeLastPosition"
           :editable="editable"
         ></vc-measure-area>
         <vc-measure-height
@@ -37,10 +37,10 @@
           @activeEvt="activeEvt"
           @measureEvt="measureEvt"
           @movingEvt="movingEvt"
-          :removeLastPosition="removeLastPosition"
+          :remove-last-position="removeLastPosition"
           :editable="editable"
         ></vc-measure-height>
-        <vc-primitive-tileset :url="modelUrl" @readyPromise="readyPromise"></vc-primitive-tileset>
+        <vc-primitive-tileset :url="modelUrl" @ready-promise="readyPromise"></vc-primitive-tileset>
       </vc-viewer>
       <div class="demo-tool">
         <md-button class="md-raised md-accent" @click="toggle('measureDistance')"
@@ -107,22 +107,22 @@
 ```html
 <template>
   <div class="viewer">
-    <vc-viewer @ready="ready" scene3DOnly>
+    <vc-viewer @ready="ready" scene3-d-only>
       <vc-measure-distance
-        :clampToGround="clampToGround"
+        :clamp-to-ground="clampToGround"
         ref="measureDistance"
         @activeEvt="activeEvt"
         @measureEvt="measureEvt"
         @movingEvt="movingEvt"
-        :removeLastPosition="removeLastPosition"
+        :remove-last-position="removeLastPosition"
       ></vc-measure-distance>
       <vc-measure-area
         ref="measureArea"
         @activeEvt="activeEvt"
         @measureEvt="measureEvt"
         @movingEvt="movingEvt"
-        :clampToGround="clampToGround"
-        :removeLastPosition="removeLastPosition"
+        :clamp-to-ground="clampToGround"
+        :remove-last-position="removeLastPosition"
       ></vc-measure-area>
       <vc-measure-height
         ref="measureHeight"
@@ -130,7 +130,7 @@
         @measureEvt="measureEvt"
         @movingEvt="movingEvt"
       ></vc-measure-height>
-      <vc-primitive-tileset :url="modelUrl" @readyPromise="readyPromise"></vc-primitive-tileset>
+      <vc-primitive-tileset :url="modelUrl" @ready-promise="readyPromise"></vc-primitive-tileset>
     </vc-viewer>
     <div class="demo-tool">
       <md-button class="md-raised md-accent" @click="toggle('measureDistance')"

@@ -18,22 +18,22 @@ The `vc-instance-geometry` component is used to load a geometry. Geometry instan
             :geometry="geometry"
             :color="color"
             :attributes="attributes"
-            :modelMatrix="modelMatrix1"
+            :model-matrix="modelMatrix1"
           ></vc-instance-geometry>
           <vc-instance-geometry
             id="bottom"
             :geometry="geometry"
             :color="color"
             :attributes="attributes"
-            :modelMatrix="modelMatrix2"
+            :model-matrix="modelMatrix2"
           ></vc-instance-geometry>
         </vc-primitive>
-        <vc-primitive :appearance="appearance2" :geometryInstances.sync="geometryInstances">
+        <vc-primitive :appearance="appearance2" :geometry-instances.sync="geometryInstances">
           <vc-instance-geometry>
             <vc-geometry-rectangle :rectangle="rectangle"></vc-geometry-rectangle>
           </vc-instance-geometry>
           <vc-instance-geometry :geometry.sync="geometry2">
-            <vc-geometry-polygon :polygonHierarchy="polygonHierarchy" :height="height"></vc-geometry-polygon>
+            <vc-geometry-polygon :polygon-hierarchy="polygonHierarchy" :height="height"></vc-geometry-polygon>
           </vc-instance-geometry>
         </vc-primitive>
       </vc-viewer>
@@ -111,22 +111,22 @@ The `vc-instance-geometry` component is used to load a geometry. Geometry instan
           :geometry="geometry"
           :color="color"
           :attributes="attributes"
-          :modelMatrix="modelMatrix1"
+          :model-matrix="modelMatrix1"
         ></vc-instance-geometry>
         <vc-instance-geometry
           id="bottom"
           :geometry="geometry"
           :color="color"
           :attributes="attributes"
-          :modelMatrix="modelMatrix2"
+          :model-matrix="modelMatrix2"
         ></vc-instance-geometry>
       </vc-primitive>
-      <vc-primitive :appearance="appearance2" :geometryInstances.sync="geometryInstances">
+      <vc-primitive :appearance="appearance2" :geometry-instances.sync="geometryInstances">
         <vc-instance-geometry>
           <vc-geometry-rectangle :rectangle="rectangle"></vc-geometry-rectangle>
         </vc-instance-geometry>
         <vc-instance-geometry :geometry.sync="geometry2">
-          <vc-geometry-polygon :polygonHierarchy="polygonHierarchy" :height="height"></vc-geometry-polygon>
+          <vc-geometry-polygon :polygon-hierarchy="polygonHierarchy" :height="height"></vc-geometry-polygon>
         </vc-instance-geometry>
       </vc-primitive>
     </vc-viewer>

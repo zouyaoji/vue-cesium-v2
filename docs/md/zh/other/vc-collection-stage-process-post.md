@@ -13,8 +13,8 @@
     <div class="viewer">
       <vc-viewer @ready="ready" >
         <vc-collection-stage-process-post>
-          <vc-stage-process-post :fragmentShader="fsRain"></vc-stage-process-post>
-          <vc-stage-process-post :fragmentShader="fsScanSegment" :uniforms="uniforms"></vc-stage-process-post>
+          <vc-stage-process-post :fragment-shader="fsRain"></vc-stage-process-post>
+          <vc-stage-process-post :fragment-shader="fsScanSegment" :uniforms="uniforms"></vc-stage-process-post>
         </vc-collection-stage-process-post>
       </vc-viewer>
     </div>
@@ -145,8 +145,8 @@
   <div class="viewer">
     <vc-viewer @ready="ready">
       <vc-collection-stage-process-post>
-        <vc-stage-process-post :fragmentShader="fsRain"></vc-stage-process-post>
-        <vc-stage-process-post :fragmentShader="fsScanSegment" :uniforms="uniforms"></vc-stage-process-post>
+        <vc-stage-process-post :fragment-shader="fsRain"></vc-stage-process-post>
+        <vc-stage-process-post :fragment-shader="fsScanSegment" :uniforms="uniforms"></vc-stage-process-post>
       </vc-collection-stage-process-post>
     </vc-viewer>
   </div>

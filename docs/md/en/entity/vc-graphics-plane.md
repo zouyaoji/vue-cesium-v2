@@ -22,7 +22,7 @@ The `vc-graphics-plane` component is used to load a plane. Need to be used as a 
             :dimensions="dimensions2"
             :material="material2"
             :outline="true"
-            :outlineColor="outlineColor2"
+            :outline-color="outlineColor2"
           ></vc-graphics-plane>
         </vc-entity>
         <vc-entity :position="position3" :description="description" :plane.sync="planeEntity3">
@@ -32,7 +32,7 @@ The `vc-graphics-plane` component is used to load a plane. Need to be used as a 
             :dimensions="dimensions3"
             :fill="false"
             :outline="true"
-            :outlineColor="outlineColor3"
+            :outline-color="outlineColor3"
           ></vc-graphics-plane>
         </vc-entity>
       </vc-viewer>
@@ -97,7 +97,7 @@ The `vc-graphics-plane` component is used to load a plane. Need to be used as a 
           :dimensions="dimensions2"
           :material="material2"
           :outline="true"
-          :outlineColor="outlineColor2"
+          :outline-color="outlineColor2"
         ></vc-graphics-plane>
       </vc-entity>
       <vc-entity :position="position3" :description="description" :plane.sync="planeEntity3">
@@ -107,7 +107,7 @@ The `vc-graphics-plane` component is used to load a plane. Need to be used as a 
           :dimensions="dimensions3"
           :fill="false"
           :outline="true"
-          :outlineColor="outlineColor3"
+          :outline-color="outlineColor3"
         ></vc-graphics-plane>
       </vc-entity>
     </vc-viewer>

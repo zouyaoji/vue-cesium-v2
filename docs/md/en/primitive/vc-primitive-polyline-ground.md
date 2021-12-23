@@ -14,7 +14,7 @@ The `vc-primitive-polyline-ground` component is used to load a a GroundPolylineP
       <vc-viewer @ready="ready">
         <vc-primitive-polyline-ground
           :appearance="appearance"
-          :geometryInstances="geometryInstances"
+          :geometry-instances="geometryInstances"
         ></vc-primitive-polyline-ground>
         <vc-primitive-polyline-ground :appearance="appearance">
           <vc-instance-geometry>
@@ -78,7 +78,7 @@ The `vc-primitive-polyline-ground` component is used to load a a GroundPolylineP
     <vc-viewer @ready="ready">
       <vc-primitive-polyline-ground
         :appearance="appearance"
-        :geometryInstances="geometryInstances"
+        :geometry-instances="geometryInstances"
       ></vc-primitive-polyline-ground>
       <vc-primitive-polyline-ground :appearance="appearance">
         <vc-instance-geometry>

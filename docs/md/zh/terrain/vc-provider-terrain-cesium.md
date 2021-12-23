@@ -1,3 +1,11 @@
+<!--
+ * @Author: zouyaoji@https://github.com/zouyaoji
+ * @Date: 2021-04-06 09:23:34
+ * @LastEditTime: 2021-12-23 17:45:59
+ * @LastEditors: zouyaoji
+ * @Description:
+ * @FilePath: \vue-cesium-v2\docs\md\zh\terrain\vc-provider-terrain-cesium.md
+-->
 # CesiumTerrainProvider
 
 `vc-provider-terrain-cesium` 组件用于加载 Cesium 格式的地形，如果`url`为空，默认通过 `Cesium.createWorldTerrain` 加载 CesiumIon 在线全球地形。
@@ -13,9 +21,9 @@
     <div class="viewer">
       <vc-viewer @ready="ready">
         <vc-layer-imagery>
-          <vc-provider-imagery-bingmaps url="https://dev.virtualearth.net" bmKey="AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-" mapStyle="Aerial"></vc-provider-imagery-bingmaps>
+          <vc-provider-imagery-bingmaps url="https://dev.virtualearth.net" bm-key="AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-" map-style="Aerial"></vc-provider-imagery-bingmaps>
         </vc-layer-imagery>
-        <vc-provider-terrain-cesium ref="terrain" :requestWaterMask="requestWaterMask"></vc-provider-terrain-cesium>
+        <vc-provider-terrain-cesium ref="terrain" :request-water-mask="requestWaterMask"></vc-provider-terrain-cesium>
         <vc-navigation></vc-navigation>
       </vc-viewer>
     </div>
@@ -49,11 +57,11 @@
       <vc-layer-imagery>
         <vc-provider-imagery-bingmaps
           url="https://dev.virtualearth.net"
-          bmKey="AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-"
-          mapStyle="Aerial"
+          bm-key="AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-"
+          map-style="Aerial"
         ></vc-provider-imagery-bingmaps>
       </vc-layer-imagery>
-      <vc-provider-terrain-cesium ref="terrain" :requestWaterMask="requestWaterMask"></vc-provider-terrain-cesium>
+      <vc-provider-terrain-cesium ref="terrain" :request-water-mask="requestWaterMask"></vc-provider-terrain-cesium>
     </vc-viewer>
   </div>
 </template>

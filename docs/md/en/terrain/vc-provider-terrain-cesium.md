@@ -13,9 +13,9 @@ The `vc-provider-terrain-cesium` component is used to load terrain data in Cesiu
     <div class="viewer">
       <vc-viewer @ready="ready">
         <vc-layer-imagery>
-          <vc-provider-imagery-bingmaps url="https://dev.virtualearth.net" bmKey="AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-" mapStyle="Aerial"></vc-provider-imagery-bingmaps>
+          <vc-provider-imagery-bingmaps url="https://dev.virtualearth.net" bm-key="AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-" map-style="Aerial"></vc-provider-imagery-bingmaps>
         </vc-layer-imagery>
-        <vc-provider-terrain-cesium ref="terrain" :requestWaterMask="requestWaterMask"></vc-provider-terrain-cesium>
+        <vc-provider-terrain-cesium ref="terrain" :request-water-mask="requestWaterMask"></vc-provider-terrain-cesium>
       </vc-viewer>
     </div>
   </template>
@@ -48,11 +48,11 @@ The `vc-provider-terrain-cesium` component is used to load terrain data in Cesiu
       <vc-layer-imagery>
         <vc-provider-imagery-bingmaps
           url="https://dev.virtualearth.net"
-          bmKey="AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-"
-          mapStyle="Aerial"
+          bm-key="AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-"
+          map-style="Aerial"
         ></vc-provider-imagery-bingmaps>
       </vc-layer-imagery>
-      <vc-provider-terrain-cesium ref="terrain" :requestWaterMask="requestWaterMask"></vc-provider-terrain-cesium>
+      <vc-provider-terrain-cesium ref="terrain" :request-water-mask="requestWaterMask"></vc-provider-terrain-cesium>
     </vc-viewer>
   </div>
 </template>

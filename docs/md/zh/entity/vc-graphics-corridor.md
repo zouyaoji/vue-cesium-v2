@@ -20,7 +20,7 @@
             :positions="positions2"
             :height="100000.0"
             :width="200000.0"
-            :cornerType="0"
+            :corner-type="0"
             material="GREEN"
             :outline="true"
           ></vc-graphics-corridor>
@@ -29,12 +29,12 @@
           <vc-graphics-corridor
             :positions="positions3"
             :material="material3"
-            outlineColor="WHITE"
+            outline-Color="WHITE"
             :outline="true"
             :height="200000.0"
-            :extrudedHeight="100000.0"
+            :extruded-height="100000.0"
             :width="200000.0"
-            :cornerType="cornerType3"
+            :corner-type="cornerType3"
           ></vc-graphics-corridor>
         </vc-entity>
       </vc-viewer>
@@ -112,7 +112,7 @@
           :positions="positions2"
           :height="100000.0"
           :width="200000.0"
-          :cornerType="0"
+          :corner-type="0"
           material="GREEN"
           :outline="true"
         ></vc-graphics-corridor>
@@ -121,12 +121,12 @@
         <vc-graphics-corridor
           :positions="positions3"
           :material="material3"
-          outlineColor="WHITE"
+          outline-Color="WHITE"
           :outline="true"
           :height="200000.0"
-          :extrudedHeight="100000.0"
+          :extruded-height="100000.0"
           :width="200000.0"
-          :cornerType="cornerType3"
+          :corner-type="cornerType3"
         ></vc-graphics-corridor>
       </vc-entity>
     </vc-viewer>

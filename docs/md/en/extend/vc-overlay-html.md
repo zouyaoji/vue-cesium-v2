@@ -16,19 +16,19 @@ The `vc-overlay-html` component is used to add HTML tags to the scene. **Note** 
           <div class="vc-box">aa</div>
         </vc-overlay-html>
         <vc-entity :position="position1">
-          <vc-graphics-point color="red" :pixelSize="8"></vc-graphics-point>
+          <vc-graphics-point color="red" :pixel-size="8"></vc-graphics-point>
         </vc-entity>
         <vc-overlay-html :position="position2">
           <div class="vc-box">bb</div>
         </vc-overlay-html>
         <vc-entity :position="position2">
-          <vc-graphics-point color="red" :pixelSize="8"></vc-graphics-point>
+          <vc-graphics-point color="red" :pixel-size="8"></vc-graphics-point>
         </vc-entity>
         <vc-overlay-html :position="position3">
           <div class="vc-box">cc</div>
         </vc-overlay-html>
         <vc-entity :position="position3">
-          <vc-graphics-point color="red" :pixelSize="8"></vc-graphics-point>
+          <vc-graphics-point color="red" :pixel-size="8"></vc-graphics-point>
         </vc-entity>
         <!-- 弹窗效果 -->
         <vc-circle-roatating-double
@@ -43,9 +43,9 @@ The `vc-overlay-html` component is used to add HTML tags to the scene. **Note** 
           <vc-graphics-box :dimensions="dimensionsBox" :material="materialBox"></vc-graphics-box>
         </vc-entity>
         <vc-entity :position="positionModal">
-          <vc-graphics-point color="red" :pixelSize="8"></vc-graphics-point>
+          <vc-graphics-point color="red" :pixel-size="8"></vc-graphics-point>
         </vc-entity>
-        <vc-overlay-html :position="positionModal" v-if="showModal" :pixelOffset="{ x: 0, y: -250 }">
+        <vc-overlay-html :position="positionModal" v-if="showModal" :pixel-offset="{ x: 0, y: -250 }">
           <div class="vc-dialog">
             <div class="line"></div>
             <div class="main">
@@ -55,7 +55,7 @@ The `vc-overlay-html` component is used to add HTML tags to the scene. **Note** 
           </div>
         </vc-overlay-html>
         <vc-layer-imagery>
-          <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+          <vc-provider-imagery-tianditu map-style="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
       </vc-viewer>
     </div>
@@ -188,19 +188,19 @@ The `vc-overlay-html` component is used to add HTML tags to the scene. **Note** 
         <div class="vc-box">aa</div>
       </vc-overlay-html>
       <vc-entity :position="position1">
-        <vc-graphics-point color="red" :pixelSize="8"></vc-graphics-point>
+        <vc-graphics-point color="red" :pixel-size="8"></vc-graphics-point>
       </vc-entity>
       <vc-overlay-html :position="position2">
         <div class="vc-box">bb</div>
       </vc-overlay-html>
       <vc-entity :position="position2">
-        <vc-graphics-point color="red" :pixelSize="8"></vc-graphics-point>
+        <vc-graphics-point color="red" :pixel-size="8"></vc-graphics-point>
       </vc-entity>
       <vc-overlay-html :position="position3">
         <div class="vc-box">cc</div>
       </vc-overlay-html>
       <vc-entity :position="position3">
-        <vc-graphics-point color="red" :pixelSize="8"></vc-graphics-point>
+        <vc-graphics-point color="red" :pixel-size="8"></vc-graphics-point>
       </vc-entity>
       <!-- 弹窗效果 -->
       <vc-circle-roatating-double
@@ -215,9 +215,9 @@ The `vc-overlay-html` component is used to add HTML tags to the scene. **Note** 
         <vc-graphics-box :dimensions="dimensionsBox" :material="materialBox"></vc-graphics-box>
       </vc-entity>
       <vc-entity :position="positionModal">
-        <vc-graphics-point color="red" :pixelSize="8"></vc-graphics-point>
+        <vc-graphics-point color="red" :pixel-size="8"></vc-graphics-point>
       </vc-entity>
-      <vc-overlay-html :position="positionModal" v-if="showModal" :pixelOffset="{ x: 0, y: -250 }">
+      <vc-overlay-html :position="positionModal" v-if="showModal" :pixel-offset="{ x: 0, y: -250 }">
         <div class="vc-dialog">
           <div class="line"></div>
           <div class="main">
@@ -227,7 +227,7 @@ The `vc-overlay-html` component is used to add HTML tags to the scene. **Note** 
         </div>
       </vc-overlay-html>
       <vc-layer-imagery>
-        <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+        <vc-provider-imagery-tianditu map-style="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
     </vc-viewer>
   </div>

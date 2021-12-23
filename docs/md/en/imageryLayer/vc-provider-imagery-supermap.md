@@ -16,7 +16,7 @@ The `vc-provider-imagery-supermap` component is used to load the SuperMap iServe
           <vc-provider-imagery-supermap
             ref="imageryProvider"
             :url="url"
-            @readyPromise="readyPromise"
+            @ready-promise="readyPromise"
           ></vc-provider-imagery-supermap>
         </vc-layer-imagery>
       </vc-viewer>
@@ -47,7 +47,7 @@ The `vc-provider-imagery-supermap` component is used to load the SuperMap iServe
               label: 'sichuan'
             },
             {
-              value: 'https://www.supermapol.com/realspace/services/map-World/rest/maps/World_Google',
+              value: 'https://www.supermapol.com/realspace/services/map--world/rest/maps/World_Google',
               label: 'google'
             }
           ],
@@ -81,7 +81,7 @@ The `vc-provider-imagery-supermap` component is used to load the SuperMap iServe
         <vc-provider-imagery-supermap
           ref="imageryProvider"
           :url="url"
-          @readyPromise="readyPromise"
+          @ready-promise="readyPromise"
         ></vc-provider-imagery-supermap>
       </vc-layer-imagery>
     </vc-viewer>
@@ -112,7 +112,7 @@ The `vc-provider-imagery-supermap` component is used to load the SuperMap iServe
             label: 'sichuan'
           },
           {
-            value: 'https://www.supermapol.com/realspace/services/map-World/rest/maps/World_Google',
+            value: 'https://www.supermapol.com/realspace/services/map--world/rest/maps/World_Google',
             label: 'google'
           }
         ],

@@ -13,7 +13,7 @@ The `vc-provider-imagery-mapbox` component is used to load tiled imagery hosted 
     <div class="viewer">
       <vc-viewer @ready="ready">
        <!-- <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
-        <vc-provider-imagery-mapbox :mapId="mapId"></vc-provider-imagery-mapbox>
+        <vc-provider-imagery-mapbox :map-id="mapId"></vc-provider-imagery-mapbox>
        </vc-layer-imagery> -->
       </vc-viewer>
       <!-- <div class="demo-tool">
@@ -70,7 +70,7 @@ The `vc-provider-imagery-mapbox` component is used to load tiled imagery hosted 
   <div class="viewer">
     <vc-viewer @ready="ready">
       <!-- <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
-        <vc-provider-imagery-mapbox :mapId="mapId"></vc-provider-imagery-mapbox>
+        <vc-provider-imagery-mapbox :map-id="mapId"></vc-provider-imagery-mapbox>
       </vc-layer-imagery> -->
     </vc-viewer>
     <!-- <div class="demo-tool">

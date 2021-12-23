@@ -19,7 +19,7 @@
             <vc-geometry-polygon-coplanar
               ref="polygonCoplanar"
               :positions="positions"
-              :vertexFormat="vertexFormat"
+              :vertex-format="vertexFormat"
             ></vc-geometry-polygon-coplanar>
           </vc-instance-geometry>
         </vc-primitive>
@@ -97,7 +97,7 @@
           <vc-geometry-polygon-coplanar
             ref="polygonCoplanar"
             :positions="positions"
-            :vertexFormat="vertexFormat"
+            :vertex-format="vertexFormat"
           ></vc-geometry-polygon-coplanar>
         </vc-instance-geometry>
       </vc-primitive>

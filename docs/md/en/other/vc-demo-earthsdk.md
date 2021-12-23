@@ -28,20 +28,20 @@ Or you can directly specify the `cesiumPath` attribute on the `vc-viewer` compon
       <vc-viewer
         ref="vcViewer"
         :animation="animation"
-        :baseLayerPicker="baseLayerPicker"
+        :base-layer-picker="baseLayerPicker"
         :timeline="timeline"
-        :cesiumPath="cesiumPath"
-        :fullscreenButton="fullscreenButton"
-        :fullscreenElement="fullscreenElement"
-        :infoBox="infoBox"
+        :cesium-path="cesiumPath"
+        :fullscreen-button="fullscreenButton"
+        :fullscreen-element="fullscreenElement"
+        :info-box="infoBox"
         @ready="ready"
       >
         <vc-navigation></vc-navigation>
         <vc-layer-imagery>
-          <vc-provider-imagery-tianditu mapStyle="img_c" :token="tk"></vc-provider-imagery-tianditu>
+          <vc-provider-imagery-tianditu map-style="img_c" :token="tk"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
         <vc-layer-imagery ref="layerText">
-          <vc-provider-imagery-tianditu mapStyle="cia_c" :token="tk"></vc-provider-imagery-tianditu>
+          <vc-provider-imagery-tianditu map-style="cia_c" :token="tk"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
       </vc-viewer>
       <div class="demo-tool">
@@ -146,20 +146,20 @@ Or you can directly specify the `cesiumPath` attribute on the `vc-viewer` compon
     <vc-viewer
       ref="vcViewer"
       :animation="animation"
-      :baseLayerPicker="baseLayerPicker"
+      :base-layer-picker="baseLayerPicker"
       :timeline="timeline"
-      :cesiumPath="cesiumPath"
-      :fullscreenButton="fullscreenButton"
-      :fullscreenElement="fullscreenElement"
-      :infoBox="infoBox"
+      :cesium-path="cesiumPath"
+      :fullscreen-button="fullscreenButton"
+      :fullscreen-element="fullscreenElement"
+      :info-box="infoBox"
       @ready="ready"
     >
       <vc-navigation></vc-navigation>
       <vc-layer-imagery>
-        <vc-provider-imagery-tianditu mapStyle="img_c" :token="tk"></vc-provider-imagery-tianditu>
+        <vc-provider-imagery-tianditu map-style="img_c" :token="tk"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
       <vc-layer-imagery ref="layerText">
-        <vc-provider-imagery-tianditu mapStyle="cia_c" :token="tk"></vc-provider-imagery-tianditu>
+        <vc-provider-imagery-tianditu map-style="cia_c" :token="tk"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
     </vc-viewer>
     <div class="demo-tool">
@@ -256,4 +256,4 @@ Or you can directly specify the `cesiumPath` attribute on the `vc-viewer` compon
 </script>
 ```
 
-- Refer to：[EarthSDK DEMO](http://earthsdk.com/v/last/Apps/Examples/?menu=true&url=./startup-createEarth.html)
+- Refer to：[EarthSDK DEMO](http://earthsdk.com/v/last/Apps/Examples/?menu=true&url=./startup-create-earth.html)

@@ -12,15 +12,15 @@ The container is an empty DOM node which used to mount other components or DOM n
 <doc-preview>
   <template>
     <div class="viewer" ref="viewerContainer">
-      <vc-viewer ref="vcViewer" :animation="animation" :baseLayerPicker="baseLayerPicker" :timeline="timeline"
-        :fullscreenButton="fullscreenButton" :fullscreenElement="fullscreenElement" :infoBox="infoBox" @ready="ready">
+      <vc-viewer ref="vcViewer" :animation="animation" :base-layer-picker="baseLayerPicker" :timeline="timeline"
+        :fullscreen-button="fullscreenButton" :fullscreen-element="fullscreenElement" :info-box="infoBox" @ready="ready">
         <vc-navigation></vc-navigation>
         <vc-layer-imagery ref="layerText">
-          <vc-provider-imagery-tianditu mapStyle="eia_c" :token="tk"></vc-provider-imagery-tianditu>
+          <vc-provider-imagery-tianditu map-style="eia_c" :token="tk"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
         <vc-layer-imagery>
           <vc-provider-imagery-tianditu
-            mapStyle="img_c"
+            map-style="img_c"
             :token="tk"
           ></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
@@ -89,15 +89,15 @@ The container is an empty DOM node which used to mount other components or DOM n
 ```html
 <template>
   <div class="viewer" ref="viewerContainer">
-    <vc-viewer ref="vcViewer" :animation="animation" :baseLayerPicker="baseLayerPicker" :timeline="timeline"
-      :fullscreenButton="fullscreenButton" :fullscreenElement="fullscreenElement" :infoBox="infoBox" @ready="ready">
+    <vc-viewer ref="vcViewer" :animation="animation" :base-layer-picker="baseLayerPicker" :timeline="timeline"
+      :fullscreen-button="fullscreenButton" :fullscreen-element="fullscreenElement" :info-box="infoBox" @ready="ready">
       <vc-navigation></vc-navigation>
       <vc-layer-imagery ref="layerText">
-        <vc-provider-imagery-tianditu mapStyle="eia_c" :token="tk"></vc-provider-imagery-tianditu>
+        <vc-provider-imagery-tianditu map-style="eia_c" :token="tk"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
       <vc-layer-imagery>
         <vc-provider-imagery-tianditu
-          mapStyle="img_c"
+          map-style="img_c"
           :token="tk"
         ></vc-provider-imagery-tianditu>
       </vc-layer-imagery>

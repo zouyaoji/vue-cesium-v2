@@ -131,7 +131,7 @@
 | minimumLevel | Number | `0` | `optional`最小层级。 |
 | maximumLevel | Number | | `optional`最大层级。 |
 | ellipsoid | Object | | `optional`参考椭球体，没指定的话默认 WGS84。 |
-| credit | String | `'MapQuest, Open Street Map and contributors, CC-BY-SA'` | `optional`服务描述信息。 |
+| credit | String | `'MapQuest, Open Street Map and contributors, CC--bY--sA'` | `optional`服务描述信息。 |
 
 ---
 

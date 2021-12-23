@@ -17,8 +17,8 @@ The `vc-graphics-billboard` component is used to load billboard (a two dimension
             :image="image"
             :scale="0.1"
             :show="show"
-            :distanceDisplayCondition="distanceDisplayCondition"
-            :horizontalOrigin="horizontalOrigin"
+            :distance-display-condition="distanceDisplayCondition"
+            :horizontal-origin="horizontalOrigin"
           ></vc-graphics-billboard>
         </vc-entity>
       </vc-viewer>
@@ -68,8 +68,8 @@ The `vc-graphics-billboard` component is used to load billboard (a two dimension
           :image="image"
           :scale="0.1"
           :show="show"
-          :distanceDisplayCondition="distanceDisplayCondition"
-          :horizontalOrigin="horizontalOrigin"
+          :distance-display-condition="distanceDisplayCondition"
+          :horizontal-origin="horizontalOrigin"
         ></vc-graphics-billboard>
       </vc-entity>
     </vc-viewer>

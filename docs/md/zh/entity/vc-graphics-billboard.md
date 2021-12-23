@@ -25,8 +25,8 @@
             :image="image"
             :scale="scale"
             :show="show"
-            :distanceDisplayCondition="distanceDisplayCondition"
-            :horizontalOrigin="horizontalOrigin"
+            :distance-display-condition="distanceDisplayCondition"
+            :horizontal-origin="horizontalOrigin"
           ></vc-graphics-billboard>
         </vc-entity>
       </vc-viewer>
@@ -91,8 +91,8 @@
           :image="image"
           :scale="scale"
           :show="show"
-          :distanceDisplayCondition="distanceDisplayCondition"
-          :horizontalOrigin="horizontalOrigin"
+          :distance-display-condition="distanceDisplayCondition"
+          :horizontal-origin="horizontalOrigin"
         ></vc-graphics-billboard>
       </vc-entity>
     </vc-viewer>

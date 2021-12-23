@@ -12,11 +12,11 @@
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-analytics-flood ref="flood" v-if="flag" :minHeight="minHeight" :maxHeight="maxHeight" :speed="speed" :polygonHierarchy="polygonHierarchy" @activeEvt="activeEvt">
+        <vc-analytics-flood ref="flood" v-if="flag" :min-height="minHeight" :max-height="maxHeight" :speed="speed" :polygon-hierarchy="polygonHierarchy" @activeEvt="activeEvt">
         </vc-analytics-flood>
         <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
         <vc-layer-imagery>
-          <vc-provider-imagery-bingmaps :url="url" :bmKey="bmKey" mapStyle="Aerial"></vc-provider-imagery-bingmaps>
+          <vc-provider-imagery-bingmaps :url="url" :bm-key="bmKey" map-style="Aerial"></vc-provider-imagery-bingmaps>
         </vc-layer-imagery>
       </vc-viewer>
       <div class="demo-tool">
@@ -91,11 +91,11 @@
 <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-analytics-flood ref="flood" :minHeight="minHeight" :maxHeight="maxHeight" :speed="speed" :polygonHierarchy="polygonHierarchy" @activeEvt="activeEvt">
+        <vc-analytics-flood ref="flood" :min-height="minHeight" :max-height="maxHeight" :speed="speed" :polygon-hierarchy="polygonHierarchy" @activeEvt="activeEvt">
         </vc-analytics-flood>
         <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
         <vc-layer-imagery>
-          <vc-provider-imagery-bingmaps :url="url" :bmKey="bmKey" mapStyle="Aerial"></vc-provider-imagery-bingmaps>
+          <vc-provider-imagery-bingmaps :url="url" :bm-key="bmKey" map-style="Aerial"></vc-provider-imagery-bingmaps>
         </vc-layer-imagery>
       </vc-viewer>
       <div class="demo-tool">

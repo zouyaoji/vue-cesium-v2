@@ -12,7 +12,7 @@ The `vc-kriging-map` component is used to load VcKrigingMap, based on `kriging.j
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-kriging-map ref="krigingmap" v-if="values.length !== 0" :breaks="breaks" :values="values" :lngs="lngs" :lats="lats" :colors="colors"            @ready="subReady" clipCoords="./statics/SampleData/shp/china/guilin.json">
+        <vc-kriging-map ref="krigingmap" v-if="values.length !== 0" :breaks="breaks" :values="values" :lngs="lngs" :lats="lats" :colors="colors"            @ready="subReady" clip-coords="./statics/SampleData/shp/china/guilin.json">
         </vc-kriging-map>
         <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
       </vc-viewer>
@@ -74,7 +74,7 @@ The `vc-kriging-map` component is used to load VcKrigingMap, based on `kriging.j
           @ready="subReady"
           clipCoords="./statics/SampleData/shp/china/guilin.json"
         >
-          <!-- <vc-kriging-map ref="krigingmap" v-if="values.length !== 0" :breaks="breaks" :values="values" :lngs="lngs" :lats="lats" :colors="colors"      @ready="subReady" :clipCoords="[109.61826, 24.25883, 111.49207, 26.38528]"> -->
+          <!-- <vc-kriging-map ref="krigingmap" v-if="values.length !== 0" :breaks="breaks" :values="values" :lngs="lngs" :lats="lats" :colors="colors"      @ready="subReady" :clip-coords="[109.61826, 24.25883, 111.49207, 26.38528]"> -->
         </vc-kriging-map>
         <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
       </vc-viewer>

@@ -16,12 +16,12 @@ The `vc-graphics-corridor` component is used to load corridor objects, which is 
           <vc-graphics-corridor :positions="positions1" :material="material1" :width="200000.0"></vc-graphics-corridor>
         </vc-entity>
         <vc-entity ref="entity2" :name="name2" :description="description" :corridor.sync="corridor2">
-          <vc-graphics-corridor :positions="positions2" :height="100000.0" :width="200000.0" :cornerType="0"
+          <vc-graphics-corridor :positions="positions2" :height="100000.0" :width="200000.0" :corner-type="0"
             material="GREEN" :outline="true"></vc-graphics-corridor>
         </vc-entity>
         <vc-entity ref="entity3" :name="name3" :description="description" :corridor.sync="corridor3">
-          <vc-graphics-corridor :positions="positions3" :material="material3" outlineColor="WHITE" :outline="true"
-            :height="200000.0" :extrudedHeight="100000.0" :width="200000.0" :cornerType="cornerType3"></vc-graphics-corridor>
+          <vc-graphics-corridor :positions="positions3" :material="material3" outline-Color="WHITE" :outline="true"
+            :height="200000.0" :extruded-height="100000.0" :width="200000.0" :corner-type="cornerType3"></vc-graphics-corridor>
         </vc-entity>
       </vc-viewer>
     </div>
@@ -86,7 +86,7 @@ The `vc-graphics-corridor` component is used to load corridor objects, which is 
           :positions="positions2"
           :height="100000.0"
           :width="200000.0"
-          :cornerType="0"
+          :corner-type="0"
           material="GREEN"
           :outline="true"
         ></vc-graphics-corridor>
@@ -95,12 +95,12 @@ The `vc-graphics-corridor` component is used to load corridor objects, which is 
         <vc-graphics-corridor
           :positions="positions3"
           :material="material3"
-          outlineColor="WHITE"
+          outline-Color="WHITE"
           :outline="true"
           :height="200000.0"
-          :extrudedHeight="100000.0"
+          :extruded-height="100000.0"
           :width="200000.0"
-          :cornerType="cornerType3"
+          :corner-type="cornerType3"
         ></vc-graphics-corridor>
       </vc-entity>
     </vc-viewer>

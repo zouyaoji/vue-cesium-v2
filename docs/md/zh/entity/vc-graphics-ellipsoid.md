@@ -20,7 +20,7 @@
             :radii="radii2"
             :outline="true"
             :material="material2"
-            :outlineColor="outlineColor2"
+            :outline-color="outlineColor2"
           ></vc-graphics-ellipsoid>
         </vc-entity>
         <vc-entity ref="entity3" :position="position3" :description="description" :ellipsoid.sync="ellipsoid3">
@@ -28,9 +28,9 @@
             :radii="radii3"
             :fill="false"
             :outline="true"
-            :outlineColor="outlineColor3"
-            :slicePartitions="24"
-            :stackPartitions="36"
+            :outline-color="outlineColor3"
+            :slice-partitions="24"
+            :stack-partitions="36"
           ></vc-graphics-ellipsoid>
         </vc-entity>
       </vc-viewer>
@@ -90,7 +90,7 @@
           :radii="radii2"
           :outline="true"
           :material="material2"
-          :outlineColor="outlineColor2"
+          :outline-color="outlineColor2"
         ></vc-graphics-ellipsoid>
       </vc-entity>
       <vc-entity ref="entity3" :position="position3" :description="description" :ellipsoid.sync="ellipsoid3">
@@ -98,9 +98,9 @@
           :radii="radii3"
           :fill="false"
           :outline="true"
-          :outlineColor="outlineColor3"
-          :slicePartitions="24"
-          :stackPartitions="36"
+          :outline-color="outlineColor3"
+          :slice-partitions="24"
+          :stack-partitions="36"
         ></vc-graphics-ellipsoid>
       </vc-entity>
     </vc-viewer>

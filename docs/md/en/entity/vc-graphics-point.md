@@ -13,13 +13,13 @@ The `vc-graphics-point` component is used to load a graphical point. Need to be 
     <div class="viewer">
       <vc-viewer @ready="ready">
         <vc-entity :position="position1" :description="description" :point.sync="point1">
-          <vc-graphics-point ref="point1" :color="color1" :pixelSize="8"></vc-graphics-point>
+          <vc-graphics-point ref="point1" :color="color1" :pixel-size="8"></vc-graphics-point>
         </vc-entity>
         <vc-entity :position="position2" :description="description">
-          <vc-graphics-point ref="point2" :color="color2" :pixelSize="16"></vc-graphics-point>
+          <vc-graphics-point ref="point2" :color="color2" :pixel-size="16"></vc-graphics-point>
         </vc-entity>
         <vc-entity :position="position3" :description="description">
-          <vc-graphics-point ref="point3" :color="color3" :pixelSize="32"></vc-graphics-point>
+          <vc-graphics-point ref="point3" :color="color3" :pixel-size="32"></vc-graphics-point>
         </vc-entity>
       </vc-viewer>
     </div>
@@ -70,13 +70,13 @@ The `vc-graphics-point` component is used to load a graphical point. Need to be 
   <div class="viewer">
     <vc-viewer @ready="ready">
       <vc-entity :position="position1" :description="description" :point.sync="point1">
-        <vc-graphics-point ref="point1" :color="color1" :pixelSize="8"></vc-graphics-point>
+        <vc-graphics-point ref="point1" :color="color1" :pixel-size="8"></vc-graphics-point>
       </vc-entity>
       <vc-entity :position="position2" :description="description">
-        <vc-graphics-point ref="point2" :color="color2" :pixelSize="16"></vc-graphics-point>
+        <vc-graphics-point ref="point2" :color="color2" :pixel-size="16"></vc-graphics-point>
       </vc-entity>
       <vc-entity :position="position3" :description="description">
-        <vc-graphics-point ref="point3" :color="color3" :pixelSize="32"></vc-graphics-point>
+        <vc-graphics-point ref="point3" :color="color3" :pixel-size="32"></vc-graphics-point>
       </vc-entity>
     </vc-viewer>
   </div>

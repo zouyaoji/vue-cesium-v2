@@ -14,15 +14,15 @@
       <vc-viewer @ready="ready">
         <vc-primitive-model
           :url="url"
-          @readyPromise="readyPromise"
-          :modelMatrix="modelMatrix"
+          @ready-promise="readyPromise"
+          :model-matrix="modelMatrix"
           :scale="10000"
-          :minimumPixelSize="128"
-          :maximumScale="200000"
+          :minimum-pixel-size="128"
+          :maximum-scale="200000"
           @click="clicked"
-          :luminanceAtZenith="luminanceAtZenith"
-          :specularEnvironmentMaps="specularEnvironmentMaps"
-          :sphericalHarmonicCoefficients="sphericalHarmonicCoefficients"
+          :luminance-at-zenith="luminanceAtZenith"
+          :specular-environment-maps="specularEnvironmentMaps"
+          :spherical-harmonic-coefficients="sphericalHarmonicCoefficients"
         >
         </vc-primitive-model>
         <div class="demo-tool">
@@ -94,15 +94,15 @@
     <vc-viewer @ready="ready">
       <vc-primitive-model
         :url="url"
-        @readyPromise="readyPromise"
-        :modelMatrix="modelMatrix"
+        @ready-promise="readyPromise"
+        :model-matrix="modelMatrix"
         :scale="10000"
-        :minimumPixelSize="128"
-        :maximumScale="200000"
+        :minimum-pixel-size="128"
+        :maximum-scale="200000"
         @click="clicked"
-        :luminanceAtZenith="luminanceAtZenith"
-        :specularEnvironmentMaps="specularEnvironmentMaps"
-        :sphericalHarmonicCoefficients="sphericalHarmonicCoefficients"
+        :luminance-at-zenith="luminanceAtZenith"
+        :specular-environment-maps="specularEnvironmentMaps"
+        :spherical-harmonic-coefficients="sphericalHarmonicCoefficients"
       >
       </vc-primitive-model>
       <div class="demo-tool">

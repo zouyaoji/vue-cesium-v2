@@ -20,7 +20,7 @@ The `vc-scan-radar` component is used to the radar scanning special effects. Ref
           :position="position"
         ></vc-scan-radar>
         <vc-layer-imagery>
-          <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+          <vc-provider-imagery-tianditu map-style="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
       </vc-viewer>
     </div>
@@ -68,7 +68,7 @@ The `vc-scan-radar` component is used to the radar scanning special effects. Ref
         :position="position"
       ></vc-scan-radar>
       <vc-layer-imagery>
-        <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+        <vc-provider-imagery-tianditu map-style="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
     </vc-viewer>
   </div>

@@ -16,7 +16,7 @@
       <vc-viewer @ready="ready">
         <vc-primitive :appearance="appearance">
           <vc-instance-geometry>
-            <vc-geometry-rectangle ref="rectangle" :rectangle="rectangle" :vertexFormat="vertexFormat"></vc-geometry-rectangle>
+            <vc-geometry-rectangle ref="rectangle" :rectangle="rectangle" :vertex-format="vertexFormat"></vc-geometry-rectangle>
           </vc-instance-geometry>
         </vc-primitive>
         <vc-primitive :appearance="appearanceOutline">
@@ -83,7 +83,7 @@
     <vc-viewer @ready="ready">
       <vc-primitive :appearance="appearance">
         <vc-instance-geometry>
-          <vc-geometry-rectangle ref="rectangle" :rectangle="rectangle" :vertexFormat="vertexFormat"></vc-geometry-rectangle>
+          <vc-geometry-rectangle ref="rectangle" :rectangle="rectangle" :vertex-format="vertexFormat"></vc-geometry-rectangle>
         </vc-instance-geometry>
       </vc-primitive>
       <vc-primitive :appearance="appearanceOutline">

@@ -129,7 +129,7 @@ The `vc-provider-imagery-openstreetmap`component is used to load tiled imagery h
 | minimumLevel | Number | `0` | `optional`The minimum level-of-detail supported by the imagery provider. |
 | maximumLevel | Number | | `optional`The maximum level-of-detail supported by the imagery provider, or undefined if there is no limit. |
 | ellipsoid | Object | | `optional`The ellipsoid. If not specified, the WGS84 ellipsoid is used. |
-| credit | String\| Object | `'MapQuest, Open Street Map and contributors, CC-BY-SA'` | `optional`A credit for the data source, which is displayed on the canvas. |
+| credit | String\| Object | `'MapQuest, Open Street Map and contributors, CC--bY--sA'` | `optional`A credit for the data source, which is displayed on the canvas. |
 
 ---
 

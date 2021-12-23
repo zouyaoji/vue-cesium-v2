@@ -20,10 +20,10 @@
             :coordinates="coordinates2"
             :material="material2"
             :rotation="rotation2"
-            :extrudedHeight="300000.0"
+            :extruded-height="300000.0"
             :height="100000.0"
             :outline="true"
-            :outlineColor="outlineColor2"
+            :outline-color="outlineColor2"
             ref="rectangle2"
           ></vc-graphics-rectangle>
         </vc-entity>
@@ -32,8 +32,8 @@
             :coordinates="coordinates3"
             :material="material3"
             :rotation="rotation3"
-            :stRotation="stRotation3"
-            :classificationType="classificationType3"
+            :st-rotation="stRotation3"
+            :classification-type="classificationType3"
             ref="rectangle3"
           ></vc-graphics-rectangle>
         </vc-entity>
@@ -113,10 +113,10 @@
           :coordinates="coordinates2"
           :material="material2"
           :rotation="rotation2"
-          :extrudedHeight="300000.0"
+          :extruded-height="300000.0"
           :height="100000.0"
           :outline="true"
-          :outlineColor="outlineColor2"
+          :outline-color="outlineColor2"
           ref="rectangle2"
         ></vc-graphics-rectangle>
       </vc-entity>
@@ -125,8 +125,8 @@
           :coordinates="coordinates3"
           :material="material3"
           :rotation="rotation3"
-          :stRotation="stRotation3"
-          :classificationType="classificationType3"
+          :st-rotation="stRotation3"
+          :classification-type="classificationType3"
           ref="rectangle3"
         ></vc-graphics-rectangle>
       </vc-entity>

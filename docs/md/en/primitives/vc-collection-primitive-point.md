@@ -20,7 +20,7 @@ The `vc-collection-primitive-point` component is used to load a renderable colle
                 :position="position"
                 :key="'point' + index + 'position' + subIndex"
                 :color="colorPoint"
-                :pixelSize="32"
+                :pixel-size="32"
               ></vc-primitive-point>
             </template>
           </template>
@@ -90,7 +90,7 @@ The `vc-collection-primitive-point` component is used to load a renderable colle
               :position="position"
               :key="'point' + index + 'position' + subIndex"
               :color="colorPoint"
-              :pixelSize="32"
+              :pixel-size="32"
             ></vc-primitive-point>
           </template>
         </template>

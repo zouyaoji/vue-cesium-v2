@@ -16,8 +16,8 @@ The `vc-provider-imagery-tile-mapservice` component is used to load tiled imager
           <vc-provider-imagery-tile-mapservice
             :url="url"
             :rectangle="rectangle"
-            :maximumLevel="4"
-            @readyPromise="imageryReady"
+            :maximum-level="4"
+            @ready-promise="imageryReady"
           ></vc-provider-imagery-tile-mapservice>
         </vc-layer-imagery>
       </vc-viewer>
@@ -67,8 +67,8 @@ The `vc-provider-imagery-tile-mapservice` component is used to load tiled imager
         <vc-provider-imagery-tile-mapservice
           :url="url"
           :rectangle="rectangle"
-          :maximumLevel="4"
-          @readyPromise="imageryReady"
+          :maximum-level="4"
+          @ready-promise="imageryReady"
         ></vc-provider-imagery-tile-mapservice>
       </vc-layer-imagery>
     </vc-viewer>

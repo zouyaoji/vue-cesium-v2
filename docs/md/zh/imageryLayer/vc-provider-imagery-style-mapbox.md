@@ -16,8 +16,8 @@
           <vc-provider-imagery-style-mapbox
             :url="url"
             :username="username"
-            :styleId="styleId"
-            :accessToken="accessToken"
+            :style-id="styleId"
+            :access-token="accessToken"
           ></vc-provider-imagery-style-mapbox>
         </vc-layer-imagery>
       </vc-viewer>
@@ -65,8 +65,8 @@
         <vc-provider-imagery-style-mapbox
           ：url="url"
           :username="username"
-          :styleId="styleId"
-          :accessToken="accessToken"
+          :style-id="styleId"
+          :access-token="accessToken"
         ></vc-provider-imagery-style-mapbox>
       </vc-layer-imagery>
     </vc-viewer>

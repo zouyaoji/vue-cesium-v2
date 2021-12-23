@@ -12,15 +12,15 @@ The `vc-provider-imagery-tianditu` component is used to load WMTS image service 
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="20">
+        <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="20">
           <vc-provider-imagery-tianditu
-            mapStyle="eva_c"
+            map-style="eva_c"
             token="436ce7e50d27eede2f2929307e6b33c0">
           </vc-provider-imagery-tianditu>
         </vc-layer-imagery>
-        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="10">
+        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
           <vc-provider-imagery-tianditu
-            :mapStyle="mapStyle"
+            :map-style="mapStyle"
             token="436ce7e50d27eede2f2929307e6b33c0"
           ></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
@@ -101,12 +101,12 @@ The `vc-provider-imagery-tianditu` component is used to load WMTS image service 
 <template>
   <div class="viewer">
     <vc-viewer @ready="ready">
-      <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="20">
-        <vc-provider-imagery-tianditu mapStyle="eva_c" token="436ce7e50d27eede2f2929307e6b33c0"> </vc-provider-imagery-tianditu>
+      <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="20">
+        <vc-provider-imagery-tianditu map-style="eva_c" token="436ce7e50d27eede2f2929307e6b33c0"> </vc-provider-imagery-tianditu>
       </vc-layer-imagery>
-      <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="10">
+      <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
         <vc-provider-imagery-tianditu
-          :mapStyle="mapStyle"
+          :map-style="mapStyle"
           token="436ce7e50d27eede2f2929307e6b33c0"
         ></vc-provider-imagery-tianditu>
       </vc-layer-imagery>

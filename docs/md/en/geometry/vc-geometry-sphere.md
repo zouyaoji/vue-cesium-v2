@@ -15,16 +15,16 @@
     <div class="viewer">
       <vc-viewer ref="viewer" @ready="ready" @LEFT_CLICK="LEFT_CLICK">
         <vc-primitive ref="primitive" :appearance="appearance">
-          <vc-instance-geometry ref="geometry" :geometry.sync="geometry" :attributes="attributes" :modelMatrix="modelMatrix">
+          <vc-instance-geometry ref="geometry" :geometry.sync="geometry" :attributes="attributes" :model-matrix="modelMatrix">
             <vc-geometry-sphere
               ref="sphere"
               :radius="radius"
-              :vertexFormat="vertexFormat"
+              :vertex-format="vertexFormat"
             ></vc-geometry-ellipsoid>
           </vc-instance-geometry>
         </vc-primitive>
         <vc-primitive :appearance="appearance">
-          <vc-instance-geometry :attributes="attributes" :modelMatrix="modelMatrixOutline">
+          <vc-instance-geometry :attributes="attributes" :model-matrix="modelMatrixOutline">
             <vc-geometry-outline-sphere
               ref="sphereOutline"
               :radius="radius"
@@ -102,16 +102,16 @@
     <div class="viewer">
       <vc-viewer ref="viewer" @ready="ready" @LEFT_CLICK="LEFT_CLICK">
         <vc-primitive ref="primitive" :appearance="appearance">
-          <vc-instance-geometry ref="geometry" :geometry.sync="geometry" :attributes="attributes" :modelMatrix="modelMatrix">
+          <vc-instance-geometry ref="geometry" :geometry.sync="geometry" :attributes="attributes" :model-matrix="modelMatrix">
             <vc-geometry-sphere
               ref="sphere"
               :radius="radius"
-              :vertexFormat="vertexFormat"
+              :vertex-format="vertexFormat"
             ></vc-geometry-ellipsoid>
           </vc-instance-geometry>
         </vc-primitive>
         <vc-primitive :appearance="appearance">
-          <vc-instance-geometry :attributes="attributes" :modelMatrix="modelMatrixOutline">
+          <vc-instance-geometry :attributes="attributes" :model-matrix="modelMatrixOutline">
             <vc-geometry-outline-sphere
               ref="sphereOutline"
               :radius="radius"

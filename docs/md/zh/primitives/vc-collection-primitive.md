@@ -19,7 +19,7 @@
           </vc-collection-primitive>
         </vc-collection-primitive>
         <vc-collection-primitive >
-          <vc-primitive-model @click="clicked" :url="url" :modelMatrix="modelMatrix" :scale="10000" :minimumPixelSize="128" :maximumScale="200000">
+          <vc-primitive-model @click="clicked" :url="url" :model-matrix="modelMatrix" :scale="10000" :minimum-pixel-size="128" :maximum-scale="200000">
           </vc-primitive-model>
         </vc-collection-primitive>
       </vc-viewer>
@@ -84,7 +84,7 @@
         </vc-collection-primitive>
       </vc-collection-primitive>
       <vc-collection-primitive @click="clicked">
-        <vc-primitive-model :url="url" :modelMatrix="modelMatrix" :scale="10000" :minimumPixelSize="128" :maximumScale="200000">
+        <vc-primitive-model :url="url" :model-matrix="modelMatrix" :scale="10000" :minimum-pixel-size="128" :maximum-scale="200000">
         </vc-primitive-model>
       </vc-collection-primitive>
     </vc-viewer>

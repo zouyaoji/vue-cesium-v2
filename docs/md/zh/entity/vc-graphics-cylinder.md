@@ -13,11 +13,11 @@
     <div class="viewer">
       <vc-viewer @ready="ready">
         <vc-entity ref="entity1" :position="position1" :description="description" :cylinder.sync="cylinder1">
-          <vc-graphics-cylinder :length="400000.0" :topRadius="200000.0" :bottomRadius="200000.0" :material="material1"
-            :outline="true" :outlineColor="outlineColor1"></vc-graphics-cylinder>
+          <vc-graphics-cylinder :length="400000.0" :top-radius="200000.0" :bottom-radius="200000.0" :material="material1"
+            :outline="true" :outline-color="outlineColor1"></vc-graphics-cylinder>
         </vc-entity>
         <vc-entity ref="entity2" :position="position2" :description="description" :cylinder.sync="cylinder2">
-          <vc-graphics-cylinder :length="400000.0" :topRadius="0.0" :bottomRadius="200000.0" :material="material2"></vc-graphics-cylinder>
+          <vc-graphics-cylinder :length="400000.0" :top-radius="0.0" :bottom-radius="200000.0" :material="material2"></vc-graphics-cylinder>
         </vc-entity>
       </vc-viewer>
     </div>
@@ -64,15 +64,15 @@
       <vc-entity ref="entity1" :position="position1" :description="description" :cylinder.sync="cylinder1">
         <vc-graphics-cylinder
           :length="400000.0"
-          :topRadius="200000.0"
-          :bottomRadius="200000.0"
+          :top-radius="200000.0"
+          :bottom-radius="200000.0"
           :material="material1"
           :outline="true"
-          :outlineColor="outlineColor1"
+          :outline-color="outlineColor1"
         ></vc-graphics-cylinder>
       </vc-entity>
       <vc-entity ref="entity2" :position="position2" :description="description" :cylinder.sync="cylinder2">
-        <vc-graphics-cylinder :topRadius="0.0" :bottomRadius="200000.0" :material="material2"></vc-graphics-cylinder>
+        <vc-graphics-cylinder :top-radius="0.0" :bottom-radius="200000.0" :material="material2"></vc-graphics-cylinder>
       </vc-entity>
     </vc-viewer>
   </div>

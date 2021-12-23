@@ -12,7 +12,7 @@ The `vc-graphics-polyline-volume` component is used to load a polyline volume de
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-entity :polylineVolume.sync="polylineVolume1">
+        <vc-entity :polyline-volume.sync="polylineVolume1">
           <vc-graphics-polyline-volume
             ref="polylineVolume1"
             :positions="positions1"
@@ -20,23 +20,23 @@ The `vc-graphics-polyline-volume` component is used to load a polyline volume de
             :material="material1"
           ></vc-graphics-polyline-volume>
         </vc-entity>
-        <vc-entity :polylineVolume.sync="polylineVolume2">
+        <vc-entity :polyline-volume.sync="polylineVolume2">
           <vc-graphics-polyline-volume
             :positions="positions2"
             :shape="shape2"
             :material="material2"
             :outline="true"
-            :outlineColor="outlineColor2"
-            :cornerType="cornerType2"
+            :outline-color="outlineColor2"
+            :corner-type="cornerType2"
             ref="polylineVolume2"
           ></vc-graphics-polyline-volume>
         </vc-entity>
-        <vc-entity :polylineVolume.sync="polylineVolume3">
+        <vc-entity :polyline-volume.sync="polylineVolume3">
           <vc-graphics-polyline-volume
             :positions="positions3"
             :shape="shape3"
             :material="material3"
-            :cornerType="cornerType3"
+            :corner-type="cornerType3"
             ref="polylineVolume3"
           ></vc-graphics-polyline-volume>
         </vc-entity>
@@ -133,7 +133,7 @@ The `vc-graphics-polyline-volume` component is used to load a polyline volume de
 <template>
   <div class="viewer">
     <vc-viewer @ready="ready">
-      <vc-entity :polylineVolume.sync="polylineVolume1">
+      <vc-entity :polyline-volume.sync="polylineVolume1">
         <vc-graphics-polyline-volume
           ref="polylineVolume1"
           :positions="positions1"
@@ -141,23 +141,23 @@ The `vc-graphics-polyline-volume` component is used to load a polyline volume de
           :material="material1"
         ></vc-graphics-polyline-volume>
       </vc-entity>
-      <vc-entity :polylineVolume.sync="polylineVolume2">
+      <vc-entity :polyline-volume.sync="polylineVolume2">
         <vc-graphics-polyline-volume
           :positions="positions2"
           :shape="shape2"
           :material="material2"
           :outline="true"
-          :outlineColor="outlineColor2"
-          :cornerType="cornerType2"
+          :outline-color="outlineColor2"
+          :corner-type="cornerType2"
           ref="polylineVolume2"
         ></vc-graphics-polyline-volume>
       </vc-entity>
-      <vc-entity :polylineVolume.sync="polylineVolume3">
+      <vc-entity :polyline-volume.sync="polylineVolume3">
         <vc-graphics-polyline-volume
           :positions="positions3"
           :shape="shape3"
           :material="material3"
-          :cornerType="cornerType3"
+          :corner-type="cornerType3"
           ref="polylineVolume3"
         ></vc-graphics-polyline-volume>
       </vc-entity>

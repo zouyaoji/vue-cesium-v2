@@ -15,12 +15,12 @@
     <div class="viewer">
       <vc-viewer @ready="ready" @LEFT_CLICK="LEFT_CLICK">
         <vc-primitive :appearance="appearance">
-          <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes" :modelMatrix="modelMatrix">
-            <vc-geometry-plane ref="plane" :vertexFormat="vertexFormat"></vc-geometry-plane>
+          <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes" :model-matrix="modelMatrix">
+            <vc-geometry-plane ref="plane" :vertex-format="vertexFormat"></vc-geometry-plane>
           </vc-instance-geometry>
         </vc-primitive>
         <vc-primitive :appearance="appearanceOutline">
-          <vc-instance-geometry :attributes="attributesOutline" :modelMatrix="modelMatrix">
+          <vc-instance-geometry :attributes="attributesOutline" :model-matrix="modelMatrix">
             <vc-geometry-outline-plane ref="planeOutline"></vc-geometry-outline-plane>
           </vc-instance-geometry>
         </vc-primitive>
@@ -96,12 +96,12 @@
   <div class="viewer">
     <vc-viewer @ready="ready" @LEFT_CLICK="LEFT_CLICK">
       <vc-primitive :appearance="appearance">
-        <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes" :modelMatrix="modelMatrix">
-          <vc-geometry-plane ref="plane" :vertexFormat="vertexFormat"></vc-geometry-plane>
+        <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes" :model-matrix="modelMatrix">
+          <vc-geometry-plane ref="plane" :vertex-format="vertexFormat"></vc-geometry-plane>
         </vc-instance-geometry>
       </vc-primitive>
       <vc-primitive :appearance="appearanceOutline">
-        <vc-instance-geometry :attributes="attributesOutline" :modelMatrix="modelMatrix">
+        <vc-instance-geometry :attributes="attributesOutline" :model-matrix="modelMatrix">
           <vc-geometry-outline-plane ref="planeOutline"></vc-geometry-outline-plane>
         </vc-instance-geometry>
       </vc-primitive>

@@ -13,14 +13,14 @@ The `vc-graphics-ellipse` component is used to load an ellipse, the ellipse conf
     <div class="viewer">
       <vc-viewer @ready="ready">
         <vc-entity ref="entity1" :position="position1" :description="description" :ellipse.sync="ellipse1">
-          <vc-graphics-ellipse :semiMinorAxis="300000.0" :semiMajorAxis="300000.0" :height="200000.0" :material="material1"
+          <vc-graphics-ellipse :semi-minor-axis="300000.0" :semi-major-axis="300000.0" :height="200000.0" :material="material1"
             :outline="true"></vc-graphics-ellipse>
         </vc-entity>
         <vc-entity ref="entity2" :position="position2" :description="description" :ellipse.sync="ellipse2">
-          <vc-graphics-ellipse :semiMinorAxis="250000.0" :semiMajorAxis="400000.0" :material="material2"></vc-graphics-ellipse>
+          <vc-graphics-ellipse :semi-minor-axis="250000.0" :semi-major-axis="400000.0" :material="material2"></vc-graphics-ellipse>
         </vc-entity>
         <vc-entity ref="entity3" :position="position3" :description="description" :ellipse.sync="ellipse3">
-          <vc-graphics-ellipse :semiMinorAxis="150000.0" :semiMajorAxis="300000.0" :extrudedHeight="200000.0" :rotation="rotation3" :material="material3"
+          <vc-graphics-ellipse :semi-minor-axis="150000.0" :semi-major-axis="300000.0" :extruded-height="200000.0" :rotation="rotation3" :material="material3"
             :outline="true"></vc-graphics-ellipse>
         </vc-entity>
       </vc-viewer>
@@ -74,21 +74,21 @@ The `vc-graphics-ellipse` component is used to load an ellipse, the ellipse conf
     <vc-viewer @ready="ready">
       <vc-entity ref="entity1" :position="position1" :description="description" :ellipse.sync="ellipse1">
         <vc-graphics-ellipse
-          :semiMinorAxis="300000.0"
-          :semiMajorAxis="300000.0"
+          :semi-minor-axis="300000.0"
+          :semi-major-axis="300000.0"
           :height="200000.0"
           :material="material1"
           :outline="true"
         ></vc-graphics-ellipse>
       </vc-entity>
       <vc-entity ref="entity2" :position="position2" :description="description" :ellipse.sync="ellipse2">
-        <vc-graphics-ellipse :semiMinorAxis="250000.0" :semiMajorAxis="400000.0" :material="material2"></vc-graphics-ellipse>
+        <vc-graphics-ellipse :semi-minor-axis="250000.0" :semi-major-axis="400000.0" :material="material2"></vc-graphics-ellipse>
       </vc-entity>
       <vc-entity ref="entity3" :position="position3" :description="description" :ellipse.sync="ellipse3">
         <vc-graphics-ellipse
-          :semiMinorAxis="150000.0"
-          :semiMajorAxis="300000.0"
-          :extrudedHeight="200000.0"
+          :semi-minor-axis="150000.0"
+          :semi-major-axis="300000.0"
+          :extruded-height="200000.0"
           :rotation="rotation3"
           :material="material3"
           :outline="true"

@@ -12,11 +12,11 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready" :camera="camera">
-        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="10">
-          <vc-provider-imagery-baidumap :url="url" :projectionTransforms="projectionTransforms"></vc-provider-imagery-baidumap>
+        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
+          <vc-provider-imagery-baidumap :url="url" :projection-transforms="projectionTransforms"></vc-provider-imagery-baidumap>
         </vc-layer-imagery>
-        <vc-layer-imagery :sortOrder="5">
-          <vc-provider-imagery-tianditu mapStyle="img_w" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+        <vc-layer-imagery :sort-order="5">
+          <vc-provider-imagery-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
       </vc-viewer>
       <div class="demo-tool">
@@ -96,11 +96,11 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
 <template>
   <div class="viewer">
     <vc-viewer @ready="ready" :camera="camera">
-      <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="10">
-        <vc-provider-imagery-baidumap :url="url" :projectionTransforms="projectionTransforms"></vc-provider-imagery-baidumap>
+      <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
+        <vc-provider-imagery-baidumap :url="url" :projection-transforms="projectionTransforms"></vc-provider-imagery-baidumap>
       </vc-layer-imagery>
-      <vc-layer-imagery :sortOrder="5">
-        <vc-provider-imagery-tianditu mapStyle="img_w" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+      <vc-layer-imagery :sort-order="5">
+        <vc-provider-imagery-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
     </vc-viewer>
     <div class="demo-tool">

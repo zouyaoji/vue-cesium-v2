@@ -18,8 +18,8 @@
               :position="polyline.positions[polyline.positions.length-1]"
               :key="'label'+index"
               :text="'面积: '+(polyline.area > 1000000 ? (polyline.area / 1000000).toFixed(2) + 'km²' : polyline.area.toFixed(2) + '㎡')"
-              showBackground
-              :horizontalOrigin="1"
+              show-background
+              :horizontal-origin="1"
               @click="clicked"
             >
             </vc-primitive-label>
@@ -31,9 +31,9 @@
               <vc-primitive-point
                 :position="position"
                 :key="'point' + index + 'position' + subIndex"
-                :pixelSize="8"
+                :pixel-size="8"
                 @click="clicked"
-                :disableDepthTestDistance="Number.POSITIVE_INFINITY"
+                :disable-depth-test-distance="Number.POSITIVE_INFINITY"
               ></vc-primitive-point>
             </template>
           </template>
@@ -120,8 +120,8 @@
             :position="polyline.positions[polyline.positions.length-1]"
             :key="'label'+index"
             :text="'面积: '+(polyline.area > 1000000 ? (polyline.area / 1000000).toFixed(2) + 'km²' : polyline.area.toFixed(2) + '㎡')"
-            showBackground
-            :horizontalOrigin="1"
+            show-background
+            :horizontal-origin="1"
             @click="clicked"
           >
           </vc-primitive-label>

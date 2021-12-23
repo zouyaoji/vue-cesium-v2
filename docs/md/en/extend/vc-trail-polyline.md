@@ -16,7 +16,7 @@ The `vc-trail-polyline` is used to load the flowling line effect. Refer to [ysCe
         <vc-trail-polyline
           :positions="positionsLine"
           color="yellow"
-          imageUrl="./statics/SampleData/images/colors1.png"
+          image-url="./statics/SampleData/images/colors1.png"
           :width="5"
           ref="line"
           :loop="false"
@@ -28,7 +28,7 @@ The `vc-trail-polyline` is used to load the flowling line effect. Refer to [ysCe
             :key="'parabola' + index"
             :positions="item"
             color="yellow"
-            imageUrl="./statics/SampleData/images/colors1.png"
+            image-url="./statics/SampleData/images/colors1.png"
             :width="5"
             ref="parabola"
           ></vc-trail-polyline>
@@ -39,7 +39,7 @@ The `vc-trail-polyline` is used to load the flowling line effect. Refer to [ysCe
             :key="'parabola2' + index"
             :positions="item"
             color="yellow"
-            imageUrl="./statics/SampleData/images/colors.png"
+            image-url="./statics/SampleData/images/colors.png"
             :width="2"
             ref="parabola"
           ></vc-trail-polyline>
@@ -49,13 +49,13 @@ The `vc-trail-polyline` is used to load the flowling line effect. Refer to [ysCe
             <vc-graphics-point
               :key="index"
               :color="item.color"
-              :pixelSize="item.size"
-              :disableDepthTestDistance="Number.POSITIVE_INFINITY"
+              :pixel-size="item.size"
+              :disable-depth-test-distance="Number.POSITIVE_INFINITY"
             ></vc-graphics-point>
           </vc-entity>
         </template>
         <vc-layer-imagery>
-          <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+          <vc-provider-imagery-tianditu map-style="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
       </vc-viewer>
     </div>
@@ -183,7 +183,7 @@ The `vc-trail-polyline` is used to load the flowling line effect. Refer to [ysCe
       <vc-trail-polyline
         :positions="positionsLine"
         color="yellow"
-        imageUrl="./statics/SampleData/images/colors1.png"
+        image-url="./statics/SampleData/images/colors1.png"
         :width="5"
         ref="line"
         :loop="false"
@@ -195,7 +195,7 @@ The `vc-trail-polyline` is used to load the flowling line effect. Refer to [ysCe
           :key="'parabola' + index"
           :positions="item"
           color="yellow"
-          imageUrl="./statics/SampleData/images/colors1.png"
+          image-url="./statics/SampleData/images/colors1.png"
           :width="5"
           ref="parabola"
         ></vc-trail-polyline>
@@ -206,7 +206,7 @@ The `vc-trail-polyline` is used to load the flowling line effect. Refer to [ysCe
           :key="'parabola2' + index"
           :positions="item"
           color="yellow"
-          imageUrl="./statics/SampleData/images/colors.png"
+          image-url="./statics/SampleData/images/colors.png"
           :width="2"
           ref="parabola"
         ></vc-trail-polyline>
@@ -216,13 +216,13 @@ The `vc-trail-polyline` is used to load the flowling line effect. Refer to [ysCe
           <vc-graphics-point
             :key="index"
             :color="item.color"
-            :pixelSize="item.size"
-            :disableDepthTestDistance="Number.POSITIVE_INFINITY"
+            :pixel-size="item.size"
+            :disable-depth-test-distance="Number.POSITIVE_INFINITY"
           ></vc-graphics-point>
         </vc-entity>
       </template>
       <vc-layer-imagery>
-        <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+        <vc-provider-imagery-tianditu map-style="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
     </vc-viewer>
   </div>

@@ -13,7 +13,7 @@
     <div class="viewer">
       <vc-viewer @ready="ready">
         <vc-entity :position="position1" :description="description" :label.sync="label1">
-          <vc-graphics-label :text="description" font="20px sans-serif" :pixelOffset="pixelOffset1"></vc-graphics-label>
+          <vc-graphics-label :text="description" font="20px sans-serif" :pixel-offset="pixelOffset1"></vc-graphics-label>
         </vc-entity>
       </vc-viewer>
     </div>
@@ -45,7 +45,7 @@
   <div class="viewer">
     <vc-viewer @ready="ready">
       <vc-entity :position="position1" :description="description" :label.sync="label1">
-        <vc-graphics-label :text="description" font="20px sans-serif" :pixelOffset="pixelOffset1"></vc-graphics-label>
+        <vc-graphics-label :text="description" font="20px sans-serif" :pixel-offset="pixelOffset1"></vc-graphics-label>
       </vc-entity>
     </vc-viewer>
   </div>

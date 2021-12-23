@@ -27,11 +27,11 @@ Vue.use(Viewer, {
     <div class="viewer" ref="viewerContainer">
       <vc-viewer
         ref="vcViewer"
-        :cesiumPath="cesiumPath"
+        :cesium-path="cesiumPath"
         :animation="animation"
         :timeline="timeline"
-        :fullscreenButton="fullscreenButton"
-        :fullscreenElement="fullscreenElement"
+        :fullscreen-button="fullscreenButton"
+        :fullscreen-element="fullscreenElement"
         @ready="onViewerReady"
         @leftClick="onLeftClick"
       >
@@ -41,12 +41,12 @@ Vue.use(Viewer, {
           <vc-graphics-rectangle :coordinates="[130, 20, 80, 25]" material="green"></vc-graphics-rectangle>
         </vc-entity>
         <!-- 天地图注记 -->
-        <vc-layer-imagery :sortOrder="20">
-          <vc-provider-imagery-tianditu mapStyle="cva_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+        <vc-layer-imagery :sort-order="20">
+          <vc-provider-imagery-tianditu map-style="cva_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
         <!-- 天地图影像 -->
-        <vc-layer-imagery :sortOrder="10">
-          <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+        <vc-layer-imagery :sort-order="10">
+          <vc-provider-imagery-tianditu map-style="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
       </vc-viewer>
       <div class="demo-tool">
@@ -133,11 +133,11 @@ Vue.use(Viewer, {
   <div class="viewer" ref="viewerContainer">
     <vc-viewer
       ref="vcViewer"
-      :cesiumPath="cesiumPath"
+      :cesium-path="cesiumPath"
       :animation="animation"
       :timeline="timeline"
-      :fullscreenButton="fullscreenButton"
-      :fullscreenElement="fullscreenElement"
+      :fullscreen-button="fullscreenButton"
+      :fullscreen-element="fullscreenElement"
       @ready="onViewerReady"
       @leftClick="onLeftClick"
     >
@@ -147,12 +147,12 @@ Vue.use(Viewer, {
         <vc-graphics-rectangle :coordinates="[130, 20, 80, 25]" material="green"></vc-graphics-rectangle>
       </vc-entity>
       <!-- 天地图注记 -->
-      <vc-layer-imagery :sortOrder="20">
-        <vc-provider-imagery-tianditu mapStyle="cva_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+      <vc-layer-imagery :sort-order="20">
+        <vc-provider-imagery-tianditu map-style="cva_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
       <!-- 天地图影像 -->
-      <vc-layer-imagery :sortOrder="10">
-        <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+      <vc-layer-imagery :sort-order="10">
+        <vc-provider-imagery-tianditu map-style="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
     </vc-viewer>
     <div class="demo-tool">

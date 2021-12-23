@@ -14,7 +14,7 @@ The `vc-primitive-tileset` component is used to load a 3D Tiles tileset, used fo
       <vc-viewer @ready="ready">
         <vc-primitive-tileset
           :url="url"
-          @readyPromise="readyPromise"
+          @ready-promise="readyPromise"
           @initialTilesLoaded="initialTilesLoaded"
           @allTilesLoaded="allTilesLoaded"
           @loadProgress="loadProgress"
@@ -100,7 +100,7 @@ The `vc-primitive-tileset` component is used to load a 3D Tiles tileset, used fo
     <vc-viewer @ready="ready">
       <vc-primitive-tileset
         :url="url"
-        @readyPromise="readyPromise"
+        @ready-promise="readyPromise"
         @initialTilesLoaded="initialTilesLoaded"
         @allTilesLoaded="allTilesLoaded"
         @loadProgress="loadProgress"

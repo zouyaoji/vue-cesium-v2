@@ -11,7 +11,7 @@ The `vc-provider-imagery-tiledcache` component is used to load the TiledCache im
 <doc-preview>
   <template>
     <div class="viewer" ref="viewerContainer">
-      <vc-viewer @ready="ready" fullscreenButton :fullscreenElement="fullscreenElement">
+      <vc-viewer @ready="ready" fullscreenButton :fullscreen-element="fullscreenElement">
         <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
           <vc-provider-imagery-tiledcache
             url="https://www.songluck.com/gis/TiledCacheService/TiledCacheServlet"
@@ -62,7 +62,7 @@ The `vc-provider-imagery-tiledcache` component is used to load the TiledCache im
 ```html
 <template>
   <div class="viewer" ref="viewerContainer">
-    <vc-viewer @ready="ready" fullscreenButton :fullscreenElement="fullscreenElement">
+    <vc-viewer @ready="ready" fullscreenButton :fullscreen-element="fullscreenElement">
       <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
         <vc-provider-imagery-tiledcache
           url="https://www.songluck.com/gis/TiledCacheService/TiledCacheServlet"

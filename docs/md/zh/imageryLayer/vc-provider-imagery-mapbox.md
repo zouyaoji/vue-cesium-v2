@@ -13,7 +13,7 @@
     <div class="viewer">
       <vc-viewer @ready="ready">
        <!-- <vc-layer-imagery ref="layer" :alpha="alpha" :brightness="brightness" :contrast="contrast">
-        <vc-provider-imagery-mapbox ref="mapbox" :mapId="mapId"></vc-provider-imagery-mapbox>
+        <vc-provider-imagery-mapbox ref="mapbox" :map-id="mapId"></vc-provider-imagery-mapbox>
        </vc-layer-imagery> -->
       </vc-viewer>
       <!-- <div class="demo-tool">
@@ -71,7 +71,7 @@
   <div class="viewer">
     <vc-viewer @ready="ready">
       <!-- <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
-        <vc-provider-imagery-mapbox :mapId="mapId"></vc-provider-imagery-mapbox>
+        <vc-provider-imagery-mapbox :map-id="mapId"></vc-provider-imagery-mapbox>
       </vc-layer-imagery> -->
     </vc-viewer>
     <!-- <div class="demo-tool">

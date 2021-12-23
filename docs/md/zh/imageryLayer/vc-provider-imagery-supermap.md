@@ -16,7 +16,7 @@
           <vc-provider-imagery-supermap
             ref="imageryProvider"
             :url="url"
-            @readyPromise="readyPromise"
+            @ready-promise="readyPromise"
           ></vc-provider-imagery-supermap>
         </vc-layer-imagery>
       </vc-viewer>
@@ -47,7 +47,7 @@
               label: '四川地图'
             },
             {
-              value: 'https://www.supermapol.com/realspace/services/map-World/rest/maps/World_Google',
+              value: 'https://www.supermapol.com/realspace/services/map--world/rest/maps/World_Google',
               label: '谷歌地图'
             }
           ],
@@ -81,7 +81,7 @@
         <vc-provider-imagery-supermap
           ref="imageryProvider"
           :url="url"
-          @readyPromise="readyPromise"
+          @ready-promise="readyPromise"
         ></vc-provider-imagery-supermap>
       </vc-layer-imagery>
     </vc-viewer>
@@ -112,7 +112,7 @@
             label: 'sichuan'
           },
           {
-            value: 'https://www.supermapol.com/realspace/services/map-World/rest/maps/World_Google',
+            value: 'https://www.supermapol.com/realspace/services/map--world/rest/maps/World_Google',
             label: 'google'
           }
         ],

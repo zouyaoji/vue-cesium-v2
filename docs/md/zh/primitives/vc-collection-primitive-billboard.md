@@ -27,8 +27,8 @@
             :image="image"
             :scale="scale"
             :show="show"
-            :distanceDisplayCondition="distanceDisplayCondition"
-            :horizontalOrigin="horizontalOrigin"
+            :distance-display-condition="distanceDisplayCondition"
+            :horizontal-origin="horizontalOrigin"
             :position="position"
           ></vc-primitive-billboard>
         </vc-collection-primitive-billboard>
@@ -117,8 +117,8 @@
           :image="image"
           :scale="scale"
           :show="show"
-          :distanceDisplayCondition="distanceDisplayCondition"
-          :horizontalOrigin="horizontalOrigin"
+          :distance-display-condition="distanceDisplayCondition"
+          :horizontal-origin="horizontalOrigin"
           :position="position"
         ></vc-primitive-billboard>
       </vc-collection-primitive-billboard>

@@ -11,7 +11,7 @@ The `vc-graphics-path` component is used to load a path that moves over time. Ne
 <doc-preview>
   <template>
     <div class="viewer">
-      <vc-viewer :shouldAnimate="true" :animation="true" :timeline="true" @ready="ready" :terrainProvider="terrainProvider">
+      <vc-viewer :should-animate="true" :animation="true" :timeline="true" @ready="ready" :terrain-provider="terrainProvider">
         <vc-entity
           ref="entity"
           :availability="availability"
@@ -22,10 +22,10 @@ The `vc-graphics-path` component is used to load a path that moves over time. Ne
           :path.sync="path1"
         >
           <vc-graphics-path ref="path" :resolution="1" :material="material1" :width="10"></vc-graphics-path>
-          <vc-graphics-model ref="model" :uri="uri1" :minimumPixelSize="64"></vc-graphics-model>
+          <vc-graphics-model ref="model" :uri="uri1" :minimum-pixel-size="64"></vc-graphics-model>
         </vc-entity>
         <vc-entity :key="'entity' + index" :position="position" v-for="(position, index) of positions">
-          <vc-graphics-point :pixelSize="8" color="TRANSPARENT" outlineColor="YELLOW" :outlineWidth="3"></vc-graphics-point>
+          <vc-graphics-point :pixel-size="8" color="TRANSPARENT" outline-Color="YELLOW" :outline-width="3"></vc-graphics-point>
         </vc-entity>
         <vc-layer-imagery>
           <vc-provider-imagery-arcgis-mapserver url="https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"></vc-provider-imagery-arcgis-mapserver>
@@ -139,7 +139,7 @@ The `vc-graphics-path` component is used to load a path that moves over time. Ne
 ```html
 <template>
   <div class="viewer">
-    <vc-viewer :shouldAnimate="true" :animation="true" :timeline="true" @ready="ready" :terrainProvider="terrainProvider">
+    <vc-viewer :should-animate="true" :animation="true" :timeline="true" @ready="ready" :terrain-provider="terrainProvider">
       <vc-entity
         ref="entity"
         :availability="availability"
@@ -150,10 +150,10 @@ The `vc-graphics-path` component is used to load a path that moves over time. Ne
         :path.sync="path1"
       >
         <vc-graphics-path ref="path" :resolution="1" :material="material1" :width="10"></vc-graphics-path>
-        <vc-graphics-model ref="model" :uri="uri1" :minimumPixelSize="64"></vc-graphics-model>
+        <vc-graphics-model ref="model" :uri="uri1" :minimum-pixel-size="64"></vc-graphics-model>
       </vc-entity>
       <vc-entity :key="'entity' + index" :position="position" v-for="(position, index) of positions">
-        <vc-graphics-point :pixelSize="8" color="TRANSPARENT" outlineColor="YELLOW" :outlineWidth="3"></vc-graphics-point>
+        <vc-graphics-point :pixel-size="8" color="TRANSPARENT" outline-Color="YELLOW" :outline-width="3"></vc-graphics-point>
       </vc-entity>
       <vc-layer-imagery>
         <vc-provider-imagery-arcgis-mapserver url="https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"></vc-provider-imagery-arcgis-mapserver>

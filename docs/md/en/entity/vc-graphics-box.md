@@ -19,12 +19,12 @@ The `vc-graphics-box` component is used to load a box and needs to be used as a 
           <vc-graphics-box
             :dimensions="dimensions2"
             :material="material2"
-            :outlineColor="outlineColor2"
+            :outline-color="outlineColor2"
             :outline="true"
           ></vc-graphics-box>
         </vc-entity>
         <vc-entity ref="entity3" :position="position3" :description="description" :box.sync="box3">
-          <vc-graphics-box :dimensions="dimensions3" :outlineColor="outlineColor3" :fill="false" :outline="true"></vc-graphics-box>
+          <vc-graphics-box :dimensions="dimensions3" :outline-color="outlineColor3" :fill="false" :outline="true"></vc-graphics-box>
         </vc-entity>
       </vc-viewer>
     </div>
@@ -82,12 +82,12 @@ The `vc-graphics-box` component is used to load a box and needs to be used as a 
         <vc-graphics-box
           :dimensions="dimensions2"
           :material="material2"
-          :outlineColor="outlineColor2"
+          :outline-color="outlineColor2"
           :outline="true"
         ></vc-graphics-box>
       </vc-entity>
       <vc-entity ref="entity3" :position="position3" :description="description" :box.sync="box3">
-        <vc-graphics-box :dimensions="dimensions3" :outlineColor="outlineColor3" :fill="false" :outline="true"></vc-graphics-box>
+        <vc-graphics-box :dimensions="dimensions3" :outline-color="outlineColor3" :fill="false" :outline="true"></vc-graphics-box>
       </vc-entity>
     </vc-viewer>
   </div>

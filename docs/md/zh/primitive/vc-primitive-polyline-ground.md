@@ -14,7 +14,7 @@
       <vc-viewer @ready="ready">
         <vc-primitive-polyline-ground
           :appearance="appearance"
-          :geometryInstances="geometryInstances"
+          :geometry-instances="geometryInstances"
         ></vc-primitive-polyline-ground>
         <vc-primitive-polyline-ground :appearance="appearance">
           <vc-instance-geometry>
@@ -78,7 +78,7 @@
     <vc-viewer @ready="ready">
       <vc-primitive-polyline-ground
         :appearance="appearance"
-        :geometryInstances="geometryInstances"
+        :geometry-instances="geometryInstances"
       ></vc-primitive-polyline-ground>
       <vc-primitive-polyline-ground :appearance="appearance">
         <vc-instance-geometry>

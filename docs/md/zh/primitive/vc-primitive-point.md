@@ -19,9 +19,9 @@
                 :position="position"
                 :key="'point' + index + 'position' + subIndex"
                 :color="colorPoint"
-                :pixelSize="8"
+                :pixel-size="8"
                 @click="clicked"
-                :disableDepthTestDistance="Number.POSITIVE_INFINITY"
+                :disable-depth-test-distance="Number.POSITIVE_INFINITY"
               ></vc-primitive-point>
             </template>
           </template>
@@ -83,7 +83,7 @@
               :position="position"
               :key="'point' + index + 'position' + subIndex"
               :color="colorPoint"
-              :pixelSize="8"
+              :pixel-size="8"
               @click="clicked"
             ></vc-primitive-point>
           </template>

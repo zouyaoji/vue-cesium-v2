@@ -14,13 +14,13 @@ The `vc-ripple-circle-double` component is used to load the double circle ripple
       <vc-viewer @ready="ready">
         <vc-ripple-circle-double
           @ready="subReady"
-          imageUrl="./statics/SampleData/images/redCircle2.png"
+          image-url="./statics/SampleData/images/redCircle2.png"
           :position="position"
           ref="circle"
         ></vc-ripple-circle-double>
         <vc-ripple-circle-double
           @ready="subReady"
-          imageUrl="./statics/SampleData/images/redCircle2.png"
+          image-url="./statics/SampleData/images/redCircle2.png"
           :position="position"
           ref="circle"
           :height="3000"
@@ -29,7 +29,7 @@ The `vc-ripple-circle-double` component is used to load the double circle ripple
           <vc-graphics-polyline :positions="positions" :width="5" :material="material"></vc-graphics-polyline>
         </vc-entity>
         <vc-layer-imagery>
-          <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+          <vc-provider-imagery-tianditu map-style="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
       </vc-viewer>
     </div>
@@ -70,13 +70,13 @@ The `vc-ripple-circle-double` component is used to load the double circle ripple
     <vc-viewer @ready="ready">
       <vc-ripple-circle-double
         @ready="subReady"
-        imageUrl="./statics/SampleData/images/redCircle2.png"
+        image-url="./statics/SampleData/images/redCircle2.png"
         :position="position"
         ref="circle"
       ></vc-ripple-circle-double>
       <vc-ripple-circle-double
         @ready="subReady"
-        imageUrl="./statics/SampleData/images/redCircle2.png"
+        image-url="./statics/SampleData/images/redCircle2.png"
         :position="position"
         ref="circle"
         :height="3000"
@@ -85,7 +85,7 @@ The `vc-ripple-circle-double` component is used to load the double circle ripple
         <vc-graphics-polyline :positions="positions" :width="5" :material="material"></vc-graphics-polyline>
       </vc-entity>
       <vc-layer-imagery>
-        <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+        <vc-provider-imagery-tianditu map-style="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
     </vc-viewer>
   </div>

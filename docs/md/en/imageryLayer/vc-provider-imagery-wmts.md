@@ -12,28 +12,28 @@ The `vc-provider-imagery-wmts` component is used to load tiled imagery served by
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="20">
+        <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="20">
           <vc-provider-imagery-wmts
             :url="urlText"
-            :wmtsStyle="style"
-            :tileMatrixSetID="tileMatrixSetID"
+            :wmts-style="style"
+            :tile-matrix-set-i-d="tileMatrixSetID"
             :credit="credit"
             :subdomains="subdomains"
-            :tilingScheme="tilingScheme"
-            :tileMatrixLabels="tileMatrixLabels"
+            :tiling-scheme="tilingScheme"
+            :tile-matrix-labels="tileMatrixLabels"
             :token="token"
             :layer="layer2"
           ></vc-provider-imagery-wmts>
         </vc-layer-imagery>
-        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="10">
+        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
           <vc-provider-imagery-wmts
             :url="url"
-            :wmtsStyle="style"
-            :tileMatrixSetID="tileMatrixSetID"
+            :wmts-style="style"
+            :tile-matrix-set-i-d="tileMatrixSetID"
             :credit="credit"
             :subdomains="subdomains"
-            :tilingScheme="tilingScheme"
-            :tileMatrixLabels="tileMatrixLabels"
+            :tiling-scheme="tilingScheme"
+            :tile-matrix-labels="tileMatrixLabels"
             :token="token"
             :layer="layer1"
           ></vc-provider-imagery-wmts>
@@ -127,28 +127,28 @@ The `vc-provider-imagery-wmts` component is used to load tiled imagery served by
 <template>
   <div class="viewer">
     <vc-viewer @ready="ready">
-      <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="20">
+      <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="20">
         <vc-provider-imagery-wmts
           :url="urlText"
-          :wmtsStyle="style"
-          :tileMatrixSetID="tileMatrixSetID"
+          :wmts-style="style"
+          :tile-matrix-set-i-d="tileMatrixSetID"
           :credit="credit"
           :subdomains="subdomains"
-          :tilingScheme="tilingScheme"
-          :tileMatrixLabels="tileMatrixLabels"
+          :tiling-scheme="tilingScheme"
+          :tile-matrix-labels="tileMatrixLabels"
           :token="token"
           :layer="layer2"
         ></vc-provider-imagery-wmts>
       </vc-layer-imagery>
-      <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="10">
+      <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
         <vc-provider-imagery-wmts
           :url="url"
-          :wmtsStyle="style"
-          :tileMatrixSetID="tileMatrixSetID"
+          :wmts-style="style"
+          :tile-matrix-set-i-d="tileMatrixSetID"
           :credit="credit"
           :subdomains="subdomains"
-          :tilingScheme="tilingScheme"
-          :tileMatrixLabels="tileMatrixLabels"
+          :tiling-scheme="tilingScheme"
+          :tile-matrix-labels="tileMatrixLabels"
           :token="token"
           :layer="layer1"
         ></vc-provider-imagery-wmts>
@@ -241,7 +241,7 @@ The `vc-provider-imagery-wmts` component is used to load tiled imagery served by
 <!-- prettier-ignore -->
 | name | type | default | description |
 | ---- | ---- | ------- | ----------- |
-| url | String\|Object | | `required`The base URL for the WMTS GetTile operation (for KVP-encoded requests) or the tile-URL template (for RESTful requests). The tile-URL template should contain the following variables: {style}, {TileMatrixSet}, {TileMatrix}, {TileRow}, {TileCol}. The first two are optional if actual values are hardcoded or not required by the server. The {s} keyword may be used to specify subdomains.。 |
+| url | String\|Object | | `required`The base URL for the WMTS GetTile operation (for KVP-encoded requests) or the tile--uRL template (for RESTful requests). The tile--uRL template should contain the following variables: {style}, {TileMatrixSet}, {TileMatrix}, {TileRow}, {TileCol}. The first two are optional if actual values are hardcoded or not required by the server. The {s} keyword may be used to specify subdomains.。 |
 | format | String | `'image/jpeg'` | `optional` The MIME type for images to retrieve from the server. |
 | wmtsStyle | String | | `required`The layer name for WMTS requests. |
 | style | String | | `required`The style name for WMTS requests. |

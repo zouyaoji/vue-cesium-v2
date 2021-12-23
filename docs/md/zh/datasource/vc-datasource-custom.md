@@ -35,11 +35,11 @@
             <vc-graphics-cylinder
               ref="cylinder1"
               :length="400000.0"
-              :topRadius="200000.0"
-              :bottomRadius="200000.0"
+              :top-radius="200000.0"
+              :bottom-radius="200000.0"
               :material="[0,255,0,125]"
               :outline="true"
-              outlineColor="#006400"
+              outline-Color="#006400"
             ></vc-graphics-cylinder>
           </vc-entity>
         </vc-datasource-custom>
@@ -200,19 +200,19 @@
           <vc-graphics-cylinder
             ref="cylinder1"
             :length="400000.0"
-            :topRadius="200000.0"
-            :bottomRadius="200000.0"
+            :top-radius="200000.0"
+            :bottom-radius="200000.0"
             :material="material1"
             :outline="true"
-            :outlineColor="outlineColor1"
+            :outline-color="outlineColor1"
           ></vc-graphics-cylinder>
         </vc-entity>
         <vc-entity :position="position2" :description="description" :cylinder.sync="cylinder2">
           <vc-graphics-cylinder
             ref="cylinder2"
             :length="400000.0"
-            :topRadius="0.0"
-            :bottomRadius="200000.0"
+            :top-radius="0.0"
+            :bottom-radius="200000.0"
             :material="material2"
           ></vc-graphics-cylinder>
         </vc-entity>

@@ -62,7 +62,7 @@
     <vc-viewer @ready="ready">
       <vc-primitive-tileset
         :url="url"
-        @readyPromise="readyPromise"
+        @ready-promise="readyPromise"
         @initialTilesLoaded="initialTilesLoaded"
         @allTilesLoaded="allTilesLoaded"
         @loadProgress="loadProgress"

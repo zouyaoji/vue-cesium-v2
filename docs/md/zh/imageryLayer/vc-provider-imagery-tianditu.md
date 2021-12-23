@@ -12,15 +12,15 @@
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="sortOrder1">
+        <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="sortOrder1">
           <vc-provider-imagery-tianditu
-            mapStyle="cva_c"
+            map-style="cva_c"
             token="436ce7e50d27eede2f2929307e6b33c0"
           ></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
-        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="sortOrder2">
+        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="sortOrder2">
           <vc-provider-imagery-tianditu
-            :mapStyle="mapStyle"
+            :map-style="mapStyle"
             token="436ce7e50d27eede2f2929307e6b33c0"
           ></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
@@ -99,12 +99,12 @@
 <template>
   <div class="viewer">
     <vc-viewer @ready="ready">
-      <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="20">
-        <vc-provider-imagery-tianditu mapStyle="cva_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+      <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="20">
+        <vc-provider-imagery-tianditu map-style="cva_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
-      <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="10">
+      <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
         <vc-provider-imagery-tianditu
-          :mapStyle="mapStyle"
+          :map-style="mapStyle"
           token="436ce7e50d27eede2f2929307e6b33c0"
         ></vc-provider-imagery-tianditu>
       </vc-layer-imagery>

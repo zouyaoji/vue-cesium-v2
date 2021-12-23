@@ -17,7 +17,7 @@ The `vc-graphics-wall` component is used to load a two dimensional wall defined 
             ref="wall1"
             :positions="positions1"
             :material="material1"
-            :minimumHeights="[100000.0, 100000.0]"
+            :minimum-heights="[100000.0, 100000.0]"
           ></vc-graphics-wall>
         </vc-entity>
         <vc-entity :description="description" :wall.sync="wall2">
@@ -33,9 +33,9 @@ The `vc-graphics-wall` component is used to load a two dimensional wall defined 
             :positions="positions3"
             :material="material3"
             :outline="true"
-            :outlineColor="outlineColor3"
-            :maximumHeights="[100000, 200000, 100000, 200000, 100000, 200000, 100000, 200000, 100000, 200000]"
-            :minimumHeights="[0, 100000,  0, 100000, 0, 100000, 0, 100000, 0, 100000]"
+            :outline-color="outlineColor3"
+            :maximum-heights="[100000, 200000, 100000, 200000, 100000, 200000, 100000, 200000, 100000, 200000]"
+            :minimum-heights="[0, 100000,  0, 100000, 0, 100000, 0, 100000, 0, 100000]"
             ref="wall3"
           ></vc-graphics-wall>
         </vc-entity>
@@ -113,7 +113,7 @@ The `vc-graphics-wall` component is used to load a two dimensional wall defined 
           ref="wall1"
           :positions="positions1"
           :material="material1"
-          :minimumHeights="[100000.0, 100000.0]"
+          :minimum-heights="[100000.0, 100000.0]"
         ></vc-graphics-wall>
       </vc-entity>
       <vc-entity :description="description" :wall.sync="wall2">
@@ -129,9 +129,9 @@ The `vc-graphics-wall` component is used to load a two dimensional wall defined 
           :positions="positions3"
           :material="material3"
           :outline="true"
-          :outlineColor="outlineColor3"
-          :maximumHeights="[100000, 200000, 100000, 200000, 100000, 200000, 100000, 200000, 100000, 200000]"
-          :minimumHeights="[0, 100000,  0, 100000, 0, 100000, 0, 100000, 0, 100000]"
+          :outline-color="outlineColor3"
+          :maximum-heights="[100000, 200000, 100000, 200000, 100000, 200000, 100000, 200000, 100000, 200000]"
+          :minimum-heights="[0, 100000,  0, 100000, 0, 100000, 0, 100000, 0, 100000]"
           ref="wall3"
         ></vc-graphics-wall>
       </vc-entity>

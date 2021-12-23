@@ -13,7 +13,7 @@ The `vc-handler-draw-polygon` component is used to draw polygon.
 <doc-preview>
   <template>
     <div class="viewer">
-      <vc-viewer @ready="ready" scene3DOnly>
+      <vc-viewer @ready="ready" scene3-d-only>
         <vc-handler-draw-point
           ref="handlerPoint"
           @activeEvt="activeEvt"
@@ -22,7 +22,7 @@ The `vc-handler-draw-polygon` component is used to draw polygon.
           :editable="editable"
         ></vc-handler-draw-point>
         <vc-handler-draw-polyline
-          :clampToGround="clampToGround"
+          :clamp-to-ground="clampToGround"
           ref="handlerLine"
           @activeEvt="activeEvt"
           @movingEvt="movingEvt"
@@ -30,14 +30,14 @@ The `vc-handler-draw-polygon` component is used to draw polygon.
           :editable="editable"
         ></vc-handler-draw-polyline>
         <vc-handler-draw-polygon
-          :clampToGround="clampToGround"
+          :clamp-to-ground="clampToGround"
           ref="handlerPolygon"
           @activeEvt="activeEvt"
           @movingEvt="movingEvt"
           @drawEvt="drawEvt"
           :editable="editable"
         ></vc-handler-draw-polygon>
-        <vc-primitive-tileset :url="modelUrl" @readyPromise="readyPromise"></vc-primitive-tileset>
+        <vc-primitive-tileset :url="modelUrl" @ready-promise="readyPromise"></vc-primitive-tileset>
       </vc-viewer>
       <div class="demo-tool">
         <md-button class="md-raised md-accent" @click="toggle('handlerPoint')">{{ pointDrawing ? 'Stop' : 'Point' }}</md-button>
@@ -105,7 +105,7 @@ The `vc-handler-draw-polygon` component is used to draw polygon.
 ```html
 <template>
   <div class="viewer">
-    <vc-viewer @ready="ready" scene3DOnly>
+    <vc-viewer @ready="ready" scene3-d-only>
       <vc-handler-draw-point
         ref="handlerPoint"
         @activeEvt="activeEvt"
@@ -114,7 +114,7 @@ The `vc-handler-draw-polygon` component is used to draw polygon.
         :editable="editable"
       ></vc-handler-draw-point>
       <vc-handler-draw-polyline
-        :clampToGround="clampToGround"
+        :clamp-to-ground="clampToGround"
         ref="handlerLine"
         @activeEvt="activeEvt"
         @movingEvt="movingEvt"
@@ -122,14 +122,14 @@ The `vc-handler-draw-polygon` component is used to draw polygon.
         :editable="editable"
       ></vc-handler-draw-polyline>
       <vc-handler-draw-polygon
-        :clampToGround="clampToGround"
+        :clamp-to-ground="clampToGround"
         ref="handlerPolygon"
         @activeEvt="activeEvt"
         @movingEvt="movingEvt"
         @drawEvt="drawEvt"
         :editable="editable"
       ></vc-handler-draw-polygon>
-      <vc-primitive-tileset :url="modelUrl" @readyPromise="readyPromise"></vc-primitive-tileset>
+      <vc-primitive-tileset :url="modelUrl" @ready-promise="readyPromise"></vc-primitive-tileset>
     </vc-viewer>
     <div class="demo-tool">
       <md-button class="md-raised md-accent" @click="toggle('handlerPoint')">{{ pointDrawing ? 'Stop' : 'Point' }}</md-button>

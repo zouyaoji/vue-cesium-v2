@@ -16,7 +16,7 @@
       <vc-viewer @ready="ready" @LEFT_CLICK="LEFT_CLICK">
         <vc-primitive :appearance="appearance">
           <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes">
-            <vc-geometry-wall ref="wall" :positions="positions" :vertexFormat="vertexFormat"></vc-geometry-wall>
+            <vc-geometry-wall ref="wall" :positions="positions" :vertex-format="vertexFormat"></vc-geometry-wall>
           </vc-instance-geometry>
         </vc-primitive>
         <vc-primitive :appearance="appearance">
@@ -91,7 +91,7 @@
     <vc-viewer @ready="ready" @LEFT_CLICK="LEFT_CLICK">
       <vc-primitive :appearance="appearance">
         <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes">
-          <vc-geometry-wall ref="wall" :positions="positions" :vertexFormat="vertexFormat"></vc-geometry-wall>
+          <vc-geometry-wall ref="wall" :positions="positions" :vertex-format="vertexFormat"></vc-geometry-wall>
         </vc-instance-geometry>
       </vc-primitive>
       <vc-primitive :appearance="appearance">

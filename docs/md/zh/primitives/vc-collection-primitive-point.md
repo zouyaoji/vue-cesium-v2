@@ -20,7 +20,7 @@
                 :position="position"
                 :key="'point' + index + 'position' + subIndex"
                 :color="colorPoint"
-                :pixelSize="32"
+                :pixel-size="32"
               ></vc-primitive-point>
             </template>
           </template>
@@ -95,7 +95,7 @@
               :position="position"
               :key="'point' + index + 'position' + subIndex"
               :color="colorPoint"
-              :pixelSize="32"
+              :pixel-size="32"
             ></vc-primitive-point>
           </template>
         </template>

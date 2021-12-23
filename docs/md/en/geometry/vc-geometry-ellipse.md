@@ -19,15 +19,15 @@
             <vc-geometry-ellipse
               ref="ellipse"
               :center="center"
-              :semiMinorAxis="200000.0"
-              :semiMajorAxis="300000.0"
+              :semi-minor-axis="200000.0"
+              :semi-major-axis="300000.0"
               :height="50000"
             ></vc-geometry-ellipse>
           </vc-instance-geometry>
         </vc-primitive-ground>
         <vc-primitive :appearance="appearance">
           <vc-instance-geometry :attributes="attributes">
-            <vc-geometry-outline-ellipse ref="ellipseOutline" :center="center" :semiMinorAxis="200000.0" :semiMajorAxis="300000.0" :height="100000">
+            <vc-geometry-outline-ellipse ref="ellipseOutline" :center="center" :semi-minor-axis="200000.0" :semi-major-axis="300000.0" :height="100000">
             </vc-geometry-outline-ellipse>
           </vc-instance-geometry>
         </vc-primitive>
@@ -92,8 +92,8 @@
           <vc-geometry-ellipse
             ref="ellipse"
             :center="center"
-            :semiMinorAxis="200000.0"
-            :semiMajorAxis="300000.0"
+            :semi-minor-axis="200000.0"
+            :semi-major-axis="300000.0"
             :height="50000"
           ></vc-geometry-ellipse>
         </vc-instance-geometry>
@@ -103,8 +103,8 @@
           <vc-geometry-outline-ellipse
             ref="ellipseOutline"
             :center="center"
-            :semiMinorAxis="200000.0"
-            :semiMajorAxis="300000.0"
+            :semi-minor-axis="200000.0"
+            :semi-major-axis="300000.0"
             :height="100000"
           >
           </vc-geometry-outline-ellipse>

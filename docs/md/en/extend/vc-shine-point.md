@@ -14,7 +14,7 @@ The `vc-shine-point` component is used to load the flash point effect. Refer to 
       <vc-viewer @ready="ready">
         <vc-shine-point @ready="subReady" :position="position" color="red"></vc-shine-point>
         <vc-layer-imagery>
-          <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+          <vc-provider-imagery-tianditu map-style="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
       </vc-viewer>
     </div>
@@ -50,7 +50,7 @@ The `vc-shine-point` component is used to load the flash point effect. Refer to 
     <vc-viewer @ready="ready">
       <vc-shine-point @ready="subReady" :position="position" color="red"></vc-shine-point>
       <vc-layer-imagery>
-        <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+        <vc-provider-imagery-tianditu map-style="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
     </vc-viewer>
   </div>

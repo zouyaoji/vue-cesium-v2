@@ -19,8 +19,8 @@
               :position="polyline.positions[polyline.positions.length-1]"
               :key="'label'+index"
               :text="'面积'+(polyline.area > 1000000 ? (polyline.area / 1000000).toFixed(2) + 'km²' : polyline.area.toFixed(2) + '㎡')"
-              showBackground
-              :horizontalOrigin="1"
+              show-background
+              :horizontal-origin="1"
             >
             </vc-primitive-label>
           </template>
@@ -94,8 +94,8 @@
             :position="polyline.positions[polyline.positions.length-1]"
             :key="'label'+index"
             :text="'面积'+(polyline.area > 1000000 ? (polyline.area / 1000000).toFixed(2) + 'km²' : polyline.area.toFixed(2) + '㎡')"
-            showBackground
-            :horizontalOrigin="1"
+            show-background
+            :horizontal-origin="1"
           >
           </vc-primitive-label>
         </template>

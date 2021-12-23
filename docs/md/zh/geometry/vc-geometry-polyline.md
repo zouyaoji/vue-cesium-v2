@@ -12,7 +12,7 @@
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-primitive :appearance="appearance" :geometryInstances.sync="geometryInstances">
+        <vc-primitive :appearance="appearance" :geometry-instances.sync="geometryInstances">
           <vc-instance-geometry>
             <vc-geometry-polyline ref="polyline" :positions="positions" :width="4"></vc-geometry-polyline>
           </vc-instance-geometry>
@@ -58,7 +58,7 @@
 <template>
   <div class="viewer">
     <vc-viewer @ready="ready">
-      <vc-primitive :appearance="appearance" :geometryInstances.sync="geometryInstances">
+      <vc-primitive :appearance="appearance" :geometry-instances.sync="geometryInstances">
         <vc-instance-geometry>
           <vc-geometry-polyline ref="polyline" :positions="positions" :width="4"></vc-geometry-polyline>
         </vc-instance-geometry>

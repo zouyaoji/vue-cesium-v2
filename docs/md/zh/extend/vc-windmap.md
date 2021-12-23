@@ -1,6 +1,6 @@
 # 风向图
 
-`vc-windmap` 组件用于加载风向图，其实质搬运自开源项目[3D-Wind-Field](https://github.com/RaymanNg/3D-Wind-Field)。
+`vc-windmap` 组件用于加载风向图，其实质搬运自开源项目[3D--wind--field](https://github.com/RaymanNg/3D--wind--field)。
 
 ## 示例
 
@@ -11,8 +11,8 @@
 <doc-preview>
   <template>
     <div class="viewer">
-      <vc-viewer scene3DOnly animation timeline @ready="ready">
-        <vc-windmap ref="windmap" :data="windData" :particleSystemOptions="particleSystemOptions"></vc-windmap>
+      <vc-viewer animation timeline @ready="ready">
+        <vc-windmap ref="windmap" :data="windData" :particle-system-options="particleSystemOptions"></vc-windmap>
         <vc-layer-imagery>
           <vc-provider-imagery-tile-single :url="urlLayer"></vc-provider-imagery-tile-single>
         </vc-layer-imagery>
@@ -154,8 +154,8 @@
 ```html
 <template>
   <div class="viewer">
-    <vc-viewer scene3DOnly animation timeline @ready="ready">
-      <vc-windmap ref="windmap" :data="windData" :particleSystemOptions="particleSystemOptions"></vc-windmap>
+    <vc-viewer animation timeline @ready="ready">
+      <vc-windmap ref="windmap" :data="windData" :particle-system-options="particleSystemOptions"></vc-windmap>
       <vc-layer-imagery>
         <vc-provider-imagery-tile-single :url="urlLayer"></vc-provider-imagery-tile-single>
       </vc-layer-imagery>
@@ -315,6 +315,6 @@
 
 ## 其他说明
 
-- 实现思路和着色代码（GLSL）都来自大神`RaymanNg`的开源项目[3D-Wind-Field](https://github.com/RaymanNg/3D-Wind-Field)，感谢大神的贡献，我只是搬运到支持 vue 了。
+- 实现思路和着色代码（GLSL）都来自大神`RaymanNg`的开源项目[3D--wind--field](https://github.com/RaymanNg/3D--wind--field)，感谢大神的贡献，我只是搬运到支持 vue 了。
 - 风向数据是 NetCDF 文件，详细介绍后面再补充。
 - 对比[nullschool](https://earth.nullschool.net/)

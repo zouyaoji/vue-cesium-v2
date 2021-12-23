@@ -13,7 +13,7 @@
 <doc-preview>
   <template>
     <div class="viewer">
-      <vc-viewer @ready="ready" scene3DOnly :infoBox="false">
+      <vc-viewer @ready="ready" scene3-d-only :info-box="false">
         <vc-handler-draw-point
           ref="handlerPoint"
           @activeEvt="activeEvt"
@@ -22,7 +22,7 @@
           :editable="editable"
         ></vc-handler-draw-point>
         <vc-handler-draw-polyline
-          :clampToGround="clampToGround"
+          :clamp-to-ground="clampToGround"
           ref="handlerLine"
           @activeEvt="activeEvt"
           @movingEvt="movingEvt"
@@ -30,14 +30,14 @@
           :editable="editable"
         ></vc-handler-draw-polyline>
         <vc-handler-draw-polygon
-          :clampToGround="clampToGround"
+          :clamp-to-ground="clampToGround"
           ref="handlerPolygon"
           @activeEvt="activeEvt"
           @movingEvt="movingEvt"
           @drawEvt="drawEvt"
           :editable="editable"
         ></vc-handler-draw-polygon>
-        <vc-primitive-tileset :url="modelUrl" @readyPromise="readyPromise"></vc-primitive-tileset>
+        <vc-primitive-tileset :url="modelUrl" @ready-promise="readyPromise"></vc-primitive-tileset>
       </vc-viewer>
       <div class="demo-tool">
         <md-button class="md-raised md-accent" @click="toggle('handlerPoint')">{{ pointDrawing ? '停止' : '点' }}</md-button>
@@ -104,7 +104,7 @@
 ```html
 <template>
   <div class="viewer">
-    <vc-viewer @ready="ready" scene3DOnly :infoBox="false">
+    <vc-viewer @ready="ready" scene3-d-only :info-box="false">
       <vc-handler-draw-point
         ref="handlerPoint"
         @activeEvt="activeEvt"
@@ -113,7 +113,7 @@
         :editable="editable"
       ></vc-handler-draw-point>
       <vc-handler-draw-polyline
-        :clampToGround="clampToGround"
+        :clamp-to-ground="clampToGround"
         ref="handlerLine"
         @activeEvt="activeEvt"
         @movingEvt="movingEvt"
@@ -121,14 +121,14 @@
         :editable="editable"
       ></vc-handler-draw-polyline>
       <vc-handler-draw-polygon
-        :clampToGround="clampToGround"
+        :clamp-to-ground="clampToGround"
         ref="handlerPolygon"
         @activeEvt="activeEvt"
         @movingEvt="movingEvt"
         @drawEvt="drawEvt"
         :editable="editable"
       ></vc-handler-draw-polygon>
-      <vc-primitive-tileset :url="modelUrl" @readyPromise="readyPromise"></vc-primitive-tileset>
+      <vc-primitive-tileset :url="modelUrl" @ready-promise="readyPromise"></vc-primitive-tileset>
     </vc-viewer>
     <div class="demo-tool">
       <md-button class="md-raised md-accent" @click="toggle('handlerPoint')">{{ pointDrawing ? '停止' : '点' }}</md-button>

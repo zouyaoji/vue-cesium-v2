@@ -14,16 +14,16 @@ The `vc-analytics-flood` component is used to simulate flood analysis. **Note** 
       <vc-viewer @ready="ready">
         <vc-analytics-flood
           ref="flood"
-          :minHeight="minHeight"
-          :maxHeight="maxHeight"
+          :min-height="minHeight"
+          :max-height="maxHeight"
           :speed="speed"
-          :polygonHierarchy="polygonHierarchy"
+          :polygon-hierarchy="polygonHierarchy"
           @activeEvt="activeEvt"
         >
         </vc-analytics-flood>
         <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
         <vc-layer-imagery>
-          <vc-provider-imagery-bingmaps :url="url" :bmKey="bmKey" mapStyle="Aerial"></vc-provider-imagery-bingmaps>
+          <vc-provider-imagery-bingmaps :url="url" :bm-key="bmKey" map-style="Aerial"></vc-provider-imagery-bingmaps>
         </vc-layer-imagery>
       </vc-viewer>
       <div class="demo-tool">
@@ -96,16 +96,16 @@ The `vc-analytics-flood` component is used to simulate flood analysis. **Note** 
     <vc-viewer @ready="ready">
       <vc-analytics-flood
         ref="flood"
-        :minHeight="minHeight"
-        :maxHeight="maxHeight"
+        :min-height="minHeight"
+        :max-height="maxHeight"
         :speed="speed"
-        :polygonHierarchy="polygonHierarchy"
+        :polygon-hierarchy="polygonHierarchy"
         @activeEvt="activeEvt"
       >
       </vc-analytics-flood>
       <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
       <vc-layer-imagery>
-        <vc-provider-imagery-bingmaps :url="url" :bmKey="bmKey" mapStyle="Aerial"></vc-provider-imagery-bingmaps>
+        <vc-provider-imagery-bingmaps :url="url" :bm-key="bmKey" map-style="Aerial"></vc-provider-imagery-bingmaps>
       </vc-layer-imagery>
     </vc-viewer>
     <div class="demo-tool">

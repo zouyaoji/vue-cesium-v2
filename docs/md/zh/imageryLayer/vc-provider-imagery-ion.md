@@ -13,7 +13,7 @@
     <div class="viewer">
       <vc-viewer @ready="ready">
         <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
-          <vc-provider-imagery-ion :assetId="4" :accessToken="accessToken"></vc-provider-imagery-ion>
+          <vc-provider-imagery-ion :asset-id="4" :access-token="accessToken"></vc-provider-imagery-ion>
         </vc-layer-imagery>
       </vc-viewer>
       <div class="demo-tool">
@@ -54,7 +54,7 @@
   <div class="viewer">
     <vc-viewer @ready="ready">
       <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
-        <vc-provider-imagery-ion :assetId="4" :accessToken="accessToken"></vc-provider-imagery-ion>
+        <vc-provider-imagery-ion :asset-id="4" :access-token="accessToken"></vc-provider-imagery-ion>
       </vc-layer-imagery>
     </vc-viewer>
     <div class="demo-tool">

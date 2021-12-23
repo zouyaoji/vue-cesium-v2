@@ -19,9 +19,9 @@
           <vc-graphics-polygon
             :hierarchy="hierarchy2"
             :material="material2"
-            :extrudedHeight="500000.0"
-            :closeTop="false"
-            :closeBottom="false"
+            :extruded-height="500000.0"
+            :close-top="false"
+            :close-bottom="false"
             ref="polygon2"
           ></vc-graphics-polygon>
         </vc-entity>
@@ -29,10 +29,10 @@
           <vc-graphics-polygon
             :hierarchy="hierarchy3"
             :material="material3"
-            :extrudedHeight="0"
-            :perPositionHeight="true"
+            :extruded-height="0"
+            :per-position-height="true"
             :outline="true"
-            :outlineColor="outlineColor3"
+            :outline-color="outlineColor3"
             ref="polygon3"
           ></vc-graphics-polygon>
         </vc-entity>
@@ -49,9 +49,9 @@
           <vc-graphics-polygon
             :hierarchy="hierarchy5"
             :material="material5"
-            :perPositionHeight="true"
+            :per-position-height="true"
             :outline="true"
-            :outlineColor="outlineColor5"
+            :outline-color="outlineColor5"
             ref="polygon5"
           ></vc-graphics-polygon>
         </vc-entity>
@@ -59,9 +59,9 @@
           <vc-graphics-polygon
             :hierarchy="hierarchy6"
             :material="material6"
-            :extrudedHeight="50000"
+            :extruded-height="50000"
             :outline="true"
-            :outlineColor="outlineColor6"
+            :outline-color="outlineColor6"
             ref="polygon6"
           ></vc-graphics-polygon>
         </vc-entity>
@@ -209,9 +209,9 @@
         <vc-graphics-polygon
           :hierarchy="hierarchy2"
           :material="material2"
-          :extrudedHeight="500000.0"
-          :closeTop="false"
-          :closeBottom="false"
+          :extruded-height="500000.0"
+          :close-top="false"
+          :close-bottom="false"
           ref="polygon2"
         ></vc-graphics-polygon>
       </vc-entity>
@@ -219,10 +219,10 @@
         <vc-graphics-polygon
           :hierarchy="hierarchy3"
           :material="material3"
-          :extrudedHeight="0"
-          :perPositionHeight="true"
+          :extruded-height="0"
+          :per-position-height="true"
           :outline="true"
-          :outlineColor="outlineColor3"
+          :outline-color="outlineColor3"
           ref="polygon3"
         ></vc-graphics-polygon>
       </vc-entity>
@@ -239,9 +239,9 @@
         <vc-graphics-polygon
           :hierarchy="hierarchy5"
           :material="material5"
-          :perPositionHeight="true"
+          :per-position-height="true"
           :outline="true"
-          :outlineColor="outlineColor5"
+          :outline-color="outlineColor5"
           ref="polygon5"
         ></vc-graphics-polygon>
       </vc-entity>
@@ -249,9 +249,9 @@
         <vc-graphics-polygon
           :hierarchy="hierarchy6"
           :material="material6"
-          :extrudedHeight="50000"
+          :extruded-height="50000"
           :outline="true"
-          :outlineColor="outlineColor6"
+          :outline-color="outlineColor6"
           ref="polygon6"
         ></vc-graphics-polygon>
       </vc-entity>

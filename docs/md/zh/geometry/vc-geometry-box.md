@@ -15,12 +15,12 @@
     <div class="viewer">
       <vc-viewer @ready="ready" @LEFT_CLICK="LEFT_CLICK">
         <vc-primitive  @click="clicked" :appearance="appearance">
-          <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes" :modelMatrix="modelMatrix">
+          <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes" :model-matrix="modelMatrix">
             <vc-geometry-box ref="box" :dimensions="dimensions"></vc-geometry-box>
           </vc-instance-geometry>
         </vc-primitive>
         <vc-primitive @click="clicked" :appearance="appearance">
-          <vc-instance-geometry :attributes="attributes" :modelMatrix="modelMatrix2">
+          <vc-instance-geometry :attributes="attributes" :model-matrix="modelMatrix2">
             <vc-geometry-outline-box ref="boxOutline" :dimensions="dimensions"></vc-geometry-outline-box>
           </vc-instance-geometry>
         </vc-primitive>
@@ -93,12 +93,12 @@
   <div class="viewer">
     <vc-viewer @ready="ready" @LEFT_CLICK="LEFT_CLICK">
       <vc-primitive :appearance="appearance">
-        <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes" :modelMatrix="modelMatrix">
+        <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes" :model-matrix="modelMatrix">
           <vc-geometry-box ref="box" :dimensions="dimensions"></vc-geometry-box>
         </vc-instance-geometry>
       </vc-primitive>
       <vc-primitive :appearance="appearance">
-        <vc-instance-geometry :attributes="attributes" :modelMatrix="modelMatrix2">
+        <vc-instance-geometry :attributes="attributes" :model-matrix="modelMatrix2">
           <vc-geometry-outline-box ref="boxOutline" :dimensions="dimensions"></vc-geometry-outline-box>
         </vc-instance-geometry>
       </vc-primitive>

@@ -15,13 +15,13 @@ The `vc-trail-wall` is used to load the flowing wall effect. Refer to [ysCesium|
         <vc-trail-wall
           :positions="positions"
           color="yellow"
-          :minimumHeights="minimumHeights"
-          imageUrl="./statics/SampleData/images/colors1.png"
+          :minimum-heights="minimumHeights"
+          image-url="./statics/SampleData/images/colors1.png"
           ref="wall"
           :interval="1000"
         ></vc-trail-wall>
         <vc-layer-imagery>
-          <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+          <vc-provider-imagery-tianditu map-style="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
       </vc-viewer>
     </div>
@@ -67,13 +67,13 @@ The `vc-trail-wall` is used to load the flowing wall effect. Refer to [ysCesium|
       <vc-trail-wall
         :positions="positions"
         color="yellow"
-        :minimumHeights="minimumHeights"
-        imageUrl="./statics/SampleData/images/colors1.png"
+        :minimum-heights="minimumHeights"
+        image-url="./statics/SampleData/images/colors1.png"
         ref="wall"
         :interval="1000"
       ></vc-trail-wall>
       <vc-layer-imagery>
-        <vc-provider-imagery-tianditu mapStyle="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+        <vc-provider-imagery-tianditu map-style="img_c" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
     </vc-viewer>
   </div>

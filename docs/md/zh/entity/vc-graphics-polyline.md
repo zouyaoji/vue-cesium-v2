@@ -17,7 +17,7 @@
             :positions="positions1"
             :material="material1"
             :width="5"
-            :clampToGround="false"
+            :clamp-to-ground="false"
           ></vc-graphics-polyline>
         </vc-entity>
         <vc-entity :polyline.sync="polyline2">
@@ -77,7 +77,7 @@
           :positions="positions1"
           :material="material1"
           :width="5"
-          :clampToGround="false"
+          :clamp-to-ground="false"
         ></vc-graphics-polyline>
       </vc-entity>
       <vc-entity :polyline.sync="polyline2">

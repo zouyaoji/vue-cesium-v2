@@ -16,7 +16,7 @@
       <vc-viewer @ready="ready">
         <vc-primitive :appearance="appearance">
           <vc-instance-geometry :attributes="attributes">
-            <vc-geometry-polygon-coplanar ref="polygonCoplanar" :positions="positions" :vertexFormat="vertexFormat"></vc-geometry-polygon-coplanar>
+            <vc-geometry-polygon-coplanar ref="polygonCoplanar" :positions="positions" :vertex-format="vertexFormat"></vc-geometry-polygon-coplanar>
           </vc-instance-geometry>
         </vc-primitive>
         <vc-primitive :appearance="appearance">
@@ -91,7 +91,7 @@
           <vc-geometry-polygon-coplanar
             ref="polygonCoplanar"
             :positions="positions"
-            :vertexFormat="vertexFormat"
+            :vertex-format="vertexFormat"
           ></vc-geometry-polygon-coplanar>
         </vc-instance-geometry>
       </vc-primitive>

@@ -1,6 +1,6 @@
 # CzmlDataSource
 
-The `vc-datasource-czml` component is used to load a dataSource which processes [CZML](https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/CZML-Guide).
+The `vc-datasource-czml` component is used to load a dataSource which processes [CZML](https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/CZML--guide).
 
 ## Example
 
@@ -11,7 +11,7 @@ The `vc-datasource-czml` component is used to load a dataSource which processes 
 <doc-preview>
   <template>
     <div class="viewer">
-      <vc-viewer :shouldAnimate="true" @ready="ready">
+      <vc-viewer :should-animate="true" @ready="ready">
         <vc-datasource-czml czml="./statics/SampleData/simple.czml" @ready="subReady" :show="show"></vc-datasource-czml>
       </vc-viewer>
     </div>
@@ -40,7 +40,7 @@ The `vc-datasource-czml` component is used to load a dataSource which processes 
 ```html
 <template>
   <div class="viewer">
-    <vc-viewer :shouldAnimate="true" @ready="ready">
+    <vc-viewer :should-animate="true" @ready="ready">
       <vc-datasource-czml czml="./statics/SampleData/simple.czml" @ready="subReady" :show="show"></vc-datasource-czml>
     </vc-viewer>
   </div>

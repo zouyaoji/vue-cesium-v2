@@ -13,7 +13,7 @@
     <div class="viewer">
       <vc-viewer @ready="ready">
         <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
-          <vc-provider-imagery-bingmaps :url="url" :bmKey="bmKey" :mapStyle="mapStyle"></vc-provider-imagery-bingmaps>
+          <vc-provider-imagery-bingmaps :url="url" :bm-key="bmKey" :map-style="mapStyle"></vc-provider-imagery-bingmaps>
         </vc-layer-imagery>
       </vc-viewer>
       <div class="demo-tool">
@@ -79,7 +79,7 @@
   <div class="viewer">
     <vc-viewer @ready="ready">
       <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
-        <vc-provider-imagery-bingmaps :url="url" :bmKey="bmKey" :mapStyle="mapStyle"></vc-provider-imagery-bingmaps>
+        <vc-provider-imagery-bingmaps :url="url" :bm-key="bmKey" :map-style="mapStyle"></vc-provider-imagery-bingmaps>
       </vc-layer-imagery>
     </vc-viewer>
     <div class="demo-tool">

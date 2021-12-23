@@ -15,26 +15,26 @@
     <div class="viewer">
       <vc-viewer @ready="ready" @LEFT_CLICK="LEFT_CLICK">
         <vc-primitive :appearance="appearance">
-          <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes" :modelMatrix="modelMatrix">
+          <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes" :model-matrix="modelMatrix">
             <vc-geometry-cylinder
               ref="cylinder"
               :length="400000.0"
-              :topRadius="200000.0"
-              :bottomRadius="200000.0"
+              :top-radius="200000.0"
+              :bottom-radius="200000.0"
               :slices="1024"
-              :vertexFormat="vertexFormat"
+              :vertex-format="vertexFormat"
             ></vc-geometry-cylinder>
           </vc-instance-geometry>
         </vc-primitive>
         <vc-primitive :appearance="appearance">
-          <vc-instance-geometry :attributes="attributes" :modelMatrix="modelMatrixOutline">
+          <vc-instance-geometry :attributes="attributes" :model-matrix="modelMatrixOutline">
             <vc-geometry-outline-cylinder
               ref="cylinderOutline"
               :length="400000.0"
-              :topRadius="200000.0"
-              :bottomRadius="200000.0"
+              :top-radius="200000.0"
+              :bottom-radius="200000.0"
               :slices="1024"
-              :numberOfVerticalLines="128"
+              :number-of-vertical-lines="128"
             ></vc-geometry-outline-cylinder>
           </vc-instance-geometry>
         </vc-primitive>
@@ -105,26 +105,26 @@
   <div class="viewer">
     <vc-viewer @ready="ready" @LEFT_CLICK="LEFT_CLICK">
       <vc-primitive :appearance="appearance">
-        <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes" :modelMatrix="modelMatrix">
+        <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes" :model-matrix="modelMatrix">
           <vc-geometry-cylinder
             ref="cylinder"
             :length="400000.0"
-            :topRadius="200000.0"
-            :bottomRadius="200000.0"
+            :top-radius="200000.0"
+            :bottom-radius="200000.0"
             :slices="1024"
-            :vertexFormat="vertexFormat"
+            :vertex-format="vertexFormat"
           ></vc-geometry-cylinder>
         </vc-instance-geometry>
       </vc-primitive>
       <vc-primitive :appearance="appearance">
-        <vc-instance-geometry :attributes="attributes" :modelMatrix="modelMatrixOutline">
+        <vc-instance-geometry :attributes="attributes" :model-matrix="modelMatrixOutline">
           <vc-geometry-outline-cylinder
             ref="cylinderOutline"
             :length="400000.0"
-            :topRadius="200000.0"
-            :bottomRadius="200000.0"
+            :top-radius="200000.0"
+            :bottom-radius="200000.0"
             :slices="1024"
-            :numberOfVerticalLines="128"
+            :number-of-vertical-lines="128"
           ></vc-geometry-outline-cylinder>
         </vc-instance-geometry>
       </vc-primitive>

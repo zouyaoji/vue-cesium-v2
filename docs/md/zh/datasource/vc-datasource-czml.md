@@ -1,6 +1,6 @@
 # CzmlDataSource
 
-`vc-datasource-czml` 组件用于加载 [CZML](https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/CZML-Guide) 格式数据源。
+`vc-datasource-czml` 组件用于加载 [CZML](https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/CZML--guide) 格式数据源。
 
 ## 示例
 
@@ -11,7 +11,7 @@
 <doc-preview>
   <template>
     <div class="viewer">
-      <vc-viewer :shouldAnimate="true" @ready="ready">
+      <vc-viewer :should-animate="true" @ready="ready">
         <vc-datasource-czml czml="./statics/SampleData/simple.czml" @ready="subReady" :show="show" @click="clicked"></vc-datasource-czml>
       </vc-viewer>
     </div>
@@ -43,7 +43,7 @@
 ```html
 <template>
   <div class="viewer">
-    <vc-viewer :shouldAnimate="true" @ready="ready">
+    <vc-viewer :should-animate="true" @ready="ready">
       <vc-datasource-czml
         czml="./statics/SampleData/simple.czml"
         @ready="subReady"

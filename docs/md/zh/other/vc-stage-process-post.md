@@ -12,7 +12,7 @@
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready" >
-        <vc-stage-process-post :fragmentShader="fragmentShader"></vc-stage-process-post>
+        <vc-stage-process-post :fragment-shader="fragmentShader"></vc-stage-process-post>
       </vc-viewer>
     </div>
   </template>
@@ -58,7 +58,7 @@
 <template>
   <div class="viewer">
     <vc-viewer @ready="ready">
-      <vc-stage-process-post :fragmentShader="fragmentShader"></vc-stage-process-post>
+      <vc-stage-process-post :fragment-shader="fragmentShader"></vc-stage-process-post>
     </vc-viewer>
   </div>
 </template>

@@ -12,28 +12,28 @@
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="20">
+        <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="20">
           <vc-provider-imagery-wmts
             :url="urlText"
-            :wmtsStyle="style"
-            :tileMatrixSetID="tileMatrixSetID"
+            :wmts-style="style"
+            :tile-matrix-set-i-d="tileMatrixSetID"
             :credit="credit"
             :subdomains="subdomains"
-            :tilingScheme="tilingScheme"
-            :tileMatrixLabels="tileMatrixLabels"
+            :tiling-scheme="tilingScheme"
+            :tile-matrix-labels="tileMatrixLabels"
             :token="token"
             :layer="layer2"
           ></vc-provider-imagery-wmts>
         </vc-layer-imagery>
-        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="10">
+        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
           <vc-provider-imagery-wmts
             :url="url"
-            :wmtsStyle="style"
-            :tileMatrixSetID="tileMatrixSetID"
+            :wmts-style="style"
+            :tile-matrix-set-i-d="tileMatrixSetID"
             :credit="credit"
             :subdomains="subdomains"
-            :tilingScheme="tilingScheme"
-            :tileMatrixLabels="tileMatrixLabels"
+            :tiling-scheme="tilingScheme"
+            :tile-matrix-labels="tileMatrixLabels"
             :token="token"
             :layer="layer1"
           ></vc-provider-imagery-wmts>
@@ -127,28 +127,28 @@
 <template>
   <div class="viewer">
     <vc-viewer @ready="ready">
-      <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="20">
+      <vc-layer-imagery ref="layerText" :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="20">
         <vc-provider-imagery-wmts
           :url="urlText"
-          :wmtsStyle="style"
-          :tileMatrixSetID="tileMatrixSetID"
+          :wmts-style="style"
+          :tile-matrix-set-i-d="tileMatrixSetID"
           :credit="credit"
           :subdomains="subdomains"
-          :tilingScheme="tilingScheme"
-          :tileMatrixLabels="tileMatrixLabels"
+          :tiling-scheme="tilingScheme"
+          :tile-matrix-labels="tileMatrixLabels"
           :token="token"
           :layer="layer2"
         ></vc-provider-imagery-wmts>
       </vc-layer-imagery>
-      <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="10">
+      <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
         <vc-provider-imagery-wmts
           :url="url"
-          :wmtsStyle="style"
-          :tileMatrixSetID="tileMatrixSetID"
+          :wmts-style="style"
+          :tile-matrix-set-i-d="tileMatrixSetID"
           :credit="credit"
           :subdomains="subdomains"
-          :tilingScheme="tilingScheme"
-          :tileMatrixLabels="tileMatrixLabels"
+          :tiling-scheme="tilingScheme"
+          :tile-matrix-labels="tileMatrixLabels"
           :token="token"
           :layer="layer1"
         ></vc-provider-imagery-wmts>

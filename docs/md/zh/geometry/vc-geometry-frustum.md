@@ -21,7 +21,7 @@
               :frustum="frustum"
               :origin="origin"
               :orientation="orientation"
-              :vertexFormat="vertexFormat"
+              :vertex-format="vertexFormat"
             ></vc-geometry-frustum>
           </vc-instance-geometry>
         </vc-primitive>
@@ -109,7 +109,7 @@
             :frustum="frustum"
             :origin="origin"
             :orientation="orientation"
-            :vertexFormat="vertexFormat"
+            :vertex-format="vertexFormat"
           ></vc-geometry-frustum>
         </vc-instance-geometry>
       </vc-primitive>

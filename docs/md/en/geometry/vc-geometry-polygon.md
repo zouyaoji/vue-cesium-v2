@@ -18,16 +18,16 @@
           <vc-instance-geometry>
             <vc-geometry-polygon
               ref="polygon"
-              :vertexFormat="vertexFormat"
-              :polygonHierarchy="polygonHierarchy"
+              :vertex-format="vertexFormat"
+              :polygon-hierarchy="polygonHierarchy"
               :height="height"
-              :extrudedHeight="30"
+              :extruded-height="30"
             ></vc-geometry-polygon>
           </vc-instance-geometry>
         </vc-primitive>
         <vc-primitive :appearance="appearanceOutline">
           <vc-instance-geometry :attributes="attributes">
-            <vc-geometry-outline-polygon ref="polygonOutline" :polygonHierarchy="polygonHierarchyOutline">
+            <vc-geometry-outline-polygon ref="polygonOutline" :polygon-hierarchy="polygonHierarchyOutline">
             </vc-geometry-outline-polygon>
           </vc-instance-geometry>
         </vc-primitive>
@@ -114,16 +114,16 @@
         <vc-instance-geometry>
           <vc-geometry-polygon
             ref="polygon"
-            :vertexFormat="vertexFormat"
-            :polygonHierarchy="polygonHierarchy"
+            :vertex-format="vertexFormat"
+            :polygon-hierarchy="polygonHierarchy"
             :height="height"
-            :extrudedHeight="30"
+            :extruded-height="30"
           ></vc-geometry-polygon>
         </vc-instance-geometry>
       </vc-primitive>
       <vc-primitive :appearance="appearanceOutline">
         <vc-instance-geometry :attributes="attributes">
-          <vc-geometry-outline-polygon ref="polygonOutline" :polygonHierarchy="polygonHierarchyOutline">
+          <vc-geometry-outline-polygon ref="polygonOutline" :polygon-hierarchy="polygonHierarchyOutline">
           </vc-geometry-outline-polygon>
         </vc-instance-geometry>
       </vc-primitive>

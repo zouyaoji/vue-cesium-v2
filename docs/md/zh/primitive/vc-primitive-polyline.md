@@ -11,7 +11,7 @@
 <doc-preview>
   <template>
     <div class="viewer">
-      <vc-viewer @ready="ready" scene3DOnly>
+      <vc-viewer @ready="ready">
         <vc-collection-primitive-polyline @click="clicked">
           <vc-primitive-polyline :positions="positions1" :material="material1" :width="5"></vc-primitive-polyline>
           <vc-primitive-polyline :positions="positions2" :material="material2" :width="10"></vc-primitive-polyline>
@@ -86,7 +86,7 @@
 ```html
 <template>
   <div class="viewer">
-    <vc-viewer @ready="ready" scene3DOnly>
+    <vc-viewer @ready="ready" scene3-d-only>
       <vc-collection-primitive-polyline>
         <vc-primitive-polyline :positions="positions1" :material="material1" :width="5"></vc-primitive-polyline>
         <vc-primitive-polyline :positions="positions2" :material="material2" :width="10"></vc-primitive-polyline>

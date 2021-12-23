@@ -12,14 +12,14 @@
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="20">
-          <vc-provider-imagery-urltemplate :url="urlText" :projectionTransforms="projectionTransforms"></vc-provider-imagery-urltemplate>
+        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="20">
+          <vc-provider-imagery-urltemplate :url="urlText" :projection-transforms="projectionTransforms"></vc-provider-imagery-urltemplate>
         </vc-layer-imagery>
-        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="10">
-          <vc-provider-imagery-urltemplate :projectionTransforms="projectionTransforms" :url="url"></vc-provider-imagery-urltemplate>
+        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
+          <vc-provider-imagery-urltemplate :projection-transforms="projectionTransforms" :url="url"></vc-provider-imagery-urltemplate>
         </vc-layer-imagery>
-        <vc-layer-imagery :sortOrder="5">
-          <vc-provider-imagery-tianditu mapStyle="img_w" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+        <vc-layer-imagery :sort-order="5">
+          <vc-provider-imagery-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
       </vc-viewer>
       <div class="demo-tool">
@@ -51,7 +51,7 @@
               label: '高德影像地图服务'
             },
             // {
-            //   value: 'https://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali',
+            //   value: 'https://mt1.google.cn/vt/lyrs=s&hl=zh--cN&x={x}&y={y}&z={z}&s=Gali',
             //   label: '谷歌影像地图服务'
             // },
             {
@@ -89,20 +89,20 @@
 <template>
   <div class="viewer">
     <vc-viewer @ready="ready">
-      <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="20">
+      <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="20">
         <vc-provider-imagery-urltemplate
           :url="urlText"
-          :projectionTransforms="projectionTransforms"
+          :projection-transforms="projectionTransforms"
         ></vc-provider-imagery-urltemplate>
       </vc-layer-imagery>
-      <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sortOrder="10">
+      <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
         <vc-provider-imagery-urltemplate
-          :projectionTransforms="projectionTransforms"
+          :projection-transforms="projectionTransforms"
           :url="url"
         ></vc-provider-imagery-urltemplate>
       </vc-layer-imagery>
-      <vc-layer-imagery :sortOrder="5">
-        <vc-provider-imagery-tianditu mapStyle="img_w" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
+      <vc-layer-imagery :sort-order="5">
+        <vc-provider-imagery-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
     </vc-viewer>
     <div class="demo-tool">
@@ -134,7 +134,7 @@
             label: '高德影像地图服务'
           },
           // {
-          //   value: 'https://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali',
+          //   value: 'https://mt1.google.cn/vt/lyrs=s&hl=zh--cN&x={x}&y={y}&z={z}&s=Gali',
           //   label: '谷歌影像地图服务'
           // },
           {

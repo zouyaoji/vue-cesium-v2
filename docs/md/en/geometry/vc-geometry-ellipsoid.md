@@ -15,16 +15,16 @@
     <div class="viewer">
       <vc-viewer ref="viewer" @ready="ready" @LEFT_CLICK="LEFT_CLICK">
         <vc-primitive ref="primitive" :appearance="appearance">
-          <vc-instance-geometry ref="geometry" :geometry.sync="geometry" :attributes="attributes" :modelMatrix="modelMatrix">
+          <vc-instance-geometry ref="geometry" :geometry.sync="geometry" :attributes="attributes" :model-matrix="modelMatrix">
             <vc-geometry-ellipsoid
               ref="ellipsoid"
               :radii="radii"
-              :vertexFormat="vertexFormat"
+              :vertex-format="vertexFormat"
             ></vc-geometry-ellipsoid>
           </vc-instance-geometry>
         </vc-primitive>
         <vc-primitive :appearance="appearance">
-          <vc-instance-geometry :attributes="attributes" :modelMatrix="modelMatrixOutline">
+          <vc-instance-geometry :attributes="attributes" :model-matrix="modelMatrixOutline">
             <vc-geometry-outline-ellipsoid
               ref="ellipsoidOutline"
               :radii="radii"
@@ -102,12 +102,12 @@
   <div class="viewer">
     <vc-viewer ref="viewer" @ready="ready" @LEFT_CLICK="LEFT_CLICK">
       <vc-primitive ref="primitive" :appearance="appearance">
-        <vc-instance-geometry ref="geometry" :geometry.sync="geometry" :attributes="attributes" :modelMatrix="modelMatrix">
-          <vc-geometry-ellipsoid ref="ellipsoid" :radii="radii" :vertexFormat="vertexFormat"></vc-geometry-ellipsoid>
+        <vc-instance-geometry ref="geometry" :geometry.sync="geometry" :attributes="attributes" :model-matrix="modelMatrix">
+          <vc-geometry-ellipsoid ref="ellipsoid" :radii="radii" :vertex-format="vertexFormat"></vc-geometry-ellipsoid>
         </vc-instance-geometry>
       </vc-primitive>
       <vc-primitive :appearance="appearance">
-        <vc-instance-geometry :attributes="attributes" :modelMatrix="modelMatrixOutline">
+        <vc-instance-geometry :attributes="attributes" :model-matrix="modelMatrixOutline">
           <vc-geometry-outline-ellipsoid ref="ellipsoidOutline" :radii="radii"></vc-geometry-outline-ellipsoid>
         </vc-instance-geometry>
       </vc-primitive>

@@ -12,11 +12,11 @@
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-kriging-map ref="krigingmap" v-if="values.length !== 0" :breaks="breaks" :values="values" :lngs="lngs" :lats="lats" :colors="colors"            @ready="subReady" clipCoords="./statics/SampleData/shp/china/guilin.json">
+        <vc-kriging-map ref="krigingmap" v-if="values.length !== 0" :breaks="breaks" :values="values" :lngs="lngs" :lats="lats" :colors="colors"            @ready="subReady" clip-coords="./statics/SampleData/shp/china/guilin.json">
         </vc-kriging-map>
         <vc-layer-imagery>
           <vc-provider-imagery-tianditu
-            mapStyle="img_c"
+            map-style="img_c"
             token="436ce7e50d27eede2f2929307e6b33c0"
           ></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
@@ -79,7 +79,7 @@
           @ready="subReady"
           clipCoords="./statics/SampleData/shp/guilin.json"
         >
-          <!-- <vc-kriging-map ref="krigingmap" v-if="values.length !== 0" :breaks="breaks" :values="values" :lngs="lngs" :lats="lats" :colors="colors"      @ready="subReady" :clipCoords="[109.61826, 24.25883, 111.49207, 26.38528]"> -->
+          <!-- <vc-kriging-map ref="krigingmap" v-if="values.length !== 0" :breaks="breaks" :values="values" :lngs="lngs" :lats="lats" :colors="colors"      @ready="subReady" :clip-coords="[109.61826, 24.25883, 111.49207, 26.38528]"> -->
         </vc-kriging-map>
         <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
       </vc-viewer>

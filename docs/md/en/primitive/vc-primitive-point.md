@@ -19,7 +19,7 @@ The `vc-primitive-point` component is used to load a graphical point positioned 
                 :position="position"
                 :key="'point' + index + 'position' + subIndex"
                 :color="colorPoint"
-                :pixelSize="8"
+                :pixel-size="8"
               ></vc-primitive-point>
             </template>
           </template>
@@ -78,7 +78,7 @@ The `vc-primitive-point` component is used to load a graphical point positioned 
               :position="position"
               :key="'point' + index + 'position' + subIndex"
               :color="colorPoint"
-              :pixelSize="8"
+              :pixel-size="8"
             ></vc-primitive-point>
           </template>
         </template>

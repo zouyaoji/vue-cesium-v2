@@ -1,6 +1,6 @@
 # VcWindMap
 
-The `vc-windmap` component is used to load the wind direction map, it is carried from the open source project [3D-Wind-Field](https://github.com/RaymanNg/3D-Wind-Field).
+The `vc-windmap` component is used to load the wind direction map, it is carried from the open source project [3D--wind--field](https://github.com/RaymanNg/3D--wind--field).
 
 ## Example
 
@@ -11,11 +11,11 @@ The `vc-windmap` component is used to load the wind direction map, it is carried
 <doc-preview>
   <template>
     <div class="viewer">
-      <vc-viewer scene3DOnly animation timeline @ready="ready">
+      <vc-viewer animation timeline @ready="ready">
         <vc-layer-imagery>
           <vc-provider-imagery-tile-single :url="urlLayer"></vc-provider-imagery-tile-single>
         </vc-layer-imagery>
-        <vc-windmap ref="windmap" :data="windData" :particleSystemOptions="particleSystemOptions"> </vc-windmap>
+        <vc-windmap ref="windmap" :data="windData" :particle-system-options="particleSystemOptions"> </vc-windmap>
       </vc-viewer>
       <div class="demo-tool">
         <span>maxParticles</span>
@@ -154,11 +154,11 @@ The `vc-windmap` component is used to load the wind direction map, it is carried
 ```html
 <template>
   <div class="viewer">
-    <vc-viewer scene3DOnly animation timeline @ready="ready">
+    <vc-viewer animation timeline @ready="ready">
       <vc-layer-imagery>
         <vc-provider-imagery-tile-single :url="urlLayer"></vc-provider-imagery-tile-single>
       </vc-layer-imagery>
-      <vc-windmap ref="windmap" :data="windData" :particleSystemOptions="particleSystemOptions"> </vc-windmap>
+      <vc-windmap ref="windmap" :data="windData" :particle-system-options="particleSystemOptions"> </vc-windmap>
     </vc-viewer>
     <div class="demo-tool">
       <span>maxParticles</span>
@@ -315,4 +315,4 @@ The `vc-windmap` component is used to load the wind direction map, it is carried
 
 ## Instructions
 
-- Reference from [3D-Wind-Field](https://github.com/RaymanNg/3D-Wind-Field).
+- Reference from [3D--wind--field](https://github.com/RaymanNg/3D--wind--field).

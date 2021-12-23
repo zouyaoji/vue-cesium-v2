@@ -14,7 +14,7 @@ The `vc-layer-imagery` component is used to load Cesium images. You can directly
       <vc-viewer @ready="ready">
        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
           <vc-provider-imagery-tianditu
-            mapStyle="img_c"
+            map-style="img_c"
             token="436ce7e50d27eede2f2929307e6b33c0"
           ></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
@@ -56,7 +56,7 @@ The `vc-layer-imagery` component is used to load Cesium images. You can directly
     <vc-viewer @ready="ready">
       <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
         <vc-provider-imagery-tianditu
-          mapStyle="img_c"
+          map-style="img_c"
           token="436ce7e50d27eede2f2929307e6b33c0"
         ></vc-provider-imagery-tianditu>
       </vc-layer-imagery>

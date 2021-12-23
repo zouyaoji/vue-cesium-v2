@@ -11,18 +11,18 @@
 <doc-preview>
   <template>
     <div class="viewer" ref="viewerContainer">
-      <vc-viewer ref="vcViewer" :animation="animation" :baseLayerPicker="baseLayerPicker" :timeline="timeline"
-        :fullscreenButton="fullscreenButton" :fullscreenElement="fullscreenElement" :infoBox="infoBox" @ready="ready">
+      <vc-viewer ref="vcViewer" :animation="animation" :base-layer-picker="baseLayerPicker" :timeline="timeline"
+        :fullscreen-button="fullscreenButton" :fullscreen-element="fullscreenElement" :info-box="infoBox" @ready="ready">
         <vc-navigation :options="options"></vc-navigation>
         <vc-map-overview></vc-map-overview>
         <vc-layer-imagery>
           <vc-provider-imagery-tianditu
-            mapStyle="img_c"
+            map-style="img_c"
             :token="tk"
           ></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
         <vc-layer-imagery ref="layerText">
-          <vc-provider-imagery-tianditu mapStyle="cia_c" :token="tk"></vc-provider-imagery-tianditu>
+          <vc-provider-imagery-tianditu map-style="cia_c" :token="tk"></vc-provider-imagery-tianditu>
         </vc-layer-imagery>
       </vc-viewer>
       <div class="demo-tool">
@@ -130,20 +130,20 @@
     <vc-viewer
       ref="vcViewer"
       :animation="animation"
-      :baseLayerPicker="baseLayerPicker"
+      :base-layer-picker="baseLayerPicker"
       :timeline="timeline"
-      :fullscreenButton="fullscreenButton"
-      :fullscreenElement="fullscreenElement"
-      :infoBox="infoBox"
+      :fullscreen-button="fullscreenButton"
+      :fullscreen-element="fullscreenElement"
+      :info-box="infoBox"
       @ready="ready"
     >
       <vc-navigation></vc-navigation>
       <vc-map-overview></vc-map-overview>
       <vc-layer-imagery>
-        <vc-provider-imagery-tianditu mapStyle="img_c" :token="tk"></vc-provider-imagery-tianditu>
+        <vc-provider-imagery-tianditu map-style="img_c" :token="tk"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
       <vc-layer-imagery ref="layerText">
-        <vc-provider-imagery-tianditu mapStyle="cia_c" :token="tk"></vc-provider-imagery-tianditu>
+        <vc-provider-imagery-tianditu map-style="cia_c" :token="tk"></vc-provider-imagery-tianditu>
       </vc-layer-imagery>
     </vc-viewer>
     <div class="demo-tool">

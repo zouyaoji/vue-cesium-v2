@@ -15,7 +15,7 @@ The `vc-primitive-classification` component is used to load a classification pri
         <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
         <vc-primitive-classification :asynchronous="false">
           <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes">
-            <vc-geometry-polygon :polygonHierarchy="polygonHierarchy" :extrudedHeight="extrudedHeight"></vc-geometry-polygon>
+            <vc-geometry-polygon :polygon-hierarchy="polygonHierarchy" :extruded-height="extrudedHeight"></vc-geometry-polygon>
           </vc-instance-geometry>
         </vc-primitive-classification>
       </vc-viewer>
@@ -72,7 +72,7 @@ The `vc-primitive-classification` component is used to load a classification pri
       <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
       <vc-primitive-classification :asynchronous="false">
         <vc-instance-geometry :geometry.sync="geometry" :attributes="attributes">
-          <vc-geometry-polygon :polygonHierarchy="polygonHierarchy" :extrudedHeight="extrudedHeight"></vc-geometry-polygon>
+          <vc-geometry-polygon :polygon-hierarchy="polygonHierarchy" :extruded-height="extrudedHeight"></vc-geometry-polygon>
         </vc-instance-geometry>
       </vc-primitive-classification>
     </vc-viewer>

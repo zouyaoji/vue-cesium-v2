@@ -12,7 +12,7 @@ The `vc-primitive` component is used to load a primitive that represents geometr
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-primitive @click="clicked" :appearance="appearance" :geometryInstances="geometryInstances"></vc-primitive>
+        <vc-primitive @click="clicked" :appearance="appearance" :geometry-instances="geometryInstances"></vc-primitive>
       </vc-viewer>
     </div>
   </template>
@@ -71,7 +71,7 @@ The `vc-primitive` component is used to load a primitive that represents geometr
 <template>
   <div class="viewer">
     <vc-viewer @ready="ready">
-      <vc-primitive @click="clicked" :appearance="appearance" :geometryInstances="geometryInstances"></vc-primitive>
+      <vc-primitive @click="clicked" :appearance="appearance" :geometry-instances="geometryInstances"></vc-primitive>
     </vc-viewer>
   </div>
 </template>

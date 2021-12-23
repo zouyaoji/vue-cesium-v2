@@ -13,7 +13,7 @@ The `vc-provider-imagery-arcgis-mapserver` component is used to load tiled image
     <div class="viewer">
       <vc-viewer @ready="ready">
        <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
-        <vc-provider-imagery-arcgis-mapserver :url="url" :maximumLevel="maximumLevel"></vc-provider-imagery-arcgis-mapserver>
+        <vc-provider-imagery-arcgis-mapserver :url="url" :maximum-level="maximumLevel"></vc-provider-imagery-arcgis-mapserver>
        </vc-layer-imagery>
       </vc-viewer>
       <div class="demo-tool">
@@ -71,7 +71,7 @@ The `vc-provider-imagery-arcgis-mapserver` component is used to load tiled image
   <div class="viewer">
     <vc-viewer @ready="ready">
       <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast">
-        <vc-provider-imagery-arcgis-mapserver :url="url" :maximumLevel="maximumLevel"></vc-provider-imagery-arcgis-mapserver>
+        <vc-provider-imagery-arcgis-mapserver :url="url" :maximum-level="maximumLevel"></vc-provider-imagery-arcgis-mapserver>
       </vc-layer-imagery>
     </vc-viewer>
     <div class="demo-tool">
