@@ -1,4 +1,14 @@
 # 更新日志
+
+## 2.3.1 - 2021-12-23
+
+- 替换 heatmapjs 源。
+- 修复 `vc-provider-imagery-baidumap` 组件 `projectionTransforms` prop 写错问题。
+
+## 2.3.0 - 2021-12-17
+
+- 用 pnpm 替换 pnpm
+
 ## 2.2.12 - 2021-12-16
 
 - 修复量算组件在超图平台上不能拾取到S3M模型上的问题（上个版本没完全修复 - -）。
