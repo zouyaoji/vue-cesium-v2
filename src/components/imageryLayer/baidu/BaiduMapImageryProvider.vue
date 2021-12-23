@@ -1,12 +1,5 @@
 <script>
-import {
-  url,
-  ellipsoid,
-  tileDiscardPolicy,
-  credit,
-  minimumLevel,
-  maximumLevel
-} from '../../../mixins/mixinProps'
+import { url, ellipsoid, tileDiscardPolicy, credit, minimumLevel, maximumLevel } from '../../../mixins/mixinProps'
 import mixinImageryProvider from '../../../mixins/providers/mixinImageryProvider'
 import BaiduMapImageryProvider from '../../../exts/imageryProvider/BaiduMapImageryProvider'
 export default {
@@ -17,14 +10,12 @@ export default {
       type: String,
       default: 'http'
     },
-    props: {
-      projectionTransforms: {
-        type: Boolean | Object,
-        default: () => {
-          return {
-            from: 'BD09',
-            to: 'WGS84'
-          }
+    projectionTransforms: {
+      type: [Boolean, Object],
+      default: () => {
+        return {
+          from: 'BD09',
+          to: 'WGS84'
         }
       }
     }
@@ -34,8 +25,13 @@ export default {
       const { $props, transformProps, setPropWatchers, unwatchFns, projectionTransforms } = this
       const options = transformProps($props)
       Cesium.BaiduMapImageryProvider = BaiduMapImageryProvider
-      if (unwatchFns.length === 0) { setPropWatchers(true) }
-      options.toWGS84 = projectionTransforms && projectionTransforms.from !== projectionTransforms.to && projectionTransforms.to.toUpperCase() === 'WGS84'
+      if (unwatchFns.length === 0) {
+        setPropWatchers(true)
+      }
+      options.toWGS84 =
+        projectionTransforms &&
+        projectionTransforms.from !== projectionTransforms.to &&
+        projectionTransforms.to.toUpperCase() === 'WGS84'
       return new Cesium.BaiduMapImageryProvider(options)
     }
   }
