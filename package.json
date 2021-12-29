@@ -45,7 +45,7 @@
   "dependencies": {
     "@amap/amap-jsapi-loader": "0.0.1",
     "@babel/runtime-corejs2": "^7.7.2",
-    "@rengr/heatmap.js": "^2.0.10",
+    "@zouyaoji/heatmap.js": "^2.0.8",
     "@sakitam-gis/kriging": "^0.1.0",
     "@turf/area": "^6.0.1",
     "@turf/helpers": "^6.1.4",

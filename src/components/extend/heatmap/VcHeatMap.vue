@@ -15,7 +15,7 @@
 </template>
 <script>
 import cmp from '../../../mixins/virtualCmp'
-import h337 from '@rengr/heatmap.js'
+import h337 from '@zouyaoji/heatmap.js'
 export default {
   name: 'vc-heatmap',
   data () {
