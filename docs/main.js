@@ -1,7 +1,7 @@
 /*
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2021-06-30 22:20:50
- * @LastEditTime: 2021-09-09 09:40:48
+ * @LastEditTime: 2022-01-13 15:16:06
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\docs\main.js
@@ -41,7 +41,10 @@ Vue.use(VueCesium, {
   // cesiumPath: './statics/EarthSDK/XbsjEarth/XbsjEarth.js', // CesiumLab EarthSDK
   // cesiumPath: './statics/Cesium/Cesium.js',
   // cesiumPath: './statics/CesiumUnminified/Cesium.js',
-
+  cesiumPath:
+    process.env.NODE_ENV === 'development'
+      ? './statics/CesiumUnminified/Cesium.js'
+      : 'https://cdn.jsdelivr.net/npm/cesium@latest/Build/Cesium/Cesium.js',
   // lang: lang,
   accessToken:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5Y2U0ZTk2Ni1jNzdkLTQ3OWYtYjVmYS0yMGM3YTk3NjgzMmUiLCJpZCI6Njk5Nywic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU0ODA1MTc0OH0.Csy6yyAnv6JSBppH0Ou3ahshqcHFEhP27iOz5gjQMEo'
@@ -67,12 +70,12 @@ const router = new VueRouter({
   routes
 })
 
-router.afterEach(route => {
+router.afterEach((route) => {
   Vue.nextTick(Prism.highlightAll)
 })
 
 export default new Vue({
   el: '#app',
   router,
-  render: h => h(App)
+  render: (h) => h(App)
 })

@@ -23,12 +23,12 @@ specifiers:
   '@babel/polyfill': ^7.7.0
   '@babel/preset-env': ^7.6.3
   '@babel/runtime-corejs2': ^7.7.2
-  '@rengr/heatmap.js': ^2.0.10
   '@rollup/plugin-node-resolve': ^6.0.0
   '@sakitam-gis/kriging': ^0.1.0
   '@turf/area': ^6.0.1
   '@turf/helpers': ^6.1.4
   '@turf/isobands': ^5.1.5
+  '@zouyaoji/heatmap.js': ^2.0.8
   autoprefixer: ^9.8.5
   babel-eslint: ^10.0.1
   babel-loader: ^8.0.6
@@ -108,14 +108,14 @@ specifiers:
   stylus-loader: ^3.0.2
   terser-webpack-plugin: ^2.2.1
   url-loader: ^2.2.0
-  vue: ^2.6.14
+  vue: 2.6.11
   vue-loader: 14.2.4
   vue-markdown-loader: ^2.5.0
   vue-material: ^0.8.1
   vue-router: ^3.1.3
   vue-slider-component: ^3.0.43
   vue-style-loader: ^4.1.2
-  vue-template-compiler: ^2.6.14
+  vue-template-compiler: 2.6.11
   webpack: ^4.41.2
   webpack-cli: ^3.3.10
   webpack-dev-server: ^3.11.0
@@ -125,11 +125,11 @@ specifiers:
 dependencies:
   '@amap/amap-jsapi-loader': 0.0.1
   '@babel/runtime-corejs2': 7.16.5
-  '@rengr/heatmap.js': registry.npmmirror.com/@rengr/heatmap.js/2.0.10
   '@sakitam-gis/kriging': 0.1.0
   '@turf/area': 6.5.0
   '@turf/helpers': 6.5.0
   '@turf/isobands': 5.1.5
+  '@zouyaoji/heatmap.js': 2.0.8
   leaflet: 1.7.1
   lodash-es: 4.17.21
   proj4: 2.7.5
@@ -219,7 +219,7 @@ devDependencies:
   rollup-plugin-re: 1.0.7
   rollup-plugin-scss-smart-asset: 0.0.2_rollup@1.32.1
   rollup-plugin-uglify: 6.0.4_rollup@1.32.1
-  rollup-plugin-vue: 4.2.0_vue-template-compiler@2.6.14
+  rollup-plugin-vue: 4.2.0_vue-template-compiler@2.6.11
   sass-loader: 7.3.1_webpack@4.46.0
   semver: 6.3.0
   shelljs: 0.8.4
@@ -232,14 +232,14 @@ devDependencies:
   stylus-loader: 3.0.2_stylus@0.54.8
   terser-webpack-plugin: 2.3.8_webpack@4.46.0
   url-loader: 2.3.0_webpack@4.46.0
-  vue: 2.6.14
-  vue-loader: 14.2.4_3628d6136eb9fa0808988e1a5d757d6d
+  vue: 2.6.11
+  vue-loader: 14.2.4_91cbda0c746e1e9ab0bb1b6134f8c55f
   vue-markdown-loader: 2.5.0_vue-loader@14.2.4
   vue-material: 0.8.1
   vue-router: 3.5.3
-  vue-slider-component: 3.2.15_vue@2.6.14
+  vue-slider-component: 3.2.15_vue@2.6.11
   vue-style-loader: 4.1.3
-  vue-template-compiler: 2.6.14
+  vue-template-compiler: 2.6.11
   webpack: 4.46.0_webpack-cli@3.3.12
   webpack-cli: 3.3.12_webpack@4.46.0
   webpack-dev-server: 3.11.3_46edf965869dcc7c8d09e022f331d1ea
@@ -1799,7 +1799,7 @@ packages:
   /@types/uglify-js/3.13.1:
     resolution: {integrity: sha512-O3MmRAk6ZuAKa9CHgg0Pr0+lUOqoMLpc9AS4R8ano2auvsg7IE8syF3Xh/NPr26TWklxYcqoEEFdzLLs1fV9PQ==}
     dependencies:
-      source-map: registry.nlark.com/source-map/0.6.1
+      source-map: 0.6.1
     dev: true
 
   /@types/utf8/2.1.6:
@@ -1811,7 +1811,7 @@ packages:
     dependencies:
       '@types/node': 17.0.0
       '@types/source-list-map': 0.1.2
-      source-map: registry.nlark.com/source-map/0.7.3
+      source-map: 0.7.3
     dev: true
 
   /@types/webpack/4.41.32:
@@ -1853,11 +1853,11 @@ packages:
       postcss: 7.0.39
       postcss-selector-parser: 5.0.0
       prettier: 1.16.3
-      source-map: registry.nlark.com/source-map/0.6.1
+      source-map: 0.6.1
       vue-template-es2015-compiler: 1.9.1
     dev: true
 
-  /@vue/component-compiler/3.6.0_b35b46e138ca5de8e7573c061c4fad1b:
+  /@vue/component-compiler/3.6.0_2713048398c6f087b0f9e91133167ba2:
     resolution: {integrity: sha512-NIA0vmOI4zbtJAn69iZls8IJ8VxmguswAuiUdu8TcR+YYTYzntfw290HUCSFjzAdRg+FUWZv8r+wc3TzJ/IjwA==}
     peerDependencies:
       postcss: '>=6.0'
@@ -1869,7 +1869,7 @@ packages:
       postcss: 6.0.23
       postcss-modules-sync: 1.0.0
       source-map: registry.nlark.com/source-map/0.6.1
-      vue-template-compiler: 2.6.14
+      vue-template-compiler: 2.6.11
     dev: true
 
   /@webassemblyjs/ast/1.9.0:
@@ -2006,6 +2006,10 @@ packages:
   /@xtuc/long/4.2.2:
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
     dev: true
+
+  /@zouyaoji/heatmap.js/2.0.8:
+    resolution: {integrity: sha512-kBQny/zOUFH2OFoVyu6IdGJEcQMENIAASUsaZhk+OuJ9WexsYf6EU2lCyGURcsFly1kTMZKODlV7nBTCgfvJqg==}
+    dev: false
 
   /abbrev/1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -2530,6 +2534,14 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /bindings/1.5.0:
+    resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
+    requiresBuild: true
+    dependencies:
+      file-uri-to-path: 1.0.0
+    dev: true
+    optional: true
+
   /blob/0.0.5:
     resolution: {integrity: sha512-gaqbzQPqOoamawKg0LGVd7SzLgXS+JH61oWprSLH+P+abTczqJbhTR8CmJ2u9/bUYNmHTGJx/UEmn6doAvvuig==}
     dev: true
@@ -2998,7 +3010,7 @@ packages:
       readdirp: 2.2.1
       upath: 1.2.0
     optionalDependencies:
-      fsevents: registry.npmmirror.com/fsevents/1.2.13
+      fsevents: 1.2.13
     dev: true
 
   /chokidar/3.5.1:
@@ -3013,7 +3025,7 @@ packages:
       normalize-path: 3.0.0
       readdirp: 3.5.0
     optionalDependencies:
-      fsevents: registry.npmmirror.com/fsevents/2.3.2
+      fsevents: 2.3.2
     dev: true
 
   /chokidar/3.5.2:
@@ -3028,7 +3040,7 @@ packages:
       normalize-path: 3.0.0
       readdirp: 3.6.0
     optionalDependencies:
-      fsevents: registry.npmmirror.com/fsevents/2.3.2
+      fsevents: 2.3.2
     dev: true
 
   /chownr/1.1.4:
@@ -3061,7 +3073,7 @@ packages:
     resolution: {integrity: sha512-EJUDT7nDVFDvaQgAo2G/PJvxmp1o/c6iXLbswsBbUFXi1Nr+AjA2cKmfbKDMjMvzEe75g3P6JkaDDAKk96A85A==}
     engines: {node: '>= 4.0'}
     dependencies:
-      source-map: registry.nlark.com/source-map/0.6.1
+      source-map: 0.6.1
     dev: true
 
   /clean-stack/2.2.0:
@@ -3547,6 +3559,16 @@ packages:
       timsort: 0.3.0
     dev: true
 
+  /css-loader/0.9.1:
+    resolution: {integrity: sha1-LhqgDOfjDvLGp6SzAKCAp8l54Nw=}
+    requiresBuild: true
+    dependencies:
+      csso: 1.3.12
+      loader-utils: 0.2.17
+      source-map: 0.1.43
+    dev: true
+    optional: true
+
   /css-loader/1.0.1_webpack@4.46.0:
     resolution: {integrity: sha512-+ZHAZm/yqvJ2kDtPne3uX0C+Vr3Zn5jFn2N4HywtS5ujwvsVkyg0VArEXpl3BgczDA8anieki1FIzhchX4yrDw==}
     engines: {node: '>= 6.9.0 <7.0.0 || >= 8.9.0'}
@@ -3609,7 +3631,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       mdn-data: 2.0.4
-      source-map: registry.nlark.com/source-map/0.6.1
+      source-map: 0.6.1
     dev: true
 
   /css-tree/1.1.3:
@@ -3617,7 +3639,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       mdn-data: 2.0.14
-      source-map: registry.nlark.com/source-map/0.6.1
+      source-map: 0.6.1
     dev: true
 
   /css-what/3.4.2:
@@ -3634,7 +3656,7 @@ packages:
     resolution: {integrity: sha512-oUnjmWpy0niI3x/mPL8dVEI1l7MnG3+HHyRPHf+YFSbK+svOhXpmSOcDURUh2aOCgl2grzrOPt1nHLuCVFULLw==}
     dependencies:
       inherits: 2.0.4
-      source-map: registry.nlark.com/source-map/0.6.1
+      source-map: 0.6.1
       source-map-resolve: 0.5.3
       urix: 0.1.0
     dev: true
@@ -4245,6 +4267,13 @@ packages:
     engines: {node: '>=0.12'}
     dev: true
 
+  /errno/0.1.8:
+    resolution: {integrity: sha512-dJ6oBr5SQ1VSd9qkk7ByRgb/1SH4JZjCHSW/mr63/QcXO9zLVxvJ6Oy13nio03rxpSnVDDjFor75SjVeZWPW/A==}
+    hasBin: true
+    dependencies:
+      prr: 1.0.1
+    dev: true
+
   /error-ex/1.3.2:
     resolution: {integrity: sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==}
     dependencies:
@@ -4780,6 +4809,20 @@ packages:
       flat-cache: 3.0.4
     dev: true
 
+  /file-loader/0.8.5:
+    resolution: {integrity: sha1-knXQMf54DyfUf19K8CvUNxPMFRs=}
+    requiresBuild: true
+    dependencies:
+      loader-utils: 0.2.17
+    dev: true
+    optional: true
+
+  /file-uri-to-path/1.0.0:
+    resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
+    requiresBuild: true
+    dev: true
+    optional: true
+
   /fill-range/4.0.0:
     resolution: {integrity: sha1-1USBHUKPmOsGpj3EAtJAPDKMOPc=}
     engines: {node: '>=0.10.0'}
@@ -5010,7 +5053,7 @@ packages:
   /fs-write-stream-atomic/1.0.10:
     resolution: {integrity: sha1-tH31NJPvkR33VzHnCp3tAYnbQMk=}
     dependencies:
-      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
+      graceful-fs: 4.2.8
       iferr: 0.1.5
       imurmurhash: 0.1.4
       readable-stream: 2.3.7
@@ -5020,11 +5063,31 @@ packages:
     resolution: {integrity: sha1-FQStJSMVjKpA20onh8sBQRmU6k8=}
     dev: true
 
+  /fsevents/1.2.13:
+    resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
+    engines: {node: '>= 4.0'}
+    os: [darwin]
+    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+    requiresBuild: true
+    dependencies:
+      bindings: 1.5.0
+      nan: 2.15.0
+    dev: true
+    optional: true
+
+  /fsevents/2.3.2:
+    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
   /fstream/1.0.12:
     resolution: {integrity: sha512-WvJ193OHa0GHPEL+AycEJgxvBEwyfRkN1vhjca23OaPVMCaLCXTd5qAu82AjTcgP1UJmytkOKb63Ypde7raDIg==}
     engines: {node: '>=0.6'}
     dependencies:
-      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
+      graceful-fs: 4.2.8
       inherits: 2.0.4
       mkdirp: 0.5.5
       rimraf: 2.7.1
@@ -5638,6 +5701,14 @@ packages:
     resolution: {integrity: sha512-2zeMQpbKz5dhZ9IwL0gbxSW5w0NK/MSAMtNuhgIHEPmaU3vPdKPL0UdvUCXs5SS4JAwsBxysK5sFMW8ocFiVjQ==}
     engines: {node: '>= 4'}
     dev: true
+
+  /image-size/0.5.5:
+    resolution: {integrity: sha1-Cd/Uq50g4p6xw+gLiZA3jfnjy5w=}
+    engines: {node: '>=0.10.0'}
+    hasBin: true
+    requiresBuild: true
+    dev: true
+    optional: true
 
   /import-cwd/2.1.0:
     resolution: {integrity: sha1-qmzzbnInYShcs3HsZRn1PiQ1sKk=}
@@ -6357,7 +6428,7 @@ packages:
   /jsonfile/4.0.0:
     resolution: {integrity: sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=}
     optionalDependencies:
-      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
+      graceful-fs: 4.2.8
     dev: true
 
   /jsprim/1.4.2:
@@ -6570,13 +6641,13 @@ packages:
       copy-anything: 2.0.3
       tslib: 1.14.1
     optionalDependencies:
-      errno: registry.nlark.com/errno/0.1.8
-      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
-      image-size: registry.nlark.com/image-size/0.5.5
-      make-dir: registry.nlark.com/make-dir/2.1.0
-      mime: registry.npmmirror.com/mime/1.6.0
-      native-request: registry.npmmirror.com/native-request/1.1.0
-      source-map: registry.nlark.com/source-map/0.6.1
+      errno: 0.1.8
+      graceful-fs: 4.2.8
+      image-size: 0.5.5
+      make-dir: 2.1.0
+      mime: 1.6.0
+      native-request: 1.1.0
+      source-map: 0.6.1
     dev: true
 
   /levn/0.4.1:
@@ -6597,7 +6668,7 @@ packages:
     resolution: {integrity: sha1-lWkFcI1YtLq0wiYbBPWfMcmTdMA=}
     engines: {node: '>=0.10.0'}
     dependencies:
-      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
+      graceful-fs: 4.2.8
       parse-json: 2.2.0
       pify: 2.3.0
       pinkie-promise: 2.0.1
@@ -6608,7 +6679,7 @@ packages:
     resolution: {integrity: sha1-L19Fq5HjMhYjT9U62rZo607AmTs=}
     engines: {node: '>=4'}
     dependencies:
-      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
+      graceful-fs: 4.2.8
       parse-json: 4.0.0
       pify: 3.0.0
       strip-bom: 3.0.0
@@ -6802,6 +6873,7 @@ packages:
   /make-dir/2.1.0:
     resolution: {integrity: sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA==}
     engines: {node: '>=6'}
+    requiresBuild: true
     dependencies:
       pify: 4.0.1
       semver: 5.7.1
@@ -6893,7 +6965,7 @@ packages:
     resolution: {integrity: sha512-jA0rdU5KoQMC0e6ppoNRtpp6vjFq6+NY7r8hywnC7V+1Xj/MtHwGIbB1QaK/dunyjWteJzmkpd7ooeWg10T7GA==}
     engines: {node: '>=4.3.0 <5.0.0 || >=5.10'}
     dependencies:
-      errno: registry.nlark.com/errno/0.1.8
+      errno: 0.1.8
       readable-stream: 2.3.7
     dev: true
 
@@ -6920,7 +6992,7 @@ packages:
   /merge-source-map/1.1.0:
     resolution: {integrity: sha512-Qkcp7P2ygktpMPh2mCQZaf3jhN6D3Z/qVZHSdWvQ+2Ef5HgRAPBO57A77+ENm0CPx2+1Ce/MYKi3ymqdfuqibw==}
     dependencies:
-      source-map: registry.nlark.com/source-map/0.6.1
+      source-map: 0.6.1
     dev: true
 
   /merge-stream/2.0.0:
@@ -6973,6 +7045,12 @@ packages:
     engines: {node: '>= 0.6'}
     dependencies:
       mime-db: 1.51.0
+    dev: true
+
+  /mime/1.6.0:
+    resolution: {integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==}
+    engines: {node: '>=4'}
+    hasBin: true
     dev: true
 
   /mime/2.6.0:
@@ -7183,6 +7261,12 @@ packages:
       snapdragon: 0.8.2
       to-regex: 3.0.2
     dev: true
+
+  /native-request/1.1.0:
+    resolution: {integrity: sha512-uZ5rQaeRn15XmpgE0xoPL8YWqcX90VtCFglYwAgkvKM5e8fog+vePLAhHxuuv/gRkrQxIeh5U3q9sMNUrENqWw==}
+    requiresBuild: true
+    dev: true
+    optional: true
 
   /natural-compare/1.4.0:
     resolution: {integrity: sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=}
@@ -7814,7 +7898,7 @@ packages:
     resolution: {integrity: sha1-WcRPfuSR2nBNpBXaWkBwuk+P5EE=}
     engines: {node: '>=0.10.0'}
     dependencies:
-      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
+      graceful-fs: 4.2.8
       pify: 2.3.0
       pinkie-promise: 2.0.1
     dev: true
@@ -8320,7 +8404,7 @@ packages:
     dependencies:
       chalk: 1.1.3
       js-base64: 2.6.4
-      source-map: registry.nlark.com/source-map/0.5.7
+      source-map: 0.5.7
       supports-color: 3.2.3
     dev: true
 
@@ -8742,7 +8826,7 @@ packages:
     resolution: {integrity: sha512-1JU/8q+VgFZyxwrJ+SVIOsh+KywWGpds3NTqikiKpDMZWScmAYyKIgqkO+ARvNWJfXeXR1zxz7aHF4u4CyH6vQ==}
     engines: {node: '>=0.10'}
     dependencies:
-      graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
+      graceful-fs: 4.2.8
       micromatch: 3.1.10
       readable-stream: 2.3.7
     dev: true
@@ -9074,20 +9158,20 @@ packages:
       uglify-js: 3.14.5
     dev: true
 
-  /rollup-plugin-vue/4.2.0_vue-template-compiler@2.6.14:
+  /rollup-plugin-vue/4.2.0_vue-template-compiler@2.6.11:
     resolution: {integrity: sha512-n8NDvhYtA9HC3hRyLNAV+0Ei4FHlaOB8LoiXxVwYclgHxOR4aku57zIw8EPf+ETSf45w49UP4VUXgpX6XNwdOA==}
     peerDependencies:
       vue-template-compiler: '*'
     dependencies:
       '@babel/runtime': 7.16.5
-      '@vue/component-compiler': 3.6.0_b35b46e138ca5de8e7573c061c4fad1b
+      '@vue/component-compiler': 3.6.0_2713048398c6f087b0f9e91133167ba2
       '@vue/component-compiler-utils': 1.3.1
       debug: 2.6.9
       hash-sum: 1.0.2
       postcss: 6.0.23
       querystring: 0.2.1
       rollup-pluginutils: 2.8.2
-      vue-template-compiler: 2.6.14
+      vue-template-compiler: 2.6.11
     dev: true
 
   /rollup-pluginutils/2.8.2:
@@ -9179,7 +9263,7 @@ packages:
     resolution: {integrity: sha1-jrBtualyMzOCTT9VMGQRSYR85dE=}
     dependencies:
       js-base64: 2.6.4
-      source-map: registry.nlark.com/source-map/0.4.4
+      source-map: 0.4.4
     dev: true
 
   /select-hose/2.0.0:
@@ -9232,7 +9316,7 @@ packages:
       etag: 1.8.1
       fresh: 0.5.2
       http-errors: 1.7.3
-      mime: registry.npmmirror.com/mime/1.6.0
+      mime: 1.6.0
       ms: 2.1.1
       on-finished: 2.3.0
       range-parser: 1.2.1
@@ -9440,7 +9524,7 @@ packages:
       define-property: 0.2.5
       extend-shallow: 2.0.1
       map-cache: 0.2.2
-      source-map: registry.nlark.com/source-map/0.5.7
+      source-map: 0.5.7
       source-map-resolve: 0.5.3
       use: 3.1.1
     dev: true
@@ -9549,7 +9633,7 @@ packages:
     resolution: {integrity: sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==}
     dependencies:
       buffer-from: 1.1.2
-      source-map: registry.nlark.com/source-map/0.6.1
+      source-map: 0.6.1
     dev: true
 
   /source-map-url/0.4.0:
@@ -9558,6 +9642,21 @@ packages:
 
   /source-map-url/0.4.1:
     resolution: {integrity: sha512-cPiFOTLUKvJFIg4SKVScy4ilPPW6rFgMgfuZJPNoDuMs3nC1HbMUycBoJw77xFIp6z1UJQJOfx6C9GMH80DiTw==}
+    dev: true
+
+  /source-map/0.1.43:
+    resolution: {integrity: sha1-wkvBRspRfBRx9drL4lcbK3+eM0Y=}
+    engines: {node: '>=0.8.0'}
+    dependencies:
+      amdefine: 1.0.1
+    dev: true
+    optional: true
+
+  /source-map/0.4.4:
+    resolution: {integrity: sha1-66T12pwNyZneaAMti092FzZSA2s=}
+    engines: {node: '>=0.8.0'}
+    dependencies:
+      amdefine: 1.0.1
     dev: true
 
   /source-map/0.5.7:
@@ -9752,9 +9851,9 @@ packages:
       loader-utils: 0.2.17
       webpack: 4.46.0_webpack-cli@3.3.12
     optionalDependencies:
-      css-loader: registry.npmmirror.com/css-loader/0.9.1
-      file-loader: registry.nlark.com/file-loader/0.8.5
-      style-loader: registry.npmmirror.com/style-loader/0.8.3
+      css-loader: 0.9.1
+      file-loader: 0.8.5
+      style-loader: 0.8.3
     dev: true
 
   /string-width/1.0.2:
@@ -9875,6 +9974,14 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
     dev: true
+
+  /style-loader/0.8.3:
+    resolution: {integrity: sha1-9Pkut9tjdodI8VBlzWcA9aHIU1c=}
+    requiresBuild: true
+    dependencies:
+      loader-utils: 0.2.17
+    dev: true
+    optional: true
 
   /style-loader/1.3.0_webpack@4.46.0:
     resolution: {integrity: sha512-V7TCORko8rs9rIqkSrlMfkqA63DfoGBBJmK1kKGCcSi+BWb4cqz0SRsnp4l6rU5iwOEd0/2ePv68SV22VXon4Q==}
@@ -10258,7 +10365,7 @@ packages:
     hasBin: true
     dependencies:
       commander: 2.19.0
-      source-map: registry.nlark.com/source-map/0.6.1
+      source-map: 0.6.1
     dev: true
 
   /unbox-primitive/1.0.1:
@@ -10503,12 +10610,12 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /vue-class-component/7.2.6_vue@2.6.14:
+  /vue-class-component/7.2.6_vue@2.6.11:
     resolution: {integrity: sha512-+eaQXVrAm/LldalI272PpDe3+i4mPis0ORiMYxF6Ae4hyuCh15W8Idet7wPUEs4N4YptgFHGys4UrgNQOMyO6w==}
     peerDependencies:
       vue: ^2.0.0
     dependencies:
-      vue: 2.6.14
+      vue: 2.6.11
     dev: true
 
   /vue-eslint-parser/7.11.0_eslint@7.32.0:
@@ -10533,7 +10640,7 @@ packages:
     resolution: {integrity: sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==}
     dev: true
 
-  /vue-loader/14.2.4_3628d6136eb9fa0808988e1a5d757d6d:
+  /vue-loader/14.2.4_91cbda0c746e1e9ab0bb1b6134f8c55f:
     resolution: {integrity: sha512-bub2/rcTMJ3etEbbeehdH2Em3G2F5vZIjMK7ZUePj5UtgmZSTtOX1xVVawDpDsy021s3vQpO6VpWJ3z3nO8dDw==}
     peerDependencies:
       css-loader: '*'
@@ -10552,7 +10659,7 @@ packages:
       source-map: 0.6.1
       vue-hot-reload-api: 2.3.4
       vue-style-loader: 4.1.3
-      vue-template-compiler: 2.6.14
+      vue-template-compiler: 2.6.11
       vue-template-es2015-compiler: 1.9.1
     dev: true
 
@@ -10565,7 +10672,7 @@ packages:
       highlight.js: 11.3.1
       loader-utils: 1.4.0
       markdown-it: 8.4.2
-      vue-loader: 14.2.4_3628d6136eb9fa0808988e1a5d757d6d
+      vue-loader: 14.2.4_91cbda0c746e1e9ab0bb1b6134f8c55f
     dev: true
 
   /vue-material/0.8.1:
@@ -10574,24 +10681,24 @@ packages:
       vue: 2.6.14
     dev: true
 
-  /vue-property-decorator/8.5.1_vue@2.6.14:
+  /vue-property-decorator/8.5.1_vue@2.6.11:
     resolution: {integrity: sha512-O6OUN2OMsYTGPvgFtXeBU3jPnX5ffQ9V4I1WfxFQ6dqz6cOUbR3Usou7kgFpfiXDvV7dJQSFcJ5yUPgOtPPm1Q==}
     peerDependencies:
       vue: '*'
     dependencies:
-      vue: 2.6.14
-      vue-class-component: 7.2.6_vue@2.6.14
+      vue: 2.6.11
+      vue-class-component: 7.2.6_vue@2.6.11
     dev: true
 
   /vue-router/3.5.3:
     resolution: {integrity: sha512-FUlILrW3DGitS2h+Xaw8aRNvGTwtuaxrRkNSHWTizOfLUie7wuYwezeZ50iflRn8YPV5kxmU2LQuu3nM/b3Zsg==}
     dev: true
 
-  /vue-slider-component/3.2.15_vue@2.6.14:
+  /vue-slider-component/3.2.15_vue@2.6.11:
     resolution: {integrity: sha512-FpmMsQ6MQFn22B6boDcEjRmuawdaHwjHRVZiuv5w37jijHra6+HogjSrh3mb42jE+PUIFFagXi36oFEzpDbadg==}
     dependencies:
       core-js: 3.20.0
-      vue-property-decorator: 8.5.1_vue@2.6.14
+      vue-property-decorator: 8.5.1_vue@2.6.11
     transitivePeerDependencies:
       - vue
     dev: true
@@ -10603,8 +10710,8 @@ packages:
       loader-utils: 1.4.0
     dev: true
 
-  /vue-template-compiler/2.6.14:
-    resolution: {integrity: sha512-ODQS1SyMbjKoO1JBJZojSw6FE4qnh9rIpUZn2EUT86FKizx9uH5z6uXiIrm4/Nb/gwxTi/o17ZDEGWAXHvtC7g==}
+  /vue-template-compiler/2.6.11:
+    resolution: {integrity: sha512-KIq15bvQDrcCjpGjrAhx4mUlyyHfdmTaoNfeoATHLAiWB+MU3cx4lOzMwrnUh9cCxy0Lt1T11hAFY6TQgroUAA==}
     dependencies:
       de-indent: 1.0.2
       he: 1.2.0
@@ -10614,9 +10721,21 @@ packages:
     resolution: {integrity: sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==}
     dev: true
 
+  /vue/2.6.11:
+    resolution: {integrity: sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ==}
+    dev: true
+
   /vue/2.6.14:
     resolution: {integrity: sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==}
     dev: true
+
+  /watchpack-chokidar2/2.0.1:
+    resolution: {integrity: sha512-nCFfBIPKr5Sh61s4LPpy1Wtfi0HE8isJ3d2Yb5/Ppw2P2B/3eVSEBjKfN0fmHJSK14+31KwMKmcrzs2GM4P0Ww==}
+    requiresBuild: true
+    dependencies:
+      chokidar: 2.1.8
+    dev: true
+    optional: true
 
   /watchpack/1.7.5:
     resolution: {integrity: sha512-9P3MWk6SrKjHsGkLT2KHXdQ/9SNkyoJbabxnKOoJepsvJjJG8uYTR3yTPxPQvNDI3w4Nz1xnE0TLHK4RIVe/MQ==}
@@ -10624,8 +10743,8 @@ packages:
       graceful-fs: registry.npmmirror.com/graceful-fs/4.2.8
       neo-async: 2.6.2
     optionalDependencies:
-      chokidar: registry.npmmirror.com/chokidar/3.5.2
-      watchpack-chokidar2: registry.nlark.com/watchpack-chokidar2/2.0.1
+      chokidar: 3.5.2
+      watchpack-chokidar2: 2.0.1
     dev: true
 
   /wbuf/1.7.3:
@@ -10864,7 +10983,7 @@ packages:
   /worker-farm/1.7.0:
     resolution: {integrity: sha512-rvw3QTZc8lAxyVrqcSGVm5yP/IJ2UcB3U0graE3LCFoZ0Yn2x4EoVSqJKdB/T5M+FLcRPjz4TDacRf3OCfNUzw==}
     dependencies:
-      errno: registry.nlark.com/errno/0.1.8
+      errno: 0.1.8
     dev: true
 
   /workerpool/6.1.0:
@@ -11072,16 +11191,6 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  registry.nlark.com/bindings/1.5.0:
-    resolution: {integrity: sha1-EDU8npRTNLwFEabZCzj7x8nFBN8=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/bindings/download/bindings-1.5.0.tgz}
-    name: bindings
-    version: 1.5.0
-    requiresBuild: true
-    dependencies:
-      file-uri-to-path: registry.nlark.com/file-uri-to-path/1.0.0
-    dev: true
-    optional: true
-
   registry.nlark.com/errno/0.1.8:
     resolution: {integrity: sha1-i7Ppx9Rjvkl2/4iPdrSAnrwugR8=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/errno/download/errno-0.1.8.tgz}
     name: errno
@@ -11089,73 +11198,6 @@ packages:
     hasBin: true
     dependencies:
       prr: 1.0.1
-    dev: true
-
-  registry.nlark.com/file-loader/0.8.5:
-    resolution: {integrity: sha1-knXQMf54DyfUf19K8CvUNxPMFRs=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/file-loader/download/file-loader-0.8.5.tgz}
-    name: file-loader
-    version: 0.8.5
-    requiresBuild: true
-    dependencies:
-      loader-utils: 0.2.17
-    dev: true
-    optional: true
-
-  registry.nlark.com/file-uri-to-path/1.0.0:
-    resolution: {integrity: sha1-VTp7hEb/b2hDWcRF8eN6BdrMM90=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/file-uri-to-path/download/file-uri-to-path-1.0.0.tgz}
-    name: file-uri-to-path
-    version: 1.0.0
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  registry.nlark.com/image-size/0.5.5:
-    resolution: {integrity: sha1-Cd/Uq50g4p6xw+gLiZA3jfnjy5w=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/image-size/download/image-size-0.5.5.tgz}
-    name: image-size
-    version: 0.5.5
-    engines: {node: '>=0.10.0'}
-    hasBin: true
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  registry.nlark.com/make-dir/2.1.0:
-    resolution: {integrity: sha1-XwMQ4YuL6JjMBwCSlaMK5B6R5vU=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/make-dir/download/make-dir-2.1.0.tgz}
-    name: make-dir
-    version: 2.1.0
-    engines: {node: '>=6'}
-    requiresBuild: true
-    dependencies:
-      pify: 4.0.1
-      semver: 5.7.1
-    dev: true
-    optional: true
-
-  registry.nlark.com/nan/2.15.0:
-    resolution: {integrity: sha1-PzSkc/8Y4VwbVia2KQO1rW5mX+4=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/nan/download/nan-2.15.0.tgz}
-    name: nan
-    version: 2.15.0
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  registry.nlark.com/source-map/0.1.43:
-    resolution: {integrity: sha1-wkvBRspRfBRx9drL4lcbK3+eM0Y=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/source-map/download/source-map-0.1.43.tgz}
-    name: source-map
-    version: 0.1.43
-    engines: {node: '>=0.8.0'}
-    dependencies:
-      amdefine: 1.0.1
-    dev: true
-    optional: true
-
-  registry.nlark.com/source-map/0.4.4:
-    resolution: {integrity: sha1-66T12pwNyZneaAMti092FzZSA2s=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/source-map/download/source-map-0.4.4.tgz}
-    name: source-map
-    version: 0.4.4
-    engines: {node: '>=0.8.0'}
-    dependencies:
-      amdefine: 1.0.1
     dev: true
 
   registry.nlark.com/source-map/0.5.7:
@@ -11172,118 +11214,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  registry.nlark.com/source-map/0.7.3:
-    resolution: {integrity: sha1-UwL4FpAxc1ImVECS5kmB91F1A4M=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/source-map/download/source-map-0.7.3.tgz}
-    name: source-map
-    version: 0.7.3
-    engines: {node: '>= 8'}
-    dev: true
-
-  registry.nlark.com/watchpack-chokidar2/2.0.1:
-    resolution: {integrity: sha1-OFAAcu5uzmbzdpk2lQ6hdxvhyVc=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/watchpack-chokidar2/download/watchpack-chokidar2-2.0.1.tgz}
-    name: watchpack-chokidar2
-    version: 2.0.1
-    requiresBuild: true
-    dependencies:
-      chokidar: registry.npmmirror.com/chokidar/2.1.8
-    dev: true
-    optional: true
-
-  registry.npmmirror.com/@rengr/heatmap.js/2.0.10:
-    resolution: {integrity: sha1-M2MBd1cE6Rt4Qt41FWLQM70sepg=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@rengr/heatmap.js/download/@rengr/heatmap.js-2.0.10.tgz}
-    name: '@rengr/heatmap.js'
-    version: 2.0.10
-    dev: false
-
-  registry.npmmirror.com/chokidar/2.1.8:
-    resolution: {integrity: sha512-ZmZUazfOzf0Nve7duiCKD23PFSCs4JPoYyccjUFF3aQkQadqBhfzhjkwBH2mNOG9cTBwhamM37EIsIkZw3nRgg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/chokidar/download/chokidar-2.1.8.tgz}
-    name: chokidar
-    version: 2.1.8
-    deprecated: Chokidar 2 will break on node v14+. Upgrade to chokidar 3 with 15x less dependencies.
-    dependencies:
-      anymatch: 2.0.0
-      async-each: 1.0.3
-      braces: 2.3.2
-      glob-parent: 3.1.0
-      inherits: 2.0.4
-      is-binary-path: 1.0.1
-      is-glob: 4.0.3
-      normalize-path: 3.0.0
-      path-is-absolute: 1.0.1
-      readdirp: 2.2.1
-      upath: 1.2.0
-    optionalDependencies:
-      fsevents: registry.npmmirror.com/fsevents/1.2.13
-    dev: true
-    optional: true
-
-  registry.npmmirror.com/chokidar/3.5.2:
-    resolution: {integrity: sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/chokidar/download/chokidar-3.5.2.tgz}
-    name: chokidar
-    version: 3.5.2
-    engines: {node: '>= 8.10.0'}
-    requiresBuild: true
-    dependencies:
-      anymatch: 3.1.2
-      braces: 3.0.2
-      glob-parent: 5.1.2
-      is-binary-path: 2.1.0
-      is-glob: 4.0.3
-      normalize-path: 3.0.0
-      readdirp: 3.6.0
-    optionalDependencies:
-      fsevents: registry.npmmirror.com/fsevents/2.3.2
-    dev: true
-    optional: true
-
-  registry.npmmirror.com/css-loader/0.9.1:
-    resolution: {integrity: sha1-LhqgDOfjDvLGp6SzAKCAp8l54Nw=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/css-loader/download/css-loader-0.9.1.tgz}
-    name: css-loader
-    version: 0.9.1
-    requiresBuild: true
-    dependencies:
-      csso: 1.3.12
-      loader-utils: 0.2.17
-      source-map: registry.nlark.com/source-map/0.1.43
-    dev: true
-    optional: true
-
-  registry.npmmirror.com/fsevents/1.2.13:
-    resolution: {integrity: sha1-8yXLBFVZJCi88Rs4M3DvcOO/zDg=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/fsevents/download/fsevents-1.2.13.tgz}
-    name: fsevents
-    version: 1.2.13
-    engines: {node: '>= 4.0'}
-    os: [darwin]
-    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
-    requiresBuild: true
-    dependencies:
-      bindings: registry.nlark.com/bindings/1.5.0
-      nan: registry.nlark.com/nan/2.15.0
-    dev: true
-    optional: true
-
-  registry.npmmirror.com/fsevents/2.3.2:
-    resolution: {integrity: sha1-ilJveLj99GI7cJ4Ll1xSwkwC/Ro=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/fsevents/download/fsevents-2.3.2.tgz}
-    name: fsevents
-    version: 2.3.2
-    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
   registry.npmmirror.com/graceful-fs/4.2.8:
     resolution: {integrity: sha1-5BK40z9eAGWTy9PO5t+fLOu+gCo=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/graceful-fs/download/graceful-fs-4.2.8.tgz}
     name: graceful-fs
     version: 4.2.8
-    dev: true
-
-  registry.npmmirror.com/mime/1.6.0:
-    resolution: {integrity: sha1-Ms2eXGRVO9WNGaVor0Uqz/BJgbE=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/mime/download/mime-1.6.0.tgz}
-    name: mime
-    version: 1.6.0
-    engines: {node: '>=4'}
-    hasBin: true
     dev: true
 
   registry.npmmirror.com/mime/2.6.0:
@@ -11293,21 +11227,3 @@ packages:
     engines: {node: '>=4.0.0'}
     hasBin: true
     dev: true
-
-  registry.npmmirror.com/native-request/1.1.0:
-    resolution: {integrity: sha1-rNsw/i7vo+G8jFSzpoUunFwNPLA=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/native-request/download/native-request-1.1.0.tgz}
-    name: native-request
-    version: 1.1.0
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  registry.npmmirror.com/style-loader/0.8.3:
-    resolution: {integrity: sha512-ICp1ISTuh4+aunEXH1XjCBEtPWcX6PKJ5D0f3g8/+mPHEUbcwo9ynMUUWKSH26DItIIlB/PStP5TTaQF+V7y7Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/style-loader/download/style-loader-0.8.3.tgz}
-    name: style-loader
-    version: 0.8.3
-    requiresBuild: true
-    dependencies:
-      loader-utils: 0.2.17
-    dev: true
-    optional: true

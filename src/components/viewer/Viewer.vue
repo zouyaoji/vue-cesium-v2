@@ -830,8 +830,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         })
       }
 
-      const listenerReady = this.$listeners.ready
-      listenerReady && this.$emit('ready', readyObj)
+      this.$emit('ready', readyObj)
       this._mounted = true
       return { Cesium, viewer, vm: this }
     },
