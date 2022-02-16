@@ -168,6 +168,11 @@ export default {
     async unmount () {
       this.viewer.widgetResized.removeEventListener(this.widgetResized)
       this.canRender = false
+      if (this.cesiumObject._miniMap && this.cesiumObject._miniMap.remove) {
+        this.cesiumObject._miniMap.off()
+        this.cesiumObject._miniMap.remove()
+        this.cesiumObject._miniMap = undefined
+      }
       return true
     }
   },

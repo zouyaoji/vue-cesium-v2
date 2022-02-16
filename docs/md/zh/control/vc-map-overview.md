@@ -1,3 +1,11 @@
+<!--
+ * @Author: zouyaoji@https://github.com/zouyaoji
+ * @Date: 2021-12-23 00:33:35
+ * @LastEditTime: 2022-02-16 16:32:06
+ * @LastEditors: zouyaoji
+ * @Description:
+ * @FilePath: \vue-cesium-v2\docs\md\zh\control\vc-map-overview.md
+-->
 # 鹰眼
 
 `vc-map-overview` 组件用于加载鹰眼部件。**注意：** 使用此组件需要引入 `import 'vue-cesium/lib/vc-map-overview.css'`。此组件默认没有引入，需要单独引入。
@@ -17,7 +25,7 @@ import 'vue-cesium/lib/vc-map-overview.css'
 <doc-preview>
   <template>
     <div class="viewer">
-      <vc-viewer :timeline="timeline" @ready="ready">
+      <vc-viewer :timeline="timeline" @ready="ready" scene-mode-picker>
         <vc-map-overview ref="map"></vc-map-overview>
         <vc-layer-imagery>
           <vc-provider-imagery-openstreetmap></vc-provider-imagery-openstreetmap>

@@ -148,6 +148,9 @@ CesiumOverviewMapControl.prototype = {
 
         const camera = _this.viewer.scene.camera
         camera.moveEnd.addEventListener(function (e) {
+          if (!_this._miniMap) {
+            return
+          }
           const rect = _this._getViewRange()
           if (!_this._miniMapMoving) {
             _this._viewerMoving = true
@@ -342,7 +345,19 @@ CesiumOverviewMapControl.prototype = {
   _getViewRange: function () {
     const viewer = this.viewer
     const camera = viewer.scene.camera
-    const range = camera.computeViewRectangle()
+    let range = camera.computeViewRectangle(viewer.scene.globe.ellipsoid)
+    if (!Cesium.defined(range)) {
+      const cl2 = new Cesium.Cartesian2(0, 0)
+      let leftTop = viewer.scene.camera.pickEllipsoid(cl2, viewer.scene.globe.ellipsoid)
+
+      const cr2 = new Cesium.Cartesian2(viewer.scene.canvas.width, viewer.scene.canvas.height)
+      let rightDown = viewer.scene.camera.pickEllipsoid(cr2, viewer.scene.globe.ellipsoid)
+
+      leftTop = viewer.scene.globe.ellipsoid.cartesianToCartographic(leftTop)
+      rightDown = viewer.scene.globe.ellipsoid.cartesianToCartographic(rightDown)
+      range = new Cesium.Rectangle(leftTop.longitude, rightDown.latitude, rightDown.longitude, leftTop.latitude)
+    }
+
     const west = (range.west / Math.PI) * 180
     const east = (range.east / Math.PI) * 180
     const north = (range.north / Math.PI) * 180
