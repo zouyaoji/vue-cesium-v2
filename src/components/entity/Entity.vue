@@ -5,6 +5,7 @@ import { position, plane } from '../../mixins/mixinProps'
 import mergeDescriptors from '../../utils/mergeDescriptors'
 import bindEvents from '../../utils/bindEvent'
 import { Events } from '../../utils/events'
+import { getVmListenerName } from '../../utils/util'
 
 export default {
   name: 'vc-entity',
@@ -57,9 +58,9 @@ export default {
       return entities && entities.remove(entity)
     },
     setGraphics (graphics, type) {
-      const listener = this.$listeners['update:' + type]
+      const listener = getVmListenerName.call(this, 'update:' + type)
       if (listener) {
-        this.$emit('update:' + type, graphics)
+        this.$emit(listener, graphics)
       } else {
         this.entity[type] = graphics
       }

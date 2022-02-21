@@ -1,4 +1,5 @@
 import cmp from '../virtualCmp'
+import { getVmListenerName } from '../../utils/util'
 
 const props = {
   mode: {
@@ -80,8 +81,8 @@ const watch = {
     }
     nextTick && await this.$nextTick()
     this.viewer.canvas.setAttribute('style', val ? 'cursor: crosshair' : 'cursor: auto')
-    const listener = this.$listeners.activeEvt
-    listener && this.$emit('activeEvt', { type: drawType, isActive: val })
+    const listener = getVmListenerName.call(this, 'activeEvt')
+    listener && this.$emit(listener, { type: drawType, isActive: val })
   }
 }
 
@@ -174,8 +175,8 @@ const methods = {
       polyline.positions.push(cartesian)
     }
 
-    const listener = this.$listeners.movingEvt
-    listener && this.$emit('movingEvt', movement.endPosition, drawType)
+    const listener = getVmListenerName.call(this, 'movingEvt')
+    listener && this.$emit(listener, movement.endPosition, drawType)
     onDrawingEvt(polyline, nIndex)
   },
   async RIGHT_CLICK (movement) {
@@ -241,9 +242,9 @@ const methods = {
         this.$refs.polylineCollection && (this.$refs.polylineCollection.cesiumObject._opaqueRS.depthTest.enabled = false)
       }
     }
-    const listener = this.$listeners.drawEvt
+    const listener = getVmListenerName.call(this, 'drawEvt')
     listener &&
-      this.$emit('drawEvt', {
+      this.$emit(listener, {
         polyline: polyline,
         type: this.drawType,
         finished: flag

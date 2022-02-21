@@ -434,3 +434,12 @@ export function readAllBytes (file) {
   fr.readAsArrayBuffer(file)
   return promise
 }
+
+export function getVmListenerName (listenerName) {
+  if (this.$listeners[listenerName]) {
+    return listenerName
+  } else if (this.$listeners[toKebabCase(listenerName)]) {
+    return toKebabCase(listenerName)
+  }
+  return undefined
+}

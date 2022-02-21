@@ -1,5 +1,7 @@
 import cmp from '../virtualCmp'
 import VisibilityState from './VisibilityState'
+import { getVmListenerName } from '../../utils/util'
+
 const props = {
   mode: {
     type: Number,
@@ -108,8 +110,8 @@ const watch = {
     }
     nextTick && (await this.$nextTick())
     this.viewer.canvas.setAttribute('style', val ? 'cursor: crosshair' : 'cursor: auto')
-    const listener = this.$listeners.activeEvt
-    listener && this.$emit('activeEvt', { type: type, isActive: val })
+    const listener = getVmListenerName.call(this, 'activeEvt')
+    listener && this.$emit(listener, { type: type, isActive: val })
   }
 }
 const computed = {
@@ -239,8 +241,8 @@ const methods = {
       return
     }
     this.enterMoveAction = true
-    const listener = this.$listeners.movingEvt
-    listener && this.$emit('movingEvt', movement.endPosition, type)
+    const listener = getVmListenerName.call(this, 'movingEvt')
+    listener && this.$emit(listener, movement.endPosition, type)
     if (type === 'distanceMeasuring' || type === 'areaMeasuring') {
       if (polyline.positions.length >= 2) {
         // 如果鼠标左键点击事件移除了 不需要再移除
@@ -501,11 +503,11 @@ const methods = {
         this.$refs.polylineCollection && (this.$refs.polylineCollection.cesiumObject._opaqueRS.depthTest.enabled = false)
       }
 
-      const listener = this.$listeners.measureEvt
+      const listener = getVmListenerName.call(this, 'measureEvt')
       const { type } = this
       if (type === 'distanceMeasuring' || type === 'areaMeasuring') {
         listener &&
-          this.$emit('measureEvt', {
+          this.$emit(listener, {
             polyline: polyline,
             label: this.$refs.labelCollection.cesiumObject.get(index),
             type: type,
@@ -518,7 +520,7 @@ const methods = {
           labelH: this.$refs.labelCollection.cesiumObject.get(labels.length - 2),
           labelS: this.$refs.labelCollection.cesiumObject.get(labels.length - 1)
         }
-        listener && this.$emit('measureEvt', { polyline: polyline, label: labelsResult, type: 'heightMeasuring', finished: flag })
+        listener && this.$emit(listener, { polyline: polyline, label: labelsResult, type: 'heightMeasuring', finished: flag })
       }
     }
   },

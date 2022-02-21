@@ -24,6 +24,7 @@
 <script>
 import cmp from '../../../mixins/virtualCmp'
 import { makeColor } from '../../../utils/cesiumHelpers'
+import { getVmListenerName } from '../../../utils/util'
 
 export default {
   name: 'vc-analytics-flood',
@@ -56,7 +57,7 @@ export default {
   },
   watch: {
     flooding (val) {
-      const listener = this.$listeners.activeEvt
+      const listener = getVmListenerName.call(this, 'activeEvt')
       if (val) {
         if (this.floodDone) {
           this.extrudedHeight = this.extrudedHeight >= this.minHeight ? this.minHeight : 0.1
@@ -64,10 +65,10 @@ export default {
         }
         this._mounted = true
         this.viewer.clock.onTick.addEventListener(this.onTick)
-        listener && this.$emit('activeEvt', { isActive: val })
+        listener && this.$emit(listener, { isActive: val })
       } else {
         this.viewer.clock.onTick.removeEventListener(this.onTick)
-        listener && this.$emit('activeEvt', { isActive: val })
+        listener && this.$emit(listener, { isActive: val })
       }
     },
     minHeight (val) {

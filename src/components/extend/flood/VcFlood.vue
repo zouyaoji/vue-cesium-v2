@@ -14,6 +14,7 @@
 <script>
 import cmp from '../../../mixins/virtualCmp'
 import { makeColor } from '../../../utils/cesiumHelpers'
+import { getVmListenerName } from '../../../utils/util'
 
 export default {
   name: 'vc-analytics-flood',
@@ -44,18 +45,18 @@ export default {
   },
   watch: {
     flooding (val) {
-      const listener = this.$listeners.activeEvt
+      const listener = getVmListenerName.call(this, 'activeEvt')
       if (val) {
         if (this.floodDone) {
           this.extrudedHeight = this.extrudedHeight >= this.minHeight ? this.minHeight : 0.1
           this.floodDone = false
         }
         this.viewer.clock.onTick.addEventListener(this.onTick)
-        listener && this.$emit('activeEvt', { isActive: val })
+        listener && this.$emit(listener, { isActive: val })
         this.show = true
       } else {
         this.viewer.clock.onTick.removeEventListener(this.onTick)
-        listener && this.$emit('activeEvt', { isActive: val })
+        listener && this.$emit(listener, { isActive: val })
       }
     },
     minHeight (val) {
@@ -77,8 +78,8 @@ export default {
       const { maxHeight, speed } = this
       if (this.extrudedHeight < maxHeight) {
         this.extrudedHeight += speed
-        const listener = this.$listeners.tickEvt
-        listener && this.$emit('tickEvt', { clock: e, extrudedHeight: this.extrudedHeight })
+        const listener = getVmListenerName.call(this, 'tickEvt')
+        listener && this.$emit(listener, { clock: e, extrudedHeight: this.extrudedHeight })
       } else {
         this.floodDone = true
         this.flooding = false

@@ -1,14 +1,23 @@
+/*
+ * @Author: zouyaoji@https://github.com/zouyaoji
+ * @Date: 2021-04-06 09:23:38
+ * @LastEditTime: 2022-02-21 22:34:16
+ * @LastEditors: zouyaoji
+ * @Description:
+ * @FilePath: \vue-cesium-v2\src\mixins\providers\mixinImageryProvider.js
+ */
 import bindEvents from '../../utils/bindEvent'
 import { Events } from '../../utils/events'
 import cmp from '../virtualCmp'
 import * as coordtransform from '../../utils/coordtransform'
+import { getVmListenerName } from '../../utils/util'
 
 const methods = {
   async mount () {
     const { imageryProvider, providerContainer, projectionTransforms } = this
     imageryProvider.readyPromise.then(() => {
-      const listener = this.$listeners.readyPromise
-      listener && this.$emit('readyPromise', imageryProvider)
+      const listener = getVmListenerName.call(this, 'readyPromise')
+      listener && this.$emit(listener, imageryProvider)
     }).otherwise(error => {
       throw new Cesium.DeveloperError(error)
     })

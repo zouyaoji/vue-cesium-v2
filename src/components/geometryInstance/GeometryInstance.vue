@@ -1,7 +1,17 @@
+<!--
+ * @Author: zouyaoji@https://github.com/zouyaoji
+ * @Date: 2021-12-23 14:42:45
+ * @LastEditTime: 2022-02-21 22:31:37
+ * @LastEditors: zouyaoji
+ * @Description:
+ * @FilePath: \vue-cesium-v2\src\components\geometryInstance\GeometryInstance.vue
+-->
 <script>
 import cmp from '../../mixins/virtualCmp'
 import { modelMatrix, id } from '../../mixins/mixinProps'
 import mergeDescriptors from '../../utils/mergeDescriptors'
+import { getVmListenerName } from '../../utils/util'
+
 export default {
   name: 'vc-instance-geometry',
   mixins: [cmp, modelMatrix, id],
@@ -29,8 +39,8 @@ export default {
       return true
     },
     async setGeometry (geometry) {
-      const listener = this.$listeners['update:geometry']
-      if (listener) { this.$emit('update:geometry', geometry) } else this.geometryInstance.geometry = geometry
+      const listener = getVmListenerName.call(this, 'update:geometry')
+      if (listener) { this.$emit(listener, geometry) } else this.geometryInstance.geometry = geometry
       return true
     },
     getServices () {

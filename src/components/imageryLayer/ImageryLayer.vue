@@ -2,6 +2,8 @@
 import { cutoutRectangle, colorToAlpha } from '../../mixins/mixinProps'
 import mergeDescriptors from '../../utils/mergeDescriptors'
 import cmp from '../../mixins/virtualCmp'
+import { getVmListenerName } from '../../utils/util'
+
 export default {
   name: 'vc-layer-imagery',
   mixins: [cmp, cutoutRectangle, colorToAlpha],
@@ -72,8 +74,8 @@ export default {
         this.unmount()
       } else {
         this.imageryLayer._imageryProvider = provider
-        const listener = this.$listeners['update:imageryProvider']
-        if (listener) this.$emit('update:imageryProvider', provider)
+        const listener = getVmListenerName.call(this, 'update:imageryProvider')
+        if (listener) this.$emit(listener, provider)
       }
 
       return true

@@ -48,7 +48,7 @@ import VcDistanceLegend from './VcDistanceLegend.vue'
 import VcLocationBar from './VcLocationBar.vue'
 import VcPrintViewBtn from './VcPrintViewBtn.vue'
 import VcMyLocation from './VcMyLocation.vue'
-
+import { getVmListenerName } from '../../../utils/util'
 export default {
   name: 'vc-navigation',
   components: {
@@ -158,12 +158,12 @@ export default {
       return true
     },
     legendChanged (e) {
-      const listener = this.$listeners.legendChanged
-      listener && this.$emit('legendChanged', e)
+      const listener = getVmListenerName.call(this, 'legendChanged')
+      listener && this.$emit(listener, e)
     },
     geolocation (e) {
-      const listener = this.$listeners.geolocation
-      listener && this.$emit('geolocation', e)
+      const listener = getVmListenerName.call(this, 'geolocation')
+      listener && this.$emit(listener, e)
     }
   },
   stubVNode: {

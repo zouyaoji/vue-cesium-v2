@@ -11,13 +11,14 @@ import cmp from '../virtualCmp'
 import mergeDescriptors from '../../utils/mergeDescriptors'
 import bindEvents from '../../utils/bindEvent'
 import mixinPickEvent from '../event/mixinPickEvent'
+import { getVmListenerName } from '../../utils/util'
 
 const methods = {
   async mount () {
     const { primitives, primitive, registerEvents } = this
     primitive.readyPromise && primitive.readyPromise.then(primitive => {
-      const listener = this.$listeners.readyPromise
-      listener && this.$emit('readyPromise', primitive)
+      const listener = getVmListenerName.call(this, 'readyPromise')
+      listener && this.$emit(listener, primitive, this.viewer)
     }).otherwise(error => {
       throw new Cesium.DeveloperError(error)
     })
@@ -37,9 +38,9 @@ const methods = {
   async setGeometryInstances (geometryInstance, index) {
     this.instances.push(geometryInstance)
     if (index === this.childCount - 1) {
-      const listener = this.$listeners['update:geometryInstances']
+      const listener = getVmListenerName.call(this, 'update:geometryInstances')
       if (listener) {
-        this.$emit('update:geometryInstances', this.instances)
+        this.$emit(listener, this.instances)
       } else {
         this.primitive.geometryInstances = index === 0 ? geometryInstance : this.instances
       }

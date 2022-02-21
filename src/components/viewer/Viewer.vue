@@ -9,8 +9,9 @@ import bindEvents from '../../utils/bindEvent.js'
 import { Events } from '../../utils/events'
 import services from '../../mixins/services'
 import mergeDescriptors from '../../utils/mergeDescriptors.js'
-import { dirname, isArray } from '../../utils/util.js'
+import { dirname, isArray, getVmListenerName, toKebabCase } from '../../utils/util.js'
 import { getMars3dConfig } from './loadUtil'
+import { camelCase } from 'lodash-es'
 
 let loadLibs = []
 
@@ -925,7 +926,11 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
       })
       const handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas)
       Events['viewer-mouse-events'].forEach((eventName) => {
-        const listener = that.$listeners[eventName] || that.$listeners[eventName.toLowerCase()]
+        const listener =
+          that.$listeners[eventName] ||
+          that.$listeners[eventName.toLowerCase()] ||
+          that.$listeners[camelCase(eventName)] ||
+          that.$listeners[toKebabCase(camelCase(eventName))]
         if (flag) {
           listener && handler.setInputAction(listener.fns, Cesium.ScreenSpaceEventType[eventName])
         } else {
@@ -1027,15 +1032,15 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
 
         return Promise.all(scriptLoadPromises).then(() => {
           if (globalThis.Cesium) {
-            const listener = this.$listeners.cesiumReady
-            listener && this.$emit('cesiumReady', globalThis.Cesium)
+            const listener = getVmListenerName.call(this, 'cesiumReady')
+            listener && this.$emit(listener, globalThis.Cesium)
             return globalThis.Cesium
           } else if (globalThis.XE) {
             // 兼容 cesiumlab earthsdk
             return globalThis.XE.ready().then(() => {
               // resolve(globalThis.Cesium)
-              const listener = this.$listeners.cesiumReady
-              listener && this.$emit('cesiumReady', globalThis.Cesium)
+              const listener = getVmListenerName.call(this, 'cesiumReady')
+              listener && this.$emit(listener, globalThis.Cesium)
               return globalThis.Cesium
             })
           } else if (globalThis.DC) {
@@ -1045,8 +1050,8 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
             globalThis.DC.ready(() => {
               globalThis.Cesium = globalThis.DC.Namespace.Cesium
 
-              const listener = this.$listeners.cesiumReady
-              listener && this.$emit('cesiumReady', globalThis.DC)
+              const listener = getVmListenerName.call(this, 'cesiumReady')
+              listener && this.$emit(listener, globalThis.DC)
               return globalThis.Cesium
             })
             return globalThis.Cesium
@@ -1065,8 +1070,8 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
       await this.$vc.scriptPromise
     },
     async beforeLoad () {
-      const listener = this.$listeners.beforeLoad
-      listener && this.$emit('beforeLoad', this)
+      const listener = getVmListenerName.call(this, 'beforeLoad')
+      listener && this.$emit(listener, this)
       // Make sure to add only one CesiumJS script tag
       // 保证只添加一个CesiumJS标签
       this.$vc.scriptPromise = this.$vc.scriptPromise || this.getCesiumScript()
@@ -1158,8 +1163,8 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         loadLibs = []
       }
 
-      const listener = this.$listeners.destroyed
-      listener && this.$emit('destroyed', this)
+      const listener = getVmListenerName.call(this, 'destroyed')
+      listener && this.$emit(listener, this)
       unloadingResolve(true)
       this.$vc.viewerUnloadingPromise = undefined
       return true

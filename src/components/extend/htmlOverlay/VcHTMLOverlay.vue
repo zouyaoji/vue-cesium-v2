@@ -1,3 +1,11 @@
+<!--
+ * @Author: zouyaoji@https://github.com/zouyaoji
+ * @Date: 2021-12-23 14:42:45
+ * @LastEditTime: 2022-02-21 22:30:29
+ * @LastEditors: zouyaoji
+ * @Description:
+ * @FilePath: \vue-cesium-v2\src\components\extend\htmlOverlay\VcHTMLOverlay.vue
+-->
 <template>
   <div @click="onClick" class="vc-html-container" v-if="canRender">
     <slot></slot>
@@ -8,6 +16,8 @@
 import cmp from '../../../mixins/virtualCmp'
 import { pixelOffset, position } from '../../../mixins/mixinProps'
 import { makeCartesian2, makeCartesian3 } from '../../../utils/cesiumHelpers'
+import { getVmListenerName } from '../../../utils/util'
+
 export default {
   name: 'vc-overlay-html',
   mixins: [cmp, pixelOffset, position],
@@ -67,8 +77,8 @@ export default {
       }
     },
     onClick (e) {
-      const listener = this.$listeners.click
-      listener && this.$emit('click', e)
+      const listener = getVmListenerName.call(this, 'click')
+      listener && this.$emit(listener, e)
     }
   },
   created () {
