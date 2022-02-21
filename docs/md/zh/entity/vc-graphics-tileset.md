@@ -63,13 +63,13 @@
       <vc-primitive-tileset
         :url="url"
         @ready-promise="readyPromise"
-        @initialTilesLoaded="initialTilesLoaded"
-        @allTilesLoaded="allTilesLoaded"
-        @loadProgress="loadProgress"
-        @tileFailed="tileFailed"
-        @tileLoad="tileLoad"
-        @tileUnload="tileUnload"
-        @tileVisible="tileVisible"
+        @initial-tiles-loaded="initialTilesLoaded"
+        @all-tiles-loaded="allTilesLoaded"
+        @load-progress="loadProgress"
+        @tile-failed="tileFailed"
+        @tile-load="tileLoad"
+        @tile-unload="tileUnload"
+        @tile-visible="tileVisible"
       >
       </vc-primitive-tileset>
     </vc-viewer>

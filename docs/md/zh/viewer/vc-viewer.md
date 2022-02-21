@@ -12,7 +12,7 @@
   <template>
     <div class="viewer" ref="viewerContainer">
       <vc-viewer ref="vcViewer" :animation="animation" :base-layer-picker="baseLayerPicker" :timeline="timeline"
-        :fullscreen-button="fullscreenButton" :fullscreen-element="fullscreenElement" :info-box="infoBox" @ready="ready">
+        :fullscreen-button="fullscreenButton" :fullscreen-element="fullscreenElement" :info-box="infoBox" @ready="ready" @left-click="leftClick">
         <vc-navigation :options="options"></vc-navigation>
         <vc-map-overview></vc-map-overview>
         <vc-layer-imagery>
@@ -92,6 +92,9 @@
         })
       },
       methods: {
+        leftClick (e) {
+          console.log(e)
+        },
         ready (cesiumInstance) {
           const {Cesium, viewer} = cesiumInstance
           window.viewer = viewer

@@ -15,25 +15,17 @@
         <vc-primitive-tileset
           :url="url"
           @ready-promise="readyPromise"
-          @initialTilesLoaded="initialTilesLoaded"
-          @allTilesLoaded="allTilesLoaded"
-          @loadProgress="loadProgress"
-          @tileFailed="tileFailed"
-          @tileLoad="tileLoad"
-          @tileUnload="tileUnload"
-          @tileVisible="tileVisible"
+          @initial-tiles-loaded="initialTilesLoaded"
+          @all-tiles-loaded="allTilesLoaded"
+          @load-progress="loadProgress"
+          @tile-failed="tileFailed"
+          @tile-load="tileLoad"
+          @tile-unload="tileUnload"
+          @tile-visible="tileVisible"
           @click="clicked"
         >
         </vc-primitive-tileset>
       </vc-viewer>
-      <div class="demo-tool">
-        <span>切换地址</span>
-        <md-select v-model="url" placeholder="切换地址">
-          <md-option v-for="item in options" :key="item.value" :value="item.value">
-            {{item.label}}
-          </md-option>
-        </md-select>
-      </div>
     </div>
   </template>
 
@@ -41,17 +33,7 @@
     export default {
       data() {
         return {
-          url: './statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
-          options: [
-            {
-              value: './statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
-              label: 'tileset one'
-            },
-            {
-              value: './statics/SampleData/Cesium3DTiles/Hierarchy/BatchTableHierarchy/tileset.json',
-              label: 'tileset two'
-            }
-          ]
+          url: 'https://zouyaoji.top/vue-cesium/SampleData/Cesium3DTiles/Tilesets/dayanta/tileset.json'
         }
       },
       methods: {
@@ -105,25 +87,17 @@
       <vc-primitive-tileset
         :url="url"
         @ready-promise="readyPromise"
-        @initialTilesLoaded="initialTilesLoaded"
-        @allTilesLoaded="allTilesLoaded"
-        @loadProgress="loadProgress"
-        @tileFailed="tileFailed"
-        @tileLoad="tileLoad"
-        @tileUnload="tileUnload"
-        @tileVisible="tileVisible"
+        @initial-tiles-loaded="initialTilesLoaded"
+        @all-tiles-loaded="allTilesLoaded"
+        @load-progress="loadProgress"
+        @tile-failed="tileFailed"
+        @tile-load="tileLoad"
+        @tile-unload="tileUnload"
+        @tile-visible="tileVisible"
         @click="clicked"
       >
       </vc-primitive-tileset>
     </vc-viewer>
-    <div class="demo-tool">
-      <span>切换地址</span>
-      <md-select v-model="url" placeholder="切换地址">
-        <md-option v-for="item in options" :key="item.value" :value="item.value">
-          {{item.label}}
-        </md-option>
-      </md-select>
-    </div>
   </div>
 </template>
 
@@ -131,21 +105,11 @@
   export default {
     data() {
       return {
-        url: './statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
-        options: [
-          {
-            value: './statics/SampleData/Cesium3DTiles/Tilesets/Tileset/tileset.json',
-            label: 'tileset one'
-          },
-          {
-            value: './statics/SampleData/Cesium3DTiles/Hierarchy/BatchTableHierarchy/tileset.json',
-            label: 'tileset two'
-          }
-        ]
+        url: 'https://zouyaoji.top/vue-cesium/SampleData/Cesium3DTiles/Tilesets/dayanta/tileset.json'
       }
     },
     methods: {
-      clicked (a) {
+      clicked(a) {
         console.log(a)
       },
       ready(cesiumInstance) {
@@ -265,5 +229,6 @@
 | mousemove          | {button,surfacePosition,pickedFeature,type,windowPosition} | 鼠标在该图元上移动时触发。                                                       |
 | mouseover          | {button,surfacePosition,pickedFeature,type,windowPosition} | 鼠标移动到该图元时触发。                                                         |
 | mouseout           | {button,surfacePosition,pickedFeature,type,windowPosition} | 鼠标移出该图元时触发。                                                           |
+| readyPromise       | tileset                                                    | 图元加载完完成时触发。。                                                         |
 
 ---

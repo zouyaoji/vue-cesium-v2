@@ -135,7 +135,7 @@ export default {
 }
 
 .page-content {
-  padding-top: 64px;
+  padding-top: 112px;
 }
 
 @media (min-width: 1281px) {
