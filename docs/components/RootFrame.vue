@@ -1,6 +1,9 @@
 <template lang="pug">
   div
-    md-whiteframe(md-tag="md-toolbar").top
+    md-toolbar(md-theme="default").top.md-dense.md-accent.main-banner
+      span {{banner.message}}
+      md-button(:href="banner.href").md-raised {{banner.caption}}
+    md-whiteframe(md-tag="md-toolbar").top.header
       .md-toolbar-container
         md-button.menu-button.md-icon-button(@click="$refs.sidenav.toggle()")
           md-icon menu
@@ -21,35 +24,55 @@
       slot(name="page-content")
 </template>
 
-
 <script>
 export default {
   props: ['lang'],
-  data () {
+  data() {
     return {
       title: this.$route.name
     }
   },
   computed: {
-    otherLang () {
+    otherLang() {
       return this.lang === 'zh' ? 'en' : 'zh'
     },
-    otherUrl () {
-      const url = this.$route.path.indexOf('/zh/') !== -1
-        ? this.$route.path.replace('/zh/', '/en/')
-        : this.$route.path.replace('/en/', '/zh/')
+    otherUrl() {
+      const url =
+        this.$route.path.indexOf('/zh/') !== -1
+          ? this.$route.path.replace('/zh/', '/en/')
+          : this.$route.path.replace('/en/', '/zh/')
       return url
+    },
+    banner() {
+      const result =
+        this.$route.path.indexOf('/zh/') !== -1
+          ? {
+              message: '这是 Vue Cesium 的旧版本！ 转到新版本以获取更新版本！',
+              caption: '过去看看!',
+              href: 'https://zouyaoji.top/vue-cesium/#/zh-CN'
+            }
+          : {
+              message: 'This is an old version of Vue Cesium! Go to new version to get the updated version!',
+              caption: 'CHECK IT OUT!',
+              href: 'https://zouyaoji.top/vue-cesium/#/en-US'
+            }
+      return result
     }
   },
-  mounted () {
+  mounted() {
     this.$router.afterEach((route) => {
       document.body.scrollTop = 0
       this.title = route.name
     })
   },
   methods: {
-    onDonorClick () {
-      this.$router.push({ name: this.lang === 'zh' ? '赞助' : 'Donations' })
+    onDonorClick() {
+      // this.$router.push({ name: this.lang === 'zh' ? '赞助' : 'Donations' })
+      window.open(
+        this.lang === 'zh'
+          ? 'https://zouyaoji.top/vue-cesium/#/zh-CN/donations'
+          : 'https://zouyaoji.top/vue-cesium/#/en-US/donations'
+      )
     }
   }
 }
@@ -62,6 +85,19 @@ export default {
   left: 0;
   right: 0;
   z-index: 2;
+}
+.header {
+  top: 48px;
+}
+
+.main-banner {
+  padding-left: 16px;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-size: 14px;
+  font-font-weight: 400;
+  -webkit-font-smoothing antialiased;
+  font-family: Roboto,Noto Sans,Noto,sans-serif;
 }
 
 .logo {
