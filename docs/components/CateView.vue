@@ -1,22 +1,35 @@
 <template lang="pug">
   div
     router-view
-    h3
+    h4
       div {{caughtMistake}}
         a(:href="href" target="_blank")  {{editOnGithub}}
-    ad-sense
+    ad-sense(v-if="adSenseShow")
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      adSenseShow: true
+    }
+  },
+  watch: {
+    '$route.path'() {
+      this.adSenseShow = false
+      this.$nextTick(() => {
+        this.adSenseShow = true
+      })
+    }
+  },
   computed: {
-    href: function () {
+    href: function() {
       return 'https://github.com/zouyaoji/vue-cesium-v2/blob/master/docs/md' + this.$route.path + '.md'
     },
-    caughtMistake: function () {
+    caughtMistake: function() {
       return this.$route.path.indexOf('/zh/') !== -1 ? '发现错误？' : 'Caught a mistake?'
     },
-    editOnGithub: function () {
+    editOnGithub: function() {
       return this.$route.path.indexOf('/zh/') !== -1 ? '在 GitHub 上编辑此页！' : 'Edit this page on GitHub!'
     }
   }

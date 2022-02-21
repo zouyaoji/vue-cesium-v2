@@ -1,7 +1,7 @@
 <!--
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2022-02-21 13:27:45
- * @LastEditTime: 2022-02-21 13:33:02
+ * @LastEditTime: 2022-02-21 13:52:07
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\docs\components\AdSense.vue
@@ -38,7 +38,7 @@ export default {
 <style>
 .adsense-content {
   max-width: 1440px;
-  margin: 0 auto;
+  margin: 1.5rem auto;
 }
 .adsense-title {
   color: #999;
