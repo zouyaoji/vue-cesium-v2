@@ -4,6 +4,7 @@
     h3
       div {{caughtMistake}}
         a(:href="href" target="_blank")  {{editOnGithub}}
+    ad-sense
 </template>
 
 <script>

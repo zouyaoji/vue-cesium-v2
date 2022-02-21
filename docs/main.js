@@ -1,7 +1,7 @@
 /*
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2021-06-30 22:20:50
- * @LastEditTime: 2022-01-13 15:16:06
+ * @LastEditTime: 2022-02-21 13:29:24
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\docs\main.js
@@ -21,6 +21,7 @@ import 'material-design-icons/iconfont/material-icons.css'
 import './fonts/iconfont.css'
 import 'vue-material/dist/vue-material.css'
 import 'vue-slider-component/theme/default.css'
+import AdSense from './components/AdSense.vue'
 
 import * as VueCesium from '../src/index.js'
 import { VcOverviewMap, VcNavigationSM } from '../src/index.js'
@@ -64,6 +65,7 @@ Vue.material.registerTheme({
 Vue.component('doc-preview', DocPreview)
 Vue.component('text-field', TextField)
 Vue.component('VueSlider', VueSlider)
+Vue.component('AdSense', AdSense)
 
 const router = new VueRouter({
   scrollBehavior: () => ({ x: 0, y: 0 }),
