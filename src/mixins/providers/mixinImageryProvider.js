@@ -1,7 +1,7 @@
 /*
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2021-04-06 09:23:38
- * @LastEditTime: 2022-02-21 22:34:16
+ * @LastEditTime: 2022-04-06 10:50:54
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\src\mixins\providers\mixinImageryProvider.js
@@ -18,9 +18,8 @@ const methods = {
     imageryProvider.readyPromise.then(() => {
       const listener = getVmListenerName.call(this, 'readyPromise')
       listener && this.$emit(listener, imageryProvider)
-    }).otherwise(error => {
-      throw new Cesium.DeveloperError(error)
     })
+
     if (projectionTransforms && projectionTransforms.from !== projectionTransforms.to) {
       const ignoreTransforms = this.$options.name === 'vc-provider-imagery-baidumap' ||
         (this.$options.name === 'vc-provider-imagery-tianditu' && imageryProvider._epsgCode === '4490')

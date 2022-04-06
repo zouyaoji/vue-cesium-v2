@@ -1,8 +1,9 @@
 import BaiduMapMercatorTilingScheme from './BaiduMapTilingScheme'
+import defer from '../../utils/defer'
 
 class BaiduMapImageryProvider {
   constructor (options) {
-    const { Resource, defaultValue, Credit, when, Event } = Cesium
+    const { Resource, defaultValue, Credit, Event } = Cesium
     this._url = options.url || `${options.protocol}://{s}.map.bdimg.com/onlinelabel/?qt=tile&styles=pl&x={x}&y={y}&z={z}`
     const resource = Resource.createIfNeeded(this._url)
     resource.appendForwardSlash()
@@ -25,7 +26,7 @@ class BaiduMapImageryProvider {
     this._hasAlphaChannel = defaultValue(options.hasAlphaChannel, true)
     this._subdomains = defaultValue(options.subdomains, ['online0', 'online1', 'online2', 'online3', 'online4', 'online5', 'online6', 'online7', 'online8', 'online9'])
     this._errorEvent = new Event()
-    this._readyPromise = when.defer()
+    this._readyPromise = defer()
     this._ready = true
     this._readyPromise.resolve(true)
   }

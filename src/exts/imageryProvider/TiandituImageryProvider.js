@@ -1,4 +1,6 @@
 import TiandituMapsStyle from './TiandituMapsStyle'
+import defer from '../../utils/defer'
+
 const TiandituMapsStyleUrl = {}
 const TiandituMapsStyleLayer = {}
 const TiandituMapsStyleID = {}
@@ -48,7 +50,7 @@ class TiandituImageryProvider {
           break
       }
     })
-    const { Credit, defaultValue, Event, GeographicTilingScheme, WebMercatorTilingScheme, when } = Cesium
+    const { Credit, defaultValue, Event, GeographicTilingScheme, WebMercatorTilingScheme } = Cesium
     options = defaultValue(options, {})
     this._mapStyle = defaultValue(options.mapStyle, TiandituMapsStyle.IMG_W)
     this._url = options.url || defaultValue(options.url, TiandituMapsStyleUrl[this._mapStyle])
@@ -65,12 +67,14 @@ class TiandituImageryProvider {
     this._minimumLevel = defaultValue(options.minimumLevel, 0)
     this._maximumLevel = defaultValue(options.maximumLevel, TiandituMapsStyleLabels[this._mapStyle].length)
     this._rectangle = defaultValue(options.rectangle, this.tilingScheme.rectangle)
-    this._readyPromise = when.resolve(true)
+    this._readyPromise = defer()
     this._errorEvent = new Event()
     const credit = defaultValue(options.credit, '天地图全球影像服务')
     this._credit = typeof credit === 'string' ? new Credit(credit) : credit
     this._subdomains = defaultValue(options.subdomains, ['t0', 't1', 't2', 't3', 't4', 't5', 't6', 't7'])
     this._tileDiscardPolicy = options.tileDiscardPolicy
+    this._ready = true
+    this._readyPromise.resolve(true)
   }
 
   requestImage (x, y, level) {
@@ -121,7 +125,7 @@ class TiandituImageryProvider {
   }
 
   get readyPromise () {
-    return this._readyPromise
+    return this._readyPromise.promise
   }
 
   get credit () {

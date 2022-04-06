@@ -120,7 +120,7 @@ class MouseCoords {
   }
 
   sampleAccurateHeight (terrainProvider, position) {
-    const { Cartographic, sampleTerrainMostDetailed, when } = Cesium
+    const { Cartographic, sampleTerrainMostDetailed } = Cesium
     if (this.tileRequestInFlight) {
       // A tile request is already in flight, so reschedule for later.
       this.debounceSampleAccurateHeight.cancel()
@@ -132,7 +132,7 @@ class MouseCoords {
 
     const geoidHeightPromise = this.geoidModel ? this.geoidModel.getHeight(position.longitude, position.latitude) : undefined
     const terrainPromise = sampleTerrainMostDetailed(terrainProvider, [positionWithHeight])
-    this.tileRequestInFlight = when.all(
+    this.tileRequestInFlight = Promise.all(
       [geoidHeightPromise, terrainPromise],
       (result) => {
         const geoidHeight = result[0] || 0.0

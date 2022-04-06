@@ -1,3 +1,12 @@
+/*
+ * @Author: zouyaoji@https://github.com/zouyaoji
+ * @Date: 2021-04-06 09:23:38
+ * @LastEditTime: 2022-04-06 10:33:23
+ * @LastEditors: zouyaoji
+ * @Description:
+ * @FilePath: \vue-cesium-v2\src\exts\printWindow.js
+ */
+import defer from '../utils/defer'
 
 /**
  * Tells the web browser to print a given window, which my be an iframe window, and
@@ -8,8 +17,7 @@
  *                    there is no indication that the browser's print
  */
 function printWindow (windowToPrint) {
-  const { when } = Cesium
-  const deferred = when.defer()
+  const deferred = defer()
   let printInProgressCount = 0
 
   const timeout = setTimeout(function () {

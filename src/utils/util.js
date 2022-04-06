@@ -1,3 +1,5 @@
+import defer from './defer'
+
 const toString = Object.prototype.toString
 
 export const checkType = (val) => Object.prototype.toString.call(val).slice(8, -1)
@@ -188,8 +190,7 @@ export function Platform () {
 }
 
 export function captureScreenshot (viewer, showSplitter = false) {
-  const { when } = Cesium
-  const deferred = when.defer()
+  const deferred = defer()
   const scene = viewer.scene
   const removeCallback = scene.postRender.addEventListener(function () {
     removeCallback()
@@ -388,7 +389,7 @@ export function changeExtension (fname, newExt) {
 }
 
 export function readAsArrayBuffer (file) {
-  const promise = Cesium.when.defer()
+  const promise = defer()
   const fr = new FileReader()
   fr.onload = function (e) {
     promise.resolve(e.target.result)
@@ -404,7 +405,7 @@ export function readAsArrayBuffer (file) {
 }
 
 export function readAsText (file) {
-  const promise = Cesium.when.defer()
+  const promise = defer()
   const fr = new FileReader()
   fr.onload = function (e) {
     promise.resolve(e.target.result)
@@ -420,7 +421,7 @@ export function readAsText (file) {
 }
 
 export function readAllBytes (file) {
-  const promise = Cesium.when.defer()
+  const promise = defer()
   const fr = new FileReader()
   fr.onload = function (e) {
     promise.resolve(new Uint8Array(e.target.result))

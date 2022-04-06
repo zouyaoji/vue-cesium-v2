@@ -1,8 +1,9 @@
 import IndexedDBScheduler from './IndexedDBScheduler'
+import defer from '../../utils/defer'
 
 class SuperMapImageryProvider {
   constructor (options) {
-    const { appendForwardSlash, Credit, defaultValue, defined, DeveloperError, Event, Resource, when, Math } = Cesium
+    const { appendForwardSlash, Credit, defaultValue, defined, DeveloperError, Event, Resource, Math } = Cesium
     options = defaultValue(options, {})
     const { url } = options
     if (!defined(url)) {
@@ -58,7 +59,7 @@ class SuperMapImageryProvider {
     }
     this.m_credit = credit
     this.m_ready = false
-    this.m_readyPromise = when.defer()
+    this.m_readyPromise = defer()
     this.m_options = options
     init.call(this)
   }
@@ -134,7 +135,7 @@ class SuperMapImageryProvider {
   }
 
   get readyPromise () {
-    return this.m_readyPromise
+    return this.m_readyPromise.promise
   }
 
   get ratio () {
