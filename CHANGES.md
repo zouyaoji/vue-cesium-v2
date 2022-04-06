@@ -1,5 +1,10 @@
 # 更新日志
 
+## 2.3.6 - 2021-04-06
+
+- 兼容 Cesium 最新版本。
+- 增加 `vc-provider-imagery-tencent` 和 `vc-provider-imagery-amap` 组件。
+
 ## 2.3.5 - 2021-02-22
 
 - 组件事件支持短横线写法。
