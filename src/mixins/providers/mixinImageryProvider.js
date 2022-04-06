@@ -1,7 +1,7 @@
 /*
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2021-04-06 09:23:38
- * @LastEditTime: 2022-04-06 10:50:54
+ * @LastEditTime: 2022-04-06 17:19:02
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\src\mixins\providers\mixinImageryProvider.js
@@ -23,6 +23,7 @@ const methods = {
     if (projectionTransforms && projectionTransforms.from !== projectionTransforms.to) {
       const ignoreTransforms = this.$options.name === 'vc-provider-imagery-baidumap' ||
         (this.$options.name === 'vc-provider-imagery-tianditu' && imageryProvider._epsgCode === '4490')
+
       if (!ignoreTransforms) {
         const { WebMercatorTilingScheme, Cartographic, Math: CesiumMath } = Cesium
         const tilingScheme = new WebMercatorTilingScheme()

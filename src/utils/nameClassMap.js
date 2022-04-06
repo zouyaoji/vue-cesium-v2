@@ -25,6 +25,8 @@ const nameClassMap = {
   'vc-provider-imagery-supermap': 'SuperMapImageryProvider',
   'vc-provider-imagery-tiledcache': 'UrlTemplateImageryProvider',
   'vc-provider-imagery-baidumap': 'BaiduMapImageryProvider',
+  'vc-provider-imagery-amap': 'AMapImageryProvider',
+  'vc-provider-imagery-tencent': 'TencentImageryProvider',
   // 地形
   'vc-provider-terrain-arcgis-tiled-elevation': 'ArcGISTiledElevationTerrainProvider',
   'vc-provider-terrain-cesium': 'CesiumTerrainProvider',

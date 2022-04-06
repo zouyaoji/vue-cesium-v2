@@ -13,7 +13,10 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
     <div class="viewer">
       <vc-viewer @ready="ready" :camera="camera">
         <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
-          <vc-provider-imagery-baidumap :url="url" :projection-transforms="projectionTransforms"></vc-provider-imagery-baidumap>
+          <vc-provider-imagery-baidumap
+            :customid="customid"
+            :projection-transforms="projectionTransforms"
+          ></vc-provider-imagery-baidumap>
         </vc-layer-imagery>
         <vc-layer-imagery :sort-order="5">
           <vc-provider-imagery-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
@@ -27,7 +30,7 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
         <span>对比度</span>
         <vue-slider v-model="contrast" :min="0" :max="3" :interval="0.01"></vue-slider>
         <span>切换服务</span>
-        <md-select v-model="url" placeholder="请选择地图服务类型">
+        <md-select v-model="customid" placeholder="请选择地图服务类型">
           <md-option v-for="item in options" :key="item.value" :value="item.value">
             {{item.label}}
           </md-option>
@@ -42,23 +45,27 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
         return {
           options: [
             {
-              value: 'http://{s}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&scaler=1&p=1',
-              label: '百度矢量瓦片地图'
+              value: 'normal',
+              label: '默认样式'
             },
             {
-              value: 'http://shangetu1.map.bdimg.com/it/u=x={x};y={y};z={z};v=009;type=sate&fm=46',
-              label: '百度影像瓦片地图'
+              value: 'img',
+              label: '百度影像' // 不支持https
             },
             {
-              value: 'http://api0.map.bdimg.com/customimage/tile?=&x={x}&y={y}&z={z}&scale=1&customid=midnight',
-              label: '百度矢量瓦片地图-暗色'
+              value: 'dark',
+              label: '黑夜风格'
             },
             {
-              value: 'https://www.songluck.com/map/data/maptile-baidu-chengdu/{z}/{x}/{y}.png',
-              label: '百度矢量瓦片地图-成都'
+              value: 'midnight',
+              label: '午夜蓝'
+            },
+            {
+              value: 'traffic',
+              label: '百度路况'
             }
           ],
-          url: 'https://www.songluck.com/map/data/maptile-baidu-chengdu/{z}/{x}/{y}.png',
+          customid: 'normal',
           alpha: 1,
           brightness: 1,
           contrast: 1,
@@ -97,7 +104,10 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
   <div class="viewer">
     <vc-viewer @ready="ready" :camera="camera">
       <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
-        <vc-provider-imagery-baidumap :url="url" :projection-transforms="projectionTransforms"></vc-provider-imagery-baidumap>
+        <vc-provider-imagery-baidumap
+          :customid="customid"
+          :projection-transforms="projectionTransforms"
+        ></vc-provider-imagery-baidumap>
       </vc-layer-imagery>
       <vc-layer-imagery :sort-order="5">
         <vc-provider-imagery-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
@@ -111,7 +121,7 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
       <span>对比度</span>
       <vue-slider v-model="contrast" :min="0" :max="3" :interval="0.01"></vue-slider>
       <span>切换服务</span>
-      <md-select v-model="url" placeholder="请选择地图服务类型">
+      <md-select v-model="customid" placeholder="请选择地图服务类型">
         <md-option v-for="item in options" :key="item.value" :value="item.value">
           {{item.label}}
         </md-option>
@@ -126,23 +136,27 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
       return {
         options: [
           {
-            value: 'http://{s}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&scaler=1&p=1',
-            label: '百度矢量瓦片地图'
+            value: 'normal',
+            label: '默认样式'
           },
           {
-            value: 'http://shangetu1.map.bdimg.com/it/u=x={x};y={y};z={z};v=009;type=sate&fm=46',
-            label: '百度影像瓦片地图'
+            value: 'img',
+            label: '百度影像' // 不支持https
           },
           {
-            value: 'http://api0.map.bdimg.com/customimage/tile?=&x={x}&y={y}&z={z}&scale=1&customid=midnight',
-            label: '百度矢量瓦片地图-暗色'
+            value: 'dark',
+            label: '黑夜风格'
           },
           {
-            value: 'https://www.songluck.com/map/data/maptile-baidu-chengdu/{z}/{x}/{y}.png',
-            label: '百度矢量瓦片地图-成都'
+            value: 'midnight',
+            label: '午夜蓝'
+          },
+          {
+            value: 'traffic',
+            label: '百度路况'
           }
         ],
-        url: 'https://www.songluck.com/map/data/maptile-baidu-chengdu/{z}/{x}/{y}.png',
+        customid: 'normal',
         alpha: 1,
         brightness: 1,
         contrast: 1,
@@ -177,13 +191,18 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
 ## Instance Properties
 
 <!-- prettier-ignore -->
-| name | type | default | description |
-| ----------------- | ------ | -------- | ------------------------------------------- | --- |
-| url | String | `http://{s}.map.bdimg.com/onlinelabel/?qt=tile&styles=pl&x={x}&y={y}&z={z}` | `optional` Specify the service address. |
-| credit | String\|Object | `''` | `optional` The credit of service |
-|minimumLevel|Number|`0`|`optional`The minimum tile level to request, or undefined if there is no minimum.|
-|maximumLevel|Number|`20`|`optional`The maximum tile level to request, or undefined if there is no maximum.|
-| projectionTransforms | Boolean\|Object | `false` | `optional` Specify the projection transformation parameters. **structure: { from: 'BD09', to: 'WGS84' }** |
+| Name | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| url | String | | `optional` Specify the service address. |
+| rectangle | Object\|Object | | `optional` The rectangle of the layer. This parameter is ignored when accessing a tiled layer. |
+| credit | String\|Object | `''` | `optional` A credit for the data source, which is displayed on the canvas. |
+| minimumLevel | Number | `0` | `optional` The minimum level-of-detail supported by the imagery provider. Take care when specifying this that the number of tiles at the minimum level is small, such as four or less. A larger number is likely to result in rendering problems. |
+| maximumLevel | Number | `18` | `optional` The maximum level-of-detail supported by the imagery provider, or undefined if there is no limit. |
+| scale | Number | `1` | `optional` Specify the scale. |
+| ak | String | `E4805d16520de693a3fe707cdc962045` | `optional` Specify the baidumap key. |
+| customid | String | `normal` | `optional` Specify the customid. |img/vec/traffic/normal/light/dark/redalert/googlelite/grassgreen/midnight/pink/darkgreen/bluish/grayscale/hardedge|
+| projectionTransforms | Boolean\|Object |  | `optional` Specify the projection transformation parameters. such as { from: 'BD09', to: 'WGS84' }** |
+| protocol | String | `'https'` | `optional` Specify protocol of service. |
 
 ## Events
 

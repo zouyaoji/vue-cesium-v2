@@ -1,10 +1,19 @@
-# BaiduMapImageryProvider
+<!--
+ * @Author: zouyaoji@https://github.com/zouyaoji
+ * @Date: 2022-04-06 17:20:24
+ * @LastEditTime: 2022-04-06 17:31:46
+ * @LastEditors: zouyaoji
+ * @Description:
+ * @FilePath: \vue-cesium-v2\docs\md\zh\imageryLayer\vc-provider-imagery-amap.md
+-->
 
-`vc-provider-imagery-baidumap` 组件用于百度栅格瓦片地图服务。
+# AMapImageryProvider
+
+`vc-provider-imagery-amap` 组件用于高德栅格瓦片地图服务。
 
 ## 示例
 
-### 加载百度地图影像服务图层
+### 加载高德地图影像服务图层
 
 #### 预览
 
@@ -13,10 +22,11 @@
     <div class="viewer">
       <vc-viewer @ready="ready" :camera="camera">
         <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
-          <vc-provider-imagery-baidumap
-            :customid="customid"
+          <vc-provider-imagery-amap
+            :map-style="mapStyle"
+            :ltype="ltype"
             :projection-transforms="projectionTransforms"
-          ></vc-provider-imagery-baidumap>
+          ></vc-provider-imagery-amap>
         </vc-layer-imagery>
         <vc-layer-imagery :sort-order="5">
           <vc-provider-imagery-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
@@ -30,8 +40,14 @@
         <span>对比度</span>
         <vue-slider v-model="contrast" :min="0" :max="3" :interval="0.01"></vue-slider>
         <span>切换服务</span>
-        <md-select v-model="customid" placeholder="请选择地图服务类型">
-          <md-option v-for="item in options" :key="item.value" :value="item.value">
+        <md-select v-model="mapStyle" placeholder="请选择">
+          <md-option v-for="item in mapStyleOptions" :key="item.value" :label="item.label" :value="item.value">
+            {{item.label}}
+          </md-option>
+        </md-select>
+        <span>切换服务</span>
+        <md-select v-model="ltype" placeholder="请选择">
+          <md-option v-for="item in ltypeOptions" :key="item.value" :label="item.label" :value="item.value">
             {{item.label}}
           </md-option>
         </md-select>
@@ -43,29 +59,36 @@
     export default {
       data() {
         return {
-          options: [
+          mapStyleOptions: [
             {
-              value: 'normal',
-              label: '默认样式'
+              value: '6',
+              label: '卫星影像'
             },
             {
-              value: 'img',
-              label: '百度影像' // 不支持https
+              value: '7',
+              label: '道路图'
             },
             {
-              value: 'dark',
-              label: '黑夜风格'
-            },
-            {
-              value: 'midnight',
-              label: '午夜蓝'
-            },
-            {
-              value: 'traffic',
-              label: '百度路况'
+              value: '8',
+              label: '道路图（背景透明）'
             }
           ],
-          customid: 'normal',
+          ltypeOptions: [
+            {
+              value: '0',
+              label: '默认'
+            },
+            {
+              value: '4',
+              label: '只有注记'
+            },
+            {
+              value: '11',
+              label: '只有道路'
+            }
+          ],
+          mapStyle: '7',
+          ltype: '0',
           alpha: 1,
           brightness: 1,
           contrast: 1,
@@ -104,10 +127,11 @@
   <div class="viewer">
     <vc-viewer @ready="ready" :camera="camera">
       <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
-        <vc-provider-imagery-baidumap
-          :customid="customid"
+        <vc-provider-imagery-amap
+          :map-style="mapStyle"
+          :ltype="ltype"
           :projection-transforms="projectionTransforms"
-        ></vc-provider-imagery-baidumap>
+        ></vc-provider-imagery-amap>
       </vc-layer-imagery>
       <vc-layer-imagery :sort-order="5">
         <vc-provider-imagery-tianditu map-style="img_w" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-imagery-tianditu>
@@ -121,8 +145,14 @@
       <span>对比度</span>
       <vue-slider v-model="contrast" :min="0" :max="3" :interval="0.01"></vue-slider>
       <span>切换服务</span>
-      <md-select v-model="customid" placeholder="请选择地图服务类型">
-        <md-option v-for="item in options" :key="item.value" :value="item.value">
+      <md-select v-model="mapStyle" placeholder="请选择">
+        <md-option v-for="item in mapStyleOptions" :key="item.value" :label="item.label" :value="item.value">
+          {{item.label}}
+        </md-option>
+      </md-select>
+      <span>切换服务</span>
+      <md-select v-model="ltype" placeholder="请选择">
+        <md-option v-for="item in ltypeOptions" :key="item.value" :label="item.label" :value="item.value">
           {{item.label}}
         </md-option>
       </md-select>
@@ -134,29 +164,36 @@
   export default {
     data() {
       return {
-        options: [
+        mapStyleOptions: [
           {
-            value: 'normal',
-            label: '默认样式'
+            value: '6',
+            label: '卫星影像'
           },
           {
-            value: 'img',
-            label: '百度影像' // 不支持https
+            value: '7',
+            label: '道路图'
           },
           {
-            value: 'dark',
-            label: '黑夜风格'
-          },
-          {
-            value: 'midnight',
-            label: '午夜蓝'
-          },
-          {
-            value: 'traffic',
-            label: '百度路况'
+            value: '8',
+            label: '道路图（背景透明）'
           }
         ],
-        customid: 'normal',
+        ltypeOptions: [
+          {
+            value: '0',
+            label: '默认'
+          },
+          {
+            value: '4',
+            label: '只有注记'
+          },
+          {
+            value: '11',
+            label: '只有道路'
+          }
+        ],
+        mapStyle: '7',
+        ltype: '0',
         alpha: 1,
         brightness: 1,
         contrast: 1,
@@ -191,18 +228,21 @@
 ## 属性
 
 <!-- prettier-ignore -->
-| 属性名 | 类型 | 默认值 | 描述 |
-| ----- | ---- | ----- | ---- |
-| url | String |  | `optional` 指定服务地址。 指定了 `url` 将忽略 `customid` 属性。 |
-| rectangle | Object\|Object | | `optional` 指定影像图层的矩形范围，此矩形限制了影像可见范围。 |
-| credit | String\|Object | `''` | `optional` 服务版权描述信息。 |
-| minimumLevel | Number | `0` | `optional` 最小层级。 |
-| maximumLevel | Number | `18` | `optional` 最大层级。 |
-| scale | Number | `1` | `optional` 指定缩放。 |
-| ak | String | `E4805d16520de693a3fe707cdc962045` | `optional` 指定百度地图key。 |
-| customid | String | `normal` | `optional` 指定自定义风格id。 |img/vec/traffic/normal/light/dark/redalert/googlelite/grassgreen/midnight/pink/darkgreen/bluish/grayscale/hardedge|
-| projectionTransforms | Boolean\|Object |  | `optional` 指定投影变换参数。**结构： { from: 'BD09', to: 'WGS84' }** |
-| protocol | String | `'https'` | `optional` 指定服务协议。 |
+| 属性名 | 类型 | 默认值 | 描述 | 可选值 |
+| -------------------- | --------------- | --------- | ---------------------------------------------------------------------------- | ------ |
+| url | string |  | `optional` 指定服务地址。 |
+|domain| 'webst' \| 'webrd'| `'webst'` | `optional` 指定域名。|webst/webrd|
+|subdomains|Array\<string\>|`['01', '02', '03', '04']`| `optional` 指定服务轮询参数。|
+|lang| 'zh_cn' \| 'en'| `'zh_cn'` | `optional` 指定语言。|zh_cn/en|
+| mapStyle | string | `'6'` | `optional` 指定高德地图服务地图风格类型。'6': 卫星影像; '7': 道路图; '8': 道路图(背景透明) | 6/7/8 |
+| scl | '1' \| '2' | `'1'` | `optional` 指定尺寸控制参数。 '1': 256\*256; '2': 512\*512| 1/2 |
+|ltype| string | `'0'` | 指定类型参数。'0': 默认; '4': 只有注记; '8': 只有道路 |0/4/11|
+| credit | string\|Cesium.Credit | `''` | `optional` 服务版权描述信息。 |
+| rectangle | VcRectangle | | `optional` 图层的矩形范围，此矩形限制了影像可见范围。 |
+| minimumLevel | number | `0` | `optional` 最小层级。 |
+| maximumLevel | number | `20` | `optional` 最大层级。 |
+| tilingScheme | Cesium.GeographicTilingScheme \| Cesium.WebMercatorTilingScheme | `new Cesium.WebMercatorTilingScheme()` | `optional` 指定将影像瓦片展开到地球的投影方案。 |
+| projectionTransforms | boolean\|ProjectionTransforms | `false` | `optional` 指定投影变换参数。**结构： { from: 'GCJ02', to: 'WGS84' }** |
 
 ## 事件
 

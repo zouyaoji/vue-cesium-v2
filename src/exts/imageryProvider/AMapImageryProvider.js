@@ -1,28 +1,18 @@
-import BaiduMapMercatorTilingScheme from './BaiduMapTilingScheme'
+/*
+ * @Author: zouyaoji@https://github.com/zouyaoji
+ * @Date: 2022-04-06 16:54:33
+ * @LastEditTime: 2022-04-06 16:55:07
+ * @LastEditors: zouyaoji
+ * @Description:
+ * @FilePath: \vue-cesium-v2\src\exts\imageryProvider\AMapImageryProvider.js
+ */
+
 import defer from '../../utils/defer'
 
-class BaiduMapImageryProvider {
+class AMapImageryProvider {
   constructor (options) {
     const { Resource, defaultValue, Credit, Event } = Cesium
-    this._subdomains = defaultValue(options.subdomains, ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
-    if (options.url) {
-      this._url = options.url
-    } else {
-      if (options.customid === 'img') {
-        this._url = `${options.protocol}://shangetu{s}.map.bdimg.com/it/u=x={x};y={y};z={z};v=009;type=sate&fm=46`
-        this._subdomains = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-      } else if (options.customid === 'vec') {
-        this._url = `${options.protocol}://online{s}.map.bdimg.com/tile/?qt=tile&x={x}&y={y}&z={z}&styles=sl&v=020`
-        this._subdomains = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-      } else if (options.customid === 'traffic') {
-        this._subdomains = ['0', '1', '2']
-        this._url = `${options.protocol}://its.map.baidu.com/traffic/TrafficTileService?time={time}&label={labelStyle}&v=016&level={z}&x={x}&y={y}&scaler=2`
-      } else {
-        this._url = `${options.protocol}://api.map.baidu.com/customimage/tile?&x={x}&y={y}&z={z}&udt={udt}&scale=${options.scale}&ak=${options.ak}&customid=${options.customid}`
-        this._subdomains = ['0', '1', '2']
-      }
-    }
-
+    this._url = options.url
     const resource = Resource.createIfNeeded(this._url)
     resource.appendForwardSlash()
 
@@ -32,9 +22,9 @@ class BaiduMapImageryProvider {
     this._tileWidth = 256
     this._tileHeight = 256
     this._minimumLevel = options.maximumLevel || 0
-    this._maximumLevel = options.maximumLevel || 18
-    this._tilingScheme = new BaiduMapMercatorTilingScheme(options)
-    this._rectangle = defaultValue(options.rectangle, this._tilingScheme.rectangle)
+    this._maximumLevel = options.maximumLevel || 20
+    this._tilingScheme = options.tilingScheme || new Cesium.WebMercatorTilingScheme()
+    this._rectangle = options.rectangle || this._tilingScheme.rectangle
     let credit = options.credit
     if (typeof credit === 'string') {
       credit = new Credit(credit)
@@ -46,8 +36,12 @@ class BaiduMapImageryProvider {
     this._readyPromise = defer()
     this._ready = true
     this._readyPromise.resolve(true)
-    this._style = options.bdStyle
-    this._labelStyle = options.labelStyle || 'web2D'
+    this._subdomains = options.subdomains || ['01', '02', '03', '04']
+    this._domain = options.domain || 'webst'
+    this._style = options.mapStyle || '6'
+    this._lang = options.lang || 'zh_cn'
+    this._scl = options.scl || '1'
+    this._ltype = options.ltype || '0'
   }
 
   get url () {
@@ -156,14 +150,15 @@ function buildImageResource (x, y, level, request) {
   let url = this._url
   const subdomains = this._subdomains
   url = url
+    .replace('{domain}', this._domain)
     .replace('{s}', subdomains[(x + y + level) % subdomains.length])
+    .replace('{lang}', this._lang)
     .replace('{style}', this._style)
+    .replace('{scl}', this._scl)
+    .replace('{ltype}', this._ltype)
     .replace('{x}', x)
-    .replace('{y}', -y)
+    .replace('{y}', y)
     .replace('{z}', level)
-    .replace('{labelStyle}', this._labelStyle)
-    .replace('{time}', String(new Date().getTime()))
-    .replace('{udt}', String(new Date().getTime()))
   const resource = this._resource.getDerivedResource({
     url: url,
     request: request
@@ -171,4 +166,4 @@ function buildImageResource (x, y, level, request) {
   return resource
 }
 
-export default BaiduMapImageryProvider
+export default AMapImageryProvider

@@ -232,6 +232,22 @@ const routeMap = [
         }
       },
       {
+        path: 'vc-provider-imagery-amap',
+        component: 'imageryLayer/vc-provider-imagery-amap',
+        name: {
+          zh: '高德地图',
+          en: 'AMapImageryProvider'
+        }
+      },
+      {
+        path: 'vc-provider-imagery-tencent',
+        component: 'imageryLayer/vc-provider-imagery-tencent',
+        name: {
+          zh: '腾讯地图',
+          en: 'TencentImageryProvider'
+        }
+      },
+      {
         path: 'vc-provider-imagery-supermap',
         component: 'imageryLayer/vc-provider-imagery-supermap',
         name: {

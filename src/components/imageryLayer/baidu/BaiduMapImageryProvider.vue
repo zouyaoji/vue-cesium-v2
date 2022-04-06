@@ -1,3 +1,11 @@
+<!--
+ * @Author: zouyaoji@https://github.com/zouyaoji
+ * @Date: 2021-12-23 14:42:45
+ * @LastEditTime: 2022-04-06 16:38:37
+ * @LastEditors: zouyaoji
+ * @Description:
+ * @FilePath: \vue-cesium-v2\src\components\imageryLayer\baidu\BaiduMapImageryProvider.vue
+-->
 <script>
 import { url, ellipsoid, tileDiscardPolicy, credit, minimumLevel, maximumLevel } from '../../../mixins/mixinProps'
 import mixinImageryProvider from '../../../mixins/providers/mixinImageryProvider'
@@ -8,7 +16,7 @@ export default {
   props: {
     protocol: {
       type: String,
-      default: 'http'
+      default: 'https'
     },
     projectionTransforms: {
       type: [Boolean, Object],
@@ -18,20 +26,29 @@ export default {
           to: 'WGS84'
         }
       }
+    },
+    scale: {
+      type: Number,
+      default: 1
+    },
+    ak: {
+      type: String,
+      default: 'E4805d16520de693a3fe707cdc962045'
+    },
+    // https://lbsyun.baidu.com/custom/list.htm
+    customid: {
+      type: String,
+      default: 'normal' // img vec traffic normal light dark redalert googlelite grassgreen midnight pink darkgreen bluish grayscale hardedge
     }
   },
   methods: {
     async createCesiumObject () {
-      const { $props, transformProps, setPropWatchers, unwatchFns, projectionTransforms } = this
+      const { $props, transformProps, setPropWatchers, unwatchFns } = this
       const options = transformProps($props)
       Cesium.BaiduMapImageryProvider = BaiduMapImageryProvider
       if (unwatchFns.length === 0) {
         setPropWatchers(true)
       }
-      options.toWGS84 =
-        projectionTransforms &&
-        projectionTransforms.from !== projectionTransforms.to &&
-        projectionTransforms.to.toUpperCase() === 'WGS84'
       return new Cesium.BaiduMapImageryProvider(options)
     }
   }

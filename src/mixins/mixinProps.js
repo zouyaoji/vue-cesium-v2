@@ -1869,7 +1869,17 @@ const scissorRectangle = {
 
 // PostProcessStage end
 
+const projectionTransforms = {
+  props: {
+    projectionTransforms: {
+      type: [Boolean, Object],
+      default: false
+    }
+  }
+}
+
 export {
+  projectionTransforms,
   backFaceCulling,
   specularEnvironmentMaps,
   sphericalHarmonicCoefficients,

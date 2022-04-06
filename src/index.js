@@ -19,6 +19,8 @@ import * as TiandituImageryProvider from './components/imageryLayer/tianditu'
 import * as SuperMapImageryProvider from './components/imageryLayer/supermap'
 import * as TiledCacheImageryProvider from './components/imageryLayer/tiledCache'
 import * as BaiduMapImageryProvider from './components/imageryLayer/baidu'
+import * as AMapImageryProvider from './components/imageryLayer/amap'
+import * as TencentImageryProvider from './components/imageryLayer/tencent'
 // 地形
 import * as ArcGISTiledElevationTerrainProvider from './components/terrain/arcgis'
 import * as CesiumTerrainProvider from './components/terrain/cesium'
@@ -173,6 +175,8 @@ function plugin (Vue, options = {}) {
   Vue.use(SuperMapImageryProvider, options)
   Vue.use(TiledCacheImageryProvider, options)
   Vue.use(BaiduMapImageryProvider, options)
+  Vue.use(AMapImageryProvider, options)
+  Vue.use(TencentImageryProvider, options)
   // 地形
   Vue.use(ArcGISTiledElevationTerrainProvider, options)
   Vue.use(CesiumTerrainProvider, options)
@@ -311,6 +315,8 @@ export {
   SuperMapImageryProvider,
   TiledCacheImageryProvider,
   BaiduMapImageryProvider,
+  AMapImageryProvider,
+  TencentImageryProvider,
 
   ArcGISTiledElevationTerrainProvider,
   CesiumTerrainProvider,

@@ -46,7 +46,9 @@ class MouseCoords {
       const v0 = ellipsoid.cartesianToCartographic(pickedTriangle.v0)
       const v1 = ellipsoid.cartesianToCartographic(pickedTriangle.v1)
       const v2 = ellipsoid.cartesianToCartographic(pickedTriangle.v2)
-      const intersection = ellipsoid.cartesianToCartographic(scene.mode === SceneMode.SCENE3D ? pickedTriangle.intersection : scene.globe.pick(pickRay, scene))
+      const intersection = ellipsoid.cartesianToCartographic(
+        scene.mode === SceneMode.SCENE3D ? pickedTriangle.intersection : scene.globe.pick(pickRay, scene)
+      )
       let errorBar
 
       if (globe.terrainProvider instanceof EllipsoidTerrainProvider) {
@@ -132,9 +134,8 @@ class MouseCoords {
 
     const geoidHeightPromise = this.geoidModel ? this.geoidModel.getHeight(position.longitude, position.latitude) : undefined
     const terrainPromise = sampleTerrainMostDetailed(terrainProvider, [positionWithHeight])
-    this.tileRequestInFlight = Promise.all(
-      [geoidHeightPromise, terrainPromise],
-      (result) => {
+    this.tileRequestInFlight = Promise.all([geoidHeightPromise, terrainPromise])
+      .then((result) => {
         const geoidHeight = result[0] || 0.0
         this.tileRequestInFlight = undefined
         if (Cartographic.equals(position, this.lastHeightSamplePosition)) {
@@ -143,11 +144,10 @@ class MouseCoords {
         } else {
           // Mouse moved since we started this request, so the result isn't useful.  Try again next time.
         }
-      },
-      () => {
+      })
+      .catch(() => {
         this.tileRequestInFlight = undefined
-      }
-    )
+      })
   }
 }
 
