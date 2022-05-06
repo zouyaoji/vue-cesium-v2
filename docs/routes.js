@@ -285,8 +285,16 @@ const routeMap = [
         path: 'vc-provider-terrain-arcgis-tiled-elevation',
         component: 'terrain/vc-provider-terrain-arcgis-tiled-elevation',
         name: {
-          zh: 'ArcGISTiledElevation地形',
+          zh: 'ArcGISTiledElevation 地形',
           en: 'ArcGISTiledElevationTerrainProvider'
+        }
+      },
+      {
+        path: 'vc-provider-terrain-tianditu',
+        component: 'terrain/vc-provider-terrain-tianditu',
+        name: {
+          zh: '天地图地形',
+          en: 'VcProviderTerrainTianditu'
         }
       }
     ]

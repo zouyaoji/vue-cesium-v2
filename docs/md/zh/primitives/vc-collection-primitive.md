@@ -18,9 +18,10 @@
             <vc-collection-primitive-billboard :billboards="billboards2"></vc-collection-primitive-billboard>
           </vc-collection-primitive>
         </vc-collection-primitive>
-        <vc-collection-primitive >
+        <vc-collection-primitive :polygons="polygons">
           <vc-primitive-model @click="clicked" :url="url" :model-matrix="modelMatrix" :scale="10000" :minimum-pixel-size="128" :maximum-scale="200000">
           </vc-primitive-model>
+          <vc-polygon :positions="positions"></vc-polygon>
         </vc-collection-primitive>
       </vc-viewer>
       <div class="demo-tool">
@@ -35,10 +36,106 @@
       data() {
         return {
           show: true,
+          positions: [
+            [105, 32],
+            [106, 34],
+            [107, 30]
+          ],
           billboards1: [],
           billboards2: [],
           url: './statics/SampleData/models/CesiumAir/Cesium_Air.gltf',
-          modelMatrix: {}
+          modelMatrix: {},
+          polygons: [
+            {
+              positions: [
+                [115, 37],
+                [115, 32],
+                [107, 33],
+                [102, 31],
+                [102, 35]
+              ],
+              appearance: {
+                type: 'MaterialAppearance',
+                options: {
+                  material: 'green'
+                }
+              }
+            },
+            {
+              positions: [
+                { lng: 108.0, lat: 42.0 },
+                { lng: 100.0, lat: 42.0 },
+                { lng: 104.0, lat: 40.0 }
+              ],
+              appearance: {
+                type: 'MaterialAppearance',
+                options: {
+                  material: 'red'
+                }
+              },
+              depthFailAppearance: {
+                type: 'MaterialAppearance',
+                options: {
+                  material: 'red'
+                }
+              }
+            },
+            {
+              positions: [90.0, 41.0, 0.0, 85.0, 41.0, 500000.0, 80.0, 41.0, 0.0],
+              appearance: {
+                type: 'MaterialAppearance',
+                options: {
+                  material: 'blue'
+                }
+              }
+            },
+            {
+              polygonHierarchy: {
+                positions: [
+                  [99, 30],
+                  [85, 30],
+                  [85, 40],
+                  [99, 40]
+                ],
+                holes: [
+                  {
+                    positions: [
+                      [97, 31],
+                      [97, 39],
+                      [87, 39],
+                      [87, 31]
+                    ],
+                    holes: [
+                      {
+                        positions: [
+                          [95, 33],
+                          [89, 33],
+                          [89, 37],
+                          [95, 37]
+                        ],
+                        holes: [
+                          {
+                            positions: [
+                              [93, 34],
+                              [91, 34],
+                              [91, 36],
+                              [93, 36]
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              appearance: {
+                type: 'MaterialAppearance',
+                options: {
+                  material: 'yellow'
+                }
+              }
+            }
+          ]
         }
       },
       methods: {
@@ -83,9 +180,17 @@
           <vc-collection-primitive-billboard :billboards="billboards2"></vc-collection-primitive-billboard>
         </vc-collection-primitive>
       </vc-collection-primitive>
-      <vc-collection-primitive @click="clicked">
-        <vc-primitive-model :url="url" :model-matrix="modelMatrix" :scale="10000" :minimum-pixel-size="128" :maximum-scale="200000">
+      <vc-collection-primitive :polygons="polygons">
+        <vc-primitive-model
+          @click="clicked"
+          :url="url"
+          :model-matrix="modelMatrix"
+          :scale="10000"
+          :minimum-pixel-size="128"
+          :maximum-scale="200000"
+        >
         </vc-primitive-model>
+        <vc-polygon :positions="positions"></vc-polygon>
       </vc-collection-primitive>
     </vc-viewer>
     <div class="demo-tool">
@@ -100,10 +205,106 @@
     data() {
       return {
         show: true,
+        positions: [
+          [105, 32],
+          [106, 34],
+          [107, 30]
+        ],
         billboards1: [],
         billboards2: [],
         url: './statics/SampleData/models/CesiumAir/Cesium_Air.gltf',
-        modelMatrix: {}
+        modelMatrix: {},
+        polygons: [
+          {
+            positions: [
+              [115, 37],
+              [115, 32],
+              [107, 33],
+              [102, 31],
+              [102, 35]
+            ],
+            appearance: {
+              type: 'MaterialAppearance',
+              options: {
+                material: 'green'
+              }
+            }
+          },
+          {
+            positions: [
+              { lng: 108.0, lat: 42.0 },
+              { lng: 100.0, lat: 42.0 },
+              { lng: 104.0, lat: 40.0 }
+            ],
+            appearance: {
+              type: 'MaterialAppearance',
+              options: {
+                material: 'red'
+              }
+            },
+            depthFailAppearance: {
+              type: 'MaterialAppearance',
+              options: {
+                material: 'red'
+              }
+            }
+          },
+          {
+            positions: [90.0, 41.0, 0.0, 85.0, 41.0, 500000.0, 80.0, 41.0, 0.0],
+            appearance: {
+              type: 'MaterialAppearance',
+              options: {
+                material: 'blue'
+              }
+            }
+          },
+          {
+            polygonHierarchy: {
+              positions: [
+                [99, 30],
+                [85, 30],
+                [85, 40],
+                [99, 40]
+              ],
+              holes: [
+                {
+                  positions: [
+                    [97, 31],
+                    [97, 39],
+                    [87, 39],
+                    [87, 31]
+                  ],
+                  holes: [
+                    {
+                      positions: [
+                        [95, 33],
+                        [89, 33],
+                        [89, 37],
+                        [95, 37]
+                      ],
+                      holes: [
+                        {
+                          positions: [
+                            [93, 34],
+                            [91, 34],
+                            [91, 36],
+                            [93, 36]
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            appearance: {
+              type: 'MaterialAppearance',
+              options: {
+                material: 'yellow'
+              }
+            }
+          }
+        ]
       }
     },
     methods: {
@@ -138,10 +339,11 @@
 
 ## 属性
 
-| 属性名            | 类型    | 默认值 | 描述                                                |
-| ----------------- | ------- | ------ | --------------------------------------------------- |
-| show              | Boolean | `true` | `optional` 指定图元集合中的图元是否显示。           |
-| destroyPrimitives | Boolean | `true` | `optional` 指定移除图元集合时是否销毁集合中的图元。 |
+| 属性名            | 类型    | 默认值 | 描述                                                                 |
+| ----------------- | ------- | ------ | -------------------------------------------------------------------- |
+| show              | Boolean | `true` | `optional` 指定图元集合中的图元是否显示。                            |
+| destroyPrimitives | Boolean | `true` | `optional` 指定移除图元集合时是否销毁集合中的图元。                  |
+| polygons          | Array   | `[]`   | `optional` 指定面图元集合。 数组对象结构与 vc-polygon 组件属性相同。 |
 
 ---
 

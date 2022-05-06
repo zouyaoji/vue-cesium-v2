@@ -14,7 +14,7 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
       <vc-viewer @ready="ready" :camera="camera">
         <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
           <vc-provider-imagery-baidumap
-            :customid="customid"
+            :map-style="mapStyle"
             :projection-transforms="projectionTransforms"
           ></vc-provider-imagery-baidumap>
         </vc-layer-imagery>
@@ -30,7 +30,7 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
         <span>对比度</span>
         <vue-slider v-model="contrast" :min="0" :max="3" :interval="0.01"></vue-slider>
         <span>切换服务</span>
-        <md-select v-model="customid" placeholder="请选择地图服务类型">
+        <md-select v-model="mapStyle" placeholder="请选择地图服务类型">
           <md-option v-for="item in options" :key="item.value" :value="item.value">
             {{item.label}}
           </md-option>
@@ -50,7 +50,11 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
             },
             {
               value: 'img',
-              label: '百度影像' // 不支持https
+              label: '百度影像'
+            },
+            {
+              value: 'vec',
+              label: '百度电子'
             },
             {
               value: 'dark',
@@ -65,7 +69,7 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
               label: '百度路况'
             }
           ],
-          customid: 'normal',
+          mapStyle: 'normal',
           alpha: 1,
           brightness: 1,
           contrast: 1,
@@ -105,7 +109,7 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
     <vc-viewer @ready="ready" :camera="camera">
       <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
         <vc-provider-imagery-baidumap
-          :customid="customid"
+          :map-style="mapStyle"
           :projection-transforms="projectionTransforms"
         ></vc-provider-imagery-baidumap>
       </vc-layer-imagery>
@@ -121,7 +125,7 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
       <span>对比度</span>
       <vue-slider v-model="contrast" :min="0" :max="3" :interval="0.01"></vue-slider>
       <span>切换服务</span>
-      <md-select v-model="customid" placeholder="请选择地图服务类型">
+      <md-select v-model="mapStyle" placeholder="请选择地图服务类型">
         <md-option v-for="item in options" :key="item.value" :value="item.value">
           {{item.label}}
         </md-option>
@@ -141,7 +145,11 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
           },
           {
             value: 'img',
-            label: '百度影像' // 不支持https
+            label: '百度影像'
+          },
+          {
+            value: 'vec',
+            label: '百度电子'
           },
           {
             value: 'dark',
@@ -156,7 +164,7 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
             label: '百度路况'
           }
         ],
-        customid: 'normal',
+        mapStyle: 'normal',
         alpha: 1,
         brightness: 1,
         contrast: 1,
@@ -200,7 +208,7 @@ The `vc-provider-imagery-baidumap` component is used for Baidu raster tile map s
 | maximumLevel | Number | `18` | `optional` The maximum level-of-detail supported by the imagery provider, or undefined if there is no limit. |
 | scale | Number | `1` | `optional` Specify the scale. |
 | ak | String | `E4805d16520de693a3fe707cdc962045` | `optional` Specify the baidumap key. |
-| customid | String | `normal` | `optional` Specify the customid. |img/vec/traffic/normal/light/dark/redalert/googlelite/grassgreen/midnight/pink/darkgreen/bluish/grayscale/hardedge|
+| mapStyle | String | `normal` | `optional` Specify the mapStyle. |img/vec/traffic/normal/light/dark/redalert/googlelite/grassgreen/midnight/pink/darkgreen/bluish/grayscale/hardedge|
 | projectionTransforms | Boolean\|Object |  | `optional` Specify the projection transformation parameters. such as { from: 'BD09', to: 'WGS84' }** |
 | protocol | String | `'https'` | `optional` Specify protocol of service. |
 

@@ -14,7 +14,7 @@
       <vc-viewer @ready="ready" :camera="camera">
         <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
           <vc-provider-imagery-baidumap
-            :customid="customid"
+            :map-style="mapStyle"
             :projection-transforms="projectionTransforms"
           ></vc-provider-imagery-baidumap>
         </vc-layer-imagery>
@@ -30,7 +30,7 @@
         <span>对比度</span>
         <vue-slider v-model="contrast" :min="0" :max="3" :interval="0.01"></vue-slider>
         <span>切换服务</span>
-        <md-select v-model="customid" placeholder="请选择地图服务类型">
+        <md-select v-model="mapStyle" placeholder="请选择地图服务类型">
           <md-option v-for="item in options" :key="item.value" :value="item.value">
             {{item.label}}
           </md-option>
@@ -49,8 +49,12 @@
               label: '默认样式'
             },
             {
+              value: 'vec',
+              label: '百度电子'
+            },
+            {
               value: 'img',
-              label: '百度影像' // 不支持https
+              label: '百度影像'
             },
             {
               value: 'dark',
@@ -65,7 +69,7 @@
               label: '百度路况'
             }
           ],
-          customid: 'normal',
+          mapStyle: 'vec',
           alpha: 1,
           brightness: 1,
           contrast: 1,
@@ -105,7 +109,7 @@
     <vc-viewer @ready="ready" :camera="camera">
       <vc-layer-imagery :alpha="alpha" :brightness="brightness" :contrast="contrast" :sort-order="10">
         <vc-provider-imagery-baidumap
-          :customid="customid"
+          :map-style="mapStyle"
           :projection-transforms="projectionTransforms"
         ></vc-provider-imagery-baidumap>
       </vc-layer-imagery>
@@ -121,7 +125,7 @@
       <span>对比度</span>
       <vue-slider v-model="contrast" :min="0" :max="3" :interval="0.01"></vue-slider>
       <span>切换服务</span>
-      <md-select v-model="customid" placeholder="请选择地图服务类型">
+      <md-select v-model="mapStyle" placeholder="请选择地图服务类型">
         <md-option v-for="item in options" :key="item.value" :value="item.value">
           {{item.label}}
         </md-option>
@@ -141,7 +145,11 @@
           },
           {
             value: 'img',
-            label: '百度影像' // 不支持https
+            label: '百度影像'
+          },
+          {
+            value: 'vec',
+            label: '百度电子'
           },
           {
             value: 'dark',
@@ -156,7 +164,7 @@
             label: '百度路况'
           }
         ],
-        customid: 'normal',
+        mapStyle: 'vec',
         alpha: 1,
         brightness: 1,
         contrast: 1,
