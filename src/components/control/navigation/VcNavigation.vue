@@ -80,7 +80,9 @@ export default {
           gridFileUrl: 'https://zouyaoji.top/vue-cesium/statics/SampleData/WW15MGH.DAC',
           proj4Projection: '+proj=utm +ellps=GRS80 +units=m +no_defs',
           proj4longlat: '+proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees +no_defs',
-          projectionUnits: 'm'
+          projectionUnits: 'm',
+          digits: 5,
+          rangType: 0
         },
         enablePrintView: {
           showCredit: true,
@@ -126,10 +128,7 @@ export default {
       Object.assign(this.defaultOptions, this.options)
       this.widgetResized()
       this.mouseCoords = new MouseCoords({
-        gridFileUrl: this.defaultOptions.enableLocationBar.gridFileUrl,
-        proj4Projection: this.defaultOptions.enableLocationBar.proj4Projection,
-        proj4longlat: this.defaultOptions.enableLocationBar.proj4longlat,
-        projectionUnits: this.defaultOptions.enableLocationBar.projectionUnits
+        ...this.defaultOptions.enableLocationBar
       })
       // 避免控件先按默认的参数创建 然后又隐藏 导致视觉上的体验不优雅
       this.canRender = true
