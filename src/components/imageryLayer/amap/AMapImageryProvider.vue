@@ -1,7 +1,7 @@
 <!--
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2022-04-06 16:57:05
- * @LastEditTime: 2022-04-06 17:29:20
+ * @LastEditTime: 2022-05-06 13:41:00
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\src\components\imageryLayer\amap\AMapImageryProvider.vue
@@ -64,7 +64,6 @@ export default {
       const { $props, transformProps, setPropWatchers, unwatchFns } = this
       const options = transformProps($props)
       Cesium.AMapImageryProvider = AMapImageryProvider
-      console.log('unwatchFns', unwatchFns)
       if (unwatchFns.length === 0) {
         setPropWatchers(true)
       }

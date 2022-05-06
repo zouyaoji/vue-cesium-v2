@@ -1,7 +1,7 @@
 <!--
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2021-12-23 14:42:45
- * @LastEditTime: 2022-05-06 11:29:14
+ * @LastEditTime: 2022-05-06 13:40:50
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\src\components\primitiveCollection\PrimitiveCollection.vue
@@ -32,7 +32,6 @@ export default {
         if (!this.mounted) {
           return
         }
-        console.log(newVal)
         const { transformProp, collection: primitiveCollection } = this
         if (newVal.length === oldVal.length) {
           // 视为修改操作
@@ -80,7 +79,6 @@ export default {
   },
   methods: {
     async createCesiumObject () {
-      console.log(this.polygons)
       const { $props, transformProps } = this
       const options = transformProps($props)
       const primitiveCollection = new Cesium.PrimitiveCollection(options)
@@ -93,7 +91,6 @@ export default {
         const polygonOptions = polygons[i]
         polygonOptions.id = Cesium.defined(polygonOptions.id) ? polygonOptions.id : Cesium.createGuid()
         const polygonOptionsTransform = transformProps(polygonOptions)
-        console.log(polygonOptionsTransform)
         const polygonPrimitive = new PolygonPrimitive(polygonOptionsTransform)
         polygonPrimitive._vcParent = primitiveCollection
         addCustomProperty(polygonPrimitive, polygonOptionsTransform)

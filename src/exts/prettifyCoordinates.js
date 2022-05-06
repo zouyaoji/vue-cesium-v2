@@ -1,7 +1,7 @@
 /*
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2021-04-06 09:23:38
- * @LastEditTime: 2022-05-06 10:30:38
+ * @LastEditTime: 2022-05-06 13:40:04
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\src\exts\prettifyCoordinates.js
@@ -21,7 +21,6 @@ function prettifyCoordinates (longitude, latitude, options) {
   const { defaultValue, defined } = Cesium
   const optionsDefaulted = defaultValue(options, {})
   const digits = defaultValue(optionsDefaulted.digits, 5)
-  console.log(optionsDefaulted)
 
   if (optionsDefaulted.rangType === 0) {
     result.latitude = Math.abs(latitude).toFixed(digits) + '°' + (latitude < 0.0 ? 'S' : 'N')

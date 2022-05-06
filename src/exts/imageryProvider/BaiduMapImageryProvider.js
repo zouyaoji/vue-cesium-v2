@@ -3,7 +3,6 @@ import defer from '../../utils/defer'
 
 class BaiduMapImageryProvider {
   constructor (options) {
-    console.log(options)
     const { Resource, defaultValue, Credit, Event } = Cesium
     this._subdomains = defaultValue(options.subdomains, ['0', '1', '2', '3'])
     if (options.url) {
