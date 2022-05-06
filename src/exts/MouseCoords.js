@@ -4,6 +4,7 @@ import prettifyProjection from './prettifyProjection'
 import EarthGravityModel1996 from './EarthGravityModel1996'
 class MouseCoords {
   constructor (options = {}) {
+    console.log(options)
     const { Cartographic, knockout } = Cesium
     const gridFileUrl = options.gridFileUrl
     gridFileUrl && (this.geoidModel = new EarthGravityModel1996(gridFileUrl))
@@ -24,6 +25,8 @@ class MouseCoords {
     this.east = undefined
     this.useProjection = false
     this.debounceSampleAccurateHeight = debounce(this.sampleAccurateHeight, this.accurateSamplingDebounceTime)
+    this.digits = options.digits || 5
+    this.rangType = options.rangType || 0
 
     knockout.track(this, ['elevation', 'utmZone', 'latitude', 'longitude', 'north', 'east', 'useProjection'])
   }
@@ -114,8 +117,11 @@ class MouseCoords {
 
     const prettyCoordinate = prettifyCoordinates(longitude, latitude, {
       height: coordinates.height,
-      errorBar: errorBar
+      errorBar: errorBar,
+      digits: this.digits,
+      rangType: this.rangType
     })
+
     this.latitude = prettyCoordinate.latitude
     this.longitude = prettyCoordinate.longitude
     this.elevation = prettyCoordinate.elevation

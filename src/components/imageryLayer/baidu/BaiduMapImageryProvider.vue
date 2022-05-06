@@ -1,7 +1,7 @@
 <!--
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2021-12-23 14:42:45
- * @LastEditTime: 2022-04-06 16:38:37
+ * @LastEditTime: 2022-04-26 11:01:45
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\src\components\imageryLayer\baidu\BaiduMapImageryProvider.vue
@@ -14,10 +14,6 @@ export default {
   name: 'vc-provider-imagery-baidumap',
   mixins: [url, ellipsoid, tileDiscardPolicy, credit, minimumLevel, maximumLevel, mixinImageryProvider],
   props: {
-    protocol: {
-      type: String,
-      default: 'https'
-    },
     projectionTransforms: {
       type: [Boolean, Object],
       default: () => {
@@ -28,17 +24,29 @@ export default {
       }
     },
     scale: {
-      type: Number,
-      default: 1
+      type: String,
+      default: '2'
     },
     ak: {
       type: String,
       default: 'E4805d16520de693a3fe707cdc962045'
     },
+    subdomains: {
+      type: Array,
+      default: () => ['0', '1', '2', '3']
+    },
     // https://lbsyun.baidu.com/custom/list.htm
-    customid: {
+    mapStyle: {
       type: String,
-      default: 'normal' // img vec traffic normal light dark redalert googlelite grassgreen midnight pink darkgreen bluish grayscale hardedge
+      default: 'vec' // img vec traffic normal light dark redalert googlelite grassgreen midnight pink darkgreen bluish grayscale hardedge
+    },
+    qt: {
+      type: String,
+      default: 'vtile' // tile vtile
+    },
+    styles: {
+      type: String,
+      default: 'pl' // pl sl
     }
   },
   methods: {

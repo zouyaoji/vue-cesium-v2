@@ -24,6 +24,7 @@ import * as TencentImageryProvider from './components/imageryLayer/tencent'
 // 地形
 import * as ArcGISTiledElevationTerrainProvider from './components/terrain/arcgis'
 import * as CesiumTerrainProvider from './components/terrain/cesium'
+import * as VcProviderTerrainTianditu from './components/terrain/tianditu'
 // 数据源
 import * as CustomDataSource from './components/datasource/custom'
 import * as CzmlDataSource from './components/datasource/czml'
@@ -63,6 +64,7 @@ import * as Billboard from './components/primitive/billboard'
 import * as Label from './components/primitive/label'
 import * as PointPrimitive from './components/primitive/point'
 import * as Polyline from './components/primitive/polyline'
+import * as Polygon from './components/primitive/polygon'
 import * as Model from './components/primitive/model'
 import * as Cesium3DTileset from './components/primitive/tileset'
 import * as ParticleSystem from './components/primitive/particle'
@@ -180,6 +182,7 @@ function plugin (Vue, options = {}) {
   // 地形
   Vue.use(ArcGISTiledElevationTerrainProvider, options)
   Vue.use(CesiumTerrainProvider, options)
+  Vue.use(VcProviderTerrainTianditu, options)
   // 数据源
   Vue.use(CustomDataSource, options)
   Vue.use(CzmlDataSource, options)
@@ -219,6 +222,7 @@ function plugin (Vue, options = {}) {
   Vue.use(Label, options)
   Vue.use(PointPrimitive, options)
   Vue.use(Polyline, options)
+  Vue.use(Polygon, options)
   Vue.use(Model, options)
   Vue.use(Cesium3DTileset, options)
   Vue.use(ParticleSystem, options)
@@ -320,6 +324,7 @@ export {
 
   ArcGISTiledElevationTerrainProvider,
   CesiumTerrainProvider,
+  VcProviderTerrainTianditu,
 
   CustomDataSource,
   CzmlDataSource,
@@ -359,6 +364,7 @@ export {
   Label,
   PointPrimitive,
   Polyline,
+  Polygon,
   Model,
   Cesium3DTileset,
   ParticleSystem,
