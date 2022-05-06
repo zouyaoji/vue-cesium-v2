@@ -1,4 +1,4 @@
-import { isFunction, isArray, isString, isObject, isEmptyObj } from './util'
+import { isFunction, isArray, isString, isObject, isEmptyObj, getObjClassName } from './util'
 /**
  * 将对象或数组转换为 Cesium.Cartesian2
  * @param {Object} val
@@ -11,7 +11,7 @@ import { isFunction, isArray, isString, isObject, isEmptyObj } from './util'
 export function makeCartesian2 (val, isConstant = false) {
   const { Cartesian2, CallbackProperty } = Cesium
 
-  if (val instanceof Cartesian2) {
+  if (val instanceof Cesium.Cartesian2 || val instanceof CallbackProperty) {
     return val
   }
 
@@ -44,9 +44,24 @@ export function makeCartesian2 (val, isConstant = false) {
  * const position = makeCartesian3 (options) // return Cesium.Cartesian3
  */
 export function makeCartesian3 (val, ellipsoid, isConstant = false) {
-  const { CallbackProperty, Cartesian3, Ellipsoid } = Cesium
+  const {
+    CallbackProperty,
+    Cartesian3,
+    Ellipsoid,
+    SampledPositionProperty,
+    CompositePositionProperty,
+    ConstantPositionProperty,
+    TimeIntervalCollectionPositionProperty
+  } = Cesium
 
-  if (val instanceof Cartesian3) {
+  if (
+    val instanceof Cartesian3 ||
+    val instanceof CallbackProperty ||
+    val instanceof SampledPositionProperty ||
+    val instanceof CompositePositionProperty ||
+    val instanceof ConstantPositionProperty ||
+    val instanceof TimeIntervalCollectionPositionProperty
+  ) {
     return val
   }
 
@@ -60,8 +75,9 @@ export function makeCartesian3 (val, ellipsoid, isConstant = false) {
     }
   }
 
+  // 经纬度数组
   if (isArray(val)) {
-    return new Cartesian3(val[0], val[1], val[2] || 0)
+    return Cartesian3.fromDegrees(val[0], val[1], val[2] || 0, ellipsoid)
   }
 
   if (isFunction(val)) {
@@ -78,50 +94,30 @@ export function makeCartesian3 (val, ellipsoid, isConstant = false) {
  */
 export function makeCartesian3Array (vals, ellipsoid, isConstant = false) {
   const { CallbackProperty, Cartesian3, Ellipsoid } = Cesium
-  if (isArray(vals)) {
-    if (vals[0] instanceof Cartesian3 || vals._callback) {
-      return vals
-    }
 
-    ellipsoid = ellipsoid || Ellipsoid.WGS84
-
-    if (isArray(vals[0])) {
-      const coordinates = []
-      for (let i = 0; i < vals.length; i++) {
-        coordinates.push(vals[i][0])
-        coordinates.push(vals[i][1])
-        coordinates.push(vals[i][2] || 0)
-      }
-      return Cartesian3.fromRadiansArrayHeights(coordinates, ellipsoid)
-    } else if (isObject(vals[0])) {
-      const coordinates = []
-      if (vals[0].lng) {
-        vals.forEach((item) => {
-          coordinates.push(item.lng)
-          coordinates.push(item.lat)
-          coordinates.push(item.height || 0)
-        })
-        return Cartesian3.fromDegreesArrayHeights(coordinates, ellipsoid)
-      } else {
-        if (vals[0].x) {
-          vals.forEach((item) => {
-            coordinates.push(item.x)
-            coordinates.push(item.y)
-            coordinates.push(item.z || 0)
-          })
-          return Cartesian3.fromRadiansArrayHeights(coordinates, ellipsoid)
-        }
-      }
-    }
-
-    return Cartesian3.fromDegreesArrayHeights(vals, ellipsoid)
+  if (vals instanceof CallbackProperty) {
+    return vals
   }
 
   if (isFunction(vals)) {
     return new CallbackProperty(vals, isConstant)
   }
 
-  return vals
+  ellipsoid = ellipsoid || Ellipsoid.WGS84
+
+  if (isArray(vals)) {
+    if (isArray(vals[0]) || isObject(vals[0])) {
+      const results = []
+      vals.forEach((val) => {
+        results.push(makeCartesian3(val, ellipsoid))
+      })
+      return results
+    }
+
+    return Cartesian3.fromDegreesArrayHeights(vals, ellipsoid)
+  }
+
+  return undefined
 }
 
 /**
@@ -130,27 +126,25 @@ export function makeCartesian3Array (vals, ellipsoid, isConstant = false) {
  * @returns {Array<Cartesian2>}
  */
 export function makeCartesian2Array (vals, isConstant) {
-  const { CallbackProperty, Cartesian2 } = Cesium
+  const { CallbackProperty } = Cesium
 
-  if (isArray(vals)) {
-    if (vals[0] instanceof Cartesian2 || vals._callback) {
-      return vals
-    }
-
-    if (isObject(vals[0])) {
-      const cartesian2Array = []
-      vals.forEach((item) => {
-        cartesian2Array.push(new Cartesian2(item.x, item.y))
-      })
-      return cartesian2Array
-    }
+  if (vals instanceof CallbackProperty) {
+    return vals
   }
 
   if (isFunction(vals)) {
     return new CallbackProperty(vals, isConstant)
   }
 
-  return vals
+  if (isArray(vals)) {
+    const points = []
+    vals.forEach((val) => {
+      points.push(makeCartesian2(val))
+    })
+    return points
+  }
+
+  return undefined
 }
 
 /**
@@ -203,7 +197,7 @@ function parsePolygonHierarchyJson (val, ellipsoid) {
 export function makePolygonHierarchy (val, ellipsoid, isConstant = false) {
   const { PolygonHierarchy, CallbackProperty } = Cesium
 
-  if (val instanceof PolygonHierarchy) {
+  if (val instanceof PolygonHierarchy || val instanceof CallbackProperty) {
     return val
   }
 
@@ -216,10 +210,51 @@ export function makePolygonHierarchy (val, ellipsoid, isConstant = false) {
   }
   if (Cesium.defined(val.positions)) {
     val.positions = makeCartesian3Array(val.positions, ellipsoid)
-    parsePolygonHierarchyJson(val.holes, ellipsoid)
+    val.holes?.length && parsePolygonHierarchyJson(val.holes, ellipsoid)
+    return val
   }
 
-  return val
+  return undefined
+}
+
+export function makeAppearance (val) {
+  const {
+    Appearance,
+    DebugAppearance,
+    MaterialAppearance,
+    PolylineColorAppearance,
+    EllipsoidSurfaceAppearance,
+    PerInstanceColorAppearance,
+    PolylineMaterialAppearance
+  } = Cesium
+
+  if (
+    val instanceof Appearance ||
+    val instanceof DebugAppearance ||
+    val instanceof MaterialAppearance ||
+    val instanceof PolylineColorAppearance ||
+    val instanceof EllipsoidSurfaceAppearance ||
+    val instanceof PerInstanceColorAppearance ||
+    val instanceof PolylineMaterialAppearance ||
+    getObjClassName(val).indexOf('Appearance') !== -1
+  ) {
+    return val
+  }
+
+  if (Object.prototype.hasOwnProperty.call(val, 'type')) {
+    const options = {
+      ...val.options
+    }
+    if (val.options?.material) {
+      options.material = makeMaterial.call(this, val.options.material)
+    }
+
+    return new Cesium[val.type]({
+      ...options
+    })
+  }
+
+  return undefined
 }
 
 /**
@@ -234,12 +269,12 @@ export function makePolygonHierarchy (val, ellipsoid, isConstant = false) {
 export function makeNearFarScalar (val, isConstant = false) {
   const { NearFarScalar, CallbackProperty } = Cesium
 
-  if (val instanceof NearFarScalar) {
+  if (val instanceof NearFarScalar || val instanceof CallbackProperty) {
     return val
   }
 
   if (isObject(val) && Object.prototype.hasOwnProperty.call(val, 'near')) {
-    return new NearFarScalar(val.near, val.nearValue, val.far, val.farValue)
+    return new NearFarScalar(val.near, val.nearValue || 0.0, val.far, val.farValue || 1.0)
   }
 
   if (isArray(val)) {
@@ -250,7 +285,7 @@ export function makeNearFarScalar (val, isConstant = false) {
     return new CallbackProperty(val, isConstant)
   }
 
-  return val
+  return undefined
 }
 /**
  * 对象或数组转 Cesium.DistanceDisplayCondition。
@@ -264,7 +299,7 @@ export function makeNearFarScalar (val, isConstant = false) {
 export function makeDistanceDisplayCondition (val, isConstant = false) {
   const { DistanceDisplayCondition, CallbackProperty } = Cesium
 
-  if (val instanceof DistanceDisplayCondition) {
+  if (val instanceof DistanceDisplayCondition || val instanceof CallbackProperty) {
     return val
   }
 
@@ -280,7 +315,7 @@ export function makeDistanceDisplayCondition (val, isConstant = false) {
     return new CallbackProperty(val, isConstant)
   }
 
-  return val
+  return undefined
 }
 
 /**
@@ -296,7 +331,7 @@ export function makeDistanceDisplayCondition (val, isConstant = false) {
 export function makeColor (val, isConstant = false) {
   const { Color, CallbackProperty } = Cesium
 
-  if (val instanceof Color) {
+  if (val instanceof Color || val instanceof CallbackProperty) {
     return val
   }
 
@@ -304,17 +339,29 @@ export function makeColor (val, isConstant = false) {
     return Color.fromCssColorString(val)
   }
 
+  if (isObject(val)) {
+    if (Object.prototype.hasOwnProperty.call(val, 'red')) {
+      const value = val
+      return Color.fromBytes(value.red, value.green || 255, value.blue || 255, value.alpha || 255)
+    } else if (Object.prototype.hasOwnProperty.call(val, 'x')) {
+      const value = val
+      return new Color(value.x, value.y || 1, value.z || 1, value.w || 1)
+    }
+  }
+
   if (isObject(val) && Object.prototype.hasOwnProperty.call(val, 'red')) {
     return Color.fromBytes(val.red, val.green, val.blue, val.alpha || 255)
   }
 
   if (isArray(val)) {
-    return new Cesium.Color(val[0], val[1], val[2], val[3] || 1.0)
+    return Color.fromBytes(val[0], val[1], val[2], val[3] || 255)
   }
 
   if (isFunction(val)) {
     return new CallbackProperty(val, isConstant)
   }
+
+  return undefined
 }
 
 /**
@@ -336,6 +383,22 @@ export function makeMaterialProperty (val, isConstant = false) {
     GridMaterialProperty,
     StripeMaterialProperty
   } = Cesium
+
+  if (
+    val instanceof CallbackProperty ||
+    val instanceof Color ||
+    val instanceof CheckerboardMaterialProperty ||
+    val instanceof ColorMaterialProperty ||
+    val instanceof ImageMaterialProperty ||
+    val instanceof PolylineArrowMaterialProperty ||
+    val instanceof PolylineDashMaterialProperty ||
+    val instanceof PolylineGlowMaterialProperty ||
+    val instanceof PolylineOutlineMaterialProperty ||
+    val instanceof StripeMaterialProperty ||
+    getObjClassName(val).indexOf('MaterialProperty') !== -1
+  ) {
+    return val
+  }
 
   if (
     /(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$/.test(val) ||

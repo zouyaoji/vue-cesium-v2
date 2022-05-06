@@ -444,3 +444,21 @@ export function getVmListenerName (listenerName) {
   }
   return undefined
 }
+
+export function getObjClassName (obj) {
+  if (obj && obj.constructor) {
+    const strFun = obj.constructor.toString()
+    let className = strFun.substr(0, strFun.indexOf('('))
+    className = className.replace('function', '')
+    return className.replace(/(^\s*)|(\s*$)/gi, '')
+  }
+  return typeof obj
+}
+
+export function addCustomProperty (obj, options, ignores = []) {
+  for (const prop in options) {
+    if (!obj[prop] && ignores.indexOf(prop) === -1) {
+      obj[prop] = options[prop]
+    }
+  }
+}

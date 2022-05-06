@@ -15,7 +15,8 @@ import {
   makePolygonHierarchy,
   makeTranslationRotationScale,
   makeQuaternion,
-  makeOptions
+  makeOptions,
+  makeAppearance
 } from '../utils/cesiumHelpers'
 
 // 下面属性作为实体加载时 可以传 Function
@@ -1458,10 +1459,25 @@ const interleave = {
  */
 const appearance = {
   props: {
-    appearance: Object
+    appearance: {
+      type: Object,
+      watcherOptions: {
+        cesiumObjectBuilder: makeAppearance
+      }
+    }
   }
 }
 
+const depthFailAppearance = {
+  props: {
+    depthFailAppearance: {
+      type: Object,
+      watcherOptions: {
+        cesiumObjectBuilder: makeAppearance
+      }
+    }
+  }
+}
 /**
  * @const {Array, Object} geometryInstances mixin
  */
@@ -1927,6 +1943,7 @@ export {
   loop,
   geometryInstances,
   appearance,
+  depthFailAppearance,
   interleave,
   releaseGeometryInstances,
   debugShowShadowVolume,
