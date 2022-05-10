@@ -65,10 +65,10 @@ export default {
       const { printAutomatically, iframe } = this
       if (printAutomatically) {
         printWindow(windowToPrint)
-          .otherwise((e) => {
+          .catch((e) => {
             console.error(e)
           })
-          .always(() => {
+          .then(() => {
             if (iframe) {
               document.body.removeChild(iframe)
             }

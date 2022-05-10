@@ -1,3 +1,11 @@
+/*
+ * @Author: zouyaoji@https://github.com/zouyaoji
+ * @Date: 2021-04-06 09:23:38
+ * @LastEditTime: 2022-05-10 22:14:09
+ * @LastEditors: zouyaoji
+ * @Description:
+ * @FilePath: \vue-cesium-v2\src\mixins\primitives\mixinPrimitive.js
+ */
 /**
  * for
  * ClassificationPrimitive
@@ -19,8 +27,6 @@ const methods = {
     primitive.readyPromise && primitive.readyPromise.then(primitive => {
       const listener = getVmListenerName.call(this, 'readyPromise')
       listener && this.$emit(listener, primitive, this.viewer)
-    }).otherwise(error => {
-      throw new Cesium.DeveloperError(error)
     })
     bindEvents.call(this, primitive, undefined, true)
     registerEvents(true)
