@@ -1,7 +1,7 @@
 /*
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2022-04-06 16:55:18
- * @LastEditTime: 2022-04-06 16:55:36
+ * @LastEditTime: 2022-05-14 20:39:02
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\src\exts\imageryProvider\TencentImageryProvider.js
@@ -28,7 +28,7 @@ class TencentImageryProvider {
     this._tileDiscardPolicy = options.tileDiscardPolicy
     this._tileWidth = 256
     this._tileHeight = 256
-    this._minimumLevel = options.maximumLevel || 0
+    this._minimumLevel = options.minimumLevel || 0
     this._maximumLevel = options.maximumLevel || 20
     this._tilingScheme = new Cesium.WebMercatorTilingScheme()
     this._rectangle = defaultValue(options.rectangle, this._tilingScheme.rectangle)
