@@ -1,4 +1,3 @@
-
 /**
  * The Earth Gravity Model 1996 (EGM96) geoid.
  * @param {String} gridFileUrl The URL of the WW15MGH.DAC file.
@@ -40,36 +39,34 @@ EarthGravityModel1996.prototype.getHeights = function (cartographicArray) {
   return getHeightData(this).then(function (data) {
     for (let i = 0; i < cartographicArray.length; ++i) {
       const cartographic = cartographicArray[i]
-      cartographic.height = getHeightFromData(
-        data,
-        cartographic.longitude,
-        cartographic.latitude
-      )
+      cartographic.height = getHeightFromData(data, cartographic.longitude, cartographic.latitude)
     }
     return cartographicArray
   })
 }
 
-function getHeightData (model) {
-  const { defined, when } = Cesium
+async function getHeightData (model) {
+  const { defined } = Cesium
   if (!defined(model.data)) {
     model.data = loadArrayBuffer(model.gridFileUrl)
   }
+  let data = model.data
+  if (model.data instanceof Promise) {
+    data = await model.data
+  }
 
-  return when(model.data, function (data) {
-    if (!(model.data instanceof Int16Array)) {
-      // Data file is big-endian, all relevant platforms are little endian, so swap the byte order.
-      const byteView = new Uint8Array(data)
-      for (let k = 0; k < byteView.length; k += 2) {
-        const tmp = byteView[k]
-        byteView[k] = byteView[k + 1]
-        byteView[k + 1] = tmp
-      }
-      model.data = new Int16Array(data)
+  if (!(model.data instanceof Int16Array)) {
+    // Data file is big-endian, all relevant platforms are little endian, so swap the byte order.
+    const byteView = new Uint8Array(data)
+    for (let k = 0; k < byteView.length; k += 2) {
+      const tmp = byteView[k]
+      byteView[k] = byteView[k + 1]
+      byteView[k + 1] = tmp
     }
+    model.data = new Int16Array(data)
+  }
 
-    return model.data
-  })
+  return model.data
 }
 
 function getHeightFromData (data, longitude, latitude) {
@@ -102,13 +99,7 @@ function getHeightFromData (data, longitude, latitude) {
   const f12 = getHeightValue(data, j + 1, i)
   const f22 = getHeightValue(data, j + 1, i + 1)
 
-  return (
-    (f11 * x2MinusX * y2MinusY +
-      f21 * xMinusX1 * y2MinusY +
-      f12 * x2MinusX * yMinusY1 +
-      f22 * xMinusX1 * yMinusY1) /
-    100.0
-  )
+  return (f11 * x2MinusX * y2MinusY + f21 * xMinusX1 * y2MinusY + f12 * x2MinusX * yMinusY1 + f22 * xMinusX1 * yMinusY1) / 100.0
 }
 
 // Heights returned by this function are in centimeters.

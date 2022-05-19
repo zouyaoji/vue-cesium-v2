@@ -158,7 +158,7 @@ class SuperMapImageryProvider {
   }
 
   requestImage (x, y, level, request) {
-    const { defined, DeveloperError, ImageryProvider, when } = Cesium
+    const { defined, DeveloperError, ImageryProvider } = Cesium
     if (!this.ready) {
       throw new DeveloperError('requestImage must not be called before the imagery provider is ready.')()
     }
@@ -169,28 +169,25 @@ class SuperMapImageryProvider {
       request: request
     })
     const that = this
-    if (this.m_indexedDBSetting.isOpen) {
-      if (defined(this.m_indexedDBScheduler)) {
-        const promise = this.m_indexedDBScheduler.getElementFromDB(this.tablename, url)
-        return defined(promise)
-          ? when(
-            promise,
-            (value) => {
-              if (defined(value)) {
-                const image = new Image()
-                image.src = value
-                return image
-              }
-              return ImageryProvider.loadImage(that, resource)
-            },
-            (e) => {
-              return ImageryProvider.loadImage(that, resource)
+    if (this._indexedDBSetting.isOpen) {
+      if (defined(this._indexedDBScheduler)) {
+        const promise = this._indexedDBScheduler.getElementFromDB(this.tablename, url)
+        try {
+          return promise.then(value => {
+            if (defined(value)) {
+              const image = new Image()
+              image.src = value
+              return image
             }
-          )
-          : ImageryProvider.loadImage(that, resource)
+            return ImageryProvider.loadImage(that, resource)
+          })
+        } catch {
+          return ImageryProvider.loadImage(that, resource)
+        }
       }
+    } else {
+      return ImageryProvider.loadImage(this, resource)
     }
-    return ImageryProvider.loadImage(this, resource)
   }
 
   pickFeatures () {}
@@ -273,24 +270,33 @@ function buildImageResource (x, y, level) {
 }
 
 function init () {
-  const { Resource, when } = Cesium
+  const { Resource } = Cesium
   if (this.isTileMap) {
     const promise = Resource.fetchJsonp({
-      url: this.m_options.url + '.jsonp',
+      url: this._options.url + '.jsonp',
       queryParameters: {
         f: 'json'
       }
     })
-    when(promise, onFulfilledTileMap.bind(this), onRejected.bind(this))
+
+    try {
+      promise.then(e => {
+        onFulfilledTileMap.call(this, e)
+      })
+    } catch (e) {
+      onRejected.call(this)
+    }
   } else {
     // r(c.CREDENTIAL) && (o = c.addToken(o)),
-    when(
+    try {
       Resource.fetchText({
         url: this.url + 'config'
-      }),
-      onFulfilledRest3D.bind(this),
-      onRejected.bind(this)
-    )
+      }).then(e => {
+        onFulfilledRest3D.call(this, e)
+      })
+    } catch (e) {
+      onRejected.call(this)
+    }
   }
 }
 function getMaximumLevelbyScale (scale) {
