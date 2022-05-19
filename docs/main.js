@@ -1,7 +1,7 @@
 /*
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2021-06-30 22:20:50
- * @LastEditTime: 2022-02-21 13:29:24
+ * @LastEditTime: 2022-05-19 15:42:18
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\docs\main.js
@@ -45,7 +45,7 @@ Vue.use(VueCesium, {
   cesiumPath:
     process.env.NODE_ENV === 'development'
       ? './statics/CesiumUnminified/Cesium.js'
-      : 'https://cdn.jsdelivr.net/npm/cesium@latest/Build/Cesium/Cesium.js',
+      : 'https://unpkg.com/cesium@latest/Build/Cesium/Cesium.js',
   // lang: lang,
   accessToken:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5Y2U0ZTk2Ni1jNzdkLTQ3OWYtYjVmYS0yMGM3YTk3NjgzMmUiLCJpZCI6Njk5Nywic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU0ODA1MTc0OH0.Csy6yyAnv6JSBppH0Ou3ahshqcHFEhP27iOz5gjQMEo'

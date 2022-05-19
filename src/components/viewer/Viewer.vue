@@ -979,7 +979,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
           ? this.cesiumPath
           : typeof this._Cesium !== 'undefined' && Object.prototype.hasOwnProperty.call(this._Cesium(), 'cesiumPath')
             ? this._Cesium().cesiumPath
-            : 'https://cdn.jsdelivr.net/npm/cesium@latest/Build/Cesium/Cesium.js'
+            : 'https://unpkg.com/cesium@latest/Build/Cesium/Cesium.js'
 
         const dirName = dirname(cesiumPath)
         if (!cesiumPath?.includes('.js')) {
