@@ -9,6 +9,7 @@
             :asynchronous="false"
             :key="index"
             v-if="polyline.positions.length > 2"
+            @ready="polygonReady"
           >
             <vc-instance-geometry>
               <vc-geometry-polygon
@@ -60,7 +61,13 @@
       <vc-collection-primitive-polyline ref="polylineCollection" :polylines="primitivePolylines" v-else>
       </vc-collection-primitive-polyline>
       <!-- 点 -->
-      <vc-collection-primitive-point ref="pointCollection" :points="points" @mouseover="pointMouseOver" @mouseout="pointMouseOut">
+      <vc-collection-primitive-point
+        ref="pointCollection"
+        :points="points"
+        @mouseover="pointMouseOver"
+        @mouseout="pointMouseOut"
+        @ready="pointReady"
+      >
       </vc-collection-primitive-point>
     </vc-collection-primitive>
     <vc-overlay-html :position="toolbarPosition" v-if="showToolbar">
@@ -99,10 +106,6 @@ export default {
     }
   },
   props: {
-    depthTest: {
-      type: Boolean,
-      default: true
-    },
     perPositionHeight: {
       type: Boolean,
       default: true
@@ -159,6 +162,32 @@ export default {
     }
   },
   methods: {
+    polygonReady (e) {
+      if (this.depthTest) {
+        return
+      }
+      const primitive = e.cesiumObject
+      const originalPrimitiveUpdate = primitive.update
+
+      primitive.update = function (frameState) {
+        const originalLength = frameState.commandList.length
+        originalPrimitiveUpdate.call(this, frameState)
+        const endLength = frameState.commandList.length
+        for (let i = originalLength; i < endLength; ++i) {
+          if (frameState.commandList[i].pass !== Cesium.Pass.TRANSLUCENT) {
+            continue
+          }
+          frameState.commandList[i].pass = Cesium.Pass.OPAQUE
+          frameState.commandList[i].renderState = Cesium.RenderState.fromCache({
+            depthTest: {
+              enabled: false
+            },
+            depthMask: false,
+            blending: Cesium.BlendingState.ALPHA_BLEND
+          })
+        }
+      }
+    },
     makeEllipsoidSurfaceAppearance (val) {
       return new Cesium.EllipsoidSurfaceAppearance({
         material: makeMaterial.call(this, val),

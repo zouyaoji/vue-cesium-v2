@@ -1,6 +1,14 @@
+<!--
+ * @Author: zouyaoji@https://github.com/zouyaoji
+ * @Date: 2021-12-23 14:42:45
+ * @LastEditTime: 2022-05-31 17:50:37
+ * @LastEditors: zouyaoji
+ * @Description:
+ * @FilePath: \vue-cesium-v2\src\components\tool\drawHandlerPoint\VcDrawHandlerPoint.vue
+-->
 <template>
   <i :class="$options.name">
-    <vc-collection-primitive-point ref="pointCollection" :points="points" @mouseover="pointMouseOver" @mouseout="pointMouseOut">
+    <vc-collection-primitive-point ref="pointCollection" :points="points" @mouseover="pointMouseOver" @mouseout="pointMouseOut" @ready="pointReady">
     </vc-collection-primitive-point>
     <vc-overlay-html :position="toolbarPosition" v-if="showToolbar">
       <button :title="$vc.lang.draw.editingMove" class="vc-btn" type="button" @click="onEditClick('move')">

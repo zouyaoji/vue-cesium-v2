@@ -25,6 +25,10 @@ const props = {
   showDrawTip: {
     type: Boolean,
     default: true
+  },
+  depthTest: {
+    type: Boolean,
+    default: false
   }
 }
 const watch = {
@@ -272,6 +276,27 @@ const methods = {
     this.toolbarPosition = [0, 0, 0]
     this.showToolbar = false
     this.mouseoverPoint = undefined
+  },
+  pointReady (e) {
+    if (!this.depthTest) {
+      const { cesiumObject: pointPrimitiveCollection } = e
+      const originalUpdate = pointPrimitiveCollection.update
+
+      pointPrimitiveCollection.update = function (frameState) {
+        const originalLength = frameState.commandList.length
+        originalUpdate.call(this, frameState)
+        const endLength = frameState.commandList.length
+        for (let i = originalLength; i < endLength; ++i) {
+          frameState.commandList[i].pass = Cesium.Pass.TRANSLUCENT
+          frameState.commandList[i].renderState = Cesium.RenderState.fromCache({
+            depthTest: {
+              enabled: false
+            },
+            depthMask: false
+          })
+        }
+      }
+    }
   },
   onEditClick (e) {
     this.editType = e

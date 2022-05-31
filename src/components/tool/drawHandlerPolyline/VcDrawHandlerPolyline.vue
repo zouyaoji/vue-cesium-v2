@@ -17,7 +17,7 @@
       </vc-collection-primitive>
       <vc-collection-primitive-polyline ref="polylineCollection" :polylines="primitivePolylines" v-else>
       </vc-collection-primitive-polyline>
-      <vc-collection-primitive-point ref="pointCollection" :points="points" @mouseover="pointMouseOver" @mouseout="pointMouseOut">
+      <vc-collection-primitive-point ref="pointCollection" :points="points" @mouseover="pointMouseOver" @mouseout="pointMouseOut" @ready="pointReady">
       </vc-collection-primitive-point>
     </vc-collection-primitive>
     <vc-overlay-html :position="toolbarPosition" v-if="showToolbar">
@@ -54,10 +54,6 @@ export default {
     }
   },
   props: {
-    depthTest: {
-      type: Boolean,
-      default: false
-    },
     polylineMaterial: {
       type: Object,
       default: () => {
