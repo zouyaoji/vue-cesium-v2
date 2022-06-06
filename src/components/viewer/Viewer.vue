@@ -184,7 +184,8 @@ export default {
     autoSortImageryLayers: {
       type: Boolean,
       default: true
-    }
+    },
+    viewerCreator: Function
   },
   watch: {
     selectionIndicator (val) {
@@ -731,7 +732,9 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         delete options.terrainExaggeration
       }
       let viewer = {}
-      if (globalThis.mars3d) {
+      if (this.viewerMethod) {
+        this.viewer = this.viewerCreator(this, $el, options)
+      } else if (globalThis.mars3d) {
         this.map = new mars3d.Map($el.id, options)
         viewer = this.map?._viewer
       } else if (globalThis.DC) {

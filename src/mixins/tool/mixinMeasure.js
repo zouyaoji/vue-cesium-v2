@@ -544,7 +544,7 @@ const methods = {
           pickObj instanceof Cesium3DTileFeature ||
           pickObj.primitive instanceof Cesium3DTileset ||
           pickObj.primitive instanceof Model ||
-          pickObj.primitive instanceof Cesium.S3MTilesLayer
+          (Cesium.S3MTilesLayer && pickObj.primitive instanceof Cesium.S3MTilesLayer)
         ) {
           position = scene.pickPosition(windowPosition, cartesianScratch)
           if (Cesium.defined(position)) {
