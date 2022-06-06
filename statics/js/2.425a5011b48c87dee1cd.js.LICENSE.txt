@@ -62,7 +62,7 @@
  *
  * @package VueCesium
  * @author zouyaoji <370681295@qq.com>
- * @version 2.3.10
+ * @version 2.3.11
  * @license MIT
  * @homepage https://zouyaoji.top/vue-cesium
  * @copyright (c) 2018-2022, zouyaoji <370681295@qq.com>
