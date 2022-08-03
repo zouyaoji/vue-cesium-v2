@@ -1,16 +1,21 @@
 ## Mars3D Demo
 
-vue-cesium 使用火星科技的 [Mars3D](http://mars3d.cn/) 开发时只需要在引入 VueCesium 时通过配置项 `cesiumPath` 指定为 mars3d 库的**目录**地址。
+vue-cesium 使用火星科技的 [Mars3D](http://mars3d.cn/) 开发时只需要在引入 VueCesium 时通过配置项 `mars3dConfig` 配置 mars3d 主库和其插件库地址，默认使用 unpkg.com 的 cdn 资源，如需本地或局域网使用，请通过 mars3dConfig.libs 将相关库的资源改为本地或局域网地址即可。非 TS 项目结构请 [参考](https://github.com/zouyaoji/vue-cesium/blob/dev/packages/components/viewer/src/loadUtil.ts#L17)。
+
 
 ```js
 Vue.use(VueCesium, {
-  cesiumPath: 'https://mars3d.cn/lib/'
+  mars3dConfig: {
+    include: 'mars3d'
+  }
 })
 
 // 如果是局部引入，也可以这样:
 import { Viewer } from 'vue-cesium'
 Vue.use(Viewer, {
-  cesiumPath: 'https://mars3d.cn/lib/'
+  mars3dConfig: {
+    include: 'mars3d'
+  }
 })
 ```
 
@@ -27,7 +32,7 @@ Vue.use(Viewer, {
     <div class="viewer" ref="viewerContainer">
       <vc-viewer
         ref="vcViewer"
-        :cesium-path="cesiumPath"
+        :mars3d-config="mars3dConfig"
         :animation="animation"
         :timeline="timeline"
         :fullscreen-button="fullscreenButton"
@@ -50,16 +55,6 @@ Vue.use(Viewer, {
         </vc-layer-imagery>
       </vc-viewer>
       <div class="demo-tool">
-        <span>动画部件</span>
-        <md-switch v-model="animation"></md-switch>
-        <span>时间轴部件</span>
-        <md-switch v-model="timeline"></md-switch>
-        <span>基础图层拾取器</span>
-        <md-switch v-model="baseLayerPicker"></md-switch>
-        <span>全屏按钮</span>
-        <md-switch v-model="fullscreenButton"></md-switch>
-        <span>信息提示框</span>
-        <md-switch v-model="infoBox"></md-switch>
         <md-button class="md-raised md-accent" @click="unload">销毁</md-button>
         <md-button class="md-raised md-accent" @click="load">加载</md-button>
         <md-button class="md-raised md-accent" @click="reload">重载</md-button>
@@ -88,7 +83,9 @@ Vue.use(Viewer, {
             offset: [0, 32],
             position: 'bottom-right'
           },
-          cesiumPath: 'https://mars3d.cn/lib/'
+          mars3dConfig: {
+            include: 'mars3d'
+          }
         }
       },
       mounted() {
@@ -133,7 +130,7 @@ Vue.use(Viewer, {
   <div class="viewer" ref="viewerContainer">
     <vc-viewer
       ref="vcViewer"
-      :cesium-path="cesiumPath"
+      :mars3d-config="mars3dConfig"
       :animation="animation"
       :timeline="timeline"
       :fullscreen-button="fullscreenButton"
@@ -156,16 +153,6 @@ Vue.use(Viewer, {
       </vc-layer-imagery>
     </vc-viewer>
     <div class="demo-tool">
-      <span>动画部件</span>
-      <md-switch v-model="animation"></md-switch>
-      <span>时间轴部件</span>
-      <md-switch v-model="timeline"></md-switch>
-      <span>基础图层拾取器</span>
-      <md-switch v-model="baseLayerPicker"></md-switch>
-      <span>全屏按钮</span>
-      <md-switch v-model="fullscreenButton"></md-switch>
-      <span>信息提示框</span>
-      <md-switch v-model="infoBox"></md-switch>
       <md-button class="md-raised md-accent" @click="unload">销毁</md-button>
       <md-button class="md-raised md-accent" @click="load">加载</md-button>
       <md-button class="md-raised md-accent" @click="reload">重载</md-button>
@@ -194,7 +181,9 @@ Vue.use(Viewer, {
           offset: [0, 32],
           position: 'bottom-right'
         },
-        cesiumPath: 'https://mars3d.cn/lib/'
+        mars3dConfig: {
+          include: 'mars3d'
+        }
       }
     },
     mounted() {

@@ -21,7 +21,9 @@
           :data="data"
           @ready="subReady"
           :type="1"
-          v-if="show"
+          :show="show"
+          @click="click"
+          id="asdasda"
         >
         </vc-heatmap>
       </vc-viewer>
@@ -57,6 +59,9 @@
         }
       },
       methods: {
+        click (e) {
+          console.log(e)
+        },
         ready(cesiumInstance) {
           window.vm = this
           this.cesiumInstance = cesiumInstance

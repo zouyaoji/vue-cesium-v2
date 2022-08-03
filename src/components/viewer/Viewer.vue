@@ -185,7 +185,8 @@ export default {
       type: Boolean,
       default: true
     },
-    viewerCreator: Function
+    viewerCreator: Function,
+    mars3dConfig: Object
   },
   watch: {
     selectionIndicator (val) {
@@ -978,21 +979,19 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
     },
     async getCesiumScript () {
       if (!globalThis.Cesium) {
-        let cesiumPath = this.cesiumPath
+        const cesiumPath = this.cesiumPath
           ? this.cesiumPath
           : typeof this._Cesium !== 'undefined' && Object.prototype.hasOwnProperty.call(this._Cesium(), 'cesiumPath')
             ? this._Cesium().cesiumPath
             : 'https://unpkg.com/cesium@latest/Build/Cesium/Cesium.js'
 
         const dirName = dirname(cesiumPath)
-        if (!cesiumPath?.includes('.js')) {
-          // 认为是mars3d
-          if (cesiumPath?.lastIndexOf('/') !== cesiumPath.length - 1) {
-            cesiumPath += '/'
-          }
-          const libsConfig = getMars3dConfig(cesiumPath)
-          const include = this.$vc.cfg?.include || 'mars3d'
-          const arrInclude = include.split(',')
+        const mars3dConfig = this.$vc.mars3dConfig || this.mars3dConfig
+        if (mars3dConfig) {
+          // 引入 mars3d
+          const libsConfig = mars3dConfig.libs || getMars3dConfig(cesiumPath)
+          const include = mars3dConfig.include || 'mars3d'
+          const arrInclude = include.trim().split(',')
           const keys = {}
           for (let i = 0, len = arrInclude.length; i < len; i++) {
             const key = arrInclude[i]
@@ -1015,7 +1014,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         }
 
         const secondaryLibs = loadLibs
-        if (!cesiumPath?.includes('.js')) {
+        if (mars3dConfig) {
           // mars3d 必须要等 Cesium 先初始化
           const primaryLib = loadLibs.find((v) => v.includes('Cesium.js'))
           await loadScript(primaryLib)

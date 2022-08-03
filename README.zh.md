@@ -12,6 +12,10 @@
 <!-- [![Coverage Status](https://img.shields.io/coveralls/github/zouyaoji/vue-cesium?style=plastic)](https://coveralls.io/github/zouyaoji/vue-cesium?branch=master) -->
 [![Package Quality](https://npm.packagequality.com/shield/vue-cesium.svg)](https://packagequality.com/#?package=vue-cesium)
 
+## 注意
+
+**本项目将于2022年12月31日停止维护，届时从 npm 安装 vue-cesium 将默认是 Vue3 版本的，请尽快使用 Vue3 版本的 VueCesium。**
+
 ## 语言
 
 - [中文](https://github.com/zouyaoji/vue-cesium-v2/blob/master/README.zh.md)

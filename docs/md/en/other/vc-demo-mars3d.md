@@ -1,16 +1,21 @@
 ## Mars3D Demo
 
-When vue-cesium uses Mars3D of Mars Technology to develop, you only need to specify the address of the **directory** of the mars3d library through the configuration item `cesiumPath` when VueCesium is introduced.
+When vue-cesium uses [Mars3D](http://mars3d.cn/) of Mars Technology, it is only necessary to configure the address of the mars3d main library and its plug-in library through the configuration item `mars3dConfig` when introducing VueCesium, and the default use of unpkg.com cdn resources, if you need to use it locally or in the local area network, please change the resources of the relevant library to the local or local area network address through `mars3dConfig.libs`.Please [Reference](https://github.com/zouyaoji/vue-cesium/blob/dev/packages/components/viewer/src/loadUtil.ts#L17) for non-TS project structure.
+
 
 ```js
 Vue.use(VueCesium, {
-  cesiumPath: 'https://mars3d.cn/lib/'
+  mars3dConfig: {
+    include: 'mars3d'
+  }
 })
 
 // Or specify the address of `cesiumPath` as the **directory** of the mars3d library on the `vc-viewer` component.
 import { Viewer } from 'vue-cesium'
 Vue.use(Viewer, {
-  cesiumPath: 'https://mars3d.cn/lib/'
+  mars3dConfig: {
+    include: 'mars3d'
+  }
 })
 ```
 
@@ -27,7 +32,7 @@ If `vc-viewer` is loaded successfully, it will return {Cesium, viewer, map }, an
     <div class="viewer" ref="viewerContainer">
       <vc-viewer
         ref="vcViewer"
-        :cesium-path="cesiumPath"
+        :mars3d-config="mars3dConfig"
         :animation="animation"
         :timeline="timeline"
         :fullscreen-button="fullscreenButton"
@@ -50,16 +55,6 @@ If `vc-viewer` is loaded successfully, it will return {Cesium, viewer, map }, an
         </vc-layer-imagery>
       </vc-viewer>
       <div class="demo-tool">
-        <span>Animation</span>
-        <md-switch v-model="animation"></md-switch>
-        <span>Timeline</span>
-        <md-switch v-model="timeline"></md-switch>
-        <span>BaseLayerPicker</span>
-        <md-switch v-model="baseLayerPicker"></md-switch>
-        <span>FullscreenButton</span>
-        <md-switch v-model="fullscreenButton"></md-switch>
-        <span>InfoBox</span>
-        <md-switch v-model="infoBox"></md-switch>
         <md-button class="md-raised md-accent" @click="unload">Unload</md-button>
         <md-button class="md-raised md-accent" @click="load">Load</md-button>
         <md-button class="md-raised md-accent" @click="reload">Reload</md-button>
@@ -88,7 +83,9 @@ If `vc-viewer` is loaded successfully, it will return {Cesium, viewer, map }, an
             offset: [0, 32],
             position: 'bottom-right'
           },
-          cesiumPath: 'https://mars3d.cn/lib/'
+          mars3dConfig: {
+            include: 'mars3d'
+          }
         }
       },
       mounted() {
@@ -133,7 +130,7 @@ If `vc-viewer` is loaded successfully, it will return {Cesium, viewer, map }, an
   <div class="viewer" ref="viewerContainer">
     <vc-viewer
       ref="vcViewer"
-      :cesium-path="cesiumPath"
+      :mars3d-config="mars3dConfig"
       :animation="animation"
       :timeline="timeline"
       :fullscreen-button="fullscreenButton"
@@ -156,15 +153,6 @@ If `vc-viewer` is loaded successfully, it will return {Cesium, viewer, map }, an
       </vc-layer-imagery>
     </vc-viewer>
     <div class="demo-tool">
-      <span>Animation</span>
-      <md-switch v-model="animation"></md-switch>
-      <span>Timeline</span>
-      <md-switch v-model="timeline"></md-switch>
-      <span>BaseLayerPicker</span>
-      <md-switch v-model="baseLayerPicker"></md-switch>
-      <span>FullscreenButton</span>
-      <md-switch v-model="fullscreenButton"></md-switch>
-      <span>InfoBox</span>
       <md-switch v-model="infoBox"></md-switch>
       <md-button class="md-raised md-accent" @click="unload">Unload</md-button>
       <md-button class="md-raised md-accent" @click="load">Load</md-button>
@@ -194,7 +182,9 @@ If `vc-viewer` is loaded successfully, it will return {Cesium, viewer, map }, an
           offset: [0, 32],
           position: 'bottom-right'
         },
-        cesiumPath: 'https://mars3d.cn/lib/'
+        mars3dConfig: {
+          include: 'mars3d'
+        }
       }
     },
     mounted() {

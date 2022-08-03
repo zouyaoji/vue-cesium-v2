@@ -14,6 +14,11 @@
 
 [![Package Quality](https://npm.packagequality.com/shield/vue-cesium.svg)](https://packagequality.com/#?package=vue-cesium)
 
+
+## Notice
+
+**This project will stop maintenance on December 31, 2022. At that time, installing vue-cesium from npm will default to the Vue3 version. Please use the Vue3 version of VueCesium as soon as possible.**
+
 ## Languages
 
 - [中文](https://github.com/zouyaoji/vue-cesium-v2/blob/master/README.zh.md)
