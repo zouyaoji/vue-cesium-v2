@@ -1,11 +1,38 @@
 <template>
   <i :class="$options.name" style="display: none !important">
-    <vc-entity :show="show" ref="childRef" v-if="type === 1">
+    <vc-entity
+      :show="show"
+      ref="childRef"
+      v-if="type === 1"
+      @click="triggerEvent('click', $event)"
+      @dblclick="triggerEvent('dblclick', $event)"
+      @mousedown="triggerEvent('mousedown', $event)"
+      @mouseup="triggerEvent('mouseup', $event)"
+      @mousemove="triggerEvent('mousemove', $event)"
+      @mouseover="triggerEvent('mouseover', $event)"
+      @mouseout="triggerEvent('mouseout', $event)"
+      @clickout="triggerEvent('clickout', $event)"
+      :id="id"
+    >
       <vc-graphics-rectangle :coordinates="coordinates" :material="material"></vc-graphics-rectangle>
     </vc-entity>
-    <vc-primitive-ground :appearance="appearance" :releaseGeometryInstances="false" :show="show" ref="childRef" v-else-if="type === 0">
+    <vc-primitive-ground
+      :appearance="appearance"
+      :releaseGeometryInstances="false"
+      :show="show"
+      ref="childRef"
+      @click="triggerEvent('click', $event)"
+      @dblclick="triggerEvent('dblclick', $event)"
+      @mousedown="triggerEvent('mousedown', $event)"
+      @mouseup="triggerEvent('mouseup', $event)"
+      @mousemove="triggerEvent('mousemove', $event)"
+      @mouseover="triggerEvent('mouseover', $event)"
+      @mouseout="triggerEvent('mouseout', $event)"
+      @clickout="triggerEvent('clickout', $event)"
+      v-else-if="type === 0"
+    >
       <vc-instance-geometry>
-        <vc-geometry-rectangle :rectangle="coordinates"></vc-geometry-rectangle>
+        <vc-geometry-rectangle :rectangle="coordinates" :id="id"></vc-geometry-rectangle>
       </vc-instance-geometry>
     </vc-primitive-ground>
     <vc-layer-imagery :show="show" ref="childRef" v-else-if="type === 2">
@@ -59,7 +86,8 @@ export default {
     show: {
       type: Boolean,
       default: true
-    }
+    },
+    id: null
   },
   computed: {
     changeProps () {
@@ -93,6 +121,9 @@ export default {
     }
   },
   methods: {
+    triggerEvent (event, e) {
+      this.$emit(event, e)
+    },
     async createCesiumObject () {
       const { bounds, options, min, max, data, defaultOptions } = this
       this._WMP = new Cesium.WebMercatorProjection(this.viewer.scene.globe.ellipsoid)
@@ -100,7 +131,7 @@ export default {
       options.gradient = options.gradient ? options.gradient : defaultOptions.gradient
       const { breaks, colors } = options
 
-      if (breaks && breaks.length !== 0 && (colors && colors.length !== 0)) {
+      if (breaks && breaks.length !== 0 && colors && colors.length !== 0) {
         if (breaks.length + 1 === colors.length) {
           breaks.push(max)
         }
