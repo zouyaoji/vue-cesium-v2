@@ -1,7 +1,9 @@
 /**
+ * @license
  * Cesium - https://github.com/CesiumGS/cesium
+ * Version 1.96
  *
- * Copyright 2011-2020 Cesium Contributors
+ * Copyright 2011-2022 Cesium Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,22 +20,22 @@
  * Columbus View (Pat. Pend.)
  *
  * Portions licensed separately.
- * See https://github.com/CesiumGS/cesium/blob/master/LICENSE.md for full licensing details.
+ * See https://github.com/CesiumGS/cesium/blob/main/LICENSE.md for full licensing details.
  */
 
-define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesian2-e9bb1bb3', './when-208fe5b0', './TerrainEncoding-8d274519', './Math-56f06cd5', './OrientedBoundingBox-dfa225d1', './RuntimeError-7f634f5d', './WebMercatorProjection-7b54c659', './createTaskProcessorWorker', './Check-5e798bbf', './AttributeCompression-d1cd1d9c', './ComponentDatatype-cc8f5f00', './WebGLConstants-5e2a49ab', './EllipsoidTangentPlane-e79f0327', './IntersectionTests-4352af03', './Plane-9825d2dd'], function (AxisAlignedBoundingBox, Transforms, Cartesian2, when, TerrainEncoding, _Math, OrientedBoundingBox, RuntimeError, WebMercatorProjection, createTaskProcessorWorker, Check, AttributeCompression, ComponentDatatype, WebGLConstants, EllipsoidTangentPlane, IntersectionTests, Plane) { 'use strict';
+define(['./AxisAlignedBoundingBox-8c885262', './Transforms-fc8266a1', './Matrix2-46dc0d7f', './defaultValue-4607806f', './TerrainEncoding-541a49e1', './ComponentDatatype-1ef49b14', './OrientedBoundingBox-7072d624', './RuntimeError-cef79f54', './WebMercatorProjection-60cca281', './createTaskProcessorWorker', './_commonjsHelpers-a32ac251', './combine-fc59ba59', './AttributeCompression-e3844002', './WebGLConstants-f100e3dd', './EllipsoidTangentPlane-daffc3d5', './IntersectionTests-f3daffbb', './Plane-e8eab25b'], (function (AxisAlignedBoundingBox, Transforms, Matrix2, defaultValue, TerrainEncoding, ComponentDatatype, OrientedBoundingBox, RuntimeError, WebMercatorProjection, createTaskProcessorWorker, _commonjsHelpers, combine, AttributeCompression, WebGLConstants, EllipsoidTangentPlane, IntersectionTests, Plane) { 'use strict';
 
-  var sizeOfUint16 = Uint16Array.BYTES_PER_ELEMENT;
-  var sizeOfInt32 = Int32Array.BYTES_PER_ELEMENT;
-  var sizeOfUint32 = Uint32Array.BYTES_PER_ELEMENT;
-  var sizeOfFloat = Float32Array.BYTES_PER_ELEMENT;
-  var sizeOfDouble = Float64Array.BYTES_PER_ELEMENT;
+  const sizeOfUint16 = Uint16Array.BYTES_PER_ELEMENT;
+  const sizeOfInt32 = Int32Array.BYTES_PER_ELEMENT;
+  const sizeOfUint32 = Uint32Array.BYTES_PER_ELEMENT;
+  const sizeOfFloat = Float32Array.BYTES_PER_ELEMENT;
+  const sizeOfDouble = Float64Array.BYTES_PER_ELEMENT;
 
   function indexOfEpsilon(arr, elem, elemType) {
-    elemType = when.defaultValue(elemType, _Math.CesiumMath);
-    var count = arr.length;
-    for (var i = 0; i < count; ++i) {
-      if (elemType.equalsEpsilon(arr[i], elem, _Math.CesiumMath.EPSILON12)) {
+    elemType = defaultValue.defaultValue(elemType, ComponentDatatype.CesiumMath);
+    const count = arr.length;
+    for (let i = 0; i < count; ++i) {
+      if (elemType.equalsEpsilon(arr[i], elem, ComponentDatatype.CesiumMath.EPSILON12)) {
         return i;
       }
     }
@@ -45,10 +47,10 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
     parameters,
     transferableObjects
   ) {
-    parameters.ellipsoid = Cartesian2.Ellipsoid.clone(parameters.ellipsoid);
-    parameters.rectangle = Cartesian2.Rectangle.clone(parameters.rectangle);
+    parameters.ellipsoid = Matrix2.Ellipsoid.clone(parameters.ellipsoid);
+    parameters.rectangle = Matrix2.Rectangle.clone(parameters.rectangle);
 
-    var statistics = processBuffer(
+    const statistics = processBuffer(
       parameters.buffer,
       parameters.relativeToCenter,
       parameters.ellipsoid,
@@ -61,9 +63,9 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
       parameters.negativeAltitudeExponentBias,
       parameters.negativeElevationThreshold
     );
-    var vertices = statistics.vertices;
+    const vertices = statistics.vertices;
     transferableObjects.push(vertices.buffer);
-    var indices = statistics.indices;
+    const indices = statistics.indices;
     transferableObjects.push(indices.buffer);
 
     return {
@@ -85,11 +87,11 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
     };
   }
 
-  var scratchCartographic = new Cartesian2.Cartographic();
-  var scratchCartesian = new Cartesian2.Cartesian3();
-  var minimumScratch = new Cartesian2.Cartesian3();
-  var maximumScratch = new Cartesian2.Cartesian3();
-  var matrix4Scratch = new Transforms.Matrix4();
+  const scratchCartographic = new Matrix2.Cartographic();
+  const scratchCartesian = new Matrix2.Cartesian3();
+  const minimumScratch = new Matrix2.Cartesian3();
+  const maximumScratch = new Matrix2.Cartesian3();
+  const matrix4Scratch = new Matrix2.Matrix4();
 
   function processBuffer(
     buffer,
@@ -104,19 +106,19 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
     negativeAltitudeExponentBias,
     negativeElevationThreshold
   ) {
-    var geographicWest;
-    var geographicSouth;
-    var geographicEast;
-    var geographicNorth;
-    var rectangleWidth, rectangleHeight;
+    let geographicWest;
+    let geographicSouth;
+    let geographicEast;
+    let geographicNorth;
+    let rectangleWidth, rectangleHeight;
 
-    if (!when.defined(rectangle)) {
-      geographicWest = _Math.CesiumMath.toRadians(nativeRectangle.west);
-      geographicSouth = _Math.CesiumMath.toRadians(nativeRectangle.south);
-      geographicEast = _Math.CesiumMath.toRadians(nativeRectangle.east);
-      geographicNorth = _Math.CesiumMath.toRadians(nativeRectangle.north);
-      rectangleWidth = _Math.CesiumMath.toRadians(rectangle.width);
-      rectangleHeight = _Math.CesiumMath.toRadians(rectangle.height);
+    if (!defaultValue.defined(rectangle)) {
+      geographicWest = ComponentDatatype.CesiumMath.toRadians(nativeRectangle.west);
+      geographicSouth = ComponentDatatype.CesiumMath.toRadians(nativeRectangle.south);
+      geographicEast = ComponentDatatype.CesiumMath.toRadians(nativeRectangle.east);
+      geographicNorth = ComponentDatatype.CesiumMath.toRadians(nativeRectangle.north);
+      rectangleWidth = ComponentDatatype.CesiumMath.toRadians(rectangle.width);
+      rectangleHeight = ComponentDatatype.CesiumMath.toRadians(rectangle.height);
     } else {
       geographicWest = rectangle.west;
       geographicSouth = rectangle.south;
@@ -127,14 +129,17 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
     }
 
     // Keep track of quad borders so we can remove duplicates around the borders
-    var quadBorderLatitudes = [geographicSouth, geographicNorth];
-    var quadBorderLongitudes = [geographicWest, geographicEast];
+    const quadBorderLatitudes = [geographicSouth, geographicNorth];
+    const quadBorderLongitudes = [geographicWest, geographicEast];
 
-    var fromENU = Transforms.Transforms.eastNorthUpToFixedFrame(relativeToCenter, ellipsoid);
-    var toENU = Transforms.Matrix4.inverseTransformation(fromENU, matrix4Scratch);
+    const fromENU = Transforms.Transforms.eastNorthUpToFixedFrame(
+      relativeToCenter,
+      ellipsoid
+    );
+    const toENU = Matrix2.Matrix4.inverseTransformation(fromENU, matrix4Scratch);
 
-    var southMercatorY;
-    var oneOverMercatorHeight;
+    let southMercatorY;
+    let oneOverMercatorHeight;
     if (includeWebMercatorT) {
       southMercatorY = WebMercatorProjection.WebMercatorProjection.geodeticLatitudeToMercatorAngle(
         geographicSouth
@@ -145,42 +150,42 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
           southMercatorY);
     }
 
-    var hasExaggeration = exaggeration !== 1.0;
-    var includeGeodeticSurfaceNormals = hasExaggeration;
+    const hasExaggeration = exaggeration !== 1.0;
+    const includeGeodeticSurfaceNormals = hasExaggeration;
 
-    var dv = new DataView(buffer);
+    const dv = new DataView(buffer);
 
-    var minHeight = Number.POSITIVE_INFINITY;
-    var maxHeight = Number.NEGATIVE_INFINITY;
+    let minHeight = Number.POSITIVE_INFINITY;
+    let maxHeight = Number.NEGATIVE_INFINITY;
 
-    var minimum = minimumScratch;
+    const minimum = minimumScratch;
     minimum.x = Number.POSITIVE_INFINITY;
     minimum.y = Number.POSITIVE_INFINITY;
     minimum.z = Number.POSITIVE_INFINITY;
 
-    var maximum = maximumScratch;
+    const maximum = maximumScratch;
     maximum.x = Number.NEGATIVE_INFINITY;
     maximum.y = Number.NEGATIVE_INFINITY;
     maximum.z = Number.NEGATIVE_INFINITY;
 
     // Compute sizes
-    var offset = 0;
-    var size = 0;
-    var indicesSize = 0;
-    var quadSize;
-    var quad;
+    let offset = 0;
+    let size = 0;
+    let indicesSize = 0;
+    let quadSize;
+    let quad;
     for (quad = 0; quad < 4; ++quad) {
-      var o = offset;
+      let o = offset;
       quadSize = dv.getUint32(o, true);
       o += sizeOfUint32;
 
-      var x = _Math.CesiumMath.toRadians(dv.getFloat64(o, true) * 180.0);
+      const x = ComponentDatatype.CesiumMath.toRadians(dv.getFloat64(o, true) * 180.0);
       o += sizeOfDouble;
       if (indexOfEpsilon(quadBorderLongitudes, x) === -1) {
         quadBorderLongitudes.push(x);
       }
 
-      var y = _Math.CesiumMath.toRadians(dv.getFloat64(o, true) * 180.0);
+      const y = ComponentDatatype.CesiumMath.toRadians(dv.getFloat64(o, true) * 180.0);
       o += sizeOfDouble;
       if (indexOfEpsilon(quadBorderLatitudes, y) === -1) {
         quadBorderLatitudes.push(y);
@@ -188,7 +193,7 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
 
       o += 2 * sizeOfDouble; // stepX + stepY
 
-      var c = dv.getInt32(o, true); // Read point count
+      let c = dv.getInt32(o, true); // Read point count
       o += sizeOfInt32;
       size += c;
 
@@ -199,67 +204,67 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
     }
 
     // Quad Border points to remove duplicates
-    var quadBorderPoints = [];
-    var quadBorderIndices = [];
+    const quadBorderPoints = [];
+    const quadBorderIndices = [];
 
     // Create arrays
-    var positions = new Array(size);
-    var uvs = new Array(size);
-    var heights = new Array(size);
-    var webMercatorTs = includeWebMercatorT ? new Array(size) : [];
-    var geodeticSurfaceNormals = includeGeodeticSurfaceNormals
+    const positions = new Array(size);
+    const uvs = new Array(size);
+    const heights = new Array(size);
+    const webMercatorTs = includeWebMercatorT ? new Array(size) : [];
+    const geodeticSurfaceNormals = includeGeodeticSurfaceNormals
       ? new Array(size)
       : [];
-    var indices = new Array(indicesSize);
+    const indices = new Array(indicesSize);
 
     // Points are laid out in rows starting at SW, so storing border points as we
     //  come across them all points will be adjacent.
-    var westBorder = [];
-    var southBorder = [];
-    var eastBorder = [];
-    var northBorder = [];
+    const westBorder = [];
+    const southBorder = [];
+    const eastBorder = [];
+    const northBorder = [];
 
     // Each tile is split into 4 parts
-    var pointOffset = 0;
-    var indicesOffset = 0;
+    let pointOffset = 0;
+    let indicesOffset = 0;
     offset = 0;
     for (quad = 0; quad < 4; ++quad) {
       quadSize = dv.getUint32(offset, true);
       offset += sizeOfUint32;
-      var startQuad = offset;
+      const startQuad = offset;
 
-      var originX = _Math.CesiumMath.toRadians(dv.getFloat64(offset, true) * 180.0);
+      const originX = ComponentDatatype.CesiumMath.toRadians(dv.getFloat64(offset, true) * 180.0);
       offset += sizeOfDouble;
 
-      var originY = _Math.CesiumMath.toRadians(dv.getFloat64(offset, true) * 180.0);
+      const originY = ComponentDatatype.CesiumMath.toRadians(dv.getFloat64(offset, true) * 180.0);
       offset += sizeOfDouble;
 
-      var stepX = _Math.CesiumMath.toRadians(dv.getFloat64(offset, true) * 180.0);
-      var halfStepX = stepX * 0.5;
+      const stepX = ComponentDatatype.CesiumMath.toRadians(dv.getFloat64(offset, true) * 180.0);
+      const halfStepX = stepX * 0.5;
       offset += sizeOfDouble;
 
-      var stepY = _Math.CesiumMath.toRadians(dv.getFloat64(offset, true) * 180.0);
-      var halfStepY = stepY * 0.5;
+      const stepY = ComponentDatatype.CesiumMath.toRadians(dv.getFloat64(offset, true) * 180.0);
+      const halfStepY = stepY * 0.5;
       offset += sizeOfDouble;
 
-      var numPoints = dv.getInt32(offset, true);
+      const numPoints = dv.getInt32(offset, true);
       offset += sizeOfInt32;
 
-      var numFaces = dv.getInt32(offset, true);
+      const numFaces = dv.getInt32(offset, true);
       offset += sizeOfInt32;
 
-      //var level = dv.getInt32(offset, true);
+      //const level = dv.getInt32(offset, true);
       offset += sizeOfInt32;
 
       // Keep track of quad indices to overall tile indices
-      var indicesMapping = new Array(numPoints);
-      for (var i = 0; i < numPoints; ++i) {
-        var longitude = originX + dv.getUint8(offset++) * stepX;
+      const indicesMapping = new Array(numPoints);
+      for (let i = 0; i < numPoints; ++i) {
+        const longitude = originX + dv.getUint8(offset++) * stepX;
         scratchCartographic.longitude = longitude;
-        var latitude = originY + dv.getUint8(offset++) * stepY;
+        const latitude = originY + dv.getUint8(offset++) * stepY;
         scratchCartographic.latitude = latitude;
 
-        var height = dv.getFloat32(offset, true);
+        let height = dv.getFloat32(offset, true);
         offset += sizeOfFloat;
 
         // In order to support old clients, negative altitude values are stored as
@@ -279,13 +284,13 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
           indexOfEpsilon(quadBorderLongitudes, longitude) !== -1 ||
           indexOfEpsilon(quadBorderLatitudes, latitude) !== -1
         ) {
-          var index = indexOfEpsilon(
+          const index = indexOfEpsilon(
             quadBorderPoints,
             scratchCartographic,
-            Cartesian2.Cartographic
+            Matrix2.Cartographic
           );
           if (index === -1) {
-            quadBorderPoints.push(Cartesian2.Cartographic.clone(scratchCartographic));
+            quadBorderPoints.push(Matrix2.Cartographic.clone(scratchCartographic));
             quadBorderIndices.push(pointOffset);
           } else {
             indicesMapping[i] = quadBorderIndices[index];
@@ -297,22 +302,22 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
         if (Math.abs(longitude - geographicWest) < halfStepX) {
           westBorder.push({
             index: pointOffset,
-            cartographic: Cartesian2.Cartographic.clone(scratchCartographic),
+            cartographic: Matrix2.Cartographic.clone(scratchCartographic),
           });
         } else if (Math.abs(longitude - geographicEast) < halfStepX) {
           eastBorder.push({
             index: pointOffset,
-            cartographic: Cartesian2.Cartographic.clone(scratchCartographic),
+            cartographic: Matrix2.Cartographic.clone(scratchCartographic),
           });
         } else if (Math.abs(latitude - geographicSouth) < halfStepY) {
           southBorder.push({
             index: pointOffset,
-            cartographic: Cartesian2.Cartographic.clone(scratchCartographic),
+            cartographic: Matrix2.Cartographic.clone(scratchCartographic),
           });
         } else if (Math.abs(latitude - geographicNorth) < halfStepY) {
           northBorder.push({
             index: pointOffset,
-            cartographic: Cartesian2.Cartographic.clone(scratchCartographic),
+            cartographic: Matrix2.Cartographic.clone(scratchCartographic),
           });
         }
 
@@ -320,7 +325,7 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
         maxHeight = Math.max(height, maxHeight);
         heights[pointOffset] = height;
 
-        var pos = ellipsoid.cartographicToCartesian(scratchCartographic);
+        const pos = ellipsoid.cartographicToCartesian(scratchCartographic);
         positions[pointOffset] = pos;
 
         if (includeWebMercatorT) {
@@ -331,27 +336,27 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
         }
 
         if (includeGeodeticSurfaceNormals) {
-          var normal = ellipsoid.geodeticSurfaceNormal(pos);
+          const normal = ellipsoid.geodeticSurfaceNormal(pos);
           geodeticSurfaceNormals[pointOffset] = normal;
         }
 
-        Transforms.Matrix4.multiplyByPoint(toENU, pos, scratchCartesian);
+        Matrix2.Matrix4.multiplyByPoint(toENU, pos, scratchCartesian);
 
-        Cartesian2.Cartesian3.minimumByComponent(scratchCartesian, minimum, minimum);
-        Cartesian2.Cartesian3.maximumByComponent(scratchCartesian, maximum, maximum);
+        Matrix2.Cartesian3.minimumByComponent(scratchCartesian, minimum, minimum);
+        Matrix2.Cartesian3.maximumByComponent(scratchCartesian, maximum, maximum);
 
-        var u = (longitude - geographicWest) / (geographicEast - geographicWest);
-        u = _Math.CesiumMath.clamp(u, 0.0, 1.0);
-        var v =
+        let u = (longitude - geographicWest) / (geographicEast - geographicWest);
+        u = ComponentDatatype.CesiumMath.clamp(u, 0.0, 1.0);
+        let v =
           (latitude - geographicSouth) / (geographicNorth - geographicSouth);
-        v = _Math.CesiumMath.clamp(v, 0.0, 1.0);
+        v = ComponentDatatype.CesiumMath.clamp(v, 0.0, 1.0);
 
-        uvs[pointOffset] = new Cartesian2.Cartesian2(u, v);
+        uvs[pointOffset] = new Matrix2.Cartesian2(u, v);
         ++pointOffset;
       }
 
-      var facesElementCount = numFaces * 3;
-      for (var j = 0; j < facesElementCount; ++j, ++indicesOffset) {
+      const facesElementCount = numFaces * 3;
+      for (let j = 0; j < facesElementCount; ++j, ++indicesOffset) {
         indices[indicesOffset] = indicesMapping[dv.getUint16(offset, true)];
         offset += sizeOfUint16;
       }
@@ -371,11 +376,11 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
       geodeticSurfaceNormals.length = pointOffset;
     }
 
-    var vertexCountWithoutSkirts = pointOffset;
-    var indexCountWithoutSkirts = indicesOffset;
+    const vertexCountWithoutSkirts = pointOffset;
+    const indexCountWithoutSkirts = indicesOffset;
 
     // Add skirt points
-    var skirtOptions = {
+    const skirtOptions = {
       hMin: minHeight,
       lastBorderPoint: undefined,
       skirtHeight: skirtHeight,
@@ -400,7 +405,7 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
       return b.cartographic.longitude - a.cartographic.longitude;
     });
 
-    var percentage = 0.00001;
+    const percentage = 0.00001;
     addSkirt(
       positions,
       heights,
@@ -455,10 +460,10 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
     // Since the corner between the north and west sides is in the west array, generate the last
     //  two triangles between the last north vertex and the first west vertex
     if (westBorder.length > 0 && northBorder.length > 0) {
-      var firstBorderIndex = westBorder[0].index;
-      var firstSkirtIndex = vertexCountWithoutSkirts;
-      var lastBorderIndex = northBorder[northBorder.length - 1].index;
-      var lastSkirtIndex = positions.length - 1;
+      const firstBorderIndex = westBorder[0].index;
+      const firstSkirtIndex = vertexCountWithoutSkirts;
+      const lastBorderIndex = northBorder[northBorder.length - 1].index;
+      const lastSkirtIndex = positions.length - 1;
 
       indices.push(
         lastBorderIndex,
@@ -472,9 +477,9 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
 
     size = positions.length; // Get new size with skirt vertices
 
-    var boundingSphere3D = Transforms.BoundingSphere.fromPoints(positions);
-    var orientedBoundingBox;
-    if (when.defined(rectangle)) {
+    const boundingSphere3D = Transforms.BoundingSphere.fromPoints(positions);
+    let orientedBoundingBox;
+    if (defaultValue.defined(rectangle)) {
       orientedBoundingBox = OrientedBoundingBox.OrientedBoundingBox.fromRectangle(
         rectangle,
         minHeight,
@@ -483,15 +488,15 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
       );
     }
 
-    var occluder = new TerrainEncoding.EllipsoidalOccluder(ellipsoid);
-    var occludeePointInScaledSpace = occluder.computeHorizonCullingPointPossiblyUnderEllipsoid(
+    const occluder = new TerrainEncoding.EllipsoidalOccluder(ellipsoid);
+    const occludeePointInScaledSpace = occluder.computeHorizonCullingPointPossiblyUnderEllipsoid(
       relativeToCenter,
       positions,
       minHeight
     );
 
-    var aaBox = new AxisAlignedBoundingBox.AxisAlignedBoundingBox(minimum, maximum, relativeToCenter);
-    var encoding = new TerrainEncoding.TerrainEncoding(
+    const aaBox = new AxisAlignedBoundingBox.AxisAlignedBoundingBox(minimum, maximum, relativeToCenter);
+    const encoding = new TerrainEncoding.TerrainEncoding(
       relativeToCenter,
       aaBox,
       skirtOptions.hMin,
@@ -503,10 +508,10 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
       exaggeration,
       exaggerationRelativeHeight
     );
-    var vertices = new Float32Array(size * encoding.stride);
+    const vertices = new Float32Array(size * encoding.stride);
 
-    var bufferIndex = 0;
-    for (var k = 0; k < size; ++k) {
+    let bufferIndex = 0;
+    for (let k = 0; k < size; ++k) {
       bufferIndex = encoding.encode(
         vertices,
         bufferIndex,
@@ -519,22 +524,22 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
       );
     }
 
-    var westIndicesSouthToNorth = westBorder
+    const westIndicesSouthToNorth = westBorder
       .map(function (vertex) {
         return vertex.index;
       })
       .reverse();
-    var southIndicesEastToWest = southBorder
+    const southIndicesEastToWest = southBorder
       .map(function (vertex) {
         return vertex.index;
       })
       .reverse();
-    var eastIndicesNorthToSouth = eastBorder
+    const eastIndicesNorthToSouth = eastBorder
       .map(function (vertex) {
         return vertex.index;
       })
       .reverse();
-    var northIndicesWestToEast = northBorder
+    const northIndicesWestToEast = northBorder
       .map(function (vertex) {
         return vertex.index;
       })
@@ -581,24 +586,24 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
     eastOrWest,
     cornerFudge
   ) {
-    var count = borderPoints.length;
-    for (var j = 0; j < count; ++j) {
-      var borderPoint = borderPoints[j];
-      var borderCartographic = borderPoint.cartographic;
-      var borderIndex = borderPoint.index;
-      var currentIndex = positions.length;
+    const count = borderPoints.length;
+    for (let j = 0; j < count; ++j) {
+      const borderPoint = borderPoints[j];
+      const borderCartographic = borderPoint.cartographic;
+      const borderIndex = borderPoint.index;
+      const currentIndex = positions.length;
 
-      var longitude = borderCartographic.longitude;
-      var latitude = borderCartographic.latitude;
-      latitude = _Math.CesiumMath.clamp(
+      const longitude = borderCartographic.longitude;
+      let latitude = borderCartographic.latitude;
+      latitude = ComponentDatatype.CesiumMath.clamp(
         latitude,
-        -_Math.CesiumMath.PI_OVER_TWO,
-        _Math.CesiumMath.PI_OVER_TWO
+        -ComponentDatatype.CesiumMath.PI_OVER_TWO,
+        ComponentDatatype.CesiumMath.PI_OVER_TWO
       ); // Don't go over the poles
-      var height = borderCartographic.height - skirtOptions.skirtHeight;
+      const height = borderCartographic.height - skirtOptions.skirtHeight;
       skirtOptions.hMin = Math.min(skirtOptions.hMin, height);
 
-      Cartesian2.Cartographic.fromRadians(longitude, latitude, height, scratchCartographic);
+      Matrix2.Cartographic.fromRadians(longitude, latitude, height, scratchCartographic);
 
       // Adjust sides to angle out
       if (eastOrWest) {
@@ -615,12 +620,12 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
         scratchCartographic.latitude -= cornerFudge;
       }
 
-      var pos = skirtOptions.ellipsoid.cartographicToCartesian(
+      const pos = skirtOptions.ellipsoid.cartographicToCartesian(
         scratchCartographic
       );
       positions.push(pos);
       heights.push(height);
-      uvs.push(Cartesian2.Cartesian2.clone(uvs[borderIndex])); // Copy UVs from border point
+      uvs.push(Matrix2.Cartesian2.clone(uvs[borderIndex])); // Copy UVs from border point
       if (webMercatorTs.length > 0) {
         webMercatorTs.push(webMercatorTs[borderIndex]);
       }
@@ -628,16 +633,16 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
         geodeticSurfaceNormals.push(geodeticSurfaceNormals[borderIndex]);
       }
 
-      Transforms.Matrix4.multiplyByPoint(skirtOptions.toENU, pos, scratchCartesian);
+      Matrix2.Matrix4.multiplyByPoint(skirtOptions.toENU, pos, scratchCartesian);
 
-      var minimum = skirtOptions.minimum;
-      var maximum = skirtOptions.maximum;
-      Cartesian2.Cartesian3.minimumByComponent(scratchCartesian, minimum, minimum);
-      Cartesian2.Cartesian3.maximumByComponent(scratchCartesian, maximum, maximum);
+      const minimum = skirtOptions.minimum;
+      const maximum = skirtOptions.maximum;
+      Matrix2.Cartesian3.minimumByComponent(scratchCartesian, minimum, minimum);
+      Matrix2.Cartesian3.maximumByComponent(scratchCartesian, maximum, maximum);
 
-      var lastBorderPoint = skirtOptions.lastBorderPoint;
-      if (when.defined(lastBorderPoint)) {
-        var lastBorderIndex = lastBorderPoint.index;
+      const lastBorderPoint = skirtOptions.lastBorderPoint;
+      if (defaultValue.defined(lastBorderPoint)) {
+        const lastBorderIndex = lastBorderPoint.index;
         indices.push(
           lastBorderIndex,
           currentIndex - 1,
@@ -657,5 +662,4 @@ define(['./AxisAlignedBoundingBox-574d1269', './Transforms-9651fa9c', './Cartesi
 
   return createVerticesFromGoogleEarthEnterpriseBuffer$1;
 
-});
-//# sourceMappingURL=createVerticesFromGoogleEarthEnterpriseBuffer.js.map
+}));

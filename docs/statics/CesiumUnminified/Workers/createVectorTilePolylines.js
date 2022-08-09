@@ -1,7 +1,9 @@
 /**
+ * @license
  * Cesium - https://github.com/CesiumGS/cesium
+ * Version 1.96
  *
- * Copyright 2011-2020 Cesium Contributors
+ * Copyright 2011-2022 Cesium Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +20,15 @@
  * Columbus View (Pat. Pend.)
  *
  * Portions licensed separately.
- * See https://github.com/CesiumGS/cesium/blob/master/LICENSE.md for full licensing details.
+ * See https://github.com/CesiumGS/cesium/blob/main/LICENSE.md for full licensing details.
  */
 
-define(['./Cartesian2-e9bb1bb3', './AttributeCompression-d1cd1d9c', './Math-56f06cd5', './IndexDatatype-3a89c589', './createTaskProcessorWorker', './Check-5e798bbf', './when-208fe5b0', './WebGLConstants-5e2a49ab'], function (Cartesian2, AttributeCompression, _Math, IndexDatatype, createTaskProcessorWorker, Check, when, WebGLConstants) { 'use strict';
+define(['./Matrix2-46dc0d7f', './combine-fc59ba59', './AttributeCompression-e3844002', './ComponentDatatype-1ef49b14', './IndexDatatype-790b4297', './createTaskProcessorWorker', './RuntimeError-cef79f54', './defaultValue-4607806f', './WebGLConstants-f100e3dd'], (function (Matrix2, combine, AttributeCompression, ComponentDatatype, IndexDatatype, createTaskProcessorWorker, RuntimeError, defaultValue, WebGLConstants) { 'use strict';
 
-  var maxShort = 32767;
+  const maxShort = 32767;
 
-  var scratchBVCartographic = new Cartesian2.Cartographic();
-  var scratchEncodedPosition = new Cartesian2.Cartesian3();
+  const scratchBVCartographic = new Matrix2.Cartographic();
+  const scratchEncodedPosition = new Matrix2.Cartesian3();
 
   function decodeVectorPolylinePositions(
     positions,
@@ -35,44 +37,44 @@ define(['./Cartesian2-e9bb1bb3', './AttributeCompression-d1cd1d9c', './Math-56f0
     maximumHeight,
     ellipsoid
   ) {
-    var positionsLength = positions.length / 3;
-    var uBuffer = positions.subarray(0, positionsLength);
-    var vBuffer = positions.subarray(positionsLength, 2 * positionsLength);
-    var heightBuffer = positions.subarray(
+    const positionsLength = positions.length / 3;
+    const uBuffer = positions.subarray(0, positionsLength);
+    const vBuffer = positions.subarray(positionsLength, 2 * positionsLength);
+    const heightBuffer = positions.subarray(
       2 * positionsLength,
       3 * positionsLength
     );
     AttributeCompression.AttributeCompression.zigZagDeltaDecode(uBuffer, vBuffer, heightBuffer);
 
-    var decoded = new Float64Array(positions.length);
-    for (var i = 0; i < positionsLength; ++i) {
-      var u = uBuffer[i];
-      var v = vBuffer[i];
-      var h = heightBuffer[i];
+    const decoded = new Float64Array(positions.length);
+    for (let i = 0; i < positionsLength; ++i) {
+      const u = uBuffer[i];
+      const v = vBuffer[i];
+      const h = heightBuffer[i];
 
-      var lon = _Math.CesiumMath.lerp(rectangle.west, rectangle.east, u / maxShort);
-      var lat = _Math.CesiumMath.lerp(rectangle.south, rectangle.north, v / maxShort);
-      var alt = _Math.CesiumMath.lerp(minimumHeight, maximumHeight, h / maxShort);
+      const lon = ComponentDatatype.CesiumMath.lerp(rectangle.west, rectangle.east, u / maxShort);
+      const lat = ComponentDatatype.CesiumMath.lerp(rectangle.south, rectangle.north, v / maxShort);
+      const alt = ComponentDatatype.CesiumMath.lerp(minimumHeight, maximumHeight, h / maxShort);
 
-      var cartographic = Cartesian2.Cartographic.fromRadians(
+      const cartographic = Matrix2.Cartographic.fromRadians(
         lon,
         lat,
         alt,
         scratchBVCartographic
       );
-      var decodedPosition = ellipsoid.cartographicToCartesian(
+      const decodedPosition = ellipsoid.cartographicToCartesian(
         cartographic,
         scratchEncodedPosition
       );
-      Cartesian2.Cartesian3.pack(decodedPosition, decoded, i * 3);
+      Matrix2.Cartesian3.pack(decodedPosition, decoded, i * 3);
     }
     return decoded;
   }
 
-  var scratchRectangle = new Cartesian2.Rectangle();
-  var scratchEllipsoid = new Cartesian2.Ellipsoid();
-  var scratchCenter = new Cartesian2.Cartesian3();
-  var scratchMinMaxHeights = {
+  const scratchRectangle = new Matrix2.Rectangle();
+  const scratchEllipsoid = new Matrix2.Ellipsoid();
+  const scratchCenter = new Matrix2.Cartesian3();
+  const scratchMinMaxHeights = {
     min: undefined,
     max: undefined,
   };
@@ -80,39 +82,51 @@ define(['./Cartesian2-e9bb1bb3', './AttributeCompression-d1cd1d9c', './Math-56f0
   function unpackBuffer(packedBuffer) {
     packedBuffer = new Float64Array(packedBuffer);
 
-    var offset = 0;
+    let offset = 0;
     scratchMinMaxHeights.min = packedBuffer[offset++];
     scratchMinMaxHeights.max = packedBuffer[offset++];
 
-    Cartesian2.Rectangle.unpack(packedBuffer, offset, scratchRectangle);
-    offset += Cartesian2.Rectangle.packedLength;
+    Matrix2.Rectangle.unpack(packedBuffer, offset, scratchRectangle);
+    offset += Matrix2.Rectangle.packedLength;
 
-    Cartesian2.Ellipsoid.unpack(packedBuffer, offset, scratchEllipsoid);
-    offset += Cartesian2.Ellipsoid.packedLength;
+    Matrix2.Ellipsoid.unpack(packedBuffer, offset, scratchEllipsoid);
+    offset += Matrix2.Ellipsoid.packedLength;
 
-    Cartesian2.Cartesian3.unpack(packedBuffer, offset, scratchCenter);
+    Matrix2.Cartesian3.unpack(packedBuffer, offset, scratchCenter);
   }
 
-  var scratchP0 = new Cartesian2.Cartesian3();
-  var scratchP1 = new Cartesian2.Cartesian3();
-  var scratchPrev = new Cartesian2.Cartesian3();
-  var scratchCur = new Cartesian2.Cartesian3();
-  var scratchNext = new Cartesian2.Cartesian3();
+  function getPositionOffsets(counts) {
+    const countsLength = counts.length;
+    const positionOffsets = new Uint32Array(countsLength + 1);
+    let offset = 0;
+    for (let i = 0; i < countsLength; ++i) {
+      positionOffsets[i] = offset;
+      offset += counts[i];
+    }
+    positionOffsets[countsLength] = offset;
+    return positionOffsets;
+  }
+
+  const scratchP0 = new Matrix2.Cartesian3();
+  const scratchP1 = new Matrix2.Cartesian3();
+  const scratchPrev = new Matrix2.Cartesian3();
+  const scratchCur = new Matrix2.Cartesian3();
+  const scratchNext = new Matrix2.Cartesian3();
 
   function createVectorTilePolylines(parameters, transferableObjects) {
-    var encodedPositions = new Uint16Array(parameters.positions);
-    var widths = new Uint16Array(parameters.widths);
-    var counts = new Uint32Array(parameters.counts);
-    var batchIds = new Uint16Array(parameters.batchIds);
+    const encodedPositions = new Uint16Array(parameters.positions);
+    const widths = new Uint16Array(parameters.widths);
+    const counts = new Uint32Array(parameters.counts);
+    const batchIds = new Uint16Array(parameters.batchIds);
 
     unpackBuffer(parameters.packedBuffer);
-    var rectangle = scratchRectangle;
-    var ellipsoid = scratchEllipsoid;
-    var center = scratchCenter;
-    var minimumHeight = scratchMinMaxHeights.min;
-    var maximumHeight = scratchMinMaxHeights.max;
+    const rectangle = scratchRectangle;
+    const ellipsoid = scratchEllipsoid;
+    const center = scratchCenter;
+    const minimumHeight = scratchMinMaxHeights.min;
+    const maximumHeight = scratchMinMaxHeights.max;
 
-    var positions = decodeVectorPolylinePositions(
+    const positions = decodeVectorPolylinePositions(
       encodedPositions,
       rectangle,
       minimumHeight,
@@ -120,79 +134,83 @@ define(['./Cartesian2-e9bb1bb3', './AttributeCompression-d1cd1d9c', './Math-56f0
       ellipsoid
     );
 
-    var positionsLength = positions.length / 3;
-    var size = positionsLength * 4 - 4;
+    const positionsLength = positions.length / 3;
+    const size = positionsLength * 4 - 4;
 
-    var curPositions = new Float32Array(size * 3);
-    var prevPositions = new Float32Array(size * 3);
-    var nextPositions = new Float32Array(size * 3);
-    var expandAndWidth = new Float32Array(size * 2);
-    var vertexBatchIds = new Uint16Array(size);
+    const curPositions = new Float32Array(size * 3);
+    const prevPositions = new Float32Array(size * 3);
+    const nextPositions = new Float32Array(size * 3);
+    const expandAndWidth = new Float32Array(size * 2);
+    const vertexBatchIds = new Uint16Array(size);
 
-    var positionIndex = 0;
-    var expandAndWidthIndex = 0;
-    var batchIdIndex = 0;
+    let positionIndex = 0;
+    let expandAndWidthIndex = 0;
+    let batchIdIndex = 0;
 
-    var i;
-    var offset = 0;
-    var length = counts.length;
+    let i;
+    let offset = 0;
+    let length = counts.length;
 
     for (i = 0; i < length; ++i) {
-      var count = counts[i];
-      var width = widths[i];
-      var batchId = batchIds[i];
+      const count = counts[i];
+      const width = widths[i];
+      const batchId = batchIds[i];
 
-      for (var j = 0; j < count; ++j) {
-        var previous;
+      for (let j = 0; j < count; ++j) {
+        let previous;
         if (j === 0) {
-          var p0 = Cartesian2.Cartesian3.unpack(positions, offset * 3, scratchP0);
-          var p1 = Cartesian2.Cartesian3.unpack(positions, (offset + 1) * 3, scratchP1);
+          const p0 = Matrix2.Cartesian3.unpack(positions, offset * 3, scratchP0);
+          const p1 = Matrix2.Cartesian3.unpack(positions, (offset + 1) * 3, scratchP1);
 
-          previous = Cartesian2.Cartesian3.subtract(p0, p1, scratchPrev);
-          Cartesian2.Cartesian3.add(p0, previous, previous);
+          previous = Matrix2.Cartesian3.subtract(p0, p1, scratchPrev);
+          Matrix2.Cartesian3.add(p0, previous, previous);
         } else {
-          previous = Cartesian2.Cartesian3.unpack(
+          previous = Matrix2.Cartesian3.unpack(
             positions,
             (offset + j - 1) * 3,
             scratchPrev
           );
         }
 
-        var current = Cartesian2.Cartesian3.unpack(positions, (offset + j) * 3, scratchCur);
+        const current = Matrix2.Cartesian3.unpack(
+          positions,
+          (offset + j) * 3,
+          scratchCur
+        );
 
-        var next;
+        let next;
         if (j === count - 1) {
-          var p2 = Cartesian2.Cartesian3.unpack(
+          const p2 = Matrix2.Cartesian3.unpack(
             positions,
             (offset + count - 1) * 3,
             scratchP0
           );
-          var p3 = Cartesian2.Cartesian3.unpack(
+          const p3 = Matrix2.Cartesian3.unpack(
             positions,
             (offset + count - 2) * 3,
             scratchP1
           );
 
-          next = Cartesian2.Cartesian3.subtract(p2, p3, scratchNext);
-          Cartesian2.Cartesian3.add(p2, next, next);
+          next = Matrix2.Cartesian3.subtract(p2, p3, scratchNext);
+          Matrix2.Cartesian3.add(p2, next, next);
         } else {
-          next = Cartesian2.Cartesian3.unpack(positions, (offset + j + 1) * 3, scratchNext);
+          next = Matrix2.Cartesian3.unpack(positions, (offset + j + 1) * 3, scratchNext);
         }
 
-        Cartesian2.Cartesian3.subtract(previous, center, previous);
-        Cartesian2.Cartesian3.subtract(current, center, current);
-        Cartesian2.Cartesian3.subtract(next, center, next);
+        Matrix2.Cartesian3.subtract(previous, center, previous);
+        Matrix2.Cartesian3.subtract(current, center, current);
+        Matrix2.Cartesian3.subtract(next, center, next);
 
-        var startK = j === 0 ? 2 : 0;
-        var endK = j === count - 1 ? 2 : 4;
+        const startK = j === 0 ? 2 : 0;
+        const endK = j === count - 1 ? 2 : 4;
 
-        for (var k = startK; k < endK; ++k) {
-          Cartesian2.Cartesian3.pack(current, curPositions, positionIndex);
-          Cartesian2.Cartesian3.pack(previous, prevPositions, positionIndex);
-          Cartesian2.Cartesian3.pack(next, nextPositions, positionIndex);
+        for (let k = startK; k < endK; ++k) {
+          Matrix2.Cartesian3.pack(current, curPositions, positionIndex);
+          Matrix2.Cartesian3.pack(previous, prevPositions, positionIndex);
+          Matrix2.Cartesian3.pack(next, nextPositions, positionIndex);
           positionIndex += 3;
 
-          var direction = k - 2 < 0 ? -1.0 : 1.0;
+          const direction = k - 2 < 0 ? -1.0 : 1.0;
           expandAndWidth[expandAndWidthIndex++] = 2 * (k % 2) - 1;
           expandAndWidth[expandAndWidthIndex++] = direction * width;
 
@@ -203,9 +221,9 @@ define(['./Cartesian2-e9bb1bb3', './AttributeCompression-d1cd1d9c', './Math-56f0
       offset += count;
     }
 
-    var indices = IndexDatatype.IndexDatatype.createTypedArray(size, positionsLength * 6 - 6);
-    var index = 0;
-    var indicesIndex = 0;
+    const indices = IndexDatatype.IndexDatatype.createTypedArray(size, positionsLength * 6 - 6);
+    let index = 0;
+    let indicesIndex = 0;
     length = positionsLength - 1;
     for (i = 0; i < length; ++i) {
       indices[indicesIndex++] = index;
@@ -230,7 +248,7 @@ define(['./Cartesian2-e9bb1bb3', './AttributeCompression-d1cd1d9c', './Math-56f0
       indices.buffer
     );
 
-    return {
+    let results = {
       indexDatatype:
         indices.BYTES_PER_ELEMENT === 2
           ? IndexDatatype.IndexDatatype.UNSIGNED_SHORT
@@ -242,10 +260,20 @@ define(['./Cartesian2-e9bb1bb3', './AttributeCompression-d1cd1d9c', './Math-56f0
       batchIds: vertexBatchIds.buffer,
       indices: indices.buffer,
     };
+
+    if (parameters.keepDecodedPositions) {
+      const positionOffsets = getPositionOffsets(counts);
+      transferableObjects.push(positions.buffer, positionOffsets.buffer);
+      results = combine.combine(results, {
+        decodedPositions: positions.buffer,
+        decodedPositionOffsets: positionOffsets.buffer,
+      });
+    }
+
+    return results;
   }
   var createVectorTilePolylines$1 = createTaskProcessorWorker(createVectorTilePolylines);
 
   return createVectorTilePolylines$1;
 
-});
-//# sourceMappingURL=createVectorTilePolylines.js.map
+}));
