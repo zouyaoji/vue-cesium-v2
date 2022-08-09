@@ -224,22 +224,46 @@ export default {
       const perPositionHeight = !this.clampToGround
       // Request the triangles that make up the polygon from Cesium.
       // 获取组成多边形的三角形。
+      let polygons
       const tangentPlane = EllipsoidTangentPlane.fromPoints(positions, viewer.scene.globe.ellipsoid)
-      const polygons = PolygonGeometryLibrary.polygonsFromHierarchy(
-        new PolygonHierarchy(positions),
-        tangentPlane.projectPointsOntoPlane.bind(tangentPlane),
-        this.clampToGround,
-        viewer.scene.globe.ellipsoid
-      )
 
-      const geom = PolygonGeometryLibrary.createGeometryFromPositions(
-        viewer.scene.globe.ellipsoid,
-        polygons.polygons[0],
-        CesiumMath.RADIANS_PER_DEGREE,
-        perPositionHeight,
-        VertexFormat.POSITION_ONLY,
-        ArcType.GEODESIC
-      )
+      if (Cesium.VERSION >= '1.94') {
+        polygons = PolygonGeometryLibrary.polygonsFromHierarchy(
+          new PolygonHierarchy(positions),
+          false,
+          tangentPlane.projectPointsOntoPlane.bind(tangentPlane),
+          this.clampToGround,
+          viewer.scene.globe.ellipsoid
+        )
+      } else {
+        polygons = PolygonGeometryLibrary.polygonsFromHierarchy(
+          new PolygonHierarchy(positions),
+          tangentPlane.projectPointsOntoPlane.bind(tangentPlane),
+          this.clampToGround,
+          viewer.scene.globe.ellipsoid
+        )
+      }
+      let geom
+      if (Cesium.VERSION >= '1.94') {
+        geom = PolygonGeometryLibrary.createGeometryFromPositions(
+          viewer.scene.globe.ellipsoid,
+          polygons.polygons[0],
+          undefined,
+          CesiumMath.RADIANS_PER_DEGREE,
+          perPositionHeight,
+          VertexFormat.POSITION_ONLY,
+          ArcType.GEODESIC
+        )
+      } else {
+        geom = PolygonGeometryLibrary.createGeometryFromPositions(
+          viewer.scene.globe.ellipsoid,
+          polygons.polygons[0],
+          CesiumMath.RADIANS_PER_DEGREE,
+          perPositionHeight,
+          VertexFormat.POSITION_ONLY,
+          ArcType.GEODESIC
+        )
+      }
 
       if (geom.indices.length % 3 !== 0 || geom.attributes.position.values.length % 3 !== 0) {
         // Something has gone wrong. We expect triangles. Can't calcuate area.
