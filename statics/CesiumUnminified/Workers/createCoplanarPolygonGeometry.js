@@ -1,7 +1,9 @@
 /**
+ * @license
  * Cesium - https://github.com/CesiumGS/cesium
+ * Version 1.96
  *
- * Copyright 2011-2020 Cesium Contributors
+ * Copyright 2011-2022 Cesium Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,58 +20,59 @@
  * Columbus View (Pat. Pend.)
  *
  * Portions licensed separately.
- * See https://github.com/CesiumGS/cesium/blob/master/LICENSE.md for full licensing details.
+ * See https://github.com/CesiumGS/cesium/blob/main/LICENSE.md for full licensing details.
  */
 
-define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './Transforms-9651fa9c', './Cartesian2-e9bb1bb3', './Check-5e798bbf', './ComponentDatatype-cc8f5f00', './CoplanarPolygonGeometryLibrary-500b36bf', './when-208fe5b0', './GeometryAttribute-fbe4b0b6', './GeometryAttributes-b0b294d8', './GeometryInstance-44e07c7e', './GeometryPipeline-a6a68cab', './IndexDatatype-3a89c589', './Math-56f06cd5', './PolygonGeometryLibrary-bc078588', './PolygonPipeline-c48540af', './VertexFormat-9eeda9f8', './RuntimeError-7f634f5d', './WebGLConstants-5e2a49ab', './OrientedBoundingBox-dfa225d1', './EllipsoidTangentPlane-e79f0327', './AxisAlignedBoundingBox-574d1269', './IntersectionTests-4352af03', './Plane-9825d2dd', './AttributeCompression-d1cd1d9c', './EncodedCartesian3-099fd63d', './ArcType-dc1c5aee', './EllipsoidRhumbLine-938626ba'], function (arrayRemoveDuplicates, BoundingRectangle, Transforms, Cartesian2, Check, ComponentDatatype, CoplanarPolygonGeometryLibrary, when, GeometryAttribute, GeometryAttributes, GeometryInstance, GeometryPipeline, IndexDatatype, _Math, PolygonGeometryLibrary, PolygonPipeline, VertexFormat, RuntimeError, WebGLConstants, OrientedBoundingBox, EllipsoidTangentPlane, AxisAlignedBoundingBox, IntersectionTests, Plane, AttributeCompression, EncodedCartesian3, ArcType, EllipsoidRhumbLine) { 'use strict';
+define(['./arrayRemoveDuplicates-1f0fa8fd', './BoundingRectangle-41860583', './Transforms-fc8266a1', './Matrix2-46dc0d7f', './RuntimeError-cef79f54', './ComponentDatatype-1ef49b14', './CoplanarPolygonGeometryLibrary-392b179d', './defaultValue-4607806f', './GeometryAttribute-0c65674d', './GeometryAttributes-acac33d2', './GeometryInstance-a75a729d', './GeometryPipeline-e00ed69b', './IndexDatatype-790b4297', './PolygonGeometryLibrary-c4474e3f', './PolygonPipeline-8d44637f', './VertexFormat-a06c2122', './_commonjsHelpers-a32ac251', './combine-fc59ba59', './WebGLConstants-f100e3dd', './OrientedBoundingBox-7072d624', './EllipsoidTangentPlane-daffc3d5', './AxisAlignedBoundingBox-8c885262', './IntersectionTests-f3daffbb', './Plane-e8eab25b', './AttributeCompression-e3844002', './EncodedCartesian3-67ce8bc4', './ArcType-f5af12f9', './EllipsoidRhumbLine-c4e2c591'], (function (arrayRemoveDuplicates, BoundingRectangle, Transforms, Matrix2, RuntimeError, ComponentDatatype, CoplanarPolygonGeometryLibrary, defaultValue, GeometryAttribute, GeometryAttributes, GeometryInstance, GeometryPipeline, IndexDatatype, PolygonGeometryLibrary, PolygonPipeline, VertexFormat, _commonjsHelpers, combine, WebGLConstants, OrientedBoundingBox, EllipsoidTangentPlane, AxisAlignedBoundingBox, IntersectionTests, Plane, AttributeCompression, EncodedCartesian3, ArcType, EllipsoidRhumbLine) { 'use strict';
 
-  var scratchPosition = new Cartesian2.Cartesian3();
-  var scratchBR = new BoundingRectangle.BoundingRectangle();
-  var stScratch = new Cartesian2.Cartesian2();
-  var textureCoordinatesOrigin = new Cartesian2.Cartesian2();
-  var scratchNormal = new Cartesian2.Cartesian3();
-  var scratchTangent = new Cartesian2.Cartesian3();
-  var scratchBitangent = new Cartesian2.Cartesian3();
-  var centerScratch = new Cartesian2.Cartesian3();
-  var axis1Scratch = new Cartesian2.Cartesian3();
-  var axis2Scratch = new Cartesian2.Cartesian3();
-  var quaternionScratch = new Transforms.Quaternion();
-  var textureMatrixScratch = new Transforms.Matrix3();
-  var tangentRotationScratch = new Transforms.Matrix3();
-  var surfaceNormalScratch = new Cartesian2.Cartesian3();
+  const scratchPosition = new Matrix2.Cartesian3();
+  const scratchBR = new BoundingRectangle.BoundingRectangle();
+  const stScratch = new Matrix2.Cartesian2();
+  const textureCoordinatesOrigin = new Matrix2.Cartesian2();
+  const scratchNormal = new Matrix2.Cartesian3();
+  const scratchTangent = new Matrix2.Cartesian3();
+  const scratchBitangent = new Matrix2.Cartesian3();
+  const centerScratch = new Matrix2.Cartesian3();
+  const axis1Scratch = new Matrix2.Cartesian3();
+  const axis2Scratch = new Matrix2.Cartesian3();
+  const quaternionScratch = new Transforms.Quaternion();
+  const textureMatrixScratch = new Matrix2.Matrix3();
+  const tangentRotationScratch = new Matrix2.Matrix3();
+  const surfaceNormalScratch = new Matrix2.Cartesian3();
 
   function createGeometryFromPolygon(
     polygon,
     vertexFormat,
     boundingRectangle,
     stRotation,
+    hardcodedTextureCoordinates,
     projectPointTo2D,
     normal,
     tangent,
     bitangent
   ) {
-    var positions = polygon.positions;
-    var indices = PolygonPipeline.PolygonPipeline.triangulate(polygon.positions2D, polygon.holes);
+    const positions = polygon.positions;
+    let indices = PolygonPipeline.PolygonPipeline.triangulate(polygon.positions2D, polygon.holes);
 
     /* If polygon is completely unrenderable, just use the first three vertices */
     if (indices.length < 3) {
       indices = [0, 1, 2];
     }
 
-    var newIndices = IndexDatatype.IndexDatatype.createTypedArray(
+    const newIndices = IndexDatatype.IndexDatatype.createTypedArray(
       positions.length,
       indices.length
     );
     newIndices.set(indices);
 
-    var textureMatrix = textureMatrixScratch;
+    let textureMatrix = textureMatrixScratch;
     if (stRotation !== 0.0) {
-      var rotation = Transforms.Quaternion.fromAxisAngle(
+      let rotation = Transforms.Quaternion.fromAxisAngle(
         normal,
         stRotation,
         quaternionScratch
       );
-      textureMatrix = Transforms.Matrix3.fromQuaternion(rotation, textureMatrix);
+      textureMatrix = Matrix2.Matrix3.fromQuaternion(rotation, textureMatrix);
 
       if (vertexFormat.tangent || vertexFormat.bitangent) {
         rotation = Transforms.Quaternion.fromAxisAngle(
@@ -77,67 +80,79 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
           -stRotation,
           quaternionScratch
         );
-        var tangentRotation = Transforms.Matrix3.fromQuaternion(
+        const tangentRotation = Matrix2.Matrix3.fromQuaternion(
           rotation,
           tangentRotationScratch
         );
 
-        tangent = Cartesian2.Cartesian3.normalize(
-          Transforms.Matrix3.multiplyByVector(tangentRotation, tangent, tangent),
+        tangent = Matrix2.Cartesian3.normalize(
+          Matrix2.Matrix3.multiplyByVector(tangentRotation, tangent, tangent),
           tangent
         );
         if (vertexFormat.bitangent) {
-          bitangent = Cartesian2.Cartesian3.normalize(
-            Cartesian2.Cartesian3.cross(normal, tangent, bitangent),
+          bitangent = Matrix2.Cartesian3.normalize(
+            Matrix2.Cartesian3.cross(normal, tangent, bitangent),
             bitangent
           );
         }
       }
     } else {
-      textureMatrix = Transforms.Matrix3.clone(Transforms.Matrix3.IDENTITY, textureMatrix);
+      textureMatrix = Matrix2.Matrix3.clone(Matrix2.Matrix3.IDENTITY, textureMatrix);
     }
 
-    var stOrigin = textureCoordinatesOrigin;
+    const stOrigin = textureCoordinatesOrigin;
     if (vertexFormat.st) {
       stOrigin.x = boundingRectangle.x;
       stOrigin.y = boundingRectangle.y;
     }
 
-    var length = positions.length;
-    var size = length * 3;
-    var flatPositions = new Float64Array(size);
-    var normals = vertexFormat.normal ? new Float32Array(size) : undefined;
-    var tangents = vertexFormat.tangent ? new Float32Array(size) : undefined;
-    var bitangents = vertexFormat.bitangent ? new Float32Array(size) : undefined;
-    var textureCoordinates = vertexFormat.st
+    const length = positions.length;
+    const size = length * 3;
+    const flatPositions = new Float64Array(size);
+    const normals = vertexFormat.normal ? new Float32Array(size) : undefined;
+    const tangents = vertexFormat.tangent ? new Float32Array(size) : undefined;
+    const bitangents = vertexFormat.bitangent
+      ? new Float32Array(size)
+      : undefined;
+    const textureCoordinates = vertexFormat.st
       ? new Float32Array(length * 2)
       : undefined;
 
-    var positionIndex = 0;
-    var normalIndex = 0;
-    var bitangentIndex = 0;
-    var tangentIndex = 0;
-    var stIndex = 0;
+    let positionIndex = 0;
+    let normalIndex = 0;
+    let bitangentIndex = 0;
+    let tangentIndex = 0;
+    let stIndex = 0;
 
-    for (var i = 0; i < length; i++) {
-      var position = positions[i];
+    for (let i = 0; i < length; i++) {
+      const position = positions[i];
       flatPositions[positionIndex++] = position.x;
       flatPositions[positionIndex++] = position.y;
       flatPositions[positionIndex++] = position.z;
 
       if (vertexFormat.st) {
-        var p = Transforms.Matrix3.multiplyByVector(
-          textureMatrix,
-          position,
-          scratchPosition
-        );
-        var st = projectPointTo2D(p, stScratch);
-        Cartesian2.Cartesian2.subtract(st, stOrigin, st);
+        if (
+          defaultValue.defined(hardcodedTextureCoordinates) &&
+          hardcodedTextureCoordinates.positions.length === length
+        ) {
+          textureCoordinates[stIndex++] =
+            hardcodedTextureCoordinates.positions[i].x;
+          textureCoordinates[stIndex++] =
+            hardcodedTextureCoordinates.positions[i].y;
+        } else {
+          const p = Matrix2.Matrix3.multiplyByVector(
+            textureMatrix,
+            position,
+            scratchPosition
+          );
+          const st = projectPointTo2D(p, stScratch);
+          Matrix2.Cartesian2.subtract(st, stOrigin, st);
 
-        var stx = _Math.CesiumMath.clamp(st.x / boundingRectangle.width, 0, 1);
-        var sty = _Math.CesiumMath.clamp(st.y / boundingRectangle.height, 0, 1);
-        textureCoordinates[stIndex++] = stx;
-        textureCoordinates[stIndex++] = sty;
+          const stx = ComponentDatatype.CesiumMath.clamp(st.x / boundingRectangle.width, 0, 1);
+          const sty = ComponentDatatype.CesiumMath.clamp(st.y / boundingRectangle.height, 0, 1);
+          textureCoordinates[stIndex++] = stx;
+          textureCoordinates[stIndex++] = sty;
+        }
       }
 
       if (vertexFormat.normal) {
@@ -159,7 +174,7 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
       }
     }
 
-    var attributes = new GeometryAttributes.GeometryAttributes();
+    const attributes = new GeometryAttributes.GeometryAttributes();
 
     if (vertexFormat.position) {
       attributes.position = new GeometryAttribute.GeometryAttribute({
@@ -219,9 +234,10 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
    * @param {Number} [options.stRotation=0.0] The rotation of the texture coordinates, in radians. A positive rotation is counter-clockwise.
    * @param {VertexFormat} [options.vertexFormat=VertexFormat.DEFAULT] The vertex attributes to be computed.
    * @param {Ellipsoid} [options.ellipsoid=Ellipsoid.WGS84] The ellipsoid to be used as a reference.
+   * @param {PolygonHierarchy} [options.textureCoordinates] Texture coordinates as a {@link PolygonHierarchy} of {@link Cartesian2} points.
    *
    * @example
-   * var polygonGeometry = new Cesium.CoplanarPolygonGeometry({
+   * const polygonGeometry = new Cesium.CoplanarPolygonGeometry({
    *  polygonHierarchy: new Cesium.PolygonHierarchy(
    *     Cesium.Cartesian3.fromDegreesArrayHeights([
    *      -90.0, 30.0, 0.0,
@@ -233,29 +249,40 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
    *
    */
   function CoplanarPolygonGeometry(options) {
-    options = when.defaultValue(options, when.defaultValue.EMPTY_OBJECT);
-    var polygonHierarchy = options.polygonHierarchy;
+    options = defaultValue.defaultValue(options, defaultValue.defaultValue.EMPTY_OBJECT);
+    const polygonHierarchy = options.polygonHierarchy;
+    const textureCoordinates = options.textureCoordinates;
     //>>includeStart('debug', pragmas.debug);
-    Check.Check.defined("options.polygonHierarchy", polygonHierarchy);
+    RuntimeError.Check.defined("options.polygonHierarchy", polygonHierarchy);
     //>>includeEnd('debug');
 
-    var vertexFormat = when.defaultValue(options.vertexFormat, VertexFormat.VertexFormat.DEFAULT);
+    const vertexFormat = defaultValue.defaultValue(options.vertexFormat, VertexFormat.VertexFormat.DEFAULT);
     this._vertexFormat = VertexFormat.VertexFormat.clone(vertexFormat);
     this._polygonHierarchy = polygonHierarchy;
-    this._stRotation = when.defaultValue(options.stRotation, 0.0);
-    this._ellipsoid = Cartesian2.Ellipsoid.clone(
-      when.defaultValue(options.ellipsoid, Cartesian2.Ellipsoid.WGS84)
+    this._stRotation = defaultValue.defaultValue(options.stRotation, 0.0);
+    this._ellipsoid = Matrix2.Ellipsoid.clone(
+      defaultValue.defaultValue(options.ellipsoid, Matrix2.Ellipsoid.WGS84)
     );
     this._workerName = "createCoplanarPolygonGeometry";
+    this._textureCoordinates = textureCoordinates;
 
     /**
      * The number of elements used to pack the object into an array.
      * @type {Number}
      */
     this.packedLength =
-      PolygonGeometryLibrary.PolygonGeometryLibrary.computeHierarchyPackedLength(polygonHierarchy) +
+      PolygonGeometryLibrary.PolygonGeometryLibrary.computeHierarchyPackedLength(
+        polygonHierarchy,
+        Matrix2.Cartesian3
+      ) +
       VertexFormat.VertexFormat.packedLength +
-      Cartesian2.Ellipsoid.packedLength +
+      Matrix2.Ellipsoid.packedLength +
+      (defaultValue.defined(textureCoordinates)
+        ? PolygonGeometryLibrary.PolygonGeometryLibrary.computeHierarchyPackedLength(
+            textureCoordinates,
+            Matrix2.Cartesian2
+          )
+        : 1) +
       2;
   }
 
@@ -267,11 +294,12 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
    * @param {VertexFormat} [options.vertexFormat=VertexFormat.DEFAULT] The vertex attributes to be computed.
    * @param {Number} [options.stRotation=0.0] The rotation of the texture coordinates, in radians. A positive rotation is counter-clockwise.
    * @param {Ellipsoid} [options.ellipsoid=Ellipsoid.WGS84] The ellipsoid to be used as a reference.
+   * @param {PolygonHierarchy} [options.textureCoordinates] Texture coordinates as a {@link PolygonHierarchy} of {@link Cartesian2} points.
    * @returns {CoplanarPolygonGeometry}
    *
    * @example
    * // create a polygon from points
-   * var polygon = Cesium.CoplanarPolygonGeometry.fromPositions({
+   * const polygon = Cesium.CoplanarPolygonGeometry.fromPositions({
    *   positions : Cesium.Cartesian3.fromDegreesArray([
    *     -72.0, 40.0,
    *     -70.0, 35.0,
@@ -280,24 +308,25 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
    *     -68.0, 40.0
    *   ])
    * });
-   * var geometry = Cesium.PolygonGeometry.createGeometry(polygon);
+   * const geometry = Cesium.PolygonGeometry.createGeometry(polygon);
    *
    * @see PolygonGeometry#createGeometry
    */
   CoplanarPolygonGeometry.fromPositions = function (options) {
-    options = when.defaultValue(options, when.defaultValue.EMPTY_OBJECT);
+    options = defaultValue.defaultValue(options, defaultValue.defaultValue.EMPTY_OBJECT);
 
     //>>includeStart('debug', pragmas.debug);
-    Check.Check.defined("options.positions", options.positions);
+    RuntimeError.Check.defined("options.positions", options.positions);
     //>>includeEnd('debug');
 
-    var newOptions = {
+    const newOptions = {
       polygonHierarchy: {
         positions: options.positions,
       },
       vertexFormat: options.vertexFormat,
       stRotation: options.stRotation,
       ellipsoid: options.ellipsoid,
+      textureCoordinates: options.textureCoordinates,
     };
     return new CoplanarPolygonGeometry(newOptions);
   };
@@ -313,33 +342,44 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
    */
   CoplanarPolygonGeometry.pack = function (value, array, startingIndex) {
     //>>includeStart('debug', pragmas.debug);
-    Check.Check.typeOf.object("value", value);
-    Check.Check.defined("array", array);
+    RuntimeError.Check.typeOf.object("value", value);
+    RuntimeError.Check.defined("array", array);
     //>>includeEnd('debug');
 
-    startingIndex = when.defaultValue(startingIndex, 0);
+    startingIndex = defaultValue.defaultValue(startingIndex, 0);
 
     startingIndex = PolygonGeometryLibrary.PolygonGeometryLibrary.packPolygonHierarchy(
       value._polygonHierarchy,
       array,
-      startingIndex
+      startingIndex,
+      Matrix2.Cartesian3
     );
 
-    Cartesian2.Ellipsoid.pack(value._ellipsoid, array, startingIndex);
-    startingIndex += Cartesian2.Ellipsoid.packedLength;
+    Matrix2.Ellipsoid.pack(value._ellipsoid, array, startingIndex);
+    startingIndex += Matrix2.Ellipsoid.packedLength;
 
     VertexFormat.VertexFormat.pack(value._vertexFormat, array, startingIndex);
     startingIndex += VertexFormat.VertexFormat.packedLength;
 
     array[startingIndex++] = value._stRotation;
-    array[startingIndex] = value.packedLength;
+    if (defaultValue.defined(value._textureCoordinates)) {
+      startingIndex = PolygonGeometryLibrary.PolygonGeometryLibrary.packPolygonHierarchy(
+        value._textureCoordinates,
+        array,
+        startingIndex,
+        Matrix2.Cartesian2
+      );
+    } else {
+      array[startingIndex++] = -1.0;
+    }
+    array[startingIndex++] = value.packedLength;
 
     return array;
   };
 
-  var scratchEllipsoid = Cartesian2.Ellipsoid.clone(Cartesian2.Ellipsoid.UNIT_SPHERE);
-  var scratchVertexFormat = new VertexFormat.VertexFormat();
-  var scratchOptions = {
+  const scratchEllipsoid = Matrix2.Ellipsoid.clone(Matrix2.Ellipsoid.UNIT_SPHERE);
+  const scratchVertexFormat = new VertexFormat.VertexFormat();
+  const scratchOptions = {
     polygonHierarchy: {},
   };
   /**
@@ -352,40 +392,57 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
    */
   CoplanarPolygonGeometry.unpack = function (array, startingIndex, result) {
     //>>includeStart('debug', pragmas.debug);
-    Check.Check.defined("array", array);
+    RuntimeError.Check.defined("array", array);
     //>>includeEnd('debug');
 
-    startingIndex = when.defaultValue(startingIndex, 0);
+    startingIndex = defaultValue.defaultValue(startingIndex, 0);
 
-    var polygonHierarchy = PolygonGeometryLibrary.PolygonGeometryLibrary.unpackPolygonHierarchy(
+    const polygonHierarchy = PolygonGeometryLibrary.PolygonGeometryLibrary.unpackPolygonHierarchy(
       array,
-      startingIndex
+      startingIndex,
+      Matrix2.Cartesian3
     );
     startingIndex = polygonHierarchy.startingIndex;
     delete polygonHierarchy.startingIndex;
 
-    var ellipsoid = Cartesian2.Ellipsoid.unpack(array, startingIndex, scratchEllipsoid);
-    startingIndex += Cartesian2.Ellipsoid.packedLength;
+    const ellipsoid = Matrix2.Ellipsoid.unpack(array, startingIndex, scratchEllipsoid);
+    startingIndex += Matrix2.Ellipsoid.packedLength;
 
-    var vertexFormat = VertexFormat.VertexFormat.unpack(
+    const vertexFormat = VertexFormat.VertexFormat.unpack(
       array,
       startingIndex,
       scratchVertexFormat
     );
     startingIndex += VertexFormat.VertexFormat.packedLength;
 
-    var stRotation = array[startingIndex++];
-    var packedLength = array[startingIndex];
+    const stRotation = array[startingIndex++];
+    const textureCoordinates =
+      array[startingIndex] === -1.0
+        ? undefined
+        : PolygonGeometryLibrary.PolygonGeometryLibrary.unpackPolygonHierarchy(
+            array,
+            startingIndex,
+            Matrix2.Cartesian2
+          );
+    if (defaultValue.defined(textureCoordinates)) {
+      startingIndex = textureCoordinates.startingIndex;
+      delete textureCoordinates.startingIndex;
+    } else {
+      startingIndex++;
+    }
+    const packedLength = array[startingIndex++];
 
-    if (!when.defined(result)) {
+    if (!defaultValue.defined(result)) {
       result = new CoplanarPolygonGeometry(scratchOptions);
     }
 
     result._polygonHierarchy = polygonHierarchy;
-    result._ellipsoid = Cartesian2.Ellipsoid.clone(ellipsoid, result._ellipsoid);
+    result._ellipsoid = Matrix2.Ellipsoid.clone(ellipsoid, result._ellipsoid);
     result._vertexFormat = VertexFormat.VertexFormat.clone(vertexFormat, result._vertexFormat);
     result._stRotation = stRotation;
+    result._textureCoordinates = textureCoordinates;
     result.packedLength = packedLength;
+
     return result;
   };
 
@@ -396,27 +453,29 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
    * @returns {Geometry|undefined} The computed vertices and indices.
    */
   CoplanarPolygonGeometry.createGeometry = function (polygonGeometry) {
-    var vertexFormat = polygonGeometry._vertexFormat;
-    var polygonHierarchy = polygonGeometry._polygonHierarchy;
-    var stRotation = polygonGeometry._stRotation;
+    const vertexFormat = polygonGeometry._vertexFormat;
+    const polygonHierarchy = polygonGeometry._polygonHierarchy;
+    const stRotation = polygonGeometry._stRotation;
+    const textureCoordinates = polygonGeometry._textureCoordinates;
+    const hasTextureCoordinates = defaultValue.defined(textureCoordinates);
 
-    var outerPositions = polygonHierarchy.positions;
+    let outerPositions = polygonHierarchy.positions;
     outerPositions = arrayRemoveDuplicates.arrayRemoveDuplicates(
       outerPositions,
-      Cartesian2.Cartesian3.equalsEpsilon,
+      Matrix2.Cartesian3.equalsEpsilon,
       true
     );
     if (outerPositions.length < 3) {
       return;
     }
 
-    var normal = scratchNormal;
-    var tangent = scratchTangent;
-    var bitangent = scratchBitangent;
-    var axis1 = axis1Scratch;
-    var axis2 = axis2Scratch;
+    let normal = scratchNormal;
+    let tangent = scratchTangent;
+    let bitangent = scratchBitangent;
+    let axis1 = axis1Scratch;
+    const axis2 = axis2Scratch;
 
-    var validGeometry = CoplanarPolygonGeometryLibrary.CoplanarPolygonGeometryLibrary.computeProjectTo2DArguments(
+    const validGeometry = CoplanarPolygonGeometryLibrary.CoplanarPolygonGeometryLibrary.computeProjectTo2DArguments(
       outerPositions,
       centerScratch,
       axis1,
@@ -426,59 +485,73 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
       return undefined;
     }
 
-    normal = Cartesian2.Cartesian3.cross(axis1, axis2, normal);
-    normal = Cartesian2.Cartesian3.normalize(normal, normal);
+    normal = Matrix2.Cartesian3.cross(axis1, axis2, normal);
+    normal = Matrix2.Cartesian3.normalize(normal, normal);
 
     if (
-      !Cartesian2.Cartesian3.equalsEpsilon(
+      !Matrix2.Cartesian3.equalsEpsilon(
         centerScratch,
-        Cartesian2.Cartesian3.ZERO,
-        _Math.CesiumMath.EPSILON6
+        Matrix2.Cartesian3.ZERO,
+        ComponentDatatype.CesiumMath.EPSILON6
       )
     ) {
-      var surfaceNormal = polygonGeometry._ellipsoid.geodeticSurfaceNormal(
+      const surfaceNormal = polygonGeometry._ellipsoid.geodeticSurfaceNormal(
         centerScratch,
         surfaceNormalScratch
       );
-      if (Cartesian2.Cartesian3.dot(normal, surfaceNormal) < 0) {
-        normal = Cartesian2.Cartesian3.negate(normal, normal);
-        axis1 = Cartesian2.Cartesian3.negate(axis1, axis1);
+      if (Matrix2.Cartesian3.dot(normal, surfaceNormal) < 0) {
+        normal = Matrix2.Cartesian3.negate(normal, normal);
+        axis1 = Matrix2.Cartesian3.negate(axis1, axis1);
       }
     }
 
-    var projectPoints = CoplanarPolygonGeometryLibrary.CoplanarPolygonGeometryLibrary.createProjectPointsTo2DFunction(
+    const projectPoints = CoplanarPolygonGeometryLibrary.CoplanarPolygonGeometryLibrary.createProjectPointsTo2DFunction(
       centerScratch,
       axis1,
       axis2
     );
-    var projectPoint = CoplanarPolygonGeometryLibrary.CoplanarPolygonGeometryLibrary.createProjectPointTo2DFunction(
+    const projectPoint = CoplanarPolygonGeometryLibrary.CoplanarPolygonGeometryLibrary.createProjectPointTo2DFunction(
       centerScratch,
       axis1,
       axis2
     );
 
     if (vertexFormat.tangent) {
-      tangent = Cartesian2.Cartesian3.clone(axis1, tangent);
+      tangent = Matrix2.Cartesian3.clone(axis1, tangent);
     }
     if (vertexFormat.bitangent) {
-      bitangent = Cartesian2.Cartesian3.clone(axis2, bitangent);
+      bitangent = Matrix2.Cartesian3.clone(axis2, bitangent);
     }
 
-    var results = PolygonGeometryLibrary.PolygonGeometryLibrary.polygonsFromHierarchy(
+    const results = PolygonGeometryLibrary.PolygonGeometryLibrary.polygonsFromHierarchy(
       polygonHierarchy,
+      hasTextureCoordinates,
       projectPoints,
       false
     );
-    var hierarchy = results.hierarchy;
-    var polygons = results.polygons;
+    const hierarchy = results.hierarchy;
+    const polygons = results.polygons;
+
+    const dummyFunction = function (identity) {
+      return identity;
+    };
+
+    const textureCoordinatePolygons = hasTextureCoordinates
+      ? PolygonGeometryLibrary.PolygonGeometryLibrary.polygonsFromHierarchy(
+          textureCoordinates,
+          true,
+          dummyFunction,
+          false
+        ).polygons
+      : undefined;
 
     if (hierarchy.length === 0) {
       return;
     }
     outerPositions = hierarchy[0].outerRing;
 
-    var boundingSphere = Transforms.BoundingSphere.fromPoints(outerPositions);
-    var boundingRectangle = PolygonGeometryLibrary.PolygonGeometryLibrary.computeBoundingRectangle(
+    const boundingSphere = Transforms.BoundingSphere.fromPoints(outerPositions);
+    const boundingRectangle = PolygonGeometryLibrary.PolygonGeometryLibrary.computeBoundingRectangle(
       normal,
       projectPoint,
       outerPositions,
@@ -486,14 +559,15 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
       scratchBR
     );
 
-    var geometries = [];
-    for (var i = 0; i < polygons.length; i++) {
-      var geometryInstance = new GeometryInstance.GeometryInstance({
+    const geometries = [];
+    for (let i = 0; i < polygons.length; i++) {
+      const geometryInstance = new GeometryInstance.GeometryInstance({
         geometry: createGeometryFromPolygon(
           polygons[i],
           vertexFormat,
           boundingRectangle,
           stRotation,
+          hasTextureCoordinates ? textureCoordinatePolygons[i] : undefined,
           projectPoint,
           normal,
           tangent,
@@ -504,7 +578,7 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
       geometries.push(geometryInstance);
     }
 
-    var geometry = GeometryPipeline.GeometryPipeline.combineInstances(geometries)[0];
+    const geometry = GeometryPipeline.GeometryPipeline.combineInstances(geometries)[0];
     geometry.attributes.position.values = new Float64Array(
       geometry.attributes.position.values
     );
@@ -513,7 +587,7 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
       geometry.indices
     );
 
-    var attributes = geometry.attributes;
+    const attributes = geometry.attributes;
     if (!vertexFormat.position) {
       delete attributes.position;
     }
@@ -526,7 +600,7 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
   };
 
   function createCoplanarPolygonGeometry(polygonGeometry, offset) {
-    if (when.defined(offset)) {
+    if (defaultValue.defined(offset)) {
       polygonGeometry = CoplanarPolygonGeometry.unpack(polygonGeometry, offset);
     }
     return CoplanarPolygonGeometry.createGeometry(polygonGeometry);
@@ -534,5 +608,4 @@ define(['./arrayRemoveDuplicates-89f704e4', './BoundingRectangle-10693d92', './T
 
   return createCoplanarPolygonGeometry;
 
-});
-//# sourceMappingURL=createCoplanarPolygonGeometry.js.map
+}));
