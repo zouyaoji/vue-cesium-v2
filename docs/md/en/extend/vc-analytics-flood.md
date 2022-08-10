@@ -18,7 +18,7 @@ The `vc-analytics-flood` component is used to simulate flood analysis. **Note** 
           :max-height="maxHeight"
           :speed="speed"
           :polygon-hierarchy="polygonHierarchy"
-          @activeEvt="activeEvt"
+          @stop="onStoped"
         >
         </vc-analytics-flood>
         <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
@@ -37,8 +37,9 @@ The `vc-analytics-flood` component is used to simulate flood analysis. **Note** 
         </md-input-container>
         <span>speed</span>
         <vue-slider v-model="speed" :min="1" :max="100" :interval="1"></vue-slider>
-        <md-button class="md-raised md-accent" @click="toggle">{{ flooding ? 'Stop' : 'Start' }}</md-button>
-        <md-button class="md-raised md-accent" @click="clear">Clear</md-button>
+        <md-button class="md-raised md-accent" @click="start">Start</md-button>
+        <md-button :disabled="!starting" class="md-raised md-accent" @click="pause">{{pausing ? 'Start' : 'Pause'}}</md-button>
+        <md-button class="md-raised md-accent" @click="stop">Stop</md-button>
       </div>
     </div>
   </template>
@@ -46,7 +47,7 @@ The `vc-analytics-flood` component is used to simulate flood analysis. **Note** 
     export default {
       data() {
         return {
-          minHeight: 0,
+          minHeight: -1,
           maxHeight: 4000,
           speed: 10,
           polygonHierarchy: [
@@ -57,7 +58,8 @@ The `vc-analytics-flood` component is used to simulate flood analysis. **Note** 
           ],
           url: 'https://dev.virtualearth.net',
           bmKey: 'AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-', // 可到(https://www.bingmapsportal.com/)申请Key。
-          flooding: false
+          pausing: false,
+          starting: false
         }
       },
       methods: {
@@ -74,14 +76,24 @@ The `vc-analytics-flood` component is used to simulate flood analysis. **Note** 
             }
           })
         },
-        toggle() {
-          this.$refs.flood.flooding = !this.$refs.flood.flooding
+        start (){
+          this.$refs.flood.start()
+          this.pausing = false
+          this.starting = true
         },
-        activeEvt(_) {
-          this.flooding = _.isActive
+        pause() {
+          this.$refs.flood.pause()
+          this.pausing = !this.pausing
         },
-        clear() {
-          this.$refs.flood.clear()
+        stop() {
+          this.$refs.flood.stop()
+          this.pausing = false
+          this.starting = false
+        },
+        onStoped(e) {
+          this.pausing = false
+          this.starting = false
+          console.log(e)
         }
       }
     }
@@ -100,7 +112,7 @@ The `vc-analytics-flood` component is used to simulate flood analysis. **Note** 
         :max-height="maxHeight"
         :speed="speed"
         :polygon-hierarchy="polygonHierarchy"
-        @activeEvt="activeEvt"
+        @stop="onStoped"
       >
       </vc-analytics-flood>
       <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
@@ -119,8 +131,9 @@ The `vc-analytics-flood` component is used to simulate flood analysis. **Note** 
       </md-input-container>
       <span>speed</span>
       <vue-slider v-model="speed" :min="1" :max="100" :interval="1"></vue-slider>
-      <md-button class="md-raised md-accent" @click="toggle">{{ flooding ? 'Stop' : 'Start' }}</md-button>
-      <md-button class="md-raised md-accent" @click="clear">Clear</md-button>
+      <md-button class="md-raised md-accent" @click="start">Start</md-button>
+      <md-button :disabled="!starting" class="md-raised md-accent" @click="pause">{{pausing ? 'Start' : 'Pause'}}</md-button>
+      <md-button class="md-raised md-accent" @click="stop">Stop</md-button>
     </div>
   </div>
 </template>
@@ -128,7 +141,7 @@ The `vc-analytics-flood` component is used to simulate flood analysis. **Note** 
   export default {
     data() {
       return {
-        minHeight: 0,
+        minHeight: -1,
         maxHeight: 4000,
         speed: 10,
         polygonHierarchy: [
@@ -139,7 +152,8 @@ The `vc-analytics-flood` component is used to simulate flood analysis. **Note** 
         ],
         url: 'https://dev.virtualearth.net',
         bmKey: 'AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-', // 可到(https://www.bingmapsportal.com/)申请Key。
-        flooding: false
+        pausing: false,
+        starting: false
       }
     },
     methods: {
@@ -156,14 +170,24 @@ The `vc-analytics-flood` component is used to simulate flood analysis. **Note** 
           }
         })
       },
-      toggle() {
-        this.$refs.flood.flooding = !this.$refs.flood.flooding
+      start() {
+        this.$refs.flood.start()
+        this.pausing = false
+        this.starting = true
       },
-      activeEvt(_) {
-        this.flooding = _.isActive
+      pause() {
+        this.$refs.flood.pause()
+        this.pausing = !this.pausing
       },
-      clear() {
-        this.$refs.flood.unload()
+      stop() {
+        this.$refs.flood.stop()
+        this.pausing = false
+        this.starting = false
+      },
+      onStoped(e) {
+        this.pausing = false
+        this.starting = false
+        console.log(e)
       }
     }
   }
@@ -172,18 +196,32 @@ The `vc-analytics-flood` component is used to simulate flood analysis. **Note** 
 
 ## Instance Properties
 
-| name             | type   | default | description                                                                                      |
-| ---------------- | ------ | ------- | ------------------------------------------------------------------------------------------------ |
-| minHeight        | Number | 0       | `optional` Minimum elevation.                                                                    |
-| maxHeight        | Number |         | `require` Maximum elevation.                                                                     |
-| speed            | Number | 10      | `optional` Submerged speed.                                                                      |
-| polygonHierarchy | Array  |         | `require` Specifies the latitude and longitude array that builds the submerged analysis polygon. |
+<!-- prettier-ignore -->
+| Name | Type | Default | Description |
+| ---------------- | --------------------- | ------------------------ | ---------------------------------------------- |
+| polygonHierarchy |VcPolygonHierarchy | | `required` Specify ths VcPolygonHierarchy of polygon. |
+| minHeight | number | `-1 ` | `optional` Specify the minimum elevation. |
+| maxHeight | number | `8888` | `optional` Specify the maximum elevation. |
+| speed | number | `10` | `optional` Specify the height to increase each frame. |
+| color | VcColor | `'rgba(40,150,200,0.6)'` | `optional` Specify the VcColor of water. |
+| loop | boolean | `false` | `optional` Specify whether to restart after reaching the maximum height. |
 
 ---
 
 ## Events
 
-| name      | parameter           | description                                                                                                                 |
-| --------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| ready     | {Cesium, viewer}    | Triggers when the component is ready. It returns a core class of Cesium, a viewer instance, and the cesiumObject.           |
-| activeEvt | {isActive: Boolean} | Triggered when the `flooding` state changes in the flood analysis component, and returns whether the flood analysis starts. |
+| Name       | Parameters                              | Description                                            |
+| ---------- | --------------------------------------- | ------------------------------------------------------ |
+| beforeLoad | (instance: VcComponentInternalInstance) | Triggers before the cesiumObject is loaded.            |
+| ready      | (readyObj: VcReadyObject)               | Triggers when the cesiumObject is successfully loaded. |
+| destroyed  | (instance: VcComponentInternalInstance) | Triggers when the cesiumObject is destroyed.           |
+| stop       | (evt: Cesium.ClassificationPrimitive)   | Triggers when the maxHeight is reached.                |
+
+### Methods
+
+| Name            | Parameters                | Description                                     |
+| --------------- | ------------------------- | ----------------------------------------------- |
+| getCesiumObject | () => VcCesiumObject      | Get the Cesium object loaded by this component. |
+| start           | (height?: number) => void | Start flood analysis.                           |
+| pause           | () => void                | Pause/resume flood analysis.                    |
+| stop            | () => void                | Stop flood analysis.                            |

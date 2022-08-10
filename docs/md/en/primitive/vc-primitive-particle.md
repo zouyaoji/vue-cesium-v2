@@ -11,7 +11,7 @@ The `vc-primitive-particle` component is used to load a ParticleSystem manages t
 <doc-preview>
   <template>
     <div class="viewer">
-      <vc-viewer @ready="ready" shouldAnimate>
+      <vc-viewer @ready="ready" should-animate>
         <vc-primitive-particle
           v-for="(option, index) of options"
           :key="index"
@@ -184,7 +184,7 @@ The `vc-primitive-particle` component is used to load a ParticleSystem manages t
 ```html
 <template>
   <div class="viewer">
-    <vc-viewer @ready="ready" shouldAnimate>
+    <vc-viewer @ready="ready" should-animate>
       <vc-primitive-particle
         v-for="(option, index) of options"
         :key="index"
@@ -397,4 +397,5 @@ The `vc-primitive-particle` component is used to load a ParticleSystem manages t
 | ---- | --------- | ----------- |
 | ready | {Cesium, viewer, cesiumObject} | Triggers when the component is ready. It returns a core class of Cesium, a viewer instance, and the cesiumObject. |
 | complete  | | Fires an event when the particle system has reached the end of its lifetime. |
+
 ---

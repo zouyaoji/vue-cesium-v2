@@ -12,7 +12,7 @@
   <template>
     <div class="viewer">
       <vc-viewer @ready="ready">
-        <vc-analytics-flood ref="flood" v-if="flag" :min-height="minHeight" :max-height="maxHeight" :speed="speed" :polygon-hierarchy="polygonHierarchy" @activeEvt="activeEvt">
+        <vc-analytics-flood ref="flood" :min-height="minHeight" :max-height="maxHeight" :speed="speed" :polygon-hierarchy="polygonHierarchy" @stop="onStoped">
         </vc-analytics-flood>
         <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
         <vc-layer-imagery>
@@ -30,8 +30,9 @@
         </md-input-container>
         <span>speed</span>
         <vue-slider v-model="speed" :min="1" :max="100" :interval="1"  ></vue-slider>
-        <md-button class="md-raised md-accent" @click="toggle">{{ flooding ? 'Stop' : 'Start' }}</md-button>
-        <md-button class="md-raised md-accent" @click="clear">Clear</md-button>
+        <md-button class="md-raised md-accent" @click="start">开始</md-button>
+        <md-button :disabled="!starting" class="md-raised md-accent" @click="pause">{{pausing ? '继续' : '暂停'}}</md-button>
+        <md-button class="md-raised md-accent" @click="stop">结束</md-button>
       </div>
     </div>
   </template>
@@ -39,7 +40,7 @@
     export default {
       data () {
         return {
-          minHeight: 0,
+          minHeight: -1,
           maxHeight: 7000,
           speed: 10,
           polygonHierarchy: [
@@ -50,8 +51,8 @@
           ],
           url: 'https://dev.virtualearth.net',
           bmKey: 'AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-', // 可到(https://www.bingmapsportal.com/)申请Key。
-          flooding: false,
-          flag: true
+          pausing: false,
+          starting: false
         }
       },
       methods: {
@@ -70,15 +71,24 @@
             }
           })
         },
-        toggle (){
-          this.$refs.flood.flooding = !this.$refs.flood.flooding
+        start (){
+          this.$refs.flood.start()
+          this.pausing = false
+          this.starting = true
         },
-        activeEvt (_) {
-          console.log('ad')
-          this.flooding = _.isActive
+        pause() {
+          this.$refs.flood.pause()
+          this.pausing = !this.pausing
         },
-        clear () {
-          this.$refs.flood.clear()
+        stop() {
+          this.$refs.flood.stop()
+          this.pausing = false
+          this.starting = false
+        },
+        onStoped(e) {
+          this.pausing = false
+          this.starting = false
+          console.log(e)
         }
       }
     }
@@ -89,91 +99,123 @@
 
 ```html
 <template>
-    <div class="viewer">
-      <vc-viewer @ready="ready">
-        <vc-analytics-flood ref="flood" :min-height="minHeight" :max-height="maxHeight" :speed="speed" :polygon-hierarchy="polygonHierarchy" @activeEvt="activeEvt">
-        </vc-analytics-flood>
-        <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
-        <vc-layer-imagery>
-          <vc-provider-imagery-bingmaps :url="url" :bm-key="bmKey" map-style="Aerial"></vc-provider-imagery-bingmaps>
-        </vc-layer-imagery>
-      </vc-viewer>
-      <div class="demo-tool">
-         <md-input-container>
-          <label>minHeight</label>
-          <md-input v-model.number="minHeight"></md-input>
-        </md-input-container>
-        <md-input-container>
-          <label>maxHeight</label>
-          <md-input v-model.number="maxHeight"></md-input>
-        </md-input-container>
-        <span>speed</span>
-        <vue-slider v-model="speed" :min="1" :max="100" :interval="1"  ></vue-slider>
-        <md-button class="md-raised md-accent" @click="toggle">{{ flooding ? 'Stop' : 'Start' }}</md-button>
-        <md-button class="md-raised md-accent" @click="clear">Clear</md-button>
-      </div>
+  <div class="viewer">
+    <vc-viewer @ready="ready">
+      <vc-analytics-flood
+        ref="flood"
+        :min-height="minHeight"
+        :max-height="maxHeight"
+        :speed="speed"
+        :polygon-hierarchy="polygonHierarchy"
+        @stop="onStoped"
+      >
+      </vc-analytics-flood>
+      <vc-provider-terrain-cesium></vc-provider-terrain-cesium>
+      <vc-layer-imagery>
+        <vc-provider-imagery-bingmaps :url="url" :bm-key="bmKey" map-style="Aerial"></vc-provider-imagery-bingmaps>
+      </vc-layer-imagery>
+    </vc-viewer>
+    <div class="demo-tool">
+      <md-input-container>
+        <label>minHeight</label>
+        <md-input v-model.number="minHeight"></md-input>
+      </md-input-container>
+      <md-input-container>
+        <label>maxHeight</label>
+        <md-input v-model.number="maxHeight"></md-input>
+      </md-input-container>
+      <span>speed</span>
+      <vue-slider v-model="speed" :min="1" :max="100" :interval="1"></vue-slider>
+      <md-button class="md-raised md-accent" @click="start">开始</md-button>
+      <md-button :disabled="!starting" class="md-raised md-accent" @click="pause">{{pausing ? '继续' : '暂停'}}</md-button>
+      <md-button class="md-raised md-accent" @click="stop">结束</md-button>
     </div>
-  </template>
-  <script>
-    export default {
-      data () {
-        return {
-          minHeight: 0,
-          maxHeight: 4000,
-          speed: 10,
-          polygonHierarchy: [
-            {lng: 102.1, lat: 29.5},
-            {lng: 106.2, lat: 29.5},
-            {lng: 106.2, lat: 33.5},
-            {lng: 102.1, lat: 33.5}
-          ],
-          url: 'https://dev.virtualearth.net',
-          bmKey: 'AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-', // 可到(https://www.bingmapsportal.com/)申请Key。
-          flooding: false
-        }
+  </div>
+</template>
+<script>
+  export default {
+    data() {
+      return {
+        minHeight: -1,
+        maxHeight: 7000,
+        speed: 10,
+        polygonHierarchy: [
+          { lng: 102.1, lat: 29.5 },
+          { lng: 106.2, lat: 29.5 },
+          { lng: 106.2, lat: 33.5 },
+          { lng: 102.1, lat: 33.5 }
+        ],
+        url: 'https://dev.virtualearth.net',
+        bmKey: 'AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-', // 可到(https://www.bingmapsportal.com/)申请Key。
+        pausing: false,
+        starting: false
+      }
+    },
+    methods: {
+      ready(cesiumInstance) {
+        this.cesiumInstance = cesiumInstance
+        window.vm = this
+        const { Cesium, viewer } = this.cesiumInstance
+        viewer.scene.globe.depthTestAgainstTerrain = true
+        viewer.scene.debugShowFramesPerSecond = true
+        viewer.camera.setView({
+          destination: new Cesium.Cartesian3(-1432246.8223880068, 5761224.588247942, 3297281.1889481535),
+          orientation: {
+            heading: 6.20312220367255,
+            pitch: -0.9937536846355606,
+            roll: 0.002443376981836387
+          }
+        })
       },
-      methods: {
-        ready (cesiumInstance) {
-          this.cesiumInstance = cesiumInstance
-          const {Cesium, viewer} = this.cesiumInstance
-          viewer.scene.globe.depthTestAgainstTerrain = true
-          viewer.camera.setView({
-            destination: new Cesium.Cartesian3(-1432246.8223880068, 5761224.588247942, 3297281.1889481535),
-            orientation: {
-              heading: 6.20312220367255,
-              pitch: -0.9937536846355606,
-              roll: 0.002443376981836387
-            }
-          })
-        },
-        toggle (){
-          this.$refs.flood.flooding = !this.$refs.flood.flooding
-        },
-        activeEvt (_) {
-          this.flooding = _.isActive
-        },
-        clear () {
-          this.$refs.flood.unload()
-        }
+      start() {
+        this.$refs.flood.start()
+        this.pausing = false
+      },
+      pause() {
+        this.$refs.flood.pause()
+        this.pausing = !this.pausing
+      },
+      stop() {
+        this.$refs.flood.stop()
+        this.pausing = false
+        this.starting = false
+      },
+      onStoped(e) {
+        this.pausing = false
+        this.starting = false
+        console.log(e)
       }
     }
-  </script>
+  }
+</script>
 ```
 
 ## 属性
 
-| 属性名           | 类型   | 默认值 | 描述                                           |
-| ---------------- | ------ | ------ | ---------------------------------------------- |
-| minHeight        | Number | 0      | `optional` 最小高程。                          |
-| maxHeight        | Number |        | `require` 最大高程。                           |
-| speed            | Number | 10     | `optional` 速度。                              |
-| polygonHierarchy | Array  |        | `require` 指定构建淹没分析多边形的经纬度数组。 |
+| 属性名           | 类型    | 默认值                   | 描述                                            |
+| ---------------- | ------- | ------------------------ | ----------------------------------------------- |
+| polygonHierarchy | Array   |                          | `required` 指定构建淹没分析多边形的经纬度数组。 |
+| minHeight        | number  | `-1`                     | `optional` 指定最小高程。                       |
+| maxHeight        | number  | `8888`                   | `optional` 指定最大高程。                       |
+| speed            | number  | `10`                     | `optional` 指定每帧增加的高度。                 |
+| color            | VcColor | `'rgba(40,150,200,0.6)'` | `optional` 指定淹没分析对象颜色。               |
+| loop             | boolean | `false`                  | `optional` 指定到达最大高度后是否重新开始。     |
 
 ---
 
 ## 事件
 
-| 事件名    | 参数                | 描述                                                           |
-| --------- | ------------------- | -------------------------------------------------------------- |
-| ready     | {Cesium, viewer}    | 该组件渲染完毕时触发，返回 Cesium 类, viewer 实例。            |
-| activeEvt | {isActive: Boolean} | 淹没分析组件中 `flooding` 状态改变时触发，返回淹没分析是否开始。 |
+| 事件名     | 参数                                    | 描述                 |
+| ---------- | --------------------------------------- | -------------------- |
+| beforeLoad | (instance: VcComponentInternalInstance) | 对象加载前触发。     |
+| ready      | (readyObj: VcReadyObject)               | 对象加载成功时触发。 |
+| destroyed  | (instance: VcComponentInternalInstance) | 对象销毁时触发。     |
+| stop       | (evt: Cesium.ClassificationPrimitive)   | 到达最大高度时触发。 |
+
+## 方法
+
+| 方法名 | 参数                      | 描述                |
+| ------ | ------------------------- | ------------------- |
+| start  | (height?: number) => void | 开始淹没分析。      |
+| pause  | () => void                | 暂停/继续淹没分析。 |
+| stop   | () => void                | 结束淹没分析。      |

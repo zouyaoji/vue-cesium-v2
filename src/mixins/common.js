@@ -85,6 +85,9 @@ const methods = {
       const vcChildCmp = this.children[i]
       await vcChildCmp.unload()
     }
+
+    this.children.length = 0
+
     const that = this
     return this._mounted
       ? this.unmount().then(async () => {

@@ -1,18 +1,16 @@
 <template>
-  <i :class="$options.name" style="display: none !important">
-    <vc-primitive-classification
-      :asynchronous="false"
-      :show="extrudedHeight !== 0"
-      ref="primitive"
-    >
-      <vc-instance-geometry :attributes="attributes">
-        <vc-geometry-polygon :extrudedHeight="extrudedHeight" :polygonHierarchy="polygonHierarchy"></vc-geometry-polygon>
-      </vc-instance-geometry>
-    </vc-primitive-classification>
-  </i>
+  <vc-primitive-classification
+    :asynchronous="false"
+    ref="primitive"
+  >
+    <vc-instance-geometry :attributes="attributes">
+      <vc-geometry-polygon :extrudedHeight="extrudedHeight" :polygonHierarchy="polygonHierarchy"></vc-geometry-polygon>
+    </vc-instance-geometry>
+  </vc-primitive-classification>
 </template>
 <script>
 import cmp from '../../../mixins/virtualCmp'
+import { polygonHierarchy } from '../../../mixins/mixinProps'
 import { makeColor } from '../../../utils/cesiumHelpers'
 import { getVmListenerName } from '../../../utils/util'
 
@@ -20,20 +18,24 @@ export default {
   name: 'vc-analytics-flood',
   data () {
     return {
-      attributes: null,
-      extrudedHeight: 0.1,
-      flooding: false,
-      show: false
+      attributes: undefined,
+      extrudedHeight: -1
     }
   },
-  mixins: [cmp],
+  mixins: [cmp, polygonHierarchy],
   props: {
     minHeight: {
       type: Number,
-      default: 0
+      default: -1
     },
-    maxHeight: Number,
-    polygonHierarchy: Array,
+    maxHeight: {
+      type: Number,
+      default: 8888
+    },
+    loop: {
+      type: Boolean,
+      default: false
+    },
     speed: {
       type: Number,
       default: 10
@@ -44,55 +46,59 @@ export default {
     }
   },
   watch: {
-    flooding (val) {
-      const listener = getVmListenerName.call(this, 'activeEvt')
-      if (val) {
-        if (this.floodDone) {
-          this.extrudedHeight = this.extrudedHeight >= this.minHeight ? this.minHeight : 0.1
-          this.floodDone = false
-        }
-        this.viewer.clock.onTick.addEventListener(this.onTick)
-        listener && this.$emit(listener, { isActive: val })
-        this.show = true
-      } else {
-        this.viewer.clock.onTick.removeEventListener(this.onTick)
-        listener && this.$emit(listener, { isActive: val })
-      }
-    },
     minHeight (val) {
       this.extrudedHeight = val
     }
   },
   methods: {
     async createCesiumObject () {
-      const { Cesium, minHeight, color } = this
+      const { Cesium, color } = this
       const { ColorGeometryInstanceAttribute } = Cesium
 
       this.attributes = {
         color: ColorGeometryInstanceAttribute.fromColor(makeColor(color))
       }
-      this.extrudedHeight = minHeight
       return true
     },
-    onTick (e) {
-      const { maxHeight, speed } = this
-      if (this.extrudedHeight < maxHeight) {
-        this.extrudedHeight += speed
-        const listener = getVmListenerName.call(this, 'tickEvt')
-        listener && this.$emit(listener, { clock: e, extrudedHeight: this.extrudedHeight })
-      } else {
-        this.floodDone = true
-        this.flooding = false
-      }
-    },
-    clear () {
-      this.extrudedHeight = 0
-    },
     async mount () {
+      this.viewer.clock.onTick.addEventListener(this.onClockTick)
       return true
     },
     async unmount () {
-      this.extrudedHeight = this.minHeight
+      this.viewer.clock.onTick.removeEventListener(this.onClockTick)
+      this.extrudedHeight = -1
+      this.flooding = false
+      return true
+    },
+    onClockTick (e) {
+      if (this.flooding) {
+        if (this.extrudedHeight <= this.maxHeight) {
+          this.extrudedHeight += this.speed
+          this.stoped = false
+        } else {
+          const listener = getVmListenerName.call(this, 'stop')
+          listener && this.$emit('stop', this.$refs.primitive)
+          this.stoped = true
+          if (this.loop) {
+            this.extrudedHeight = this.minHeight
+          } else {
+            this.flooding = false
+          }
+        }
+      }
+    },
+    start (height) {
+      this.extrudedHeight = Cesium.defined(height) ? height : this.minHeight
+      this.flooding = true
+    },
+    pause () {
+      this.flooding = !this.flooding
+      if (this.stoped) {
+        this.extrudedHeight = this.minHeight
+      }
+    },
+    stop () {
+      this.extrudedHeight = -1
       this.flooding = false
     }
   }

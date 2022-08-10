@@ -11,7 +11,7 @@
 <doc-preview>
   <template>
     <div class="viewer">
-      <vc-viewer @ready="ready" shouldAnimate>
+      <vc-viewer @ready="ready" should-animate>
         <vc-primitive-particle
           v-for="(option, index) of options"
           :key="index"
@@ -194,7 +194,7 @@
 ```html
 <template>
   <div class="viewer">
-    <vc-viewer @ready="ready" shouldAnimate>
+    <vc-viewer @ready="ready" should-animate>
       <vc-primitive-particle
         v-for="(option, index) of options"
         :key="index"
