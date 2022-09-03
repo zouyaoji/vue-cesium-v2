@@ -1,5 +1,6 @@
 import TiandituMapsStyle from './TiandituMapsStyle'
 import defer from '../../utils/defer'
+import Uri from 'urijs'
 
 const TiandituMapsStyleUrl = {}
 const TiandituMapsStyleLayer = {}
@@ -149,7 +150,7 @@ class TiandituImageryProvider {
  * @private
  */
 function buildImageResource (x, y, level) {
-  const { combine, defined, defaultValue, queryToObject, objectToQuery, Uri } = Cesium
+  const { combine, defined, defaultValue, queryToObject, objectToQuery } = Cesium
   const freezeObject = Object.freeze || function () { }
   const options = freezeObject({
     service: 'WMTS',
