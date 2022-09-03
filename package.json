@@ -1,7 +1,7 @@
 {
   "name": "vue-cesium",
   "fullname": "VueCesium",
-  "version": "2.3.14",
+  "version": "2.3.15",
   "description": "Vue 2.x components for CesiumJS.",
   "main": "./lib/index.js",
   "module": "./lib/index.js",
@@ -52,7 +52,8 @@
     "@zouyaoji/heatmap.js": "^2.0.8",
     "leaflet": "^1.6.0",
     "lodash-es": "^4.17.20",
-    "proj4": "^2.6.0"
+    "proj4": "^2.6.0",
+    "urijs": "^1.19.11"
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",

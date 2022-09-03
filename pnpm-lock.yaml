@@ -107,6 +107,7 @@ specifiers:
   stylus: ^0.54.7
   stylus-loader: ^3.0.2
   terser-webpack-plugin: ^2.2.1
+  urijs: ^1.19.11
   url-loader: ^2.2.0
   vue: 2.6.14
   vue-loader: 14.2.4
@@ -133,6 +134,7 @@ dependencies:
   leaflet: 1.7.1
   lodash-es: 4.17.21
   proj4: 2.7.5
+  urijs: 1.19.11
 
 devDependencies:
   '@babel/core': 7.16.5
@@ -5663,16 +5665,6 @@ packages:
       readable-stream: 2.3.7
     dev: true
 
-  /follow-redirects/1.14.6:
-    resolution: {integrity: sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dev: true
-
   /follow-redirects/1.14.6_debug@4.3.3:
     resolution: {integrity: sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==}
     engines: {node: '>=4.0'}
@@ -6335,7 +6327,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.6
+      follow-redirects: 1.14.6_debug@4.3.3
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
@@ -11368,6 +11360,10 @@ packages:
     dependencies:
       punycode: 2.1.1
     dev: true
+
+  /urijs/1.19.11:
+    resolution: {integrity: sha512-HXgFDgDommxn5/bIv0cnQZsPhHDA90NPHD6+c/v21U5+Sx5hoP8+dP9IZXBU1gIfvdRfhG8cel9QNPeionfcCQ==}
+    dev: false
 
   /urix/0.1.0:
     resolution: {integrity: sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=}
