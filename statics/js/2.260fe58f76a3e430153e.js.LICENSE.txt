@@ -4,6 +4,47 @@
  */
 
 /*!
+ * URI.js - Mutating URLs
+ *
+ * Version: 1.19.11
+ *
+ * Author: Rodney Rehm
+ * Web: http://medialize.github.io/URI.js/
+ *
+ * Licensed under
+ *   MIT License http://www.opensource.org/licenses/mit-license
+ *
+ */
+
+/*!
+ * URI.js - Mutating URLs
+ * IPv6 Support
+ *
+ * Version: 1.19.11
+ *
+ * Author: Rodney Rehm
+ * Web: http://medialize.github.io/URI.js/
+ *
+ * Licensed under
+ *   MIT License http://www.opensource.org/licenses/mit-license
+ *
+ */
+
+/*!
+ * URI.js - Mutating URLs
+ * Second Level Domain (SLD) Support
+ *
+ * Version: 1.19.11
+ *
+ * Author: Rodney Rehm
+ * Web: http://medialize.github.io/URI.js/
+ *
+ * Licensed under
+ *   MIT License http://www.opensource.org/licenses/mit-license
+ *
+ */
+
+/*!
  * author: [object Object] 
  * @sakitam-gis/kriging v0.1.0
  * build-time: 2019-7-6 20:41
@@ -24,6 +65,8 @@
 * v. 1.2.0
 * https://github.com/RaumZeit/MarchingSquares.js
 */
+
+/*! https://mths.be/punycode v1.4.0 by @mathias */
 
 /**
   * vue-class-component v7.0.1
@@ -62,7 +105,7 @@
  *
  * @package VueCesium
  * @author zouyaoji <370681295@qq.com>
- * @version 2.3.14
+ * @version 2.3.15
  * @license MIT
  * @homepage https://zouyaoji.top/vue-cesium
  * @copyright (c) 2018-2022, zouyaoji <370681295@qq.com>
