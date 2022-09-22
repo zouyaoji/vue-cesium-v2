@@ -1,32 +1,49 @@
 <!--
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2022-02-21 13:27:45
- * @LastEditTime: 2022-02-21 13:52:07
+ * @LastEditTime: 2022-09-23 00:39:03
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\docs\components\AdSense.vue
 -->
 <template>
   <div class="adsense-content">
-    <div class="adsense-title">{{sponsor}}</div>
-    <div style="padding: 0 1.5rem">
+    <div class="adsense-title">{{ sponsor }}</div>
+    <div style="padding: 0 0">
       <ins
         class="adsbygoogle"
-        style="display: block; text-align: center"
-        data-ad-layout="in-article"
-        data-ad-format="fluid"
+        :style="adStyle"
         data-ad-client="ca-pub-3445228872340333"
-        data-ad-slot="8270352624"
+        :data-ad-slot="adSlot"
+        :data-ad-format="dataAdFormat"
+        :data-ad-layout="dataAdLayout"
       ></ins>
     </div>
+    <!-- <app-link href="https://new.502502.xyz/#/register?code=jlz6Frzz">
+      <span style="padding-left: 20px">{{ otherAd }}</span>
+    </app-link> -->
   </div>
 </template>
 
 <script>
+const href = location.href
 export default {
+  props: {
+    adSlot: String,
+    adStyle: Object,
+    dataAdFormat: String,
+    dataAdLayout: String
+  },
   computed: {
-    sponsor: function() {
-      return this.$route.path.indexOf('/zh/') !== -1 ? '赞助商' : 'Sponsor'
+    // adSlot() {
+    //   const cnHref = href.indexOf('vue-cesium.songluck.com') > -1
+    //   return cnHref ? '7202599371' : '4608014562'
+    // },
+    sponsor() {
+      return this.$route.path.indexOf('/zh-CN/') !== -1 ? '赞助商' : 'Sponsor'
+    },
+    otherAd() {
+      return this.$route.path.indexOf('/zh-CN/') !== -1 ? '高速稳定梯子推荐' : 'Stable VPN Recommendation'
     }
   },
   mounted() {
@@ -37,8 +54,8 @@ export default {
 
 <style>
 .adsense-content {
-  max-width: 1440px;
-  margin: 1.5rem auto;
+  max-width: 1180px;
+  margin: 0 auto;
 }
 .adsense-title {
   color: #999;

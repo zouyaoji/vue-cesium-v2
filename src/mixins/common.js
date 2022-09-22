@@ -1,29 +1,30 @@
 import services from './services'
 import nameClassMap from '../utils/nameClassMap'
-import { isFunction } from '../utils/util'
+import { isFunction, getObjClassName } from '../utils/util'
 import * as allProps from '../mixins/mixinProps'
 
 const VM_PROP = 'vm'
 
-const graphics = [
-  'billboard',
-  'box',
-  'corridor',
-  'cylinder',
-  'ellipse',
-  'ellipsoid',
-  'label',
-  'model',
-  'tileset',
-  'path',
-  'plane',
-  'point',
-  'polygon',
-  'polyline',
-  'polylineVolume',
-  'rectangle',
-  'wall'
-]
+const entityGraphics = {
+  billboard: true,
+  box: true,
+  corridor: true,
+  cylinder: true,
+  ellipse: true,
+  ellipsoid: true,
+  label: true,
+  model: true,
+  tileset: true,
+  path: true,
+  plane: true,
+  point: true,
+  polygon: true,
+  polyline: true,
+  polylineVolume: true,
+  rectangle: true,
+  wall: true
+}
+
 /**
  * Get the parent component. 获取 vc-viewer 组件。
  * @param {VueComponent} cmp.
@@ -231,11 +232,12 @@ const methods = {
           cesiumProp = 'key'
         }
 
-        if (
-          graphics.indexOf(cesiumProp) !== -1 &&
-          (getClassName(props[vueProp]) !== 'undefined' && getClassName(props[vueProp]).indexOf('Graphics') === -1) &&
-          (cesiumClass === 'Entity' || cesiumClass.indexOf('DataSource') !== -1)
-        ) {
+        if (props[vueProp] === undefined || props[vueProp] === null) {
+          return
+        }
+        const className = getObjClassName(props[vueProp])
+
+        if (className && entityGraphics[cesiumProp] && (cesiumClass === 'Entity' || cesiumClass.indexOf('DataSource') !== -1)) {
           options[cesiumProp] = that.transformProps(props[vueProp])
         } else {
           options[cesiumProp] = that.transformProp(vueProp, props[vueProp])
@@ -244,24 +246,22 @@ const methods = {
 
     // Remove empty objects to avoid initialization errors when Cesium objects are initialized with null values.
     // 移除空对象，避免 Cesium 对象初始化时传入空值导致初始化报错。
-    this.removeNullItem(options)
+    // this.removeNullItem(options)
     return options
   },
   transformProp (prop, value) {
     const { isEmptyObj, cesiumClass } = this
 
-    if (
-      graphics.indexOf(prop) !== -1 &&
-      (getClassName(value) !== 'undefined' && getClassName(value).indexOf('Graphics') === -1) &&
-      (cesiumClass === 'Entity' || cesiumClass.indexOf('DataSource') !== -1)
-    ) {
+    const className = getObjClassName(value)
+
+    if (className && entityGraphics[prop] && (cesiumClass === 'Entity' || cesiumClass.indexOf('DataSource') !== -1)) {
       return this.transformProps(value)
     } else {
       const cmpName = this.$options.name
       const propOptions = allProps[prop] && allProps[prop].props[prop]
       return propOptions && propOptions.watcherOptions && !isEmptyObj(value)
         ? propOptions.watcherOptions.cesiumObjectBuilder.call(this, value, this.viewer.scene.globe.ellipsoid)
-        : isFunction(value) && (cmpName && (cmpName.indexOf('graphics') !== -1 || cmpName === 'vc-entity'))
+        : isFunction(value) && cmpName && (cmpName.indexOf('graphics') !== -1 || cmpName === 'vc-entity')
           ? new Cesium.CallbackProperty(value, false)
           : value
     }
@@ -346,14 +346,4 @@ export default {
       })
     })
   }
-}
-
-function getClassName (objClass) {
-  if (objClass && objClass.constructor) {
-    const strFun = objClass.constructor.toString()
-    let className = strFun.substr(0, strFun.indexOf('('))
-    className = className.replace('function', '')
-    return className.replace(/(^\s*)|(\s*$)/gi, '')
-  }
-  return typeof objClass
 }

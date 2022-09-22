@@ -1,7 +1,7 @@
 /*
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2021-06-30 22:20:50
- * @LastEditTime: 2022-05-19 15:42:18
+ * @LastEditTime: 2022-09-22 23:38:21
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\docs\main.js
@@ -48,7 +48,7 @@ Vue.use(VueCesium, {
       : 'https://unpkg.com/cesium@latest/Build/Cesium/Cesium.js',
   // lang: lang,
   accessToken:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5Y2U0ZTk2Ni1jNzdkLTQ3OWYtYjVmYS0yMGM3YTk3NjgzMmUiLCJpZCI6Njk5Nywic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU0ODA1MTc0OH0.Csy6yyAnv6JSBppH0Ou3ahshqcHFEhP27iOz5gjQMEo'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJjNzkyNWNlYi0xMzgxLTQwOTYtOTRhYS02ZTM4YjYwYWVjMzYiLCJpZCI6Njk5Nywic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU0ODAzNDEyMn0.0MtHA4jjYQAtYyKjnKnzNziwkSmtLq8qiQqqPtiAfnA'
 })
 Vue.use(VcOverviewMap)
 Vue.use(VcNavigationSM)

@@ -1,3 +1,11 @@
+/*
+ * @Author: zouyaoji@https://github.com/zouyaoji
+ * @Date: 2021-04-06 09:23:38
+ * @LastEditTime: 2022-09-22 23:36:30
+ * @LastEditors: zouyaoji
+ * @Description:
+ * @FilePath: \vue-cesium-v2\src\components\viewer\index.js
+ */
 import Viewer from './Viewer.vue'
 import lang from '../../exts/lang'
 function plugin (Vue, options = {}) {
@@ -5,7 +13,8 @@ function plugin (Vue, options = {}) {
     return
   }
   const $vc = {
-    VERSION: 'C_PKG_VERSION'
+    VERSION: 'C_PKG_VERSION',
+    ...options
   }
   Vue.prototype.$vc = Vue.prototype.$vc || $vc
   if (!Vue.prototype.$vc.lang) {

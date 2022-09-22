@@ -1,7 +1,7 @@
 <!--
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2021-04-06 09:23:34
- * @LastEditTime: 2022-04-26 11:46:39
+ * @LastEditTime: 2022-09-22 21:15:48
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\docs\md\zh\terrain\vc-provider-terrain-cesium.md
@@ -21,7 +21,7 @@
     <div class="viewer">
       <vc-viewer @ready="ready">
         <vc-layer-imagery>
-          <vc-provider-imagery-bingmaps url="https://dev.virtualearth.net" bm-key="AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-" map-style="Aerial"></vc-provider-imagery-bingmaps>
+          <vc-provider-imagery-bingmaps url="https://dev.virtualearth.net" bm-key="AmGu3cvB_g1HbkQErEyvmLc9j0YIGWS7IdOqR7-hQbO8J92Fzrzkhy_bYKSsyoEx" map-style="Aerial"></vc-provider-imagery-bingmaps>
         </vc-layer-imagery>
         <vc-provider-terrain-cesium ref="terrain" :request-water-mask="requestWaterMask"></vc-provider-terrain-cesium>
         <vc-navigation></vc-navigation>
@@ -57,7 +57,7 @@
       <vc-layer-imagery>
         <vc-provider-imagery-bingmaps
           url="https://dev.virtualearth.net"
-          bm-key="AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-"
+          bm-key="AmGu3cvB_g1HbkQErEyvmLc9j0YIGWS7IdOqR7-hQbO8J92Fzrzkhy_bYKSsyoEx"
           map-style="Aerial"
         ></vc-provider-imagery-bingmaps>
       </vc-layer-imagery>

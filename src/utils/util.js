@@ -473,13 +473,16 @@ export function getCesiumClassName (obj) {
   return result
 }
 
-export function getObjClassName (obj) {
-  const cesiumClassName = getCesiumClassName(obj)
-
-  if (cesiumClassName) {
-    return cesiumClassName
-  }
+export function getObjClassName (obj, findCesiumClass = false) {
   if (obj && obj.constructor) {
+    if (findCesiumClass) {
+      const cesiumClassName = getCesiumClassName(obj)
+
+      if (cesiumClassName) {
+        return cesiumClassName
+      }
+    }
+
     return obj.constructor.name
   }
   return typeof obj

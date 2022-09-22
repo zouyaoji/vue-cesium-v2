@@ -41,7 +41,7 @@
       data () {
         return {
           url: 'https://dev.virtualearth.net',
-          bmKey: 'AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-', // 可到(https://www.bingmapsportal.com/)申请Key。
+          bmKey: 'AmGu3cvB_g1HbkQErEyvmLc9j0YIGWS7IdOqR7-hQbO8J92Fzrzkhy_bYKSsyoEx', // 可到(https://www.bingmapsportal.com/)申请Key。
           mapStyle: 'Road',
           options: [{
             value: 'Aerial',
@@ -104,7 +104,7 @@
     data() {
       return {
         url: 'https://dev.virtualearth.net',
-        bmKey: 'AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-', // 可到(https://www.bingmapsportal.com/)申请Key。
+        bmKey: 'AmGu3cvB_g1HbkQErEyvmLc9j0YIGWS7IdOqR7-hQbO8J92Fzrzkhy_bYKSsyoEx', // 可到(https://www.bingmapsportal.com/)申请Key。
         mapStyle: 'Road',
         options: [
           {

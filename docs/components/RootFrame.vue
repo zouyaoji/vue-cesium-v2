@@ -8,6 +8,7 @@
         md-button.menu-button.md-icon-button(@click="$refs.sidenav.toggle()")
           md-icon menu
         span.md-title(v-text="title") VUE CESIUM
+        a(href="https://new.502502.xyz/#/register?code=jlz6Frzz" target="_blank" style="font-size: 16px; color: #fff") {{ lang === 'zh' ? '高速稳定梯子推荐' : 'Stable VPN Recommendation' }}
         md-button(@click="onDonorClick") {{ lang === 'zh' ? '赞助' : 'Donations' }}
         md-button.md-icon-button
           router-link.link(:to="otherUrl")

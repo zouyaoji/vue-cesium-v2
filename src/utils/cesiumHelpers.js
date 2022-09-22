@@ -1,4 +1,4 @@
-import { isFunction, isArray, isString, isObject, isEmptyObj, getObjClassName } from './util'
+import { isFunction, isArray, isString, isObject, isEmptyObj } from './util'
 /**
  * 将对象或数组转换为 Cesium.Cartesian2
  * @param {Object} val
@@ -235,8 +235,8 @@ export function makeAppearance (val) {
     val instanceof PolylineColorAppearance ||
     val instanceof EllipsoidSurfaceAppearance ||
     val instanceof PerInstanceColorAppearance ||
-    val instanceof PolylineMaterialAppearance ||
-    getObjClassName(val).indexOf('Appearance') !== -1
+    val instanceof PolylineMaterialAppearance
+    // getObjClassName(val).indexOf('Appearance') !== -1
   ) {
     return val
   }
@@ -374,7 +374,9 @@ export function makeMaterialProperty (val, isConstant = false) {
     Color,
     Resource,
     ColorMaterialProperty,
+    CompositeMaterialProperty,
     ImageMaterialProperty,
+    MaterialProperty,
     PolylineArrowMaterialProperty,
     PolylineDashMaterialProperty,
     PolylineGlowMaterialProperty,
@@ -389,13 +391,16 @@ export function makeMaterialProperty (val, isConstant = false) {
     val instanceof Color ||
     val instanceof CheckerboardMaterialProperty ||
     val instanceof ColorMaterialProperty ||
+    val instanceof CompositeMaterialProperty ||
+    val instanceof GridMaterialProperty ||
     val instanceof ImageMaterialProperty ||
+    val instanceof MaterialProperty ||
     val instanceof PolylineArrowMaterialProperty ||
     val instanceof PolylineDashMaterialProperty ||
     val instanceof PolylineGlowMaterialProperty ||
     val instanceof PolylineOutlineMaterialProperty ||
-    val instanceof StripeMaterialProperty ||
-    getObjClassName(val).indexOf('MaterialProperty') !== -1
+    val instanceof StripeMaterialProperty
+    // getObjClassName(val).indexOf('MaterialProperty') !== -1
   ) {
     return val
   }

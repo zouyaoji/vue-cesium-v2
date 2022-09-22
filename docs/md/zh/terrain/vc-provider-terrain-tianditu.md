@@ -29,7 +29,7 @@
     <div class="viewer">
       <vc-viewer @ready="ready">
         <vc-layer-imagery>
-          <vc-provider-imagery-bingmaps url="https://dev.virtualearth.net" bm-key="AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-" map-style="Aerial"></vc-provider-imagery-bingmaps>
+          <vc-provider-imagery-bingmaps url="https://dev.virtualearth.net" bm-key="AmGu3cvB_g1HbkQErEyvmLc9j0YIGWS7IdOqR7-hQbO8J92Fzrzkhy_bYKSsyoEx" map-style="Aerial"></vc-provider-imagery-bingmaps>
         </vc-layer-imagery>
         <vc-provider-terrain-tianditu ref="terrain" token="436ce7e50d27eede2f2929307e6b33c0"></vc-provider-terrain-tianditu>
         <vc-navigation></vc-navigation>
@@ -60,7 +60,7 @@
       <vc-layer-imagery>
         <vc-provider-imagery-bingmaps
           url="https://dev.virtualearth.net"
-          bm-key="AgcbDCAOb9zMfquaT4Z-MdHX4AsHUNvs7xgdHefEA5myMHxZk87NTNgdLbG90IE-"
+          bm-key="AmGu3cvB_g1HbkQErEyvmLc9j0YIGWS7IdOqR7-hQbO8J92Fzrzkhy_bYKSsyoEx"
           map-style="Aerial"
         ></vc-provider-imagery-bingmaps>
       </vc-layer-imagery>

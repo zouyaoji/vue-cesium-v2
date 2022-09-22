@@ -4,12 +4,12 @@
     h4
       div {{caughtMistake}}
         a(:href="href" target="_blank")  {{editOnGithub}}
-    ad-sense(v-if="adSenseShow")
+    ad-sense(v-if="adSenseShow" adSlot="8270352624" :adStyle="{ display: 'block', 'text-align': 'center' }" dataAdLayout="in-article" dataAdFormat="fluid")
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       adSenseShow: true
     }
