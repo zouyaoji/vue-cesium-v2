@@ -21,6 +21,9 @@
           img(src="//zouyaoji.top/vue-cesium/favicon.png")
           div Vue Cesium
       slot(name="side-nav")
+    div
+      .ad-scene
+        ad-sense(adSlot="4608014562" :adStyle="{ display: 'inline-block', width: '235px', height: '235px' }" dataAdLayout="in-article" dataAdFormat="fluid")
     .page-content
       slot(name="page-content")
 </template>
@@ -133,6 +136,16 @@ export default {
 
 .md-title {
   flex: 1;
+}
+
+.ad-scene {
+  position: fixed;
+  right: 50px;
+  top: 120px;
+  width: 230px;
+  height: auto;
+  max-height: 300px;
+  // background: red;
 }
 
 .page-content {
