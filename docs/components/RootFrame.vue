@@ -8,7 +8,7 @@
         md-button.menu-button.md-icon-button(@click="$refs.sidenav.toggle()")
           md-icon menu
         span.md-title(v-text="title") VUE CESIUM
-        a(href="https://new.502502.xyz/#/register?code=jlz6Frzz" target="_blank" style="font-size: 16px; color: #fff") {{ lang === 'zh' ? '高速稳定梯子推荐' : 'Stable VPN Recommendation' }}
+        a(href="https://new.502502.xyz/#/register?code=jlz6Frzz" target="_blank" style="font-size: 20px; color: #fff;font-weight: bold") {{ lang === 'zh' ? '高速稳定梯子推荐' : 'Stable VPN Recommendation' }}
         md-button(@click="onDonorClick") {{ lang === 'zh' ? '赞助' : 'Donations' }}
         md-button.md-icon-button
           router-link.link(:to="otherUrl")
@@ -19,7 +19,7 @@
       md-toolbar(md-theme="white").logo
         div
         .ad-sense-frame
-          ad-sense(adSlot="4608014562" :adStyle="{ display: 'inline-block', width: '235px', height: '235px' }")
+          ad-sense(adSlot="4608014562" :adStyle="{ display: 'inline-block', width: '250px', height: '250px' }")
       slot(name="side-nav")
     .page-content
       slot(name="page-content")
@@ -138,7 +138,7 @@ export default {
 .ad-sense-frame {
   position: absolute;
   right: 50px;
-  top: 120px;
+  top: 20px;
   width: 230px;
   height: auto;
   max-height: 300px;

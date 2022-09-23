@@ -1,7 +1,7 @@
 <!--
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2022-02-21 13:27:45
- * @LastEditTime: 2022-09-23 00:39:03
+ * @LastEditTime: 2022-09-23 13:08:37
  * @LastEditors: zouyaoji
  * @Description:
  * @FilePath: \vue-cesium-v2\docs\components\AdSense.vue
@@ -40,10 +40,10 @@ export default {
     //   return cnHref ? '7202599371' : '4608014562'
     // },
     sponsor() {
-      return this.$route.path.indexOf('/zh-CN/') !== -1 ? '赞助商' : 'Sponsor'
+      return this.$route.path.indexOf('/zh/') !== -1 ? '赞助商' : 'Sponsor'
     },
     otherAd() {
-      return this.$route.path.indexOf('/zh-CN/') !== -1 ? '高速稳定梯子推荐' : 'Stable VPN Recommendation'
+      return this.$route.path.indexOf('/zh/') !== -1 ? '高速稳定梯子推荐' : 'Stable VPN Recommendation'
     }
   },
   mounted() {
