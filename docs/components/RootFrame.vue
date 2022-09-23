@@ -17,13 +17,10 @@
           md-icon(md-iconset="iconfont icon-github")
     md-sidenav.md-left.md-fixed.main-nav(ref="sidenav")
       md-toolbar(md-theme="white").logo
-        router-link.link(:to="`/`")
-          img(src="//zouyaoji.top/vue-cesium/favicon.png")
-          div Vue Cesium
+        div
+        .ad-sense-frame
+          ad-sense(adSlot="4608014562" :adStyle="{ display: 'inline-block', width: '235px', height: '235px' }")
       slot(name="side-nav")
-    div
-      .ad-scene
-        ad-sense(adSlot="4608014562" :adStyle="{ display: 'inline-block', width: '235px', height: '235px' }" dataAdLayout="in-article" dataAdFormat="fluid")
     .page-content
       slot(name="page-content")
 </template>
@@ -107,7 +104,7 @@ export default {
 .logo {
   font-size: 1.5rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-  height: 12rem;
+  height: 16rem;
   justify-content: center;
   text-align: center;
 
@@ -138,8 +135,8 @@ export default {
   flex: 1;
 }
 
-.ad-scene {
-  position: fixed;
+.ad-sense-frame {
+  position: absolute;
   right: 50px;
   top: 120px;
   width: 230px;
