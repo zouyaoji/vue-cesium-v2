@@ -1,5 +1,5 @@
 /* @preserve
- * Leaflet 1.9.2, a JS library for interactive maps. https://leafletjs.com
+ * Leaflet 1.9.3, a JS library for interactive maps. https://leafletjs.com
  * (c) 2010-2022 Vladimir Agafonkin, (c) 2010-2011 CloudMade
  */
 
@@ -105,8 +105,8 @@
  *
  * @package VueCesium
  * @author zouyaoji <370681295@qq.com>
- * @version 2.4.0
+ * @version 2.4.2
  * @license MIT
  * @homepage https://zouyaoji.top/vue-cesium
- * @copyright (c) 2018-2022, zouyaoji <370681295@qq.com>
+ * @copyright (c) 2018-2023, zouyaoji <370681295@qq.com>
  */
