@@ -9,7 +9,7 @@ import bindEvents from '../../utils/bindEvent.js'
 import { Events } from '../../utils/events'
 import services from '../../mixins/services'
 import mergeDescriptors from '../../utils/mergeDescriptors.js'
-import { dirname, isArray, getVmListenerName, toKebabCase } from '../../utils/util.js'
+import { dirname, isArray, getVmListenerName, toKebabCase, compareCesiumVersion } from '../../utils/util.js'
 import { getMars3dConfig } from './loadUtil'
 import { camelCase } from 'lodash-es'
 
@@ -729,7 +729,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
       }
       this.removeNullItem(options)
 
-      if (Cesium.VERSION >= '1.83') {
+      if (compareCesiumVersion(Cesium.VERSION, '1.83')) {
         delete options.terrainExaggeration
       }
       let viewer = {}
@@ -750,7 +750,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
 
       this.viewer = viewer
 
-      if (Cesium.VERSION >= '1.83') {
+      if (compareCesiumVersion(Cesium.VERSION, '1.83')) {
         viewer.scene.globe.terrainExaggeration = terrainExaggeration
       }
 

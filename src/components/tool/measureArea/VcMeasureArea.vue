@@ -56,7 +56,7 @@
 import area from '@turf/area'
 import mixinMeasure from '../../../mixins/tool/mixinMeasure'
 import { makeMaterial } from '../../../utils/cesiumHelpers'
-import { clone } from '../../../utils/util'
+import { clone, compareCesiumVersion } from '../../../utils/util'
 export default {
   name: 'vc-measure-area',
   mixins: [mixinMeasure],
@@ -227,7 +227,7 @@ export default {
       let polygons
       const tangentPlane = EllipsoidTangentPlane.fromPoints(positions, viewer.scene.globe.ellipsoid)
 
-      if (Cesium.VERSION >= '1.94') {
+      if (compareCesiumVersion(Cesium.VERSION, '1.94')) {
         polygons = PolygonGeometryLibrary.polygonsFromHierarchy(
           new PolygonHierarchy(positions),
           false,
@@ -244,7 +244,7 @@ export default {
         )
       }
       let geom
-      if (Cesium.VERSION >= '1.94') {
+      if (compareCesiumVersion(Cesium.VERSION, '1.94')) {
         geom = PolygonGeometryLibrary.createGeometryFromPositions(
           viewer.scene.globe.ellipsoid,
           polygons.polygons[0],
