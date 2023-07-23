@@ -12,7 +12,9 @@ Regist all components of **vue-cesium** at once.
 import Vue from 'vue'
 import VueCesium from 'vue-cesium'
 // VueCesium will load Cesium.js from `https://unpkg.com/cesium/Build/Cesium/Cesium.js` by default.
-Vue.use(VueCesium)
+Vue.use(VueCesium, {
+  cesiumPath: 'https://unpkg.com/cesium@1.100/Build/Cesium/Cesium.js'
+})
 ```
 
 - Specify the Cesium library url and the CesiumIon online resource accessToken:
@@ -30,7 +32,7 @@ Vue.use(VueCesium, {
   // Personal online SuperMap Cesium Build package：
   // cesiumPath: 'https://zouyaoji.top/vue-cesium/statics/SuperMapCesium/Cesium.js'
   // Official Online Cesium Build package：
-  cesiumPath: 'https://unpkg.com/cesium/Build/Cesium/Cesium.js',
+  cesiumPath: 'https://unpkg.com/cesium@1.100/Build/Cesium/Cesium.js',
   // Cesium.Ion.defaultAccessToken
   accessToken: ''
 })
@@ -82,7 +84,7 @@ Vue.use(Viewer, {
   // Personal online SuperMap Cesium Build package：
   // cesiumPath: 'https://zouyaoji.top/vue-cesium/statics/SuperMapCesium/Cesium.js'
   // Official Online Cesium Build package：
-  cesiumPath: 'https://unpkg.com/cesium/Build/Cesium/Cesium.js',
+  cesiumPath: 'https://unpkg.com/cesium@1.100/Build/Cesium/Cesium.js',
   // Cesium.Ion.defaultAccessToken
   accessToken: ''
 })
@@ -110,9 +112,9 @@ Vue.use(ImageryLayer)
 
 ```js
 <!-- include Vue -->
-<script src="https://unpkg.com/vue@latest/dist/vue.min.js"></script>
+<script src="https://unpkg.com/vue@2.6.12/dist/vue.min.js"></script>
 <!-- include VueCesium -->
-<script src="https://unpkg.com/vue-cesium@latest/lib/index.umd.js"></script>
+<script src="https://unpkg.com/vue-cesium@2.4.2/lib/index.umd.js"></script>
 <script>
   Vue.use(VueCesium) // All VueCesium components now globally installed
 </script>

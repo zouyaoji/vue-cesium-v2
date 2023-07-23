@@ -1,8 +1,8 @@
 /*
  * @Author: zouyaoji@https://github.com/zouyaoji
  * @Date: 2021-06-30 22:20:50
- * @LastEditTime: 2022-09-22 23:38:21
- * @LastEditors: zouyaoji
+ * @LastEditTime: 2023-07-24 01:17:10
+ * @LastEditors: zouyaoji 370681295@qq.com
  * @Description:
  * @FilePath: \vue-cesium-v2\docs\main.js
  */
@@ -42,10 +42,7 @@ Vue.use(VueCesium, {
   // cesiumPath: './statics/EarthSDK/XbsjEarth/XbsjEarth.js', // CesiumLab EarthSDK
   // cesiumPath: './statics/Cesium/Cesium.js',
   // cesiumPath: './statics/CesiumUnminified/Cesium.js',
-  cesiumPath:
-    process.env.NODE_ENV === 'development'
-      ? './statics/CesiumUnminified/Cesium.js'
-      : 'https://unpkg.com/cesium@latest/Build/Cesium/Cesium.js',
+  cesiumPath: 'https://unpkg.com/cesium@1.100/Build/Cesium/Cesium.js',
   // lang: lang,
   accessToken:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJjNzkyNWNlYi0xMzgxLTQwOTYtOTRhYS02ZTM4YjYwYWVjMzYiLCJpZCI6Njk5Nywic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU0ODAzNDEyMn0.0MtHA4jjYQAtYyKjnKnzNziwkSmtLq8qiQqqPtiAfnA'

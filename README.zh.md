@@ -14,7 +14,9 @@
 
 ## 注意
 
-**本项目将于2022年12月31日停止维护，届时从 npm 安装 vue-cesium 将默认是 Vue3 版本的，请尽快使用 Vue3 版本的 VueCesium。**
+[**这是 VueCesium 的 Vue2 版本！ 转到新版本以获取更新版本！**](https://github.com/zouyaoji/vue-cesium)
+
+**本项目已经停止维护，建议使用 Vue3 版本的 VueCesium。**
 
 ## 语言
 
@@ -45,7 +47,7 @@ VueCesium，一套为 GISer 准备的基于 Vue 2.x & Vue 3.x 的 CesiumJS 组�
 ### 安装
 
 ```bash
-npm i --save vue-cesium
+npm i --save vue-cesium@2.4.2
 ```
 
 ### 使用
@@ -56,7 +58,9 @@ import Vue from 'vue'
 import VueCesium from 'vue-cesium'
 import lang from 'vue-cesium/lang/zh-hans'
 // import lang from 'vue-cesium/lang/en-us'
-Vue.use(VueCesium)
+Vue.use(VueCesium, {
+  cesiumPath: 'https://unpkg.com/cesium@1.100/Build/Cesium/Cesium.js'
+})
 ```
 
 ```html

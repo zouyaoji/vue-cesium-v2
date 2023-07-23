@@ -14,10 +14,11 @@
 
 [![Package Quality](https://npm.packagequality.com/shield/vue-cesium.svg)](https://packagequality.com/#?package=vue-cesium)
 
-
 ## Notice
 
-**This project will stop maintenance on December 31, 2022. At that time, installing vue-cesium from npm will default to the Vue3 version. Please use the Vue3 version of VueCesium as soon as possible.**
+[**This is the Vue2 version of VueCesium! Go to new version to get the updated version!**](https://github.com/zouyaoji/vue-cesium)
+
+**This project has stopped maintenance, it is recommended to use the Vue3 version of VueCesium.**
 
 ## Languages
 
@@ -48,7 +49,7 @@ Support loading official CesiumJS, or third-party platforms based on CesiumJS:
 ### Installation
 
 ```bash
-npm i --save vue-cesium
+npm i --save vue-cesium@2.4.2
 ```
 
 ### Usage
@@ -56,10 +57,12 @@ npm i --save vue-cesium
 ```js
 // main.js
 import Vue from 'vue'
-import VueCesium from 'vue-cesium'
+import VueCesium from 'vue-cesium@2.4.2'
 import lang from 'vue-cesium/lang/zh-hans'
 // import lang from 'vue-cesium/lang/en-us'
-Vue.use(VueCesium)
+Vue.use(VueCesium, {
+  cesiumPath: 'https://unpkg.com/cesium@1.100/Build/Cesium/Cesium.js'
+})
 ```
 
 ```html
@@ -89,7 +92,7 @@ Vue.use(VueCesium, {
   // cesiumPath: /static/Cesium/Cesium.js
   // cesiumPath: 'https://unpkg.com/cesium/Build/Cesium/Cesium.js'
   // cesiumPath: 'https://cdn.jsdelivr.net/npm/cesium@latest/Build/Cesium/Cesium.js'
-  cesiumPath: 'https://cdn.jsdelivr.net/npm/cesium@latest/Build/Cesium/Cesium.js',
+  cesiumPath: 'https://cdn.jsdelivr.net/npm/cesium@1.100/Build/Cesium/Cesium.js',
   // If you need to use Cesium ion resources, you need to specify it. Go to https://cesium.com/ion/ to apply for an account and get Access Token. If it is not specified, it may cause the loading of CesiumIon's online images and terrain to fail.
   accessToken: 'Your Cesium Ion defaultAccessToken',
   lang: lang // 2.0.3+ //  zh-hans

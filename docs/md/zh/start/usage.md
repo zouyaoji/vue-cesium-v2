@@ -12,7 +12,9 @@
 import Vue from 'vue'
 import VueCesium from 'vue-cesium'
 // VueCesium 默认使用 `https://unpkg.com/cesium@latest/Build/Cesium/Cesium.js`
-Vue.use(VueCesium)
+Vue.use(VueCesium, {
+  cesiumPath: 'https://unpkg.com/cesium@1.100/Build/Cesium/Cesium.js'
+})
 ```
 
 - 指定 Cesium 库地址和 CesiumIon 在线资源 accessToken：
@@ -30,7 +32,7 @@ Vue.use(VueCesium, {
   // 个人在线SuperMap Cesium Build包（在官方基础上二次开发出来的）：
   // cesiumPath: 'https://zouyaoji.top/vue-cesium/statics/SuperMapCesium/Cesium.js'
   // 官方在线Cesium Build包，有CDN加速，推荐用这个：
-  cesiumPath: 'https://unpkg.com/cesium@latest/Build/Cesium/Cesium.js',
+  cesiumPath: 'https://unpkg.com/cesium@1.100/Build/Cesium/Cesium.js',
   // 指定Cesium.Ion.defaultAccessToken，使用Cesium ion的数据源需要到https://cesium.com/ion/申请一个账户，获取Access Token。不指定的话可能导致 Cesium 在线影像加载不了
   accessToken: ''
 })
@@ -81,7 +83,7 @@ Vue.use(Viewer, {
   // 个人在线SuperMap Cesium Build包（在官方基础上二次开发出来的）：
   // cesiumPath: 'https://zouyaoji.top/vue-cesium/statics/SuperMapCesium/Cesium.js'
   // 官方在线Cesium Build包，有CDN加速，推荐用这个：
-  cesiumPath: 'https://unpkg.com/cesium/Build/Cesium/Cesium.js',
+  cesiumPath: 'https://unpkg.com/cesium@1.100/Build/Cesium/Cesium.js'
   // 指定Cesium.Ion.defaultAccessToken，使用Cesium ion的数据源需要到https://cesium.com/ion/申请一个账户，获取Access Token。不指定的话可能导致 Cesium 在线影像加载不了
   accessToken: ''
 })
@@ -109,9 +111,9 @@ Vue.use(ImageryLayer)
 
 ```js
 <!-- include Vue -->
-<script src="https://unpkg.com/vue@latest/dist/vue.min.js"></script>
+<script src="https://unpkg.com/vue@2.6.12/dist/vue.min.js"></script>
 <!-- include VueCesium -->
-<script src="https://unpkg.com/vue-cesium@latest/lib/index.umd.js"></script>
+<script src="https://unpkg.com/vue-cesium@2.4.2/lib/index.umd.js"></script>
 <script>
   Vue.use(VueCesium) // All VueCesium components now globally installed
 </script>
