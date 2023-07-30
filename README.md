@@ -5,14 +5,16 @@
 </p>
 <p align="center">VueCesium, a Vue 2.x & Vue 3.x based component library of CesiumJS for GISer.</p>
 
-[![Travis](https://img.shields.io/travis/zouyaoji/vue-cesium?style=plastic)](https://travis-ci.org/zouyaoji/vue-cesium)
 [![npm](https://img.shields.io/npm/v/vue-cesium?style=plastic)](https://www.npmjs.com/package/vue-cesium)
 [![npm](https://img.shields.io/npm/dm/vue-cesium?style=plastic)](https://www.npmjs.com/package/vue-cesium)
 [![license](https://img.shields.io/github/license/zouyaoji/vue-cesium?style=plastic)](https://github.com/zouyaoji/vue-cesium/blob/master/LICENSE)
-
-<!-- [![Coverage Status](https://img.shields.io/coveralls/github/zouyaoji/vue-cesium?style=plastic)](https://coveralls.io/github/zouyaoji/vue-cesium?branch=master) -->
-
 [![Package Quality](https://npm.packagequality.com/shield/vue-cesium.svg)](https://packagequality.com/#?package=vue-cesium)
+
+## Highlight Moments
+
+- 🌎 2022-06-08 The moon project developed with vue-cesium was featured in the [CCTV News Broadcast](https://tv.cctv.com/2022/06/08/VIDEazqfs4AIBuVEvBzob6DA220608.shtml?spm=C31267.PXDaChrrDGdt.EbD5Beq0unIQ.29) on June 8, 2022, at 21 minutes and 52 seconds. [Screenshot](https://zouyaoji.top/vue-cesium/images/cctv.png).
+- 🚀 2022-12-10 Joined the [Cesium Certified Developer Program](https://cesium.com/learn/certified-developer-directory/).
+- 🎉 2023-04-25 The GitHub project `vue-cesium` has reached over 1000 [stars](https://github.com/zouyaoji/vue-cesium/stargazers)! Thank you all for your support and contributions.
 
 ## Notice
 

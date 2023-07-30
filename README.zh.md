@@ -5,12 +5,16 @@
 </p>
 <p align="center">VueCesium，一套为 GISer 准备的基于 Vue 2.x & Vue 3.x 的 CesiumJS 组件库。</p>
 
-[![Travis](https://img.shields.io/travis/zouyaoji/vue-cesium?style=plastic)](https://travis-ci.org/zouyaoji/vue-cesium)
 [![npm](https://img.shields.io/npm/v/vue-cesium?style=plastic)](https://www.npmjs.com/package/vue-cesium)
 [![npm](https://img.shields.io/npm/dm/vue-cesium?style=plastic)](https://www.npmjs.com/package/vue-cesium)
 [![license](https://img.shields.io/github/license/zouyaoji/vue-cesium?style=plastic)](https://github.com/zouyaoji/vue-cesium/blob/master/LICENSE)
-<!-- [![Coverage Status](https://img.shields.io/coveralls/github/zouyaoji/vue-cesium?style=plastic)](https://coveralls.io/github/zouyaoji/vue-cesium?branch=master) -->
 [![Package Quality](https://npm.packagequality.com/shield/vue-cesium.svg)](https://packagequality.com/#?package=vue-cesium)
+
+## 高光时刻
+
+- 🌎 2022-06-08 用 vue-cesium 开发的月球项目上了 20220608 期[CCTV 新闻联播](https://tv.cctv.com/2022/06/08/VIDEazqfs4AIBuVEvBzob6DA220608.shtml?spm=C31267.PXDaChrrDGdt.EbD5Beq0unIQ.29)21 分 52 秒处。[截图](https://zouyaoji.top/vue-cesium/images/cctv.png)
+- 🚀 2022-12-10 通过了 Cesium 开发者认证。[Cesium Certified Developer Program](https://cesium.com/learn/certified-developer-directory/)
+- 🎉 2023-04-25 GitHub 项目 `vue-cesium` 已经突破 1000 个 Star！感谢大家的支持和贡献!
 
 ## 注意
 
